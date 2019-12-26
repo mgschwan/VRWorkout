@@ -2,8 +2,7 @@
 Virtual reality workout game for Oculus Quest
 
 
-**DISCLAIMER: Use at your own risk! This game does not check if you bump into your surroundings. Since this is a physical workout game there is lot's of movement which bears the risk of injury. You acknowledge that this software is free and you are using it at your own risk
-**
+**DISCLAIMER: Use at your own risk! This game does not check if you bump into your surroundings. Since this is a physical workout game there is lot's of movement which bears the risk of injury. You acknowledge that this software is free and you are using it at your own risk**
 
 ![Logo](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_logo_text.jpg)
 
