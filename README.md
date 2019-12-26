@@ -2,7 +2,7 @@
 Virtual reality workout game for Oculus Quest
 
 
-![Logo](https://github.com/mgschwan/VRWorkout/web_assets/vrworkout_logo_text.jpg)
+![Logo](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_logo_text.jpg)
 
 
 This game shall - once it's finished - provide a high intensity full body workout similar to punching games but with 4 different playing positions:
