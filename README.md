@@ -28,6 +28,9 @@ Current features:
 * unbalanced gameplay
 * unintuitive navigation
 
+## Sample gameplay
+
+[![Sample gameplay](https://img.youtube.com/vi/ssf97LW-w5k/0.jpg)](https://www.youtube.com/watch?v=ssf97LW-w5k)
 
 ## Credits:
 
