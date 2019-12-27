@@ -42,11 +42,9 @@ Current features are:
 The game is currently based on a forked godot_oculus_mobile plugin by NeoSpark314 that added support for hand tracking and on the beta version of Godot 3.2. 
 The source code will be pushed once the changes are (hopefully) in the official Godot 3.2 release.
 
-
-
 ## Sample gameplay
 
-[![Sample gameplay](https://img.youtube.com/vi/ssf97LW-w5k/0.jpg)](https://www.youtube.com/watch?v=ssf97LW-w5k)
+[![Sample gameplay](https://img.youtube.com/vi/qy-rjRtI2yM/0.jpg)](https://www.youtube.com/watch?v=qy-rjRtI2yM)
 
 ## Credits:
 
