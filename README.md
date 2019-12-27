@@ -15,7 +15,13 @@ This game shall - once it's finished - provide a high intensity full body workou
 
 The game switches between those four positions. Try to hit the hand cues when they are between the two blue poles. The head cue has to be touched (not hit) with your head.
 
-HOWTO:
+## Install
+
+* Either directly through [Sidequest](https://sidequestvr.com) 
+* or by downloading the latest APK file from the [Releases](https://github.com/mgschwan/VRWorkout/releases) section and installing it via ADB to your device
+
+
+## How to play
 
 Upon start you will see several different blocks. Touch one of them to select a level. 
 To change the difficulty touch the blue pole to your right at different heights.
@@ -24,11 +30,19 @@ To change the difficulty touch the blue pole to your right at different heights.
 * Lower part: Medium
 * High: Easy
 
+## Development
 
-Current features:
+This is my first VR and my first Godot game, so the code may be a bit messy.
+
+Current features are:
 * incoherent soundtrack
 * unbalanced gameplay
 * unintuitive navigation
+
+The game is currently based on a forked godot_oculus_mobile plugin by NeoSpark314 that added support for hand tracking and on the beta version of Godot 3.2. 
+The source code will be pushed once the changes are (hopefully) in the official Godot 3.2 release.
+
+
 
 ## Sample gameplay
 
