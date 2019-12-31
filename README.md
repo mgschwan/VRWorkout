@@ -44,10 +44,10 @@ The source code will be pushed once the changes are (hopefully) in the official 
 
 ## Screenshots
 ![Screenshot 1](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot1.jpg)
-![Screenshot 2](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot2.jpg)
 ![Screenshot 3](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot3.jpg)
 ![Screenshot 4](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot4.jpg)
 ![Screenshot 5](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot5.jpg)
+![Screenshot 2](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot2.jpg)
 
 
 ## Sample gameplay
