@@ -42,6 +42,14 @@ Current features are:
 The game is currently based on a forked godot_oculus_mobile plugin by NeoSpark314 that added support for hand tracking and on the beta version of Godot 3.2. 
 The source code will be pushed once the changes are (hopefully) in the official Godot 3.2 release.
 
+## Screenshots
+![Screenshot 1](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot1.jpg)
+![Screenshot 2](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot2.jpg)
+![Screenshot 3](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot3.jpg)
+![Screenshot 4](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot4.jpg)
+![Screenshot 5](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot5.jpg)
+
+
 ## Sample gameplay
 
 [![Sample gameplay](https://img.youtube.com/vi/mSPQulHXlJo/0.jpg)](https://www.youtube.com/watch?v=mSPQulHXlJo)
