@@ -44,7 +44,7 @@ The source code will be pushed once the changes are (hopefully) in the official 
 
 ## Sample gameplay
 
-[![Sample gameplay](https://img.youtube.com/vi/qy-rjRtI2yM/0.jpg)](https://www.youtube.com/watch?v=qy-rjRtI2yM)
+[![Sample gameplay](https://img.youtube.com/vi/mSPQulHXlJo/0.jpg)](https://www.youtube.com/watch?v=mSPQulHXlJo)
 
 ## Credits:
 
@@ -63,3 +63,4 @@ The source code will be pushed once the changes are (hopefully) in the official 
 
 * KF2 Berzerker Perk Symbol by DiabolicMaggot
 * Low Poly Forest by isbl 
+* Floating Islands by Otis25 
