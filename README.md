@@ -15,6 +15,8 @@ This game shall - once it's finished - provide a high intensity full body workou
 
 The game switches between those four positions. Try to hit the hand cues when they are between the two blue poles. The head cue has to be touched (not hit) with your head.
 
+Jog in place to receive a point multiplier, run faster to get up to 4x points.
+
 ## Install
 
 * Either directly through [Sidequest](https://sidequestvr.com) 
@@ -48,6 +50,7 @@ The source code will be pushed once the changes are (hopefully) in the official 
 ![Screenshot 4](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot4.jpg)
 ![Screenshot 5](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot5.jpg)
 ![Screenshot 2](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot2.jpg)
+![Screenshot 6](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot6.jpg)
 
 
 ## Sample gameplay
