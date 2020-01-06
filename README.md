@@ -75,3 +75,4 @@ The source code will be pushed once the changes are (hopefully) in the official 
 * KF2 Berzerker Perk Symbol by DiabolicMaggot
 * Low Poly Forest by isbl 
 * Floating Islands by Otis25 
+* Open Tatami Room by OSad 
