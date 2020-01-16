@@ -19,7 +19,7 @@ Jog in place to receive a point multiplier, run faster to get up to 4x points.
 
 ## Install
 
-* Either directly through [Sidequest](https://sidequestvr.com) 
+* Either directly through [Sidequest](https://sidequestvr.com/#/app/413) 
 * or by downloading the latest APK file from the [Releases](https://github.com/mgschwan/VRWorkout/releases) section and installing it via ADB to your device
 
 
