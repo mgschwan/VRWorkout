@@ -6,6 +6,7 @@ Virtual reality workout game for Oculus Quest
 
 ![Logo](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_logo_new.jpg)
 
+For suggestions/feedback joing the discord group [VRWorkout Dojo](https://discord.gg/Vg3vyah)
 
 This game shall - once it's finished - provide a high intensity full body workout similar to punching games but with 4 different playing positions:
 * standing
@@ -32,6 +33,11 @@ To change the difficulty touch the blue pole to your right at different heights.
 * Lower part: Medium
 * High: Easy
 
+__Freeplay mode__
+
+To play along your own songs just play them on your own device (smartphone, sound system, smart speaker) and drum in the beats on the blue drum. Once you are satisfied with the beat start one of the Freeplay modes. They will only play the soundeffects and emit the cues according to the beat you have set.
+
+
 ## Development
 
 This is my first VR and my first Godot game, so the code may be a bit messy.
@@ -41,8 +47,7 @@ Current features are:
 * unbalanced gameplay
 * unintuitive navigation
 
-The game is currently based on a forked godot_oculus_mobile plugin by NeoSpark314 that added support for hand tracking and on the beta version of Godot 3.2. 
-The source code will be pushed once the changes are (hopefully) in the official Godot 3.2 release.
+The game requires the [godot_oculus_mobile](https://github.com/GodotVR/godot_oculus_mobile). 
 
 ## Screenshots
 ![Screenshot 1](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_menu.jpg)
