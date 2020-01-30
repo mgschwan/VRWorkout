@@ -45,12 +45,12 @@ The game is currently based on a forked godot_oculus_mobile plugin by NeoSpark31
 The source code will be pushed once the changes are (hopefully) in the official Godot 3.2 release.
 
 ## Screenshots
-![Screenshot 1](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot1.jpg)
-![Screenshot 3](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot3.jpg)
-![Screenshot 4](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot4.jpg)
-![Screenshot 5](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot5.jpg)
-![Screenshot 2](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot2.jpg)
-![Screenshot 6](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/screenshot6.jpg)
+![Screenshot 1](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_menu.jpg)
+![Screenshot 3](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_side.jpg)
+![Screenshot 4](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_play_main.jpg)
+![Screenshot 5](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_stand.jpg)
+![Screenshot 2](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_double_punch.jpg)
+![Screenshot 6](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_main_menu.jpg)
 
 
 ## Sample gameplay
