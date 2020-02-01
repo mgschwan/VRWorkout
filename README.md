@@ -56,6 +56,10 @@ The game requires the [godot_oculus_mobile](https://github.com/GodotVR/godot_ocu
 ![Screenshot 5](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_stand.jpg)
 ![Screenshot 2](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_double_punch.jpg)
 ![Screenshot 6](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_main_menu.jpg)
+![Screenshot 7](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_beast_mode_claws.jpg)
+![Screenshot 8](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_claw_hit2.jpg)
+![Screenshot 9](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_claw_hit.jpg)
+![Screenshot 10](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_claw2.jpg)
 
 
 ## Sample gameplay
