@@ -1,0 +1,25 @@
+[gd_resource type="Environment" load_steps=3 format=2]
+
+[ext_resource path="res://panorama_boat.jpg" type="Texture" id=1]
+
+[sub_resource type="PanoramaSky" id=1]
+panorama = ExtResource( 1 )
+
+[resource]
+background_mode = 2
+background_sky = SubResource( 1 )
+background_sky_orientation = Basis( -0.851691, 0, -0.524044, 0, 1, 0, 0.524044, 0, -0.851691 )
+background_energy = 1.16
+ambient_light_color = Color( 0.960784, 0.996078, 0.721569, 1 )
+ambient_light_energy = 0.8
+ambient_light_sky_contribution = 0.5
+fog_color = Color( 0.215686, 0.215686, 0.215686, 1 )
+fog_depth_begin = 4.0
+fog_depth_end = 8.0
+fog_depth_curve = 13.9288
+fog_transmit_enabled = true
+fog_height_enabled = true
+fog_height_min = 5.0
+fog_height_max = 20.0
+adjustment_enabled = true
+adjustment_brightness = 0.8

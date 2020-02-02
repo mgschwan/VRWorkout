@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://models/stage2.escn" type="PackedScene" id=1]
+
+[node name="Spatial" type="Spatial"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -4.84601, 2.95, -1.88917 )
+
+[node name="stage3" parent="." instance=ExtResource( 1 )]
+transform = Transform( 2.72954, -5.18625e-09, -3.20433e-08, 5.18625e-09, 1.99648, 0.118648, -3.20433e-08, -0.118648, 1.99648, 1.91648, -2.91977, -3.45805 )

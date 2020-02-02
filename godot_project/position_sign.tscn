@@ -1,0 +1,183 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://stick-figure.jpg" type="Texture" id=1]
+[ext_resource path="res://position_sign.gd" type="Script" id=2]
+[ext_resource path="res://audio/instruction_now.wav" type="AudioStream" id=4]
+[ext_resource path="res://audio/instruction_squat.wav" type="AudioStream" id=5]
+[ext_resource path="res://audio/instruction_pushup.wav" type="AudioStream" id=6]
+[ext_resource path="res://audio/instruction_stand.wav" type="AudioStream" id=7]
+[ext_resource path="res://audio/instruction_crunch.wav" type="AudioStream" id=8]
+
+[sub_resource type="PlaneMesh" id=1]
+size = Vector2( 1.5, 1.5 )
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_unshaded = true
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 0.5, 0.5, 1 )
+uv1_offset = Vector3( 0.5, 0, 0 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "crunch"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.5, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.5, 0.5, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "pushup"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.5, 0.5, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.5, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "squat"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.5, 0.5, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.5, 0.5, 0 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "stand"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.5, 0.5, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="CubeMesh" id=7]
+size = Vector3( 6, 0.2, 2 )
+
+[sub_resource type="SpatialMaterial" id=8]
+params_blend_mode = 1
+params_use_alpha_scissor = true
+params_alpha_scissor_threshold = 0.0
+albedo_color = Color( 0.341176, 0.227451, 1, 0.298039 )
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MeshInstance"]
+anims/crunch = SubResource( 3 )
+anims/pushup = SubResource( 4 )
+anims/squat = SubResource( 5 )
+anims/stand = SubResource( 6 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.165942, 0, 0, 0, 1, 2, -0.0141001, 0 )
+mesh = SubResource( 7 )
+material/0 = SubResource( 8 )
+
+[node name="player_squat" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = 5.0
+bus = "Voice"
+
+[node name="player_crunch" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = 5.0
+bus = "Voice"
+
+[node name="player_stand" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = 5.0
+bus = "Voice"
+
+[node name="player_pushup" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = 5.0
+bus = "Voice"
+
+[node name="player_now" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = 5.0
+bus = "Voice"
+[connection signal="finished" from="player_squat" to="." method="_on_sfx_finished"]
+[connection signal="finished" from="player_crunch" to="." method="_on_sfx_finished"]
+[connection signal="finished" from="player_stand" to="." method="_on_sfx_finished"]
+[connection signal="finished" from="player_pushup" to="." method="_on_sfx_finished"]
+[connection signal="finished" from="player_now" to="." method="_on_sfx_finished"]

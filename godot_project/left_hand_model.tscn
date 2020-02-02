@@ -1,0 +1,51 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://left_hand_model.glb" type="PackedScene" id=1]
+[ext_resource path="res://hand_skeleton.gd" type="Script" id=2]
+[ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=3]
+
+[node name="left_hand_model" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="BoneAttachment" parent="ArmatureLeft/Skeleton" index="0"]
+transform = Transform( 0.715415, 0.480301, 0.507437, -0.520631, 0.850801, -0.0712855, -0.465966, -0.213189, 0.858735, 3.59584, -2.80285, -1.91577 )
+
+[node name="BoneAttachment 2" parent="ArmatureLeft/Skeleton" index="1"]
+transform = Transform( 0.992608, 0.0543436, -0.108515, 0.109344, -0.0125266, 0.993925, 0.0526541, -0.998444, -0.0183762, 15.792, -2.06916, -1.2769 )
+
+[node name="BoneAttachment 3" parent="ArmatureLeft/Skeleton" index="2"]
+transform = Transform( 0.992608, 0.0543436, -0.108515, 0.109344, -0.0125266, 0.993925, 0.0526541, -0.998444, -0.0183762, 15.792, -2.06916, -1.2769 )
+
+[node name="BoneAttachment 4" parent="ArmatureLeft/Skeleton" index="3"]
+transform = Transform( 0.992608, 0.0543436, -0.108515, 0.109344, -0.0125266, 0.993925, 0.0526541, -0.998444, -0.0183762, 15.792, -2.06916, -1.2769 )
+
+[node name="BoneAttachment 5" parent="ArmatureLeft/Skeleton" index="4"]
+transform = Transform( 0.994319, -0.0918412, -0.0538007, 0.0547372, 0.00770647, 0.998471, -0.0912861, -0.995744, 0.0126898, 13.3754, -2.20219, -1.05505 )
+
+[node name="BoneAttachment 6" parent="ArmatureLeft/Skeleton" index="5"]
+transform = Transform( 0.995542, -0.0875827, -0.0349953, 0.0403074, 0.0596366, 0.997406, -0.0852684, -0.994371, 0.062901, 9.59962, -2.35507, -0.731646 )
+
+[node name="BoneAttachment 7" parent="ArmatureLeft/Skeleton" index="6"]
+transform = Transform( 0.987593, 0.0968454, -0.123618, 0.132458, -0.0908864, 0.987013, 0.0843523, -0.991141, -0.102587, 16.5356, 0.568593, -0.979278 )
+
+[node name="BoneAttachment 8" parent="ArmatureLeft/Skeleton" index="7"]
+transform = Transform( 0.987593, 0.0968454, -0.123618, 0.132458, -0.0908864, 0.987013, 0.0843523, -0.991141, -0.102587, 16.5356, 0.568593, -0.979278 )
+
+[node name="BoneAttachment 9" parent="ArmatureLeft/Skeleton" index="8"]
+transform = Transform( 0.987593, 0.0968454, -0.123618, 0.132458, -0.0908864, 0.987013, 0.0843523, -0.991141, -0.102587, 16.5356, 0.568593, -0.979278 )
+
+[node name="BoneAttachment 10" parent="ArmatureLeft/Skeleton" index="9"]
+transform = Transform( 0.988767, -0.0960949, -0.114484, 0.110551, -0.0453154, 0.992837, -0.100594, -0.99434, -0.034183, 13.8116, 0.264029, -0.702145 )
+
+[node name="BoneAttachment 11" parent="ArmatureLeft/Skeleton" index="10"]
+transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0 )
+
+[node name="l_handMeshNode" parent="ArmatureLeft/Skeleton" index="11"]
+visible = false
+
+[node name="middle_root_bone" type="BoneAttachment" parent="ArmatureLeft/Skeleton" index="12"]
+transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0 )
+bone_name = "b_l_wrist"
+
+[node name="claws" parent="ArmatureLeft/Skeleton/middle_root_bone" index="0" instance=ExtResource( 3 )]
+transform = Transform( -3.25841e-07, 0.174311, 1.49429, 0, -1.99239, 0.130734, -2, -2.83989e-08, -2.43451e-07, 7, 0, 0 )

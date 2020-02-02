@@ -1,0 +1,60 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://InfoBox.tscn" type="PackedScene" id=1]
+[ext_resource path="res://SongLevelBlock.gd" type="Script" id=2]
+[ext_resource path="res://SongVariant.gd" type="Script" id=3]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 1, 0.5, 0.5 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.4, 0.4, 0.4, 1 )
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 0.0970637, 0.05, 0.05 )
+
+[node name="StaticBody" type="StaticBody"]
+script = ExtResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="Text" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.564001, -0.292588, 0.262836 )
+
+[node name="Easy" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00472498, -0.01351, 0 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Easy"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.403139, -0.204894, 0.227256 )
+shape = SubResource( 3 )
+
+[node name="Text" parent="Easy" instance=ExtResource( 1 )]
+transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0.00357199, -0.418977, 0.259873 )
+default_text = "Easy"
+
+[node name="Medium" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.394105, -0.01351, 0 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Medium"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.403139, -0.204894, 0.227256 )
+shape = SubResource( 3 )
+
+[node name="Text" parent="Medium" instance=ExtResource( 1 )]
+transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0.0336198, -0.418977, 0.259873 )
+default_text = "Medium"
+
+[node name="Hard" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.812259, -0.01351, 0 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Hard"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.403139, -0.204894, 0.227256 )
+shape = SubResource( 3 )
+
+[node name="Text" parent="Hard" instance=ExtResource( 1 )]
+transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0.0363488, -0.418977, 0.259873 )
+default_text = "Hard"

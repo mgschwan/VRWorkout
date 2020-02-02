@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="CapsuleMesh" id=1]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 0.0824126, 0, 0, 0, 0.0786853, 0, 0, 0, 0.126986, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = null

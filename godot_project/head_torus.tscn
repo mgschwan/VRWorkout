@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://head_torus.tres" type="ArrayMesh" id=1]
+
+[node name="Torus001" type="MeshInstance"]
+transform = Transform( 0.748343, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+mesh = ExtResource( 1 )
+material/0 = null

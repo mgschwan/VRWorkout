@@ -1,0 +1,251 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://models/claws.escn" type="PackedScene" id=1]
+[ext_resource path="res://models/claw_metal.material" type="Material" id=2]
+[ext_resource path="res://extendable_claws.gd" type="Script" id=3]
+[ext_resource path="res://audio/claw_retract.wav" type="AudioStream" id=4]
+[ext_resource path="res://audio/claw_extend.wav" type="AudioStream" id=5]
+
+[sub_resource type="Animation" id=1]
+resource_name = "extend"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Cube:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 0.637, 0 ), Vector3( 1, 0.637, 1.563 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Cube001:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 0.637, 0 ), Vector3( 1, 0.637, 1.428 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Cube002:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 0.637, 0 ), Vector3( 1, 0.637, 1.608 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Cube:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Cube001:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Cube002:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("extend:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "hidden"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Cube:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Cube001:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Cube002:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "retract"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Cube:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 0.637, 1.563 ), Vector3( 1, 0.637, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Cube001:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 0.637, 1.428 ), Vector3( 1, 0.637, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Cube002:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 0.637, 1.608 ), Vector3( 1, 0.637, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("retract:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Cube:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Cube001:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Cube002:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[node name="claws" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+
+[node name="Cube" parent="." index="0"]
+transform = Transform( 1, 0, 0, 0, 0.637, 0, 0, 0, 1.563, 0, -0.504656, 0 )
+material/0 = ExtResource( 2 )
+
+[node name="Cube001" parent="." index="1"]
+transform = Transform( 0.982529, -0.118552, 0, 0.18611, 0.625871, 0, 0, 0, 1.428, -2, -0.504656, 0 )
+material/0 = ExtResource( 2 )
+
+[node name="Cube002" parent="." index="2"]
+transform = Transform( 0.965984, 0.164729, 0, -0.258601, 0.615332, 0, 0, 0, 1.608, 2, -0.504656, 0 )
+material/0 = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
+anims/extend = SubResource( 1 )
+anims/hidden = SubResource( 2 )
+anims/retract = SubResource( 3 )
+
+[node name="extend" type="AudioStreamPlayer" parent="." index="4"]
+stream = ExtResource( 5 )
+bus = "Voice"
+
+[node name="retract" type="AudioStreamPlayer" parent="." index="5"]
+stream = ExtResource( 4 )
+bus = "Voice"

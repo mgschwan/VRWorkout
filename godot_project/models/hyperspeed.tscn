@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://models/hyperspeed.escn" type="PackedScene" id=2]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.309804, 0.168627, 1, 1 )
+metallic = 0.35
+metallic_specular = 0.72
+
+[node name="hyperspeed" instance=ExtResource( 2 )]
+
+[node name="Text" parent="." index="0"]
+material/0 = SubResource( 1 )

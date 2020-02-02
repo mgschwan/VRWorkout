@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://models/scene.gltf" type="PackedScene" id=1]
+
+[node name="Spatial" type="Spatial"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -7.24496, -9.41, 0 )
+
+[node name="scene" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7118, -2.82943, -5.03977 )
+
+[node name="pCube17_lambert1_0" parent="scene/RootNode gltf orientation matrix/RootNode model correction matrix/a3ab0959b45f4df497338134051adc83fbx/RootNode/pCube17" index="0"]
+transform = Transform( 1, -4.1359e-25, 5.96046e-08, -4.1359e-25, 1, 0, -5.96046e-08, 1.65436e-24, 1, 0, 0, 0 )
+
+[editable path="scene"]

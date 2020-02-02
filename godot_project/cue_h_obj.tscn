@@ -1,0 +1,241 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://models/Bezergreen.material" type="Material" id=1]
+[ext_resource path="res://models/fist_right.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://cue_v_obj.gd" type="Script" id=3]
+[ext_resource path="res://models/transparent_gray.material" type="Material" id=4]
+[ext_resource path="res://TargetTimer.tscn" type="PackedScene" id=5]
+
+[sub_resource type="Animation" id=1]
+length = 0.8
+tracks/0/type = "transform"
+tracks/0/path = NodePath("../Circle")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = PoolRealArray(  )
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("../Circle:scale:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0.05, -0.25, 0, 0.25, 0, 0.01, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.401 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("../Circle:scale:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0.1, -0.25, 0, 0.25, 0, 0.01, -0.25, 0, 0.25, 0, 0.01, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.4, 0.401 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("../Circle:rotation_degrees:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 90, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("../Circle:rotation_degrees:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("../Circle:rotation_degrees:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.15, 123.744, 335.251, -0.06, -93.312, 0.25, 0, 360, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.4, 0.401 )
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("../Circle:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, true, false ]
+}
+tracks/7/type = "transform"
+tracks/7/path = NodePath("../Circle")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = PoolRealArray(  )
+
+[sub_resource type="Animation" id=2]
+length = 0.1
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("../Circle:rotation_degrees:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 90, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("../Circle:rotation_degrees:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("../Circle:rotation_degrees:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("../Circle:scale:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 0.1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("../Circle:scale:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 0.1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("../Circle:scale:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( 0.1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("../Circle:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="CylinderShape" id=3]
+radius = 0.12
+height = 0.09
+
+[sub_resource type="SpatialMaterial" id=4]
+flags_unshaded = true
+params_blend_mode = 1
+albedo_color = Color( 1, 0.984314, 0.603922, 0.380392 )
+
+[sub_resource type="SphereMesh" id=5]
+material = SubResource( 4 )
+radius = 0.02
+height = 0.04
+radial_segments = 16
+rings = 8
+
+[sub_resource type="CylinderMesh" id=6]
+top_radius = 0.01
+bottom_radius = 0.01
+height = 1.0
+
+[sub_resource type="CylinderMesh" id=7]
+top_radius = 0.001
+bottom_radius = 0.001
+height = 1.0
+
+[node name="StaticBody" type="StaticBody"]
+script = ExtResource( 3 )
+
+[node name="Circle" type="MeshInstance" parent="."]
+transform = Transform( 0.05, 0, 0, 0, -4.37114e-09, -0.05, 0, 0.1, -2.18557e-09, 0, 0, 0 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Circle"]
+anims/explode = SubResource( 1 )
+anims/idle = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Circle"]
+transform = Transform( 0.6, 0, 0, 0, -9.77524e-08, 0.5, 0, -0.6, -8.14603e-08, 0, 0, 0 )
+mesh = ExtResource( 2 )
+material/0 = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 0.6, 0, 0, 0, -4.37114e-08, -0.6, 0, 1, -2.62268e-08, 0, 0, 0 )
+shape = SubResource( 3 )
+
+[node name="sprinkle" type="CPUParticles" parent="."]
+cast_shadow = 0
+emitting = false
+amount = 16
+mesh = SubResource( 5 )
+direction = Vector3( 0, 1, 0 )
+spread = 34.21
+flatness = 0.5
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 0.25
+initial_velocity_random = 0.59
+linear_accel = 2.0
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="right" type="Spatial" parent="."]
+transform = Transform( 0.03, 0, 0, 0, 0.03, 1.88745e-09, 0, -8.4639e-09, 0.05, 0, 0, 0 )
+
+[node name="path" type="Spatial" parent="."]
+visible = false
+
+[node name="cone" type="MeshInstance" parent="path"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.5 )
+mesh = SubResource( 6 )
+material/0 = ExtResource( 4 )
+
+[node name="cone2" type="MeshInstance" parent="path"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.5 )
+mesh = SubResource( 7 )
+material/0 = ExtResource( 1 )
+
+[node name="TargetTimer" parent="." instance=ExtResource( 5 )]
+[connection signal="animation_finished" from="Circle/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
