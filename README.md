@@ -11,10 +11,10 @@ But as with all games it is up to the player to actually work out and not cheat 
 
 Positions:
 
-* Standing (or running to get point multipliers).
-* Squatting. The game will require deeps squats.
-* Crunches. You don't need to do repetitive crunches but be on your back and try to hit the head and double hand cues.
-* Pushups. Try to hit the hand cues while in the pushup position (one handed punches will activate your core muscles). The head cues will drive your movement up and down.
+* Standing (or running to get point multipliers)
+* Squatting. The game will require deep squats
+* Crunches. You don't need to do repetitive crunches but be on your back and try to hit the head and double hand cues
+* Pushups. Try to hit the hand cues while in the pushup position (one handed punches will activate your core muscles). The head cues will drive your movement up and down
 
 The game switches between those four positions to avoid a monotone workout.
 
@@ -60,7 +60,7 @@ Requirements:
 * Godot Oculus Mobile Plugin from the Asset Library
 * Oculus Quest Headset in Developer mode
 
-Once everything is installed import the project.godot file from the godot_project folder to start editing the game.
+    Once everything is installed import the project.godot file from the godot_project folder to start editing the game.
 
 ## Screenshots
 ![Screenshot 1](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_menu.jpg)
