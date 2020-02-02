@@ -75,7 +75,7 @@ Once everything is installed import the project.godot file from the godot_projec
 ![Screenshot 10](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_claw2.jpg)
 
 
-## Sample gameplay
+## Sample gameplay videos
 
 __Latest version__
 
