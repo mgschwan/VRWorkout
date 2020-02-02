@@ -57,10 +57,8 @@ This is my first VR and my first Godot game, so the code may be a bit messy.
 Requirements:
 
 * Godot 3.2+  [download here](https://godotengine.org/)
-* Godot Oculus Mobile Plugin [install instructions here](https://github.com/GodotVR/godot_oculus_mobile)
+* Godot Oculus Mobile Plugin from the Asset Library
 * Oculus Quest Headset in Developer mode
-
-Please follow the instructions how to compile and install the [godot_oculus_mobile](https://github.com/GodotVR/godot_oculus_mobile) plugin before reporting problems getting the code to run on your Oculus Quest.  
 
 Once everything is installed import the project.godot file from the godot_project folder to start editing the game.
 
