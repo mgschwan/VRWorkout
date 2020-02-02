@@ -78,7 +78,7 @@ Once everything is installed import the project.godot file from the godot_projec
 ## Sample gameplay
 
 __Latest version__
-[![Beast mode update](https://www.youtube.com/watch?v=6TnzuIsVT6o/0.jpg)](https://www.youtube.com/watch?v=6TnzuIsVT6o)
+[![Beast mode update](https://img.youtube.com/vi/6TnzuIsVT6o/0.jpg)](https://www.youtube.com/watch?v=6TnzuIsVT6o)
 
 __Older gameplay__
 [![Sample gameplay](https://img.youtube.com/vi/mSPQulHXlJo/0.jpg)](https://www.youtube.com/watch?v=mSPQulHXlJo)
