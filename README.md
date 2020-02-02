@@ -27,7 +27,9 @@ The game switches between those four positions to avoid a monotone workout.
 * Either directly through [Sidequest](https://sidequestvr.com/#/app/413) 
 * or by downloading the latest APK file from the [Releases](https://github.com/mgschwan/VRWorkout/releases) section and installing it via ADB to your device
 
-This game is best played with hand tracking. Please enable "Hand Tracking" in the experimental features section of your Oculus Quest.
+This game is best played with hand tracking!
+
+__Please enable "Hand Tracking" in the experimental features section of your Oculus Quest.__
 
 
 ## How to play
