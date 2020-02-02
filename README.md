@@ -1,6 +1,10 @@
 # VRWorkout
 Virtual reality workout game for Oculus Quest
 
+##What is this
+
+A virtual reality music workout game built with [Godot Engine](https://godotengine.org/)
+
 
 **DISCLAIMER: Use at your own risk! This game does not check if you bump into your surroundings. Since this is a physical workout game there is lot's of movement which bears the risk of injury. You acknowledge that this software is free and you are using it at your own risk**
 
@@ -37,17 +41,23 @@ __Freeplay mode__
 
 To play along your own songs just play them on your own device (smartphone, sound system, smart speaker) and drum in the beats on the blue drum. Once you are satisfied with the beat start one of the Freeplay modes. They will only play the soundeffects and emit the cues according to the beat you have set.
 
+__Beast mode__
+
+Touch the block to your left that reads "Toggle beast mode" to enable the claws. Once enabled make a fist to extend them and open your fist to retract them. At the moment the claws are only eye candy and have no function. If they prove to be reliable they will become an integral part of future gameplay.
 
 ## Development
 
 This is my first VR and my first Godot game, so the code may be a bit messy.
 
-Current features are:
-* incoherent soundtrack
-* unbalanced gameplay
-* unintuitive navigation
+Requirements:
 
-The game requires the [godot_oculus_mobile](https://github.com/GodotVR/godot_oculus_mobile). 
+* Godot 3.2+  [download here](https://godotengine.org/)
+* Godot Oculus Mobile Plugin [install instructions here](https://github.com/GodotVR/godot_oculus_mobile)
+* Oculus Quest Headset in Developer mode
+
+Please follow the instructions how to compile and install the [godot_oculus_mobile](https://github.com/GodotVR/godot_oculus_mobile) plugin before reporting problems getting the code to run on your Oculus Quest.  
+
+Once everything is installed import the project.godot file from the godot_project folder to start editing the game.
 
 ## Screenshots
 ![Screenshot 1](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_menu.jpg)
@@ -64,6 +74,10 @@ The game requires the [godot_oculus_mobile](https://github.com/GodotVR/godot_ocu
 
 ## Sample gameplay
 
+__Latest version__
+[![Beast mode update](https://www.youtube.com/watch?v=6TnzuIsVT6o/0.jpg)](https://www.youtube.com/watch?v=6TnzuIsVT6o)
+
+__Older gameplay__
 [![Sample gameplay](https://img.youtube.com/vi/mSPQulHXlJo/0.jpg)](https://www.youtube.com/watch?v=mSPQulHXlJo)
 
 ## Credits:
