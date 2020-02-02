@@ -22,8 +22,6 @@ The game switches between those four positions to avoid a monotone workout.
 
 ![Logo](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_logo_new.jpg)
 
-For suggestions/feedback joing the discord group [VRWorkout Dojo](https://discord.gg/Vg3vyah)
-
 ## Install
 
 * Either directly through [Sidequest](https://sidequestvr.com/#/app/413) 
@@ -84,6 +82,11 @@ __Latest version__
 __Older gameplay__
 
 [![Sample gameplay](https://img.youtube.com/vi/mSPQulHXlJo/0.jpg)](https://www.youtube.com/watch?v=mSPQulHXlJo)
+
+## Feedback
+
+For suggestions/feedback join the discord group [VRWorkout Dojo](https://discord.gg/Vg3vyah) or send a message to dev@vrworkout.at
+
 
 ## Credits:
 
