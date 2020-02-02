@@ -1,26 +1,26 @@
 # VRWorkout
 Virtual reality workout game for Oculus Quest
 
-##What is this
+## What is this?
 
 A virtual reality music workout game built with [Godot Engine](https://godotengine.org/)
 
+The game sould be a physically engaging VR experience that is somewhat comparable to a short calisthenics workout (or a long one if you play for extended periods). Compared to other music games like Beat Saber and Box VR there are more muscle groups activated due to the changes between standing, squatting, pushups and crunches. 
+
+Positions:
+
+* Standing (or running to get point multipliers).
+* Squatting. The game will require deeps squats.
+* Crunches. You don't need to do repetitive crunches but be on your back and try to hit the head and double hand cues.
+* Pushups. Try to hit the hand cues while in the pushup position (one handed punches will activate your core muscles). The head cues will drive your movement up and down.
+
+The game switches between those four positions to avoid a monotone workout.
 
 **DISCLAIMER: Use at your own risk! This game does not check if you bump into your surroundings. Since this is a physical workout game there is lot's of movement which bears the risk of injury. You acknowledge that this software is free and you are using it at your own risk**
 
 ![Logo](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_logo_new.jpg)
 
 For suggestions/feedback joing the discord group [VRWorkout Dojo](https://discord.gg/Vg3vyah)
-
-This game shall - once it's finished - provide a high intensity full body workout similar to punching games but with 4 different playing positions:
-* standing
-* squatting
-* crunches
-* pushup position
-
-The game switches between those four positions. Try to hit the hand cues when they are between the two blue poles. The head cue has to be touched (not hit) with your head.
-
-Jog in place to receive a point multiplier, run faster to get up to 4x points.
 
 ## Install
 
@@ -30,12 +30,13 @@ Jog in place to receive a point multiplier, run faster to get up to 4x points.
 
 ## How to play
 
-Upon start you will see several different blocks. Touch one of them to select a level. 
-To change the difficulty touch the blue pole to your right at different heights.
 
-* Bottom: Hard
-* Lower part: Medium
-* High: Easy
+Upon start you will see several different blocks. Touch one of them to select a level and difficulty. 
+Try to stand as upright as possible for the game to determine your height.
+
+Try to hit the hand cues when they are between the two blue poles, you can also see the correct time for the hit when the two white markers at each cue start to overlap. The head cue has to be touched (not hit) with your head (don't try to headbutt them).
+
+Jog in place to receive a point multiplier, run faster to get up to 4x points.
 
 __Freeplay mode__
 
