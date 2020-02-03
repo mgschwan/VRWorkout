@@ -16,14 +16,13 @@ func _ready():
 	get_node("TargetTimer").animate_timer(target_time-start_time)
 	pass # Replace with function body.
 
+var path_calculated = false
 func _process(delta):
-#	var remaining = parent.current_playback_time - start_time
-#	var total = target_time - start_time
-#	get_node("TargetTimer").update_progress(remaining, total)
-	if coupled_node:
+	if not path_calculated and coupled_node:
 		var n = get_node("path")
 		n.look_at(coupled_node.global_transform.origin,Vector3(0,1,0))
 		n.get_node("cone").scale.z = (n.global_transform.origin - coupled_node.global_transform.origin).length()
+		path_calculated = true
 
 #Returns the points the hit created or -1 if it was hit by the wrong hand
 func has_been_hit(hand = "unknown"):
@@ -44,7 +43,6 @@ func activate_path_cue(target):
 	coupled_node = target
 	var n = get_node("path")
 	n.show()
-
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	get_node("sprinkle").emitting = false

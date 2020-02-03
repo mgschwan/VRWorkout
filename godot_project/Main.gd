@@ -263,13 +263,13 @@ func emit_cue_node(target_time):
 		x = 0.2 + rng.randf() * 0.45
 		x_head = rng.randf() - 0.5
 	elif cue_emitter_state == CUE_STATE_SQUAT:
-		y_head = player_height/2 + rng.randf() * 0.4
+		y_head = player_height/2 + rng.randf() * 0.5
 		y_hand = y_head + (rng.randf() * 0.4 - 0.2)
 		x = 0.3 + rng.randf() * 0.45
 		x_head = rng.randf() *0.6 - 0.3
 	else:
 		x_head = rng.randf() * 0.4
-		y_head = 0.4 + rng.randf() * 0.5
+		y_head = 0.3 + rng.randf() * 0.5
 		x = 0.3 + rng.randf() * 0.25
 		x_head = rng.randf() *0.8 - 0.4
 		y_hand = 0.3 + rng.randf() * 0.4
