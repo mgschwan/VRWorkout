@@ -68,6 +68,7 @@ func initialize():
 	var arvr_open_vr_interface = ARVRServer.find_interface("OpenVR");
 	
 	vr_mode = false
+	cam = get_node("ARVROrigin/ARVRCamera")
 
 	if arvr_ovr_mobile_interface:
 		# the init config needs to be done before arvr_interface.initialize()
@@ -97,7 +98,6 @@ func initialize():
 			vr_mode = true;	
 	else:
 		#Not running in VR / Demo mode
-		cam = get_node("ARVROrigin/ARVRCamera")
 		cam.translation.y = 1.5
 		cam.rotation.x = -0.4
 		get_node("ARVROrigin/right_controller/AreaRight/DemoTimer").start()
