@@ -54,13 +54,19 @@ Touch the block to your left that reads "Toggle beast mode" to enable the claws.
 
 This is my first VR and my first Godot game, so the code may be a bit messy.
 
-Requirements:
+Requirements for developing the Oculus Quest based version:
 
 * Godot 3.2+  [download here](https://godotengine.org/)
 * Godot Oculus Mobile Plugin from the Asset Library
 * Oculus Quest Headset in Developer mode
 
-    Once everything is installed import the project.godot file from the godot_project folder to start editing the game.
+Requirements for developing the PC based version:
+
+* Godot 3.2+ [download here](https://godotengine.org/)
+* OpenVR plugin from the Asset Library
+* SteamVR
+
+Once everything is installed import the project.godot file from the godot_project folder to start editing the game.
 
 ## Screenshots
 ![Screenshot 1](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_menu.jpg)
