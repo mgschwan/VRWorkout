@@ -39,13 +39,78 @@ var ovr_vr_api_proxy = null;
 
 var ovr_hand_tracking = null;
 
-var ovrVrApiTypes = load("res://addons/godot_ovrmobile/OvrVrApiTypes.gd").new();
+var arvr_ovr_mobile_interface = null;
+var arvr_oculus_interface = null;
+var arvr_open_vr_interface = null;
+
+
+func _initialize_OVR_API():
+	# load the .gdns classes.
+	ovr_display_refresh_rate = load("res://addons/godot_ovrmobile/OvrDisplayRefreshRate.gdns");
+	ovr_guardian_system = load("res://addons/godot_ovrmobile/OvrGuardianSystem.gdns");
+	ovr_performance = load("res://addons/godot_ovrmobile/OvrPerformance.gdns");
+	ovr_tracking_transform = load("res://addons/godot_ovrmobile/OvrTrackingTransform.gdns");
+	ovr_utilities = load("res://addons/godot_ovrmobile/OvrUtilities.gdns");
+	ovr_hand_tracking = load("res://addons/godot_ovrmobile/OvrHandTracking.gdns");
+	ovr_vr_api_proxy = load("res://addons/godot_ovrmobile/OvrVrApiProxy.gdns");
+
+	# and now instance the .gdns classes for use if load was successfull
+	if (ovr_display_refresh_rate): ovr_display_refresh_rate = ovr_display_refresh_rate.new()
+	if (ovr_guardian_system): ovr_guardian_system = ovr_guardian_system.new()
+	if (ovr_performance): ovr_performance = ovr_performance.new()
+	if (ovr_tracking_transform): ovr_tracking_transform = ovr_tracking_transform.new()
+	if (ovr_utilities): ovr_utilities = ovr_utilities.new()
+
+
+func initialize():
+	var arvr_ovr_mobile_interface = ARVRServer.find_interface("OVRMobile");
+	var arvr_oculus_interface = ARVRServer.find_interface("Oculus");
+	var arvr_open_vr_interface = ARVRServer.find_interface("OpenVR");
+	
+	vr_mode = false
+
+	if arvr_ovr_mobile_interface:
+		# the init config needs to be done before arvr_interface.initialize()
+		ovr_init_config = load("res://addons/godot_ovrmobile/OvrInitConfig.gdns");
+		if (ovr_init_config):
+			ovr_init_config = ovr_init_config.new()
+			ovr_init_config.set_render_target_size_multiplier(1) # setting to 1 here is the default
+		
+		if arvr_ovr_mobile_interface.initialize():
+			get_viewport().arvr = true
+			get_viewport().hdr = false
+			OS.vsync_enabled = false
+			Engine.target_fps = 72
+			_initialize_OVR_API()
+			vr_mode = true
+	elif arvr_oculus_interface:
+		if arvr_oculus_interface.initialize():
+			vr_mode = true
+			get_viewport().arvr = true;
+			Engine.target_fps = 80 # TODO: this is headset dependent (RiftS == 80)=> figure out how to get this info at runtime
+			OS.vsync_enabled = false;
+	elif arvr_open_vr_interface:
+		if arvr_open_vr_interface.initialize():
+			get_viewport().arvr = true;
+			Engine.target_fps = 90 # TODO: this is headset dependent => figure out how to get this info at runtime
+			OS.vsync_enabled = false;
+			vr_mode = true;	
+	else:
+		#Not running in VR / Demo mode
+		cam = get_node("ARVROrigin/ARVRCamera")
+		cam.translation.y = 1.5
+		cam.rotation.x = -0.4
+		get_node("ARVROrigin/right_controller/AreaRight/DemoTimer").start()
+
+	
+	
+	
+	
 
 # Called when the node enters the scene tree for the first time.
 func _ready():	
 	for i in range(200):
 		player_height_stat.append(0)
-
 
 	ball_l = get_node("ARVROrigin/left_controller/AreaLeft/handle_ball")
 	var hand_l = get_node("ARVROrigin/left_controller/AreaLeft/Spatial")
@@ -61,49 +126,15 @@ func _ready():
 	#ball_l.hide()
 	#ball_r.hide()
 	
-	var interface = ARVRServer.find_interface('OVRMobile')
-	cam = get_node("ARVROrigin/ARVRCamera")
-	if interface:
-		vr_mode = true
-		# the init config needs to be done before arvr_interface.initialize()
-		ovr_init_config = load("res://addons/godot_ovrmobile/OvrInitConfig.gdns");
-		if (ovr_init_config):
-			ovr_init_config = ovr_init_config.new()
-			ovr_init_config.set_render_target_size_multiplier(1) # setting to 1 here is the default
-		
-		if interface.initialize():
-			get_viewport().arvr = true
-			get_viewport().hdr = false
-			OS.vsync_enabled = false
-			Engine.target_fps = 72
-			# load the .gdns classes.
-			ovr_display_refresh_rate = load("res://addons/godot_ovrmobile/OvrDisplayRefreshRate.gdns");
-			ovr_guardian_system = load("res://addons/godot_ovrmobile/OvrGuardianSystem.gdns");
-			ovr_performance = load("res://addons/godot_ovrmobile/OvrPerformance.gdns");
-			ovr_tracking_transform = load("res://addons/godot_ovrmobile/OvrTrackingTransform.gdns");
-			ovr_utilities = load("res://addons/godot_ovrmobile/OvrUtilities.gdns");
-			ovr_hand_tracking = load("res://addons/godot_ovrmobile/OvrHandTracking.gdns");
-			ovr_vr_api_proxy = load("res://addons/godot_ovrmobile/OvrVrApiProxy.gdns");
-
-			# and now instance the .gdns classes for use if load was successfull
-			if (ovr_display_refresh_rate): ovr_display_refresh_rate = ovr_display_refresh_rate.new()
-			if (ovr_guardian_system): ovr_guardian_system = ovr_guardian_system.new()
-			if (ovr_performance): ovr_performance = ovr_performance.new()
-			if (ovr_tracking_transform): ovr_tracking_transform = ovr_tracking_transform.new()
-			if (ovr_utilities): ovr_utilities = ovr_utilities.new()
-			if ovr_hand_tracking: 
-				hand_l.hide()
-				hand_r.hide()
-				ovr_hand_tracking = ovr_hand_tracking.new()
-				ball_l.show()
-				ball_r.show()
-	else:
-		#Not running in VR / Demo mode
-		cam.translation.y = 1.5
-		cam.rotation.x = -0.4
-		get_node("ARVROrigin/right_controller/AreaRight/DemoTimer").start()
-		vr_mode = false
-		
+	initialize() #VR specific initialization
+	
+	if ovr_hand_tracking: 
+		hand_l.hide()
+		hand_r.hide()
+		ovr_hand_tracking = ovr_hand_tracking.new()
+		ball_l.show()
+		ball_r.show()
+	
 	get_node("ARVROrigin/ARVRCamera").vr_mode = vr_mode
 	levelselect = levelselect_blueprint.instance()
 	add_child(levelselect)
