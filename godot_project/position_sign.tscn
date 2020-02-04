@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://stick-figure.jpg" type="Texture" id=1]
 [ext_resource path="res://position_sign.gd" type="Script" id=2]
+[ext_resource path="res://audio/instruction_jump.wav" type="AudioStream" id=3]
 [ext_resource path="res://audio/instruction_now.wav" type="AudioStream" id=4]
 [ext_resource path="res://audio/instruction_squat.wav" type="AudioStream" id=5]
 [ext_resource path="res://audio/instruction_pushup.wav" type="AudioStream" id=6]
@@ -176,8 +177,14 @@ bus = "Voice"
 stream = ExtResource( 4 )
 volume_db = 5.0
 bus = "Voice"
+
+[node name="player_jump" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = 5.0
+bus = "Voice"
 [connection signal="finished" from="player_squat" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_crunch" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_stand" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_pushup" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_now" to="." method="_on_sfx_finished"]
+[connection signal="finished" from="player_jump" to="." method="_on_sfx_finished"]

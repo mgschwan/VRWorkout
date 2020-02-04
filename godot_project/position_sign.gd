@@ -13,6 +13,11 @@ func stand():
 	player.play("stand")
 	play_sfx("player_stand")
 
+func jump():
+	var player = get_node("MeshInstance/AnimationPlayer")
+	player.play("stand")
+	play_sfx("player_jump")
+
 func pushup():
 	var player = get_node("MeshInstance/AnimationPlayer")
 	player.play("pushup")
