@@ -12,6 +12,7 @@ But as with all games it is up to the player to actually work out and not cheat 
 Positions:
 
 * Standing (or running to get point multipliers)
+* Jumping. To reach the head cues the player will need to jump a bit
 * Squatting. The game will require deep squats
 * Crunches. You don't need to do repetitive crunches but be on your back and try to hit the head and double hand cues
 * Pushups. Try to hit the hand cues while in the pushup position (one handed punches will activate your core muscles). The head cues will drive your movement up and down
