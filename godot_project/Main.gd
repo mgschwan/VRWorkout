@@ -275,7 +275,7 @@ func emit_cue_node(target_time):
 		x_head = rng.randf() - 0.5
 	elif cue_emitter_state == CueState.JUMP:
 		y_hand = player_height
-		y_head = player_height + 0.26
+		y_head = player_height + 0.32
 		x = 0
 		x_head = 0
 	elif cue_emitter_state == CueState.SQUAT:
@@ -290,6 +290,7 @@ func emit_cue_node(target_time):
 		x_head = rng.randf() *0.8 - 0.4
 		y_hand = 0.3 + rng.randf() * 0.4
 		if cue_emitter_state == CueState.CRUNCH:
+			y_head = 0.3 + rng.randf() * 0.2
 			y_hand = 0.8 + rng.randf() * 0.4
 			x = -0.225 + rng.randf() * 0.45
 

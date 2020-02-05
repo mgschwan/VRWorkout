@@ -15,9 +15,16 @@ func _ready():
 
 func has_been_hit():
 	if not hit:
+		get_node("tween").stop_all()
 		var parent = self.get_parent()
 		var delta = abs(target_time - parent.current_playback_time)
 		parent.score_hit(delta)
 		hit = true
+		print ("Start sprinkling")
+		get_node("sprinkle").emitting = true
 		get_node("head_cue/AnimationPlayer").play("explode")
-	
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	get_node("sprinkle").emitting = false
+	print ("Finish sprinkling")
+	self.queue_free()

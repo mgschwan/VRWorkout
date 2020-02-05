@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://models/head_model.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://cue_head_obj.gd" type="Script" id=2]
 [ext_resource path="res://neon_blue.tres" type="Material" id=3]
 [ext_resource path="res://TargetTimer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://models/blue_transparent.material" type="Material" id=5]
 
 [sub_resource type="Animation" id=1]
-length = 0.4
+length = 0.6
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:rotation_degrees")
 tracks/0/interp = 1
@@ -17,7 +18,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.4 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 160, 0 ) ]
+"values": [ Vector3( 90, 0, 0 ), Vector3( 0, 160, 0 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath(".:scale")
@@ -29,7 +30,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.4 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( 1, 1, 1 ), Vector3( 0.1, 0.1, 0 ) ]
+"values": [ Vector3( 0.8, 0.5, 0.4 ), Vector3( 0.1, 0.1, 0 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath(".:visible")
@@ -49,12 +50,19 @@ tracks/2/keys = {
 [sub_resource type="BoxShape" id=3]
 extents = Vector3( 0.8, 0.48, 0.089 )
 
+[sub_resource type="SphereMesh" id=4]
+material = ExtResource( 5 )
+radius = 0.04
+height = 0.08
+radial_segments = 16
+rings = 8
+
 [node name="StaticBody" type="StaticBody"]
 transform = Transform( 0.1, 0, 0, 0, 0.15, 0, 0, 0, 0.3, 0, 0, 0 )
 script = ExtResource( 2 )
 
 [node name="head_cue" type="MeshInstance" parent="."]
-transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.4, 0, 0.5, -6.51683e-08, 0, 0, 0 )
+transform = Transform( 0.8, 0, 0, 0, -8.14603e-08, -0.4, 0, 0.5, -6.51683e-08, 0, 0, 0 )
 mesh = ExtResource( 1 )
 material/0 = ExtResource( 3 )
 
@@ -68,3 +76,13 @@ shape = SubResource( 3 )
 
 [node name="TargetTimer" parent="." instance=ExtResource( 4 )]
 transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0 )
+
+[node name="sprinkle" type="CPUParticles" parent="."]
+emitting = false
+amount = 16
+mesh = SubResource( 4 )
+direction = Vector3( 0, 0, -1 )
+flatness = 0.5
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+[connection signal="animation_finished" from="head_cue/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
