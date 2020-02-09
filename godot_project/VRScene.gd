@@ -186,7 +186,7 @@ func _update_hand_model(hand: ARVRController, model : Spatial, offset_model: Spa
 		var delta_t = now - last["ts"]
 		var confidence = ovr_hand_tracking.get_hand_pose(hand.controller_id, _vrapi_bone_orientations);
 		if confidence > 0:
-			hand.update_bone_orientations(_vrapi_bone_orientations)
+			hand.update_bone_orientations(_vrapi_bone_orientations, confidence)
 			in_hand_mode = true
 			if delta_t > prediction_limit_ms:
 				#The last valid measurement is too old to get a valid vector

@@ -24,3 +24,8 @@ func retract():
 		player.play("retract")
 		state = ClawState.Retracted
 
+func is_extended():
+	return state == ClawState.Extended
+	
+func is_retracted():
+	return state == ClawState.Retracted

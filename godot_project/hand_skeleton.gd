@@ -7,7 +7,7 @@ var model : Spatial = null;
 var skel : Skeleton = null; 
 
 var beast_mode = false
-
+var hand_confidence = 1.0
 
 # this array is used to get the orientations from the sdk each frame (an array of Quat)
 var _vrapi_bone_orientations = [];
@@ -87,7 +87,8 @@ func _clear_bone_rest(skeleton : Skeleton):
 		bone_rest.basis = Basis(); # clear the rotation of the rest pose
 		skeleton.set_bone_rest(i, bone_rest); # and set this as the rest pose for the skeleton
 
-func update_bone_orientations(orientations):
+func update_bone_orientations(orientations, confidence = 1.0):
+	hand_confidence = confidence
 	for i in range(0, _hand_bone_mappings.size()):
 		_vrapi_bone_orientations[i] = orientations[i]
 		skel.set_bone_pose(_hand_bone_mappings[i], Transform(orientations[i]));
@@ -148,12 +149,31 @@ func get_finger_state_estimate(orientations, finger):
 		if (angle >= 75): return SimpleFingerState.Bent;
 	return SimpleFingerState.Inbetween;
 
+enum HandState {
+	Open = 0,
+	Fist = 1,
+};
+
+var state = HandState.Open;
+var state_since_ts = 0;
+var switching_threshold_ms = 100
+
 func _process(delta):
 	if beast_mode:
-		if is_fist():
-			claws.extend()
-		else:
-			claws.retract()
+		print ("Hand confidence: %.2f"%hand_confidence)
+		if hand_confidence > 0.9:
+			
+			if is_fist() and state == HandState.Open:
+				state = HandState.Fist
+				state_since_ts = OS.get_ticks_msec()
+			elif not is_fist() and state == HandState.Fist:
+				state = HandState.Open
+				state_since_ts = OS.get_ticks_msec()
+			
+			if claws.is_retracted() and state == HandState.Fist and OS.get_ticks_msec()  > state_since_ts + switching_threshold_ms:
+				claws.extend()
+			elif claws.is_extended() and state == HandState.Open and OS.get_ticks_msec()  > state_since_ts + switching_threshold_ms:
+				claws.retract()
 
 
 func is_fist():

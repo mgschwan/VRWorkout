@@ -10,8 +10,8 @@ var last_time = [0,0,0]
 func _ready():
 	pass # Replace with function body.
 
-func update_bone_orientations(orientations):
-	get_node("hand_model").update_bone_orientations(orientations)
+func update_bone_orientations(orientations, confidence):
+	get_node("hand_model").update_bone_orientations(orientations, confidence)
 
 func is_fist():
 	return get_node("hand_model").is_fist()
