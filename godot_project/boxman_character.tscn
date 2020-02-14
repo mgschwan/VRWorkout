@@ -1,13 +1,20 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://BoxmanCharacter.gd" type="Script" id=1]
 [ext_resource path="res://models/boxman_animations.gltf" type="PackedScene" id=2]
+[ext_resource path="res://models/neon_grid_small.jpg" type="Texture" id=3]
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_ensure_correct_normals = true
 albedo_color = Color( 0.25098, 0.890196, 0, 1 )
 metallic_specular = 0.0
 roughness = 0.75
+emission_enabled = true
+emission = Color( 0, 0, 0, 1 )
+emission_energy = 3.58
+emission_operator = 0
+emission_on_uv2 = false
+emission_texture = ExtResource( 3 )
 uv1_scale = Vector3( 12, 12, 12 )
 
 [node name="boxman_animations" instance=ExtResource( 2 )]
