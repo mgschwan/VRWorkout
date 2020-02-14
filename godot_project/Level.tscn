@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://spawn_timer.gd" type="Script" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://IslandScene.tscn" type="PackedScene" id=13]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=14]
 [ext_resource path="res://RunIndicator.tscn" type="PackedScene" id=15]
+[ext_resource path="res://boxman_character.tscn" type="PackedScene" id=16]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -145,11 +146,16 @@ transform = Transform( -3.25841e-08, 0, -0.2, 0, 0.2, 0, 0.2, 0, -3.25841e-08, -
 
 [node name="OmniLight2" type="OmniLight" parent="open_tatami_room_dark3"]
 transform = Transform( 5, 0, 5.96046e-07, 0, 5, 0, -5.96046e-07, 0, 5, -6.88057, 13.4099, -31.7366 )
+visible = false
 light_energy = 8.43
 
 [node name="OmniLight" type="OmniLight" parent="open_tatami_room_dark3"]
 transform = Transform( 5, 0, 5.96046e-07, 0, 5, 0, -5.96046e-07, 0, 5, -37.5854, 14.3551, 20.3808 )
+visible = false
 light_energy = 8.43
+
+[node name="boxman" parent="." instance=ExtResource( 16 )]
+transform = Transform( 0.54534, 0, 0.715964, 0, 0.9, 0, -0.715964, 0, 0.54534, -4.16483, 0.0354877, -5.30994 )
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
 [connection signal="timeout" from="UpdateTimer" to="." method="_on_UpdateTimer_timeout"]

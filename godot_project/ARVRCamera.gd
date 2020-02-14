@@ -64,5 +64,5 @@ var uinterval = 0
 func _process(delta):
 	update_positions(self.translation)	
 	uinterval += 1
-	if uinterval % 50 == 0:
-		print ("%.2f "%avg_y + " %.2f"%average_interval + " Steps: %d"%steps +" Speed %.2f"%self.get_running_speed())
+	#if uinterval % 50 == 0:
+	#	print ("%.2f "%avg_y + " %.2f"%average_interval + " Steps: %d"%steps +" Speed %.2f"%self.get_running_speed())

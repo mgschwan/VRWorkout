@@ -357,7 +357,22 @@ func emit_cue_node(target_time):
 			last_state_change = cue_emitter.current_playback_time
 			infolayer.print_info(state_string(cue_emitter_state).to_upper(), "main")
 			get_node("PositionSign").start_sign(cue_emitter.translation, get_node("target").translation, emit_early)
+			switch_boxman(cue_emitter_state)
 			display_state(cue_emitter_state)
+
+func switch_boxman(state):
+	var boxman = get_node("boxman")
+	if cue_emitter_state == CueState.STAND:
+		boxman.switch_to_stand()
+	elif cue_emitter_state == CueState.JUMP:
+		boxman.switch_to_jumping()
+	elif cue_emitter_state == CueState.SQUAT:
+		boxman.switch_to_squat()
+	elif cue_emitter_state == CueState.CRUNCH:
+		boxman.switch_to_situps()
+	elif cue_emitter_state == CueState.PUSHUP:
+		boxman.switch_to_plank()
+
 
 func _on_exit_button_pressed(body):
 	emit_signal("level_finished")
