@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://models/claws.escn" type="PackedScene" id=1]
 [ext_resource path="res://models/claw_metal.material" type="Material" id=2]
@@ -6,8 +6,10 @@
 [ext_resource path="res://audio/claw_retract.wav" type="AudioStream" id=4]
 [ext_resource path="res://audio/claw_extend.wav" type="AudioStream" id=5]
 
-[sub_resource type="Animation" id=1]
-resource_name = "extend"
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 2.60036, 1, 7.09344 )
+
+[sub_resource type="Animation" id=2]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Cube:scale")
@@ -94,8 +96,7 @@ tracks/6/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "hidden"
+[sub_resource type="Animation" id=3]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Cube:visible")
@@ -134,8 +135,7 @@ tracks/2/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "retract"
+[sub_resource type="Animation" id=4]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Cube:scale")
@@ -229,6 +229,12 @@ script = ExtResource( 3 )
 transform = Transform( 1, 0, 0, 0, 0.637, 0, 0, 0, 1.563, 0, -0.504656, 0 )
 material/0 = ExtResource( 2 )
 
+[node name="Area" type="Area" parent="Cube" index="0"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Cube/Area" index="0"]
+transform = Transform( 0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90922, 7.0642 )
+shape = SubResource( 1 )
+
 [node name="Cube001" parent="." index="1"]
 transform = Transform( 0.982529, -0.118552, 0, 0.18611, 0.625871, 0, 0, 0, 1.428, -2, -0.504656, 0 )
 material/0 = ExtResource( 2 )
@@ -238,9 +244,9 @@ transform = Transform( 0.965984, 0.164729, 0, -0.258601, 0.615332, 0, 0, 0, 1.60
 material/0 = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
-anims/extend = SubResource( 1 )
-anims/hidden = SubResource( 2 )
-anims/retract = SubResource( 3 )
+anims/extend = SubResource( 2 )
+anims/hidden = SubResource( 3 )
+anims/retract = SubResource( 4 )
 
 [node name="extend" type="AudioStreamPlayer" parent="." index="4"]
 stream = ExtResource( 5 )
