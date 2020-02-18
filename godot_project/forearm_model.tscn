@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://models/claw_metal.material" type="Material" id=1]
+[ext_resource path="res://models/forearm.gltf" type="PackedScene" id=2]
+
+[node name="forearm" instance=ExtResource( 2 )]
+
+[node name="Cube" parent="." index="0"]
+transform = Transform( 0.05, 0, 0, 0, -0.05, 1.94707e-08, 0, -1.94707e-08, -0.05, 0, 0.127901, 0 )
+material/0 = ExtResource( 1 )

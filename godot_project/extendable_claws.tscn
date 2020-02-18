@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://models/claws.escn" type="PackedScene" id=1]
 [ext_resource path="res://models/claw_metal.material" type="Material" id=2]
 [ext_resource path="res://extendable_claws.gd" type="Script" id=3]
 [ext_resource path="res://audio/claw_retract.wav" type="AudioStream" id=4]
 [ext_resource path="res://audio/claw_extend.wav" type="AudioStream" id=5]
+[ext_resource path="res://ClawsHitArea.gd" type="Script" id=6]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 2.60036, 1, 7.09344 )
@@ -230,6 +231,7 @@ transform = Transform( 1, 0, 0, 0, 0.637, 0, 0, 0, 1.563, 0, -0.504656, 0 )
 material/0 = ExtResource( 2 )
 
 [node name="Area" type="Area" parent="Cube" index="0"]
+script = ExtResource( 6 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Cube/Area" index="0"]
 transform = Transform( 0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90922, 7.0642 )
@@ -255,3 +257,4 @@ bus = "Voice"
 [node name="retract" type="AudioStreamPlayer" parent="." index="5"]
 stream = ExtResource( 4 )
 bus = "Voice"
+[connection signal="body_entered" from="Cube/Area" to="Cube/Area" method="_on_Area_body_entered"]

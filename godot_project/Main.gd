@@ -16,6 +16,7 @@ var emit_early = 0 #Time it takes the cue to reach the target area. autocalculat
 var fly_distance = 0.0 #How far the cue flies, autocalculated
 var player_height = 0
 var run_point_multiplier = 1
+var beast_mode
 	
 var running_speed = 0
 	
@@ -156,7 +157,6 @@ func _ready():
 		var audio_resource = ResourceLoader.load(audio_filename)
 		stream = get_node("AudioStreamPlayer")
 		stream.stream = audio_resource
-	
 	stream.play()
 	
 func setup_difficulty(d):
@@ -357,8 +357,12 @@ func emit_cue_node(target_time):
 			last_state_change = cue_emitter.current_playback_time
 			infolayer.print_info(state_string(cue_emitter_state).to_upper(), "main")
 			get_node("PositionSign").start_sign(cue_emitter.translation, get_node("target").translation, emit_early)
-			switch_boxman(cue_emitter_state)
+			if not get_node("boxman").in_beast_mode:
+				switch_boxman(cue_emitter_state)
 			display_state(cue_emitter_state)
+	if cue_emitter_state == CueState.STAND and beast_mode and not get_node("boxman").in_beast_mode:
+		if rng.randf() < 0.1:
+			get_node("boxman").activate_beast(Vector3(0,0,1),1.8)
 
 func switch_boxman(state):
 	var boxman = get_node("boxman")

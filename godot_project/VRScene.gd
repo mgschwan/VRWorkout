@@ -8,7 +8,7 @@ var cam = null
 var difficulty = 0
 var height = 1.8
 var vr_mode = true
-
+var beast_mode = false
 
 var left_controller
 var right_controller
@@ -247,6 +247,7 @@ func _on_Area_level_selected(num, diff):
 		level.song_index_parameter = num
 		level.player_height = height
 		level.bpm = levelselect.get_bpm()
+		level.beast_mode = beast_mode
 		level.first_beat = levelselect.get_last_beat()
 		level.setup_difficulty(difficulty)
 		level.connect("level_finished",self,"_on_level_finished")
@@ -266,6 +267,7 @@ func get_running_speed():
 
 	
 func set_beast_mode(enabled):
+	beast_mode = enabled
 	left_controller.set_beast_mode(enabled)
 	right_controller.set_beast_mode(enabled)
 	

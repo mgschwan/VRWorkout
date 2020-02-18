@@ -1,25 +1,27 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://BoxmanCharacter.gd" type="Script" id=1]
 [ext_resource path="res://models/boxman_animations.gltf" type="PackedScene" id=2]
-[ext_resource path="res://models/neon_grid_small.jpg" type="Texture" id=3]
+[ext_resource path="res://boxman_standard_material.tres" type="Material" id=3]
+[ext_resource path="res://ClawTarget.gd" type="Script" id=4]
 
-[sub_resource type="SpatialMaterial" id=1]
-flags_ensure_correct_normals = true
-albedo_color = Color( 0.25098, 0.890196, 0, 1 )
-metallic_specular = 0.0
-roughness = 0.75
-emission_enabled = true
-emission = Color( 0, 0, 0, 1 )
-emission_energy = 3.58
-emission_operator = 0
-emission_on_uv2 = false
-emission_texture = ExtResource( 3 )
-uv1_scale = Vector3( 12, 12, 12 )
+[sub_resource type="SphereShape" id=2]
+radius = 16.7482
 
 [node name="boxman_animations" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
 
 [node name="Cube001" parent="Armature/Skeleton" index="0"]
-material/0 = SubResource( 1 )
+material/0 = ExtResource( 3 )
+
+[node name="BoneAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="1"]
+transform = Transform( 0.983532, -0.0671207, -0.167805, 0.176813, 0.165069, 0.970304, -0.037428, -0.983995, 0.174219, -20.3266, 21.6452, -197.028 )
+bone_name = "mixamorig_head"
+
+[node name="StaticBody" type="StaticBody" parent="Armature/Skeleton/BoneAttachment" index="0"]
+script = ExtResource( 4 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Armature/Skeleton/BoneAttachment/StaticBody" index="0"]
+transform = Transform( 1, 1.60435e-09, 5.82077e-11, -1.63709e-09, 1, 3.72529e-09, -5.82077e-11, 1.11759e-08, 1, -0.0322878, 7.73941, 0.195768 )
+shape = SubResource( 2 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

@@ -160,7 +160,6 @@ var switching_threshold_ms = 100
 
 func _process(delta):
 	if beast_mode:
-		print ("Hand confidence: %.2f"%hand_confidence)
 		if hand_confidence > 0.9:
 			
 			if is_fist() and state == HandState.Open:

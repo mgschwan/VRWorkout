@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://AreaHead.gd" type="Script" id=9]
 [ext_resource path="res://right_hand_model.tscn" type="PackedScene" id=10]
 [ext_resource path="res://left_hand_model.tscn" type="PackedScene" id=11]
+[ext_resource path="res://forearm_model.tscn" type="PackedScene" id=12]
 [ext_resource path="res://models/icosphere.tres" type="ArrayMesh" id=13]
 [ext_resource path="res://models/green_material.tres" type="Material" id=14]
 [ext_resource path="res://models/red_material.tres" type="Material" id=15]
@@ -87,6 +88,10 @@ material/0 = ExtResource( 15 )
 
 [node name="hand_model" parent="ARVROrigin/left_controller" instance=ExtResource( 11 )]
 
+[node name="forearm" parent="ARVROrigin/left_controller/hand_model" instance=ExtResource( 12 )]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -0.288121, 1.19209e-07, 0 )
+visible = false
+
 [node name="right_controller" type="ARVRController" parent="ARVROrigin"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, 0 )
 controller_id = 2
@@ -133,6 +138,10 @@ mesh = SubResource( 3 )
 material/0 = ExtResource( 15 )
 
 [node name="hand_model" parent="ARVROrigin/right_controller" instance=ExtResource( 10 )]
+
+[node name="forearm" parent="ARVROrigin/right_controller/hand_model" instance=ExtResource( 12 )]
+transform = Transform( -4.37114e-08, -1, 0, -1, 4.37114e-08, 8.74228e-08, -8.74228e-08, 3.82137e-15, -1, 0.289307, 0, -1.19209e-07 )
+visible = false
 
 [node name="OmniLight" type="DirectionalLight" parent="ARVROrigin"]
 transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 5, 4 )

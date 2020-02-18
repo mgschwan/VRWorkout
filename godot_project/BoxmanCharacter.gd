@@ -1,5 +1,9 @@
 extends Spatial
 
+var standard_material = load("res://boxman_standard_material.tres")
+var angry_material = load("res://boxman_angry_material.tres")
+var mesh_obj
+
 enum BoxmanAnimations {
 	Idle = 0,
 	Idle_To_Situp = 1,
@@ -12,6 +16,8 @@ enum BoxmanAnimations {
 	Situp_To_Idle = 8,
 	Plank_To_Stand = 9,
 	Plank = 10,
+	Dying = 11,
+	Run = 12,
 
 }
 
@@ -23,7 +29,8 @@ var animation_queue = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	animations = get_node("AnimationPlayer")	
+	animations = get_node("AnimationPlayer")
+	mesh_obj = get_node("Armature/Skeleton/Cube001")	
 	idle(true)
 	
 func clear_animation_queue():
@@ -53,6 +60,11 @@ func play_current_animation(continuous=false):
 		animations.play("squat_to_stand")
 	elif current_animation == BoxmanAnimations.Plank:
 		animations.play("plank")
+	elif current_animation == BoxmanAnimations.Dying:
+		animations.play("dying_back")
+	elif current_animation == BoxmanAnimations.Run:
+		animations.play("running")
+		
 
 func play_state(animation, continuous = false, enqueue = false):
 	if enqueue:
@@ -63,37 +75,44 @@ func play_state(animation, continuous = false, enqueue = false):
 		play_current_animation(continuous)
 
 func jump(continuous = false, enqueue = false):
-	play_state(BoxmanAnimations.Jumping)
+	play_state(BoxmanAnimations.Jumping, continuous, enqueue)
 	
 func idle(continuous = false, enqueue = false):
-	play_state(BoxmanAnimations.Idle)
+	play_state(BoxmanAnimations.Idle, continuous,  enqueue)
 
 func idle_to_situp(continuous = false, enqueue = false):
-	play_state(BoxmanAnimations.Idle_To_Situp)
+	play_state(BoxmanAnimations.Idle_To_Situp,  continuous, enqueue)
 
 func situp_to_idle(continuous = false, enqueue = false):
-	play_state(BoxmanAnimations.Situp_To_Idle)
+	play_state(BoxmanAnimations.Situp_To_Idle, continuous,  enqueue)
 
 func situps(continuous = false, enqueue = false):
-	play_state(BoxmanAnimations.Situps)
+	play_state(BoxmanAnimations.Situps, continuous,  enqueue)
 
 func stand_to_plank(continuous = false, enqueue = false):
-	play_state(BoxmanAnimations.Stand_To_Plank)
+	play_state(BoxmanAnimations.Stand_To_Plank, continuous,  enqueue)
 
 func plank_to_stand(continuous = false, enqueue = false):
-	play_state(BoxmanAnimations.Plank_To_Stand)
+	play_state(BoxmanAnimations.Plank_To_Stand, continuous,  enqueue)
 
 func squat(continuous = false, enqueue = false):
-	play_state(BoxmanAnimations.Squat)
+	play_state(BoxmanAnimations.Squat, continuous,  enqueue)
 	
 func stand_to_squat(continuous = false, enqueue = false):
-	play_state(BoxmanAnimations.Stand_To_Squat)
+	play_state(BoxmanAnimations.Stand_To_Squat, continuous,  enqueue)
 	
 func squat_to_stand(continuous = false, enqueue = false):
-	play_state(BoxmanAnimations.Squat_To_Stand)
+	play_state(BoxmanAnimations.Squat_To_Stand, continuous,  enqueue)
 
 func plank(continuous = false, enqueue = false):
-	play_state(BoxmanAnimations.Plank)
+	play_state(BoxmanAnimations.Plank, continuous,  enqueue)
+
+func dying(continuous = false, enqueue = false):
+	play_state(BoxmanAnimations.Dying, continuous,  enqueue)
+
+func run(continuous = false, enqueue = false):
+	play_state(BoxmanAnimations.Run, continuous,  enqueue)
+
 
 func stop_animation():
 	continuous = false
@@ -143,9 +162,6 @@ func switch_to_situps():
 	play_current_animation(true)
 	
 
-
-
-
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if len(animation_queue) > 0:
 		current_animation = animation_queue.pop_front()
@@ -153,3 +169,43 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	elif continuous:
 		print ("Repeat animation")
 		play_current_animation(continuous)
+
+func kill():
+	if movement_tween:
+		movement_tween.stop_all()
+	dying()
+	yield(get_tree().create_timer(2.0),"timeout")
+	beast_reset()
+
+var in_beast_mode = false
+var beast_start_transformation
+var movement_tween = null
+
+func beast_reset():
+	in_beast_mode = false
+	mesh_obj.set_surface_material(0, standard_material)
+	if movement_tween:
+		movement_tween.queue_free()
+	transform = beast_start_transformation
+	to_stand(false)
+
+func _on_beast_run_finished(obj, path):
+	beast_reset()
+	
+func activate_beast(target, duration):
+	in_beast_mode = true
+	mesh_obj.set_surface_material(0, angry_material)
+	beast_start_transformation = transform
+	run(true)
+	movement_tween = Tween.new()
+	movement_tween.set_name("tween")
+	add_child(movement_tween)
+	look_at(target,Vector3(0,1,0))
+	rotation.y = rotation.y + deg2rad(180)
+	movement_tween.interpolate_property(self,"translation",self.translation,target,duration,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	movement_tween.connect("tween_completed", self, "_on_beast_run_finished")
+	movement_tween.start()		
+	
+	
+
+
