@@ -1,6 +1,6 @@
 extends StaticBody
 
-
+export var target_area = "head"
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -14,4 +14,4 @@ func _ready():
 
 func hit_by_claw():
 	print ("hit by claw")
-	character_root.kill()
+	character_root.kill(target_area)

@@ -53,6 +53,7 @@ var level_min_state_duration = 10.0
 
 var min_cue_space = 1.0 #Hard: 1.0 Medium: 2.0 Easy: 3.0
 var min_state_duration = 10.0 #Hard 5 Medium 15 Easy 30
+var beast_chance = 0.99
 var last_emit = 0.0
 var state_transition_pause = 1.5
 var head_y_pos = 0
@@ -358,14 +359,19 @@ func emit_cue_node(target_time):
 			infolayer.print_info(state_string(cue_emitter_state).to_upper(), "main")
 			get_node("PositionSign").start_sign(cue_emitter.translation, get_node("target").translation, emit_early)
 			if not get_node("boxman").in_beast_mode:
-				switch_boxman(cue_emitter_state)
+				switch_boxman(cue_emitter_state,"boxman")
+			if not get_node("boxman2").in_beast_mode:
+				switch_boxman(cue_emitter_state,"boxman2")
 			display_state(cue_emitter_state)
 	if cue_emitter_state == CueState.STAND and beast_mode and not get_node("boxman").in_beast_mode:
-		if rng.randf() < 0.1:
-			get_node("boxman").activate_beast(Vector3(0,0,1),1.8)
+		if rng.randf() < beast_chance:
+			var boxman = get_node("boxman") 
+			if rng.randf() < 0.5:
+				 boxman = get_node("boxman2")
+			boxman.activate_beast(Vector3(0,0,1),1.8)
 
-func switch_boxman(state):
-	var boxman = get_node("boxman")
+func switch_boxman(state, name):
+	var boxman = get_node(name)
 	if cue_emitter_state == CueState.STAND:
 		boxman.switch_to_stand()
 	elif cue_emitter_state == CueState.JUMP:

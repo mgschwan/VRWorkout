@@ -18,6 +18,7 @@ enum BoxmanAnimations {
 	Plank = 10,
 	Dying = 11,
 	Run = 12,
+	Dying_Middle = 13,
 
 }
 
@@ -62,6 +63,8 @@ func play_current_animation(continuous=false):
 		animations.play("plank")
 	elif current_animation == BoxmanAnimations.Dying:
 		animations.play("dying_back")
+	elif current_animation == BoxmanAnimations.Dying_Middle:
+		animations.play("dying")
 	elif current_animation == BoxmanAnimations.Run:
 		animations.play("running")
 		
@@ -109,6 +112,10 @@ func plank(continuous = false, enqueue = false):
 
 func dying(continuous = false, enqueue = false):
 	play_state(BoxmanAnimations.Dying, continuous,  enqueue)
+
+func dying_middle(continuous = false, enqueue = false):
+	play_state(BoxmanAnimations.Dying_Middle, continuous,  enqueue)
+
 
 func run(continuous = false, enqueue = false):
 	play_state(BoxmanAnimations.Run, continuous,  enqueue)
@@ -170,10 +177,13 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 		print ("Repeat animation")
 		play_current_animation(continuous)
 
-func kill():
+func kill(hitarea = "head"):
 	if movement_tween:
 		movement_tween.stop_all()
-	dying()
+	if hitarea == "torso":
+		dying_middle()
+	else:
+		dying()
 	yield(get_tree().create_timer(2.0),"timeout")
 	beast_reset()
 
@@ -193,18 +203,19 @@ func _on_beast_run_finished(obj, path):
 	beast_reset()
 	
 func activate_beast(target, duration):
-	in_beast_mode = true
-	mesh_obj.set_surface_material(0, angry_material)
-	beast_start_transformation = transform
-	run(true)
-	movement_tween = Tween.new()
-	movement_tween.set_name("tween")
-	add_child(movement_tween)
-	look_at(target,Vector3(0,1,0))
-	rotation.y = rotation.y + deg2rad(180)
-	movement_tween.interpolate_property(self,"translation",self.translation,target,duration,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
-	movement_tween.connect("tween_completed", self, "_on_beast_run_finished")
-	movement_tween.start()		
+	if not in_beast_mode:
+		in_beast_mode = true
+		mesh_obj.set_surface_material(0, angry_material)
+		beast_start_transformation = transform
+		run(true)
+		movement_tween = Tween.new()
+		movement_tween.set_name("tween")
+		add_child(movement_tween)
+		look_at(target,Vector3(0,1,0))
+		rotation.y = rotation.y + deg2rad(180)
+		movement_tween.interpolate_property(self,"translation",self.translation,target,duration,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+		movement_tween.connect("tween_completed", self, "_on_beast_run_finished")
+		movement_tween.start()		
 	
 	
 
