@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://spawn_timer.gd" type="Script" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=14]
 [ext_resource path="res://RunIndicator.tscn" type="PackedScene" id=15]
 [ext_resource path="res://boxman_character.tscn" type="PackedScene" id=16]
+[ext_resource path="res://PointIndicatorOrigin.tscn" type="PackedScene" id=17]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -77,6 +78,9 @@ script = ExtResource( 2 )
 [node name="cue_emitter" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8 )
 script = ExtResource( 6 )
+
+[node name="PointIndicatorOrigin" parent="cue_emitter" instance=ExtResource( 17 )]
+transform = Transform( 0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -0.16725, 2.36562, 3.16813 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 bus = "Music"
@@ -162,3 +166,7 @@ transform = Transform( 0.763243, 0, -0.476927, 0, 0.9, 0, 0.476927, 0, 0.763243,
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
 [connection signal="timeout" from="UpdateTimer" to="." method="_on_UpdateTimer_timeout"]
+[connection signal="beast_attack_successful" from="boxman" to="." method="_on_boxman_beast_attack_successful"]
+[connection signal="beast_killed" from="boxman" to="." method="_on_boxman_beast_killed"]
+[connection signal="beast_attack_successful" from="boxman2" to="." method="_on_boxman_beast_attack_successful"]
+[connection signal="beast_killed" from="boxman2" to="." method="_on_boxman_beast_killed"]

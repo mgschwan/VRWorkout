@@ -53,7 +53,7 @@ var level_min_state_duration = 10.0
 
 var min_cue_space = 1.0 #Hard: 1.0 Medium: 2.0 Easy: 3.0
 var min_state_duration = 10.0 #Hard 5 Medium 15 Easy 30
-var beast_chance = 0.99
+var beast_chance = 0.1
 var last_emit = 0.0
 var state_transition_pause = 1.5
 var head_y_pos = 0
@@ -164,12 +164,15 @@ func setup_difficulty(d):
 	if d == 2:
 		level_min_cue_space = 0.5
 		level_min_state_duration = 10.0 
+		beast_chance = 0.4
 	elif d == 1:
 		level_min_cue_space = 1.0
 		level_min_state_duration = 15.0 
+		beast_chance = 0.2
 	else:	
 		level_min_cue_space = 1.5
 		level_min_state_duration = 20.0
+		beast_chance = 0.1
 	min_cue_space = level_min_cue_space
 	min_state_duration = level_min_state_duration
 	current_difficulty = d
@@ -198,6 +201,7 @@ func _on_exit_timer_timeout():
 	
 
 func _on_tween_completed(obj,path):
+	cue_emitter.score_miss()
 	obj.queue_free()
 
 
@@ -421,3 +425,11 @@ func _on_AudioStreamPlayer_finished():
 	t.set_wait_time(5)
 	self.add_child(t)
 	t.start()
+
+
+func _on_boxman_beast_attack_successful():
+	cue_emitter.score_negative_hits(10)
+
+
+func _on_boxman_beast_killed():
+	cue_emitter.score_positive_hits(10)

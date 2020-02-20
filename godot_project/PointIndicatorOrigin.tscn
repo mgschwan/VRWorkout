@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://PointIndicatorOrigin.gd" type="Script" id=1]
+
+[node name="PointIndicatorOrigin" type="Spatial"]
+transform = Transform( 0.763243, 0, -0.476927, 0, 0.9, 0, 0.476927, 0, 0.763243, 4.1879, 0.0354877, -5.30994 )
+script = ExtResource( 1 )

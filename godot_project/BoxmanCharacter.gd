@@ -1,8 +1,14 @@
 extends Spatial
 
+signal beast_attack_successful
+signal beast_killed
+
 var standard_material = load("res://boxman_standard_material.tres")
 var angry_material = load("res://boxman_angry_material.tres")
 var mesh_obj
+
+var active = true 
+
 
 enum BoxmanAnimations {
 	Idle = 0,
@@ -178,29 +184,37 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 		play_current_animation(continuous)
 
 func kill(hitarea = "head"):
-	if movement_tween:
-		movement_tween.stop_all()
-	if hitarea == "torso":
-		dying_middle()
-	else:
-		dying()
-	yield(get_tree().create_timer(2.0),"timeout")
-	beast_reset()
+	if active:
+		active = false
+		if movement_tween:
+			movement_tween.stop_all()
+		if hitarea == "torso":
+			dying_middle()
+		else:
+			dying()
+		yield(get_tree().create_timer(2.0),"timeout")
+		beast_reset()
+		emit_signal("beast_killed")
 
 var in_beast_mode = false
 var beast_start_transformation
 var movement_tween = null
 
 func beast_reset():
-	in_beast_mode = false
 	mesh_obj.set_surface_material(0, standard_material)
 	if movement_tween:
 		movement_tween.queue_free()
 	transform = beast_start_transformation
 	to_stand(false)
+	in_beast_mode = false
+	active = true
 
 func _on_beast_run_finished(obj, path):
-	beast_reset()
+	if active:
+		active = false
+		#The beast has reached the target
+		beast_reset()
+		emit_signal("beast_attack_successful")
 	
 func activate_beast(target, duration):
 	if not in_beast_mode:

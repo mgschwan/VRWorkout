@@ -14,15 +14,11 @@ extents = Vector3( 16.3267, 44.8076, 18.4112 )
 [node name="boxman_animations" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
 
-[node name="Skeleton" parent="Armature" index="0"]
-bones/2/bound_children = [ NodePath("BoneAttachment2") ]
-bones/5/bound_children = [ NodePath("BoneAttachment") ]
-
 [node name="Cube001" parent="Armature/Skeleton" index="0"]
 material/0 = ExtResource( 3 )
 
 [node name="BoneAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="1"]
-transform = Transform( 0.999991, 0.00419482, -0.000903718, 0.000720367, 0.0434838, 0.999054, 0.0042301, -0.999045, 0.0434801, -0.527478, 6.14015, -217.57 )
+transform = Transform( 0.983532, -0.0671209, -0.167805, 0.176813, 0.165069, 0.970303, -0.0374281, -0.983995, 0.174219, -20.3267, 21.6452, -197.028 )
 bone_name = "mixamorig_head"
 
 [node name="StaticBody" type="StaticBody" parent="Armature/Skeleton/BoneAttachment" index="0"]
@@ -33,7 +29,7 @@ transform = Transform( 1, 1.60435e-09, 5.82077e-11, -1.63709e-09, 1, 3.72529e-09
 shape = SubResource( 1 )
 
 [node name="BoneAttachment2" type="BoneAttachment" parent="Armature/Skeleton" index="2"]
-transform = Transform( 0.99877, 0.00360544, -0.0494423, 0.0488016, 0.103808, 0.993399, 0.00871413, -0.994591, 0.103504, 0.0249505, 3.78911, -151.832 )
+transform = Transform( 0.705533, -0.232557, -0.669433, 0.708672, 0.235211, 0.665177, 0.00276596, -0.943712, 0.330756, -5.21287, 6.42606, -134.5 )
 bone_name = "mixamorig_spine_1"
 
 [node name="StaticBody" type="StaticBody" parent="Armature/Skeleton/BoneAttachment2" index="0"]

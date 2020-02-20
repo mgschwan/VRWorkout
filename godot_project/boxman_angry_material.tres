@@ -3,14 +3,6 @@
 [ext_resource path="res://assets/boxman_uv_angry.png" type="Texture" id=1]
 
 [resource]
-flags_ensure_correct_normals = true
-albedo_color = Color( 0.25098, 0.890196, 0, 1 )
 albedo_texture = ExtResource( 1 )
 metallic_specular = 0.0
 roughness = 0.75
-emission_enabled = true
-emission = Color( 0, 0, 0, 1 )
-emission_energy = 3.58
-emission_operator = 0
-emission_on_uv2 = false
-emission_texture = ExtResource( 1 )

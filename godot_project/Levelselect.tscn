@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://audio/snare_hit.wav" type="AudioStream" id=9]
 [ext_resource path="res://models/claw_metal.material" type="Material" id=10]
 [ext_resource path="res://beastmode.gd" type="Script" id=11]
+[ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -144,3 +145,9 @@ default_text = "Beast mode"
 [node name="MeshInstance" type="MeshInstance" parent="BeastModeSelector"]
 mesh = SubResource( 6 )
 material/0 = null
+
+[node name="claws" parent="BeastModeSelector" instance=ExtResource( 12 )]
+transform = Transform( -0.00642908, 0.0032691, -0.00692675, -0.0072954, 0.000141297, 0.00683792, 0.00233326, 0.0094495, 0.0022941, 0.0630277, 0.101017, 5.96046e-08 )
+
+[node name="claws2" parent="BeastModeSelector" instance=ExtResource( 12 )]
+transform = Transform( 0.00668362, 0.00311082, 0.00675663, -0.00677895, -0.00119168, 0.00725436, -0.00306188, 0.00942882, -0.00131234, -0.105832, 0.101017, 5.96046e-08 )
