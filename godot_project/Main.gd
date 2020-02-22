@@ -30,6 +30,9 @@ var infolayer
 
 var cue_emitter
 var target
+var boxman1
+var boxman2
+
 
 enum CueState {
 	STAND = 0,
@@ -106,6 +109,10 @@ func _ready():
 	infolayer = get_node("Viewport/InfoLayer")
 	cue_emitter = get_node("cue_emitter")
 	target = get_node("target")
+	
+	boxman1 = get_node("boxman")
+	boxman2 = get_node("boxman2")
+	
 	update_cue_timing()
 	
 	var songs = File.new()
@@ -362,17 +369,18 @@ func emit_cue_node(target_time):
 			last_state_change = cue_emitter.current_playback_time
 			infolayer.print_info(state_string(cue_emitter_state).to_upper(), "main")
 			get_node("PositionSign").start_sign(cue_emitter.translation, get_node("target").translation, emit_early)
-			if not get_node("boxman").in_beast_mode:
+			if not boxman1.in_beast_mode:
 				switch_boxman(cue_emitter_state,"boxman")
-			if not get_node("boxman2").in_beast_mode:
+			if not boxman2.in_beast_mode:
 				switch_boxman(cue_emitter_state,"boxman2")
 			display_state(cue_emitter_state)
-	if cue_emitter_state == CueState.STAND and beast_mode and not get_node("boxman").in_beast_mode:
-		if rng.randf() < beast_chance:
-			var boxman = get_node("boxman") 
-			if rng.randf() < 0.5:
-				 boxman = get_node("boxman2")
-			boxman.activate_beast(Vector3(0,0,1),1.8)
+	if cue_emitter_state == CueState.STAND and beast_mode:
+		if not boxman1.in_beast_mode and not boxman2.in_beast_mode:
+			if rng.randf() < beast_chance:
+				var boxman = boxman1 
+				if rng.randf() < 0.5:
+					 boxman = boxman2
+				boxman.activate_beast(Vector3(0,0,1),1.8)
 
 func switch_boxman(state, name):
 	var boxman = get_node(name)
@@ -426,6 +434,9 @@ func _on_AudioStreamPlayer_finished():
 	self.add_child(t)
 	t.start()
 
+#Returns true if the current state supports claws
+func beast_mode_supported():
+	return cue_emitter_state == CueState.STAND or boxman1.in_beast_mode or boxman2.in_beast_mode
 
 func _on_boxman_beast_attack_successful():
 	cue_emitter.score_negative_hits(10)

@@ -38,7 +38,7 @@ albedo_texture = SubResource( 3 )
 extents = Vector3( 0.455611, 0.0926839, 0.161588 )
 
 [node name="Main" type="Spatial"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.146157, 0.710814 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.711 )
 script = ExtResource( 1 )
 
 [node name="Viewport" type="Viewport" parent="."]
@@ -57,7 +57,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.41169 )
 visible = false
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 1.28434, 0, 0, 0, 0.395165, -0.0442647, 0, 0.125141, 0.139777, 0, 3.02811, -4.72922 )
+transform = Transform( 1.28434, 0, 0, 0, 0.395165, -0.0442647, 0, 0.125141, 0.139777, 0, 3.02811, -4.00822 )
 mesh = SubResource( 1 )
 material/0 = null
 
@@ -80,7 +80,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8 )
 script = ExtResource( 6 )
 
 [node name="PointIndicatorOrigin" parent="cue_emitter" instance=ExtResource( 17 )]
-transform = Transform( 0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -0.16725, 2.36562, 3.16813 )
+transform = Transform( 0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -0.16725, 2.36562, 3.68116 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 bus = "Music"
@@ -104,11 +104,13 @@ material/0 = ExtResource( 11 )
 
 [node name="target_zone_l3" type="MeshInstance" parent="target"]
 transform = Transform( 0.866025, 4.20776, 1.65206e-08, -0.00129093, 0.0188166, 0.0898004, 0.661311, -9.63934, 0.0217276, 12.525, -1.07, -11.5 )
+visible = false
 mesh = SubResource( 5 )
 material/0 = ExtResource( 10 )
 
 [node name="target_zone_l4" type="MeshInstance" parent="target"]
 transform = Transform( 0.866025, -4.20776, -1.65206e-08, 0.00129093, 0.0188166, 0.0898004, -0.661311, -9.63934, 0.0217276, 2.276, -1.07, -11.5 )
+visible = false
 mesh = SubResource( 5 )
 material/0 = ExtResource( 10 )
 
@@ -159,10 +161,10 @@ visible = false
 light_energy = 8.43
 
 [node name="boxman" parent="." instance=ExtResource( 16 )]
-transform = Transform( 0.54534, 0, 0.715964, 0, 0.9, 0, -0.715964, 0, 0.54534, -4.16483, 0.0354877, -5.30994 )
+transform = Transform( 0.54534, 0, 0.715964, 0, 0.9, 0, -0.715964, 0, 0.54534, -2.14794, 0.0354877, -8.39827 )
 
 [node name="boxman2" parent="." instance=ExtResource( 16 )]
-transform = Transform( 0.763243, 0, -0.476927, 0, 0.9, 0, 0.476927, 0, 0.763243, 4.1879, 0.0354877, -5.30994 )
+transform = Transform( 0.763243, 0, -0.476927, 0, 0.9, 0, 0.476927, 0, 0.763243, 2.21215, 0.0354877, -9.01605 )
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
 [connection signal="timeout" from="UpdateTimer" to="." method="_on_UpdateTimer_timeout"]

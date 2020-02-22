@@ -161,7 +161,6 @@ var switching_threshold_ms = 100
 func _process(delta):
 	if beast_mode:
 		if hand_confidence > 0.9:
-			
 			if is_fist() and state == HandState.Open:
 				state = HandState.Fist
 				state_since_ts = OS.get_ticks_msec()
@@ -173,6 +172,8 @@ func _process(delta):
 				claws.extend()
 			elif claws.is_extended() and state == HandState.Open and OS.get_ticks_msec()  > state_since_ts + switching_threshold_ms:
 				claws.retract()
+	elif claws.is_extended():
+		claws.retract()
 
 
 func is_fist():

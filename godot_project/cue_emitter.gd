@@ -21,15 +21,15 @@ func _ready():
 func score_negative_hits(hits):
 	self.hits = max(self.hits-10, 0)
 	max_hits += hits
-	point_indicator.emit_text("-%d hits"%hits)
+	point_indicator.emit_text("-%d hits"%hits, "red")
 
 func score_positive_hits(hits):
 	self.hits += hits 
 	max_hits += hits
-	point_indicator.emit_text("+%d hits"%hits)
+	point_indicator.emit_text("+%d hits"%hits, "green")
 
 func score_miss():
-	point_indicator.emit_text("miss")
+	point_indicator.emit_text("miss", "red")
 
 func score_hit(delta):
 	var multiplier = get_parent().run_point_multiplier
@@ -38,6 +38,6 @@ func score_hit(delta):
 	var hit_points = p * multiplier
 	points += hit_points
 	hits += 1
-	point_indicator.emit_text("+%d"%hit_points)
+	point_indicator.emit_text("+%d"%hit_points,"green")
 	get_parent().update_info(hits,max_hits,points) 
 	return p

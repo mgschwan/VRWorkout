@@ -8,7 +8,8 @@ var cam = null
 var difficulty = 0
 var height = 1.8
 var vr_mode = true
-var beast_mode = false
+export var beast_mode = false
+
 
 var left_controller
 var right_controller
@@ -143,6 +144,7 @@ func _ready():
 func _on_level_finished	():
 	print ("Level is finished ... remove from scene")
 	var result = level.get_points()
+	set_beast_mode(beast_mode)
 	
 	last_points = result["points"]
 	total_points += result["points"]
@@ -234,6 +236,12 @@ func _process(delta):
 				v = player_height_stat[h]
 				height = h/100.0
 		#height = 0.98 * height + 0.02 * cam.translation.y
+	else:
+		if beast_mode:
+			var tmp = level.beast_mode_supported()
+			left_controller.set_beast_mode(tmp)
+			right_controller.set_beast_mode(tmp)
+			
 		
 	_update_hand_model(left_controller, left_collision_root, ball_l, last_left_controller);
 	_update_hand_model(right_controller, right_collision_root, ball_r, last_right_controller);

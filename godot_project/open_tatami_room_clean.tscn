@@ -56,7 +56,7 @@ roughness = 0.73
 [node name="open_tatami_room_dark2" instance=ExtResource( 1 )]
 
 [node name="Object_4" parent="RootNode gltf orientation matrix/RootNode model correction matrix/020e16db51f3421cb0fb56a604edb68aobjcleanermaterialmergergle" index="1"]
-transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 3.01882, 0, -9.83026 )
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 3.01882, -0.809181, -9.83026 )
 material/0 = SubResource( 3 )
 
 [node name="Object_5" parent="RootNode gltf orientation matrix/RootNode model correction matrix/020e16db51f3421cb0fb56a604edb68aobjcleanermaterialmergergle" index="2"]
