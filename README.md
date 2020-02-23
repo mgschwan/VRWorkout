@@ -1,5 +1,5 @@
 # VRWorkout
-Virtual reality workout game for Oculus Quest
+Virtual reality fitness workout game for Oculus Quest
 
 ## What is this?
 
@@ -70,6 +70,8 @@ Requirements for developing the PC based version:
 Once everything is installed import the project.godot file from the godot_project folder to start editing the game.
 
 ## Screenshots
+![Screenshot new 4](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_beast_attack.jpg)
+![Screenshot new 5](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_beast_attack1.jpg)
 ![Screenshot new 1](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_instructor.jpg)
 ![Screenshot new 2](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_instructor2.jpg)
 ![Screenshot new 3](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_instructor3.jpg)
