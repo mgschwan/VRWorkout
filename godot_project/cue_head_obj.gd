@@ -11,7 +11,7 @@ var cue_type = "head"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_node("TargetTimer").animate_timer(target_time-start_time)
+	get_node("head_cue/TargetTimer").animate_timer(target_time-start_time)
 
 func has_been_hit():
 	if not hit:

@@ -206,6 +206,9 @@ transform = Transform( 0.6, 0, 0, 0, -9.77524e-08, 0.5, 0, -0.6, -8.14603e-08, 0
 mesh = ExtResource( 3 )
 material/0 = ExtResource( 2 )
 
+[node name="TargetTimer" parent="Circle" instance=ExtResource( 4 )]
+transform = Transform( 20, 0, 0, 0, -8.74228e-07, 20, 0, -20, -8.74228e-07, 0, 0, 0 )
+
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 0.6, 0, 0, 0, -4.37114e-08, -0.6, 0, 1, -2.62268e-08, 0, 0, 0 )
 shape = SubResource( 3 )
@@ -238,6 +241,4 @@ material/0 = ExtResource( 5 )
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.5 )
 mesh = SubResource( 7 )
 material/0 = ExtResource( 2 )
-
-[node name="TargetTimer" parent="." instance=ExtResource( 4 )]
 [connection signal="animation_finished" from="Circle/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

@@ -13,7 +13,7 @@ var parent
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	parent = self.get_parent()
-	get_node("TargetTimer").animate_timer(target_time-start_time)
+	get_node("Circle/TargetTimer").animate_timer(target_time-start_time)
 	pass # Replace with function body.
 
 var path_calculated = false
