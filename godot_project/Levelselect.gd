@@ -8,8 +8,9 @@ extends Spatial
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	get_node("MainText").print_info("VRWorkout\nSelect song by touching a block\nBest played hands only - no controllers\nPosition yourself between the blue poles\nRun in place to get multipliers")
-	pass # Replace with function body.
-
+	get_node("BeastModeSelector").beast_mode = ProjectSettings.get("game/beast_mode")
+	get_node("BeastModeSelector").update_switch()
+	
 func set_main_text(text):
 	get_node("MainText").print_info(text)
 

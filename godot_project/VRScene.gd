@@ -44,6 +44,9 @@ var arvr_ovr_mobile_interface = null;
 var arvr_oculus_interface = null;
 var arvr_open_vr_interface = null;
 
+func setup_globals():
+	ProjectSettings.set("game/beast_mode", false)
+
 
 func _initialize_OVR_API():
 	# load the .gdns classes.
@@ -109,7 +112,8 @@ func initialize():
 	
 
 # Called when the node enters the scene tree for the first time.
-func _ready():	
+func _ready():
+	setup_globals()
 	for i in range(200):
 		player_height_stat.append(0)
 
@@ -144,7 +148,6 @@ func _ready():
 func _on_level_finished	():
 	print ("Level is finished ... remove from scene")
 	var result = level.get_points()
-	set_beast_mode(beast_mode)
 	
 	last_points = result["points"]
 	total_points += result["points"]
@@ -249,13 +252,13 @@ func _process(delta):
 
 func _on_Area_level_selected(num, diff):
 	if level == null:
+		set_beast_mode(ProjectSettings.get("game/beast_mode"))
 		level = level_blueprint.instance()
 		
 		difficulty = diff
 		level.song_index_parameter = num
 		level.player_height = height
 		level.bpm = levelselect.get_bpm()
-		level.beast_mode = beast_mode
 		level.first_beat = levelselect.get_last_beat()
 		level.setup_difficulty(difficulty)
 		level.connect("level_finished",self,"_on_level_finished")
@@ -276,6 +279,7 @@ func get_running_speed():
 	
 func set_beast_mode(enabled):
 	beast_mode = enabled
+	ProjectSettings.set("game/beast_mode",enabled)
 	left_controller.set_beast_mode(enabled)
 	right_controller.set_beast_mode(enabled)
 	

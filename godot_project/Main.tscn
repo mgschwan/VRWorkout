@@ -109,7 +109,7 @@ transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.0654641 )
 shape = SubResource( 2 )
 
 [node name="DemoTimer" type="Timer" parent="ARVROrigin/right_controller/AreaRight"]
-wait_time = 2.472
+wait_time = 5.0
 one_shot = true
 
 [node name="Spatial" parent="ARVROrigin/right_controller/AreaRight" instance=ExtResource( 8 )]

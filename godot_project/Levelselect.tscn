@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://models/claw_metal.material" type="Material" id=10]
 [ext_resource path="res://beastmode.gd" type="Script" id=11]
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
+[ext_resource path="res://dark_green.tres" type="Material" id=13]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -29,10 +30,9 @@ height = 0.1
 albedo_color = Color( 0.0823529, 0, 0.654902, 1 )
 
 [sub_resource type="BoxShape" id=5]
-extents = Vector3( 0.106337, 0.0518415, 0.05094 )
+extents = Vector3( 0.0951286, 0.110867, 0.00811744 )
 
 [sub_resource type="CubeMesh" id=6]
-material = ExtResource( 10 )
 size = Vector3( 0.2, 0.1, 0.1 )
 
 [node name="Spatial" type="Spatial"]
@@ -134,20 +134,41 @@ bus = "Voice"
 [node name="BeastModeSelector" type="StaticBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.419129, 1.50998, -0.651302 )
 script = ExtResource( 11 )
+beast_mode = true
 
-[node name="CollisionShape" type="CollisionShape" parent="BeastModeSelector"]
+[node name="onshape" type="CollisionShape" parent="BeastModeSelector"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000761986, -0.0341799 )
 shape = SubResource( 5 )
 
 [node name="Spatial" parent="BeastModeSelector" instance=ExtResource( 2 )]
-transform = Transform( 0.1, 0, 0, 0, -4.37114e-09, -0.1, 0, 0.1, -4.37114e-09, 0, 0, 0.0563892 )
-default_text = "Beast mode"
+transform = Transform( 0.2, 0, 0, 0, -4.37114e-09, -0.2, 0, 0.1, -8.74228e-09, 0.11109, 0.00226212, -0.0386255 )
+default_text = "Beast mode on"
 
-[node name="MeshInstance" type="MeshInstance" parent="BeastModeSelector"]
+[node name="Spatial2" parent="BeastModeSelector" instance=ExtResource( 2 )]
+transform = Transform( 0.2, 0, 0, 0, -4.37114e-09, -0.2, 0, 0.1, -8.74228e-09, 0.116712, -0.123031, -0.0386255 )
+default_text = "Beast mode off"
+
+[node name="MeshInstance2" type="MeshInstance" parent="BeastModeSelector"]
+transform = Transform( 1, 0, 0, 0, 2.32633, 0, 0, 0, 1, 0, 0, -0.0905116 )
 mesh = SubResource( 6 )
-material/0 = null
+material/0 = ExtResource( 10 )
 
 [node name="claws" parent="BeastModeSelector" instance=ExtResource( 12 )]
-transform = Transform( -0.00642908, 0.0032691, -0.00692675, -0.0072954, 0.000141297, 0.00683792, 0.00233326, 0.0094495, 0.0022941, 0.0630277, 0.101017, 5.96046e-08 )
+transform = Transform( -0.00642908, 0.0032691, -0.00692675, -0.0072954, 0.000141297, 0.00683792, 0.00233326, 0.0094495, 0.0022941, 0.0630277, 0.148197, 5.96046e-08 )
 
 [node name="claws2" parent="BeastModeSelector" instance=ExtResource( 12 )]
-transform = Transform( 0.00668362, 0.00311082, 0.00675663, -0.00677895, -0.00119168, 0.00725436, -0.00306188, 0.00942882, -0.00131234, -0.105832, 0.101017, 5.96046e-08 )
+transform = Transform( 0.00668362, 0.00311082, 0.00675663, -0.00677895, -0.00119168, 0.00725436, -0.00306188, 0.00942882, -0.00131234, -0.105832, 0.148197, 5.96046e-08 )
+
+[node name="switch" type="CSGBox" parent="BeastModeSelector"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.25, 0, -0.0599999, -0.031 )
+width = 0.2
+height = 0.1
+depth = 0.1
+material = ExtResource( 13 )
+
+[node name="CSGBox2" type="CSGBox" parent="BeastModeSelector/switch"]
+operation = 2
+width = 0.18
+height = 0.08
+depth = 0.2
+material = ExtResource( 13 )

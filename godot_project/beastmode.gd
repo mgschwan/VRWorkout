@@ -1,14 +1,19 @@
 extends StaticBody
 
-var beast_mode = false
-
-func update_text():
-	get_node("Spatial").print_info("Toggle beast mode\n\nExtend by making a fist")
+export var beast_mode = false
 
 func _ready():
-	update_text()
+	update_switch()
+	
 
 func touched_by_controller(body, root):
 	beast_mode = not beast_mode
 	root.set_beast_mode(beast_mode)
-	update_text()
+	update_switch()
+
+func update_switch():
+	var switch = get_node("switch")
+	if beast_mode:
+		switch.translation.y = 0.06
+	else:
+		switch.translation.y = -0.06

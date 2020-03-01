@@ -4,6 +4,7 @@ extends Spatial
 signal level_finished
 
 var song_index_parameter = 0
+export var random_seed = true
 
 var beats = []
 var bpm = 60 #only used in freeplay mode
@@ -104,8 +105,10 @@ func update_info(hits, max_hits, points):
 	update_counter += 1
 	
 func _ready():
-	rng.randomize()
-	
+	if random_seed:
+		rng.randomize()
+	else:
+		rng.set_seed(0)
 	infolayer = get_node("Viewport/InfoLayer")
 	cue_emitter = get_node("cue_emitter")
 	target = get_node("target")
