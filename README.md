@@ -51,6 +51,14 @@ __Beast mode__
 
 Touch the block to your left that reads "Toggle beast mode" to enable the claws. Once enabled make a fist to extend them and open your fist to retract them. At the moment the claws are only eye candy and have no function. If they prove to be reliable they will become an integral part of future gameplay.
 
+## VR Fitness results
+
+A test of a ~21 minute session of VRWorkout on "Hard" for all songs burned 288kcal
+
+![Workout Statistic](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/workout_statistics.jpg)
+
+Measurements were done with a Polar H10 heartrate monitor and the Polar Beats app.
+
 ## Development
 
 This is my first VR and my first Godot game, so the code may be a bit messy.
