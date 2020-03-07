@@ -35,6 +35,9 @@ var boxman1
 var boxman2
 
 
+
+
+
 enum CueState {
 	STAND = 0,
 	SQUAT = 1,
@@ -48,6 +51,46 @@ enum CueSelector {
 	HAND = 1,	
 };
 	
+	
+var cue_paramerters = {
+	CueState.STAND : {
+		CueSelector.HEAD : {
+		},
+		CueSelector.HAND : {
+		}
+	},	
+	CueState.SQUAT : {
+		CueSelector.HEAD : {
+		},
+		CueSelector.HAND : {
+		}		
+	},	
+	CueState.PUSHUP : {
+		CueSelector.HEAD : {
+			"xrange" : 0.4,
+			"yoffset" : 0.2,
+			"yrange" : 0.6
+		},
+		CueSelector.HAND : {
+		}
+	},	
+	CueState.CRUNCH : {
+		CueSelector.HEAD : {
+			"xrange" : 0.3,
+			"yoffset": 0.25,
+			"yrange": 0.2
+		},
+		CueSelector.HAND : {
+		}
+	},	
+	CueState.JUMP : {
+		CueSelector.HEAD : {
+		},
+		CueSelector.HAND : {
+		}
+	}	
+}
+
 
 var cue_emitter_state = CueState.STAND
 var cue_selector = CueSelector.HEAD
@@ -298,16 +341,16 @@ func emit_cue_node(target_time):
 		y_hand = y_head + (rng.randf() * 0.4 - 0.2)
 		x = 0.3 + rng.randf() * 0.45
 		x_head = rng.randf() *0.6 - 0.3
-	else:
-		x_head = rng.randf() * 0.4
-		y_head = 0.3 + rng.randf() * 0.5
+	elif cue_emitter_state == CueState.CRUNCH:
+		x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
+		y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
+		y_hand = 0.8 + rng.randf() * 0.4
+		x = -0.225 + rng.randf() * 0.45
+	else: #CueState.PUSHUP
+		y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
 		x = 0.3 + rng.randf() * 0.25
-		x_head = rng.randf() *0.8 - 0.4
+		x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
 		y_hand = 0.3 + rng.randf() * 0.4
-		if cue_emitter_state == CueState.CRUNCH:
-			y_head = 0.3 + rng.randf() * 0.2
-			y_hand = 0.8 + rng.randf() * 0.4
-			x = -0.225 + rng.randf() * 0.45
 
 	var double_punch = cue_emitter_state == CueState.STAND && rng.randf() < 0.5
 	var double_punch_delay = 0.25

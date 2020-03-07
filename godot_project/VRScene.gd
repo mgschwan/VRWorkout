@@ -71,6 +71,7 @@ func initialize():
 	var arvr_oculus_interface = ARVRServer.find_interface("Oculus");
 	var arvr_open_vr_interface = ARVRServer.find_interface("OpenVR");
 	
+	
 	vr_mode = false
 	cam = get_node("ARVROrigin/ARVRCamera")
 
