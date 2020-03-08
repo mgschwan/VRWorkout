@@ -167,6 +167,7 @@ var last_left_controller = [{"pos": Vector3(0,0,0), "ts": 0, "vector": Vector3(0
 var last_right_controller = [{"pos": Vector3(0,0,0), "ts": 0, "vector": Vector3(0,0,0)}]
 var prediction_limit_ms = 200
 var prediction_history_size = 10
+var prediction_max_dist = 0.2
 
 func get_best_element_from_history(history, now, max_delta):
 	var selected = 0
@@ -209,7 +210,12 @@ func _update_hand_model(hand: ARVRController, model : Spatial, offset_model: Spa
 		elif model.visible and in_hand_mode:
 			#print ("Prediction for Controller %d delta: %.3f"%[hand.controller_id, delta_t])
 			if delta_t < prediction_limit_ms:
-				model.translation = history[0]["pos"] + last["vector"] * delta_t
+				var vec = last["vector"]
+				var predict_v = vec * delta_t / prediction_max_dist
+				var vl = predict_v.length()
+				if vl > prediction_max_dist:
+					predict_v = prediction_max_dist * predict_v / vl
+				model.translation = history[0]["pos"] + predict_v 
 			else:
 				model.hide()
 		#print ("Confidence %.2f"%confidence)

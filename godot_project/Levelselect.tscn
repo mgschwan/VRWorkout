@@ -125,7 +125,7 @@ material/0 = SubResource( 4 )
 
 [node name="bpm_text" parent="BPM" instance=ExtResource( 2 )]
 transform = Transform( -0.198599, -0.00948017, -0.0216437, -0.00939057, 0.199775, -0.0013372, 0.0216827, -0.000311606, -0.198821, -0.0667288, 0.0478439, -0.0206856 )
-default_text = "Hit to set bpm"
+default_text = "Hit to set bpm\\nfor Freeplay mode"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="BPM"]
 stream = ExtResource( 9 )

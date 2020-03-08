@@ -81,6 +81,7 @@ var cue_paramerters = {
 			"yrange": 0.2
 		},
 		CueSelector.HAND : {
+			"xrange" : 0.1
 		}
 	},	
 	CueState.JUMP : {
@@ -345,7 +346,7 @@ func emit_cue_node(target_time):
 		x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
 		y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
 		y_hand = 0.8 + rng.randf() * 0.4
-		x = -0.225 + rng.randf() * 0.45
+		x = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HAND]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HAND]["xrange"]/2
 	else: #CueState.PUSHUP
 		y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
 		x = 0.3 + rng.randf() * 0.25
