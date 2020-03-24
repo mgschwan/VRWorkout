@@ -14,9 +14,6 @@ func _ready():
 func set_main_text(text):
 	get_node("MainText").print_info(text)
 
-func get_bpm():
-	return get_node("BPM").bpm
-
 func get_last_beat():
 	return get_node("BPM").last_beat
 

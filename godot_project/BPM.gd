@@ -12,6 +12,7 @@ var last_beat = 0
 var player
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	bpm = ProjectSettings.get("game/bpm")
 	last_beat = OS.get_ticks_msec()
 	update_text()
 	player = get_node("AudioStreamPlayer")
@@ -32,6 +33,7 @@ func beat():
 			beats += 1
 			last_beat = now
 			player.play()
+			ProjectSettings.set("game/bpm",bpm)
 	else:
 		player.play()
 		last_beat = now

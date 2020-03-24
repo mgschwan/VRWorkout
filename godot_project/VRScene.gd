@@ -9,6 +9,7 @@ var difficulty = 0
 var height = 1.8
 var vr_mode = true
 export var beast_mode = false
+export var record_tracker_data = false
 
 
 var left_controller
@@ -20,6 +21,8 @@ var ball_r
 
 var in_hand_mode = false #auto detect hand_mode, can't revert back automatically
 var player_height_stat = []
+
+var tracking_data = []
 
 
 var total_points = 0
@@ -46,6 +49,7 @@ var arvr_open_vr_interface = null;
 
 func setup_globals():
 	ProjectSettings.set("game/beast_mode", false)
+	ProjectSettings.set("game/bpm", 100)
 
 
 func _initialize_OVR_API():
@@ -147,6 +151,14 @@ func _ready():
 	
 	
 func _on_level_finished	():
+	if record_tracker_data:
+		print ("Storing tracker data")
+		var f = File.new()
+		f.open("user://tracker.data", File.WRITE)
+		f.store_var(tracking_data)
+		f.close()
+		tracking_data.clear()	
+	
 	print ("Level is finished ... remove from scene")
 	var result = level.get_points()
 	
@@ -229,8 +241,10 @@ func _update_hand_model(hand: ARVRController, model : Spatial, offset_model: Spa
 		return false;
 
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+
 	if not vr_mode:
 		if Input.is_key_pressed(KEY_P):
 		    # start screen capture
@@ -256,6 +270,11 @@ func _process(delta):
 	_update_hand_model(left_controller, left_collision_root, ball_l, last_left_controller);
 	_update_hand_model(right_controller, right_collision_root, ball_r, last_right_controller);
 
+	if record_tracker_data:
+		tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
+
+
+
 
 func _on_Area_level_selected(num, diff):
 	if level == null:
@@ -265,7 +284,7 @@ func _on_Area_level_selected(num, diff):
 		difficulty = diff
 		level.song_index_parameter = num
 		level.player_height = height
-		level.bpm = levelselect.get_bpm()
+		level.bpm = ProjectSettings.get("game/bpm")
 		level.first_beat = levelselect.get_last_beat()
 		level.setup_difficulty(difficulty)
 		level.connect("level_finished",self,"_on_level_finished")
