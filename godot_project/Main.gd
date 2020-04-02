@@ -61,8 +61,11 @@ var cue_paramerters = {
 	},	
 	CueState.SQUAT : {
 		CueSelector.HEAD : {
+			"yoffset" : 0.0,
+			"yrange" : 0.5,
 		},
-		CueSelector.HAND : {
+		CueSelector.HAND :  {
+			"xspread" : 0.6
 		}		
 	},	
 	CueState.PUSHUP : {
@@ -317,6 +320,24 @@ func state_transition(old_state):
 			break
 	return new_state
 	
+	
+func handle_stand_cues():
+	pass
+	
+func handle_jump_cues():
+	pass
+	
+func handle_squat_cues():
+	pass
+	
+func handle_crunch_cues():
+	pass
+	
+func handle_pushup_cues():
+	pass	
+	
+	
+	
 
 func emit_cue_node(target_time):
 	print ("State: %s"%state_string(cue_emitter_state))
@@ -338,10 +359,10 @@ func emit_cue_node(target_time):
 		x = 0
 		x_head = 0
 	elif cue_emitter_state == CueState.SQUAT:
-		y_head = player_height/2 + rng.randf() * 0.5
+		y_head = player_height/2 + cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
 		y_hand = y_head + (rng.randf() * 0.4 - 0.2)
 		x = 0.3 + rng.randf() * 0.45
-		x_head = rng.randf() *0.6 - 0.3
+		x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HAND]["xspread"] - cue_paramerters[cue_emitter_state][CueSelector.HAND]["xspread"]/2
 	elif cue_emitter_state == CueState.CRUNCH:
 		x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
 		y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
