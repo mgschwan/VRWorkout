@@ -45,12 +45,12 @@ song_name = "VRWorkout Theme"
 level_number = 0
 
 [node name="Level3" parent="." instance=ExtResource( 6 )]
-transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.10362, 1.24464, -0.25993 )
+transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.10362, 1.40346, -0.25993 )
 song_name = "Like This"
 level_number = 2
 
 [node name="Level5" parent="." instance=ExtResource( 6 )]
-transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.1033, 0.87976, -0.26 )
+transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.1033, 1.20408, -0.26 )
 song_name = "Shameless promotion"
 level_number = 4
 
@@ -60,12 +60,12 @@ song_name = "Deeper in yourself"
 level_number = 1
 
 [node name="Level4" parent="." instance=ExtResource( 6 )]
-transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.1033, 1.245, 0.425 )
+transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.103, 1.403, 0.425 )
 song_name = "The game has changed"
 level_number = 3
 
 [node name="Level6" parent="." instance=ExtResource( 6 )]
-transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.1033, 0.879748, 0.425 )
+transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.103, 1.204, 0.425 )
 song_name = "Scomber clarity"
 level_number = 5
 
@@ -74,12 +74,12 @@ transform = Transform( -0.5, 0, 1.03316e-07, 0, 0.5, 0, -1.03316e-07, 0, -0.5, 0
 song_name = "Freeplay 100 sec"
 
 [node name="Freeplay2" parent="." instance=ExtResource( 6 )]
-transform = Transform( -0.5, 0, 1.03316e-07, 0, 0.5, 0, -1.03316e-07, 0, -0.5, 0.0179138, 1.245, 1.018 )
+transform = Transform( -0.5, 0, 1.03316e-07, 0, 0.5, 0, -1.03316e-07, 0, -0.5, 0.018, 1.403, 1.018 )
 song_name = "Freeplay 200 sec"
 level_number = -2
 
 [node name="Freeplay3" parent="." instance=ExtResource( 6 )]
-transform = Transform( -0.5, 0, 1.03316e-07, 0, 0.5, 0, -1.03316e-07, 0, -0.5, 0.0179138, 0.88, 1.018 )
+transform = Transform( -0.5, 0, 1.03316e-07, 0, 0.5, 0, -1.03316e-07, 0, -0.5, 0.018, 1.204, 1.018 )
 song_name = "Freeplay 300 sec"
 level_number = -3
 
@@ -137,7 +137,7 @@ stream = ExtResource( 9 )
 bus = "Voice"
 
 [node name="BeastModeSelector" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.419129, 1.24416, -0.651302 )
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.946268, 1.41069, -0.776881 )
 script = ExtResource( 11 )
 beast_mode = true
 

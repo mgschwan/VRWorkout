@@ -5,7 +5,7 @@
 [ext_resource path="res://SongVariant.gd" type="Script" id=3]
 
 [sub_resource type="CubeMesh" id=1]
-size = Vector3( 1, 0.5, 0.5 )
+size = Vector3( 1, 0.3, 0.5 )
 
 [sub_resource type="SpatialMaterial" id=2]
 albedo_color = Color( 0.4, 0.4, 0.4, 1 )
@@ -21,10 +21,10 @@ mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
 [node name="Text" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.564001, -0.292588, 0.262836 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.564001, -0.340644, 0.262836 )
 
 [node name="Easy" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00472498, -0.01351, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00472498, 0.0821968, 0 )
 script = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Easy"]
@@ -36,7 +36,7 @@ transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0
 default_text = "Easy"
 
 [node name="Medium" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.394105, -0.01351, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.394105, 0.0820164, 0 )
 script = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Medium"]
@@ -48,7 +48,7 @@ transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0
 default_text = "Medium"
 
 [node name="Hard" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.812259, -0.01351, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.812, 0.082, 0 )
 script = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Hard"]

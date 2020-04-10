@@ -102,8 +102,12 @@ var cue_selector = CueSelector.HEAD
 var level_min_cue_space = 1.0
 var level_min_state_duration = 10.0
 
+
 var min_cue_space = 1.0 #Hard: 1.0 Medium: 2.0 Easy: 3.0
 var min_state_duration = 10.0 #Hard 5 Medium 15 Easy 30
+
+var temporary_cue_space_extension = 0.0
+
 var beast_chance = 0.1
 var last_emit = 0.0
 var state_transition_pause = 1.5
@@ -239,9 +243,11 @@ func _process(delta):
 	#cue_emitter.current_playback_time += delta
 	cue_emitter.current_playback_time = stream.get_playback_position()
 	if beat_index < len(beats)-1 and cue_emitter.current_playback_time + emit_early > beats[beat_index]:	
-		if last_emit + min_cue_space < cue_emitter.current_playback_time and last_state_change + state_transition_pause < cue_emitter.current_playback_time:
-			emit_cue_node(beats[beat_index])
-			last_emit = cue_emitter.current_playback_time
+		if last_emit + min_cue_space < cue_emitter.current_playback_time and last_state_change + state_transition_pause < cue_emitter.current_playback_time:		
+			if last_emit + temporary_cue_space_extension <  cue_emitter.current_playback_time:
+				temporary_cue_space_extension = 0
+				emit_cue_node(beats[beat_index])
+				last_emit = cue_emitter.current_playback_time
 		beat_index += 1
 	elif beat_index == len(beats)-1:
 		beat_index += 1
@@ -291,6 +297,10 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 	cue_node.translation = Vector3(x,y,0+fly_offset)
 	if cue_type == "head_inverted":
 		cue_node.set_transform( cue_node.get_transform().rotated(Vector3(0,0,1), 3.1415926))
+	elif cue_type == "head_left":
+		cue_node.set_transform( cue_node.get_transform().rotated(Vector3(0,0,1), 3.1415926/2))
+	if cue_type == "head_right":
+		cue_node.set_transform( cue_node.get_transform().rotated(Vector3(0,0,1), 3*3.1415926/2))
 	
 	if cue_type == "left" or cue_type == "right":
 		var alpha = atan2(x,y-head_y_pos)
@@ -301,14 +311,14 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 	move_modifier.start()
 	return cue_node
 	
-var state_model = { CueState.STAND: { CueState.SQUAT: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.JUMP: 10},
+var exercise_state_model = { CueState.STAND: { CueState.SQUAT: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.JUMP: 10},
 					CueState.SQUAT: { CueState.STAND: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10},
 					CueState.PUSHUP: { CueState.STAND: 10, CueState.SQUAT: 10},
 					CueState.CRUNCH: { CueState.STAND: 10, CueState.SQUAT: 10},
 					CueState.JUMP: {CueState.STAND: 50}, 
 					}
 	
-func state_transition(old_state):
+func state_transition(old_state, state_model):
 	var state_selector = rng.randi()%100
 	var new_state = old_state
 	var probabilities = state_model[old_state]
@@ -321,116 +331,153 @@ func state_transition(old_state):
 	return new_state
 	
 	
-func handle_stand_cues():
-	pass
-	
-func handle_jump_cues():
-	pass
-	
-func handle_squat_cues():
-	pass
-	
-func handle_crunch_cues():
-	pass
-	
-func handle_pushup_cues():
-	pass	
-	
-	
-	
-
-func emit_cue_node(target_time):
-	print ("State: %s"%state_string(cue_emitter_state))
-	
+func handle_stand_cues(target_time):
 	var node_selector = rng.randi()%100
 	
-	var x = rng.randf() * 1.0 -0.5
-	var y_hand = 1.0
-	var y_head = 1.0
-	var x_head = 0
-	if cue_emitter_state == CueState.STAND:
-		y_hand = player_height-0.2 + rng.randf() * 0.3
-		y_head = player_height
-		x = 0.2 + rng.randf() * 0.45
-		x_head = rng.randf() - 0.5
-	elif cue_emitter_state == CueState.JUMP:
-		y_hand = player_height
-		y_head = player_height + 0.32
-		x = 0
-		x_head = 0
-	elif cue_emitter_state == CueState.SQUAT:
-		y_head = player_height/2 + cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
-		y_hand = y_head + (rng.randf() * 0.4 - 0.2)
-		x = 0.3 + rng.randf() * 0.45
-		x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HAND]["xspread"] - cue_paramerters[cue_emitter_state][CueSelector.HAND]["xspread"]/2
-	elif cue_emitter_state == CueState.CRUNCH:
-		x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
-		y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
-		y_hand = 0.8 + rng.randf() * 0.4
-		x = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HAND]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HAND]["xrange"]/2
-	else: #CueState.PUSHUP
-		y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
-		x = 0.3 + rng.randf() * 0.25
-		x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
-		y_hand = 0.3 + rng.randf() * 0.4
-
-	var double_punch = cue_emitter_state == CueState.STAND && rng.randf() < 0.5
+	var y_hand = player_height-0.2 + rng.randf() * 0.3
+	var y_head = player_height
+	var x = 0.2 + rng.randf() * 0.45
+	var x_head = rng.randf() - 0.5
+	
+	if cue_selector == CueSelector.HAND and node_selector < 20:
+		cue_selector = CueSelector.HEAD
+	elif cue_selector == CueSelector.HEAD and node_selector < 50:	
+		cue_selector = CueSelector.HAND
+	
+	var double_punch = rng.randf() < 0.5
 	var double_punch_delay = 0.25
 	var dd_df = fly_distance/fly_time
+	
+	if cue_selector == CueSelector.HAND:
+		if node_selector < 50:	
+			var n = create_and_attach_cue("left", -x,y_hand, target_time)
+			if double_punch:
+				var n2 = create_and_attach_cue("left", -x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time + double_punch_delay, -double_punch_delay*dd_df)
+				n.activate_path_cue(n2)
+		else:			
+			var n = create_and_attach_cue("right", x,y_hand, target_time)
+			if double_punch:
+				var n2 = create_and_attach_cue("right", x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time + double_punch_delay, -double_punch_delay*dd_df)
+				n.activate_path_cue(n2)
+	else:
+		create_and_attach_cue("head", x_head, y_head, target_time)
+	
+	
+	
+func handle_jump_cues(target_time):
+	var y_hand = player_height
+	var y_head = player_height + 0.32
+	var x = 0
+	var x_head = 0
+	
+	create_and_attach_cue("head", x_head, y_head, target_time)
+	
+func handle_squat_cues(target_time):
+	var node_selector = rng.randi()%100
 
-
-	if not state_changed and cue_selector == CueSelector.HAND and cue_emitter_state == CueState.CRUNCH:
+	var y_head = player_height/2 + cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
+	var y_hand = y_head + (rng.randf() * 0.4 - 0.2)
+	var x = 0.3 + rng.randf() * 0.45
+	var x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HAND]["xspread"] - cue_paramerters[cue_emitter_state][CueSelector.HAND]["xspread"]/2
+	
+	if cue_selector == CueSelector.HAND and node_selector < 30:
+		cue_selector = CueSelector.HEAD
+	elif cue_selector == CueSelector.HEAD and node_selector < 25:
+		cue_selector = CueSelector.HAND
+	
+	if cue_selector == CueSelector.HAND:
+		if node_selector < 50:	
+			var n = create_and_attach_cue("left", -x,y_hand, target_time)
+		else:			
+			var n = create_and_attach_cue("right", x,y_hand, target_time)
+	else:
+		create_and_attach_cue("head", x_head, y_head, target_time)
+	
+	
+func handle_crunch_cues(target_time):
+	var node_selector = rng.randi()%100
+	
+	var x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
+	var y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
+	var y_hand = 0.8 + rng.randf() * 0.4
+	var x = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HAND]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HAND]["xrange"]/2
+	
+	if cue_selector == CueSelector.HAND and node_selector < 80:
+		cue_selector = CueSelector.HEAD
+	elif cue_selector == CueSelector.HEAD and node_selector < 80:
+		cue_selector = CueSelector.HAND
+	
+	if cue_selector == CueSelector.HAND:
 		var spread = 0.2+rng.randf()*0.3
 		create_and_attach_cue("right", x+spread,y_hand, target_time)
 		create_and_attach_cue("left", x-spread,y_hand, target_time)
-	elif cue_emitter_state == CueState.JUMP:
-		cue_selector = CueSelector.HEAD
-		create_and_attach_cue("head", x_head, y_head, target_time)
-	elif not state_changed and cue_selector == CueSelector.HAND and node_selector < 50:
-		var n = create_and_attach_cue("right", x,y_hand, target_time)
-		if double_punch:
-			var n2 = create_and_attach_cue("right", x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time + double_punch_delay, -double_punch_delay*dd_df)
-			n.activate_path_cue(n2)
-	elif not state_changed and cue_selector == CueSelector.HAND and node_selector >= 50:
-		var n = create_and_attach_cue("left", -x,y_hand, target_time)
-		if double_punch:
-			var n2 = create_and_attach_cue("left", -x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time + double_punch_delay, -double_punch_delay*dd_df)
-			n.activate_path_cue(n2)
 	else:
-		state_changed = false
-		if cue_emitter_state == CueState.PUSHUP:
-			create_and_attach_cue("head_inverted", x_head, y_head, target_time)
-		else:
-			create_and_attach_cue("head", x_head, y_head, target_time)
+		create_and_attach_cue("head", x_head, y_head, target_time)
 
-	if cue_selector == CueSelector.HAND:
-		if cue_emitter_state == CueState.STAND:
-			if node_selector < 10:
-				cue_selector = CueSelector.HEAD
-		elif cue_emitter_state == CueState.CRUNCH:
-			if node_selector < 80:
-				cue_selector = CueSelector.HEAD
-		elif node_selector < 30:
-			cue_selector = CueSelector.HEAD
-	elif cue_selector == CueSelector.HEAD:
-		if cue_emitter_state == CueState.STAND:
-			if node_selector < 50:
-				cue_selector = CueSelector.HAND
-		elif cue_emitter_state == CueState.CRUNCH:
-			if node_selector < 80:
-				cue_selector = CueSelector.HAND
-		elif node_selector < 25:
-			cue_selector = CueSelector.HAND
-			
+	
+enum PushupState {
+	REGULAR = 0,
+	LEFT_HAND = 1,
+	RIGHT_HAND = 2,
+	LEFT_SIDEPLANK = 3,
+	RIGHT_SIDEPLANK = 4,
+};	
+	
+var pushup_state_model = { PushupState.REGULAR : { PushupState.LEFT_HAND : 15, PushupState.RIGHT_HAND: 15, PushupState.LEFT_SIDEPLANK: 10, PushupState.RIGHT_SIDEPLANK: 10},
+					PushupState.LEFT_HAND : { PushupState.REGULAR: 25, PushupState.RIGHT_HAND: 5, PushupState.LEFT_SIDEPLANK: 10},
+					PushupState.RIGHT_HAND : { PushupState.REGULAR: 25, PushupState.LEFT_HAND: 5, PushupState.RIGHT_SIDEPLANK: 10},
+					PushupState.LEFT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.LEFT_HAND: 10},
+					PushupState.RIGHT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.LEFT_HAND: 10},
+					};
+	
+var pushup_state = PushupState.REGULAR
+	
+func handle_pushup_cues(target_time):
+	pushup_state = state_transition (pushup_state, pushup_state_model)
+	
+	var node_selector = rng.randi()%100
+
+	var y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
+	var x = 0.3 + rng.randf() * 0.25
+	var x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
+	var y_hand = 0.3 + rng.randf() * 0.4
+	
+	if pushup_state == PushupState.REGULAR:
+		create_and_attach_cue("head", x_head, y_head, target_time)
+	elif pushup_state == PushupState.LEFT_HAND:
+			var n = create_and_attach_cue("left", -x,y_hand, target_time)
+	elif pushup_state == PushupState.RIGHT_HAND:
+			var n = create_and_attach_cue("right", x,y_hand, target_time)
+	elif pushup_state == PushupState.LEFT_SIDEPLANK or pushup_state == PushupState.RIGHT_SIDEPLANK:
+		#side plank
+		x_head = 0
+		x = 0
+		y_head = player_height * 0.5
+		y_hand = player_height * 0.9
+
+		var hand_delay = 0.15
+		var dd_df = fly_distance/fly_time				
+				
+		if pushup_state == PushupState.LEFT_SIDEPLANK:
+			create_and_attach_cue("head_left", x_head-0.3, y_head, target_time)
+			create_and_attach_cue("right", x, y_hand, target_time+hand_delay, -hand_delay * dd_df)
+		else:
+			create_and_attach_cue("head_right", x_head+0.3, y_head, target_time)
+			create_and_attach_cue("left", x, y_hand, target_time + hand_delay, -hand_delay * dd_df)
+		temporary_cue_space_extension = 2.5
+
+func emit_cue_node(target_time):
+	print ("State: %s"%state_string(cue_emitter_state))
 	# Increase the cue speed for hand cues
 	if cue_selector == CueSelector.HAND:
 		min_cue_space = level_min_cue_space / 2
 	else:
 		min_cue_space = level_min_cue_space
 			
+	state_changed = false
 	if last_state_change + min_state_duration < cue_emitter.current_playback_time:
 		var old_state = cue_emitter_state
-		cue_emitter_state = state_transition(cue_emitter_state)
+		cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model)
 		if old_state != cue_emitter_state:
 			#Emit a head cue if the state has changed
 			state_changed = true
@@ -442,6 +489,7 @@ func emit_cue_node(target_time):
 			if not boxman2.in_beast_mode:
 				switch_boxman(cue_emitter_state,"boxman2")
 			display_state(cue_emitter_state)
+			
 	if cue_emitter_state == CueState.STAND and beast_mode:
 		if not boxman1.in_beast_mode and not boxman2.in_beast_mode:
 			if rng.randf() < beast_chance:
@@ -449,6 +497,18 @@ func emit_cue_node(target_time):
 				if rng.randf() < 0.5:
 					 boxman = boxman2
 				boxman.activate_beast(Vector3(0,0,1),1.8)
+
+	if not state_changed:
+		if cue_emitter_state == CueState.STAND:
+			handle_stand_cues(target_time)
+		elif cue_emitter_state == CueState.JUMP:
+			handle_jump_cues(target_time)
+		elif cue_emitter_state == CueState.SQUAT:
+			handle_squat_cues(target_time)
+		elif cue_emitter_state == CueState.CRUNCH:
+			handle_crunch_cues(target_time)
+		else: #CueState.PUSHUP
+			handle_pushup_cues(target_time)
 
 func switch_boxman(state, name):
 	var boxman = get_node(name)

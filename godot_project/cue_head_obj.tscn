@@ -1,10 +1,12 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://models/head_model.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://cue_head_obj.gd" type="Script" id=2]
-[ext_resource path="res://neon_blue.tres" type="Material" id=3]
+[ext_resource path="res://models/Berzerker.material" type="Material" id=3]
 [ext_resource path="res://TargetTimer.tscn" type="PackedScene" id=4]
 [ext_resource path="res://models/blue_transparent.material" type="Material" id=5]
+[ext_resource path="res://models/super_white.material" type="Material" id=6]
+[ext_resource path="res://models/green_material.tres" type="Material" id=7]
 
 [sub_resource type="Animation" id=1]
 length = 0.6
@@ -47,10 +49,13 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id=2]
 
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="PrismMesh" id=3]
+size = Vector3( 1, 2, 1 )
+
+[sub_resource type="BoxShape" id=4]
 extents = Vector3( 0.8, 0.48, 0.089 )
 
-[sub_resource type="SphereMesh" id=4]
+[sub_resource type="SphereMesh" id=5]
 material = ExtResource( 5 )
 radius = 0.04
 height = 0.08
@@ -64,7 +69,7 @@ script = ExtResource( 2 )
 [node name="head_cue" type="MeshInstance" parent="."]
 transform = Transform( 0.8, 0, 0, 0, -2.18557e-08, -0.4, 0, 0.5, -1.74846e-08, 0, 0, 0 )
 mesh = ExtResource( 1 )
-material/0 = ExtResource( 3 )
+material/0 = ExtResource( 6 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="head_cue"]
 anims/explode = SubResource( 1 )
@@ -73,14 +78,38 @@ anims/idle = SubResource( 2 )
 [node name="TargetTimer" parent="head_cue" instance=ExtResource( 4 )]
 transform = Transform( 6.25, 0, 0, 0, -4.37114e-07, 10, 0, -12.5, -5.46392e-07, 0, 0, 0 )
 
+[node name="Spikes" type="MeshInstance" parent="head_cue"]
+transform = Transform( 0.2, 0, 0, 0, -4.37114e-08, -0.1, 0, 1, -4.37114e-09, 0, 8.99124e-08, 2.57119 )
+mesh = SubResource( 3 )
+material/0 = ExtResource( 5 )
+__meta__ = {
+"_editor_description_": "WQW"
+}
+
+[node name="SpikeRight" type="MeshInstance" parent="head_cue/Spikes"]
+transform = Transform( 0.618734, 1.20188, -2.16598e-08, -0.119516, 0.676958, 1.47095e-08, 9.40358e-08, 4.66543e-08, 0.75, 3.84254, -0.27925, 2.19717e-07 )
+mesh = SubResource( 3 )
+material/0 = ExtResource( 7 )
+__meta__ = {
+"_editor_description_": "WQW"
+}
+
+[node name="SpikeLeft" type="MeshInstance" parent="head_cue/Spikes"]
+transform = Transform( 0.731341, -1.29245, -3.50004e-08, 0.0589333, 0.664986, 7.2203e-09, -4.63691e-08, 5.60742e-08, 0.75, -3.7908, -0.278175, 2.18872e-07 )
+mesh = SubResource( 3 )
+material/0 = ExtResource( 3 )
+__meta__ = {
+"_editor_description_": "WQW"
+}
+
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1.01034, 0.000906242, 0.00129629, -0.000902207, 1.0155, 0.000442253, -0.0012959, -0.000445667, 1.01034, 0, -0.0136241, 0 )
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="sprinkle" type="CPUParticles" parent="."]
 emitting = false
 amount = 16
-mesh = SubResource( 4 )
+mesh = SubResource( 5 )
 direction = Vector3( 0, 0, -1 )
 flatness = 0.5
 gravity = Vector3( 0, 0, 0 )
