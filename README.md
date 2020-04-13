@@ -92,24 +92,34 @@ __Older gameplay__
 
 ## Screenshots
 ![Standing left hand hit](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/stand_left_hand2.png.jpg)
+Standing - Hand cues
 
 ![Crunches](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/crunch1.png.jpg)
+Crunches - Hand cues
 
 ![Crunches](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/crunch2.png.jpg)
+Crunches - Head cues
 
 ![Jumping](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/jump.png.jpg)
+Jumping
 
 ![Pushup left hand hit](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/pushup_left_hand.png.jpg)
+Pushups - Hand cues
 
 ![Side plank](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/side_plank.png.jpg)
+Pushups - Side plank
 
 ![Squat hand left](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/squat_hand_left.png.jpg)
+Squats - Hand cues
 
 ![Squat head](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/squat_head.png.jpg)
+Squats - Head cues
 
 ![Stand head](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/stand_head.png.jpg)
+Standing - Head cues
 
 ![Screenshot new 4](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_beast_attack.jpg)
+Beast mode - Beast attack
 
 ![Screenshot new 3](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_instructor3.jpg)
 
