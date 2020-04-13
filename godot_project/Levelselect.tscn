@@ -1,8 +1,7 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
-[ext_resource path="res://IslandScene.tscn" type="PackedScene" id=3]
 [ext_resource path="res://default_env.tres" type="Environment" id=4]
 [ext_resource path="res://models/platform.glb" type="PackedScene" id=5]
 [ext_resource path="res://SongLevelBlock.tscn" type="PackedScene" id=6]
@@ -89,9 +88,6 @@ environment = ExtResource( 4 )
 [node name="MainText" parent="." instance=ExtResource( 2 )]
 transform = Transform( -1.57224e-07, -0.974043, 0.226362, 1.68587e-07, -0.226362, -0.974043, 1, -1.14981e-07, 1.998e-07, 1.54548, 2.30713, 2.5179e-07 )
 default_text = "VRWorkout"
-
-[node name="stage2gltf" parent="." instance=ExtResource( 3 )]
-visible = false
 
 [node name="platform" parent="." instance=ExtResource( 5 )]
 transform = Transform( 0.913545, 0, 0.406737, 0, 1, 0, -0.406737, 0, 0.913545, 0, -0.346909, 0 )

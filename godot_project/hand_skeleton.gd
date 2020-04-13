@@ -107,7 +107,7 @@ func _ready():
 		mesh = get_node("ArmatureRight/Skeleton/r_handMeshNode")
 	else:
 		skel = get_node("ArmatureLeft/Skeleton")
-		mesh = get_node("ArmatureRight/Skeleton/l_handMeshNode")
+		mesh = get_node("ArmatureLeft/Skeleton/l_handMeshNode")
 	claws = skel.get_node("middle_root_bone/claws")
 
 	_vrapi_bone_orientations.resize(24);
