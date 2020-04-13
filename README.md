@@ -99,10 +99,11 @@ Once everything is installed import the project.godot file from the godot_projec
 
 __Latest version__
 
-[![Beast mode update](https://img.youtube.com/vi/6TnzuIsVT6o/0.jpg)](https://www.youtube.com/watch?v=6TnzuIsVT6o)
+[![Side plank update](https://img.youtube.com/vi/FWY8M-wg_mo/0.jpg)](https://www.youtube.com/watch?v=FWY8M-wg_mo)
 
 __Older gameplay__
 
+[![Beast mode update](https://img.youtube.com/vi/6TnzuIsVT6o/0.jpg)](https://www.youtube.com/watch?v=6TnzuIsVT6o)
 [![Sample gameplay](https://img.youtube.com/vi/mSPQulHXlJo/0.jpg)](https://www.youtube.com/watch?v=mSPQulHXlJo)
 
 ## Feedback
