@@ -77,6 +77,19 @@ Requirements for developing the PC based version:
 
 Once everything is installed import the project.godot file from the godot_project folder to start editing the game.
 
+
+## Sample gameplay videos
+
+__Latest version__
+
+[![Side plank update](https://img.youtube.com/vi/FWY8M-wg_mo/0.jpg)](https://www.youtube.com/watch?v=FWY8M-wg_mo)
+
+__Older gameplay__
+
+[![Beast mode update](https://img.youtube.com/vi/6TnzuIsVT6o/0.jpg)](https://www.youtube.com/watch?v=6TnzuIsVT6o)
+[![Sample gameplay](https://img.youtube.com/vi/mSPQulHXlJo/0.jpg)](https://www.youtube.com/watch?v=mSPQulHXlJo)
+
+
 ## Screenshots
 ![Screenshot new 4](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_beast_attack.jpg)
 ![Screenshot new 5](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_beast_attack1.jpg)
@@ -93,18 +106,6 @@ Once everything is installed import the project.godot file from the godot_projec
 ![Screenshot 8](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_claw_hit2.jpg)
 ![Screenshot 9](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_claw_hit.jpg)
 ![Screenshot 10](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_claw2.jpg)
-
-
-## Sample gameplay videos
-
-__Latest version__
-
-[![Side plank update](https://img.youtube.com/vi/FWY8M-wg_mo/0.jpg)](https://www.youtube.com/watch?v=FWY8M-wg_mo)
-
-__Older gameplay__
-
-[![Beast mode update](https://img.youtube.com/vi/6TnzuIsVT6o/0.jpg)](https://www.youtube.com/watch?v=6TnzuIsVT6o)
-[![Sample gameplay](https://img.youtube.com/vi/mSPQulHXlJo/0.jpg)](https://www.youtube.com/watch?v=mSPQulHXlJo)
 
 ## Feedback
 
