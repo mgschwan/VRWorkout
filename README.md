@@ -91,21 +91,31 @@ __Older gameplay__
 
 
 ## Screenshots
+![Standing left hand hit](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/stand_left_hand2.png.jpg)
+
+![Crunches](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/crunch1.png.jpg)
+
+![Crunches](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/crunch2.png.jpg)
+
+![Jumping](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/jump.png.jpg)
+
+![Pushup left hand hit](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/pushup_left_hand.png.jpg)
+
+![Side plank](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/side_plank.png.jpg)
+
+![Squat hand left](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/squat_hand_left.png.jpg)
+
+![Squat head](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/squat_head.png.jpg)
+
+![Stand head](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/play_screenshots/stand_head.png.jpg)
+
 ![Screenshot new 4](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_beast_attack.jpg)
-![Screenshot new 5](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_beast_attack1.jpg)
-![Screenshot new 1](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_instructor.jpg)
-![Screenshot new 2](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_instructor2.jpg)
+
 ![Screenshot new 3](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_instructor3.jpg)
+
 ![Screenshot 1](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_menu.jpg)
+
 ![Screenshot 3](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_side.jpg)
-![Screenshot 4](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_play_main.jpg)
-![Screenshot 5](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_stand.jpg)
-![Screenshot 2](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_double_punch.jpg)
-![Screenshot 6](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_main_menu.jpg)
-![Screenshot 7](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_beast_mode_claws.jpg)
-![Screenshot 8](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_claw_hit2.jpg)
-![Screenshot 9](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_claw_hit.jpg)
-![Screenshot 10](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_claw2.jpg)
 
 ## Feedback
 
