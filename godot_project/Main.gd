@@ -15,7 +15,7 @@ var stream
 var fly_time = 3.0
 var emit_early = 0 #Time it takes the cue to reach the target area. autocalculated
 var fly_distance = 0.0 #How far the cue flies, autocalculated
-var hand_cue_offset = 0.35
+var hand_cue_offset = 0.60
 var player_height = 0
 var run_point_multiplier = 1
 var beast_mode
@@ -85,7 +85,10 @@ var cue_paramerters = {
 			"yrange": 0.1
 		},
 		CueSelector.HAND : {
-			"xrange" : 0.1
+			"xrange" : 0.1,
+			"xspread" : 0.2,
+			"yoffset" : 0.8,
+			"yrange" : 0.2
 		}
 	},	
 	CueState.JUMP : {
@@ -439,7 +442,7 @@ func handle_crunch_cues(target_time):
 	
 	var x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
 	var y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
-	var y_hand = 0.8 + rng.randf() * 0.4
+	var y_hand = cue_paramerters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HAND]["yrange"]
 	var x = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HAND]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HAND]["xrange"]/2
 	
 	if cue_selector == CueSelector.HAND and node_selector < 80:
@@ -448,7 +451,7 @@ func handle_crunch_cues(target_time):
 		cue_selector = CueSelector.HAND
 	
 	if cue_selector == CueSelector.HAND:
-		var spread = 0.2+rng.randf()*0.3
+		var spread = cue_paramerters[cue_emitter_state][CueSelector.HAND]["xspread"]/2.0+rng.randf()*cue_paramerters[cue_emitter_state][CueSelector.HAND]["xspread"]
 		create_and_attach_cue("right", x+spread,y_hand, target_time)
 		create_and_attach_cue("left", x-spread,y_hand, target_time)
 	else:
