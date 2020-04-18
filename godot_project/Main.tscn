@@ -29,10 +29,8 @@ radius = 0.2
 script = ExtResource( 1 )
 
 [node name="ARVROrigin" type="ARVROrigin" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
 
 [node name="ARVRCamera" type="ARVRCamera" parent="ARVROrigin"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
 script = ExtResource( 2 )
 
 [node name="AreaHead" type="Area" parent="ARVROrigin/ARVRCamera"]

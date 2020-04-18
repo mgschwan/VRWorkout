@@ -50,6 +50,11 @@ var arvr_open_vr_interface = null;
 func setup_globals():
 	ProjectSettings.set("game/beast_mode", false)
 	ProjectSettings.set("game/bpm", 100)
+	ProjectSettings.set("game/exercise/jump", true)
+	ProjectSettings.set("game/exercise/stand", true)
+	ProjectSettings.set("game/exercise/squat", true)
+	ProjectSettings.set("game/exercise/pushup", true)
+	ProjectSettings.set("game/exercise/crunch", true)
 
 
 func _initialize_OVR_API():
@@ -147,8 +152,8 @@ func _ready():
 	
 	get_node("ARVROrigin/ARVRCamera").vr_mode = vr_mode
 	levelselect = levelselect_blueprint.instance()
+	levelselect.translation = Vector3(0,0,0)
 	add_child(levelselect)
-	
 	
 func _on_level_finished	():
 	if record_tracker_data:
@@ -170,6 +175,7 @@ func _on_level_finished	():
 	level.queue_free()
 	level = null 
 	levelselect = levelselect_blueprint.instance()
+	levelselect.translation = Vector3(0,0,0)
 	add_child(levelselect)
 	levelselect.set_main_text("Player results\n\nLast round\nPoints: %d"%last_points+" Duration: %.2f"%last_played+"\nTotal\nPoints: %d"%total_points+" Duration: %.2f"%total_played) 
 

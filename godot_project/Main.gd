@@ -15,6 +15,7 @@ var stream
 var fly_time = 3.0
 var emit_early = 0 #Time it takes the cue to reach the target area. autocalculated
 var fly_distance = 0.0 #How far the cue flies, autocalculated
+var hand_cue_offset = 0.35
 var player_height = 0
 var run_point_multiplier = 1
 var beast_mode
@@ -80,8 +81,8 @@ var cue_paramerters = {
 	CueState.CRUNCH : {
 		CueSelector.HEAD : {
 			"xrange" : 0.3,
-			"yoffset": 0.25,
-			"yrange": 0.2
+			"yoffset": 0.35,
+			"yrange": 0.1
 		},
 		CueSelector.HAND : {
 			"xrange" : 0.1
@@ -160,6 +161,10 @@ func _ready():
 		rng.randomize()
 	else:
 		rng.set_seed(0)
+		
+	populate_state_model()
+	cue_emitter_state = get_start_exercise()
+		
 	infolayer = get_node("Viewport/InfoLayer")
 	cue_emitter = get_node("cue_emitter")
 	target = get_node("target")
@@ -311,13 +316,48 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 	move_modifier.start()
 	return cue_node
 	
-var exercise_state_model = { CueState.STAND: { CueState.SQUAT: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.JUMP: 10},
+var exercise_state_model_template = { CueState.STAND: { CueState.SQUAT: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.JUMP: 10},
 					CueState.SQUAT: { CueState.STAND: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10},
 					CueState.PUSHUP: { CueState.STAND: 10, CueState.SQUAT: 10},
 					CueState.CRUNCH: { CueState.STAND: 10, CueState.SQUAT: 10},
 					CueState.JUMP: {CueState.STAND: 50}, 
 					}
 	
+var exercise_state_model = {}
+
+func get_start_exercise():
+	var retVal = CueState.STAND
+	var states = { 	CueState.STAND  : ProjectSettings.get("game/exercise/stand"),
+					CueState.SQUAT  : ProjectSettings.get("game/exercise/squat"),
+					CueState.PUSHUP  : ProjectSettings.get("game/exercise/pushup"),
+					CueState.CRUNCH  : ProjectSettings.get("game/exercise/crunch"),
+					CueState.JUMP  : ProjectSettings.get("game/exercise/jump"),
+				}
+	for key in states:
+		if states[key]:
+			retVal = key
+			break
+	return retVal
+
+
+func populate_state_model():
+	exercise_state_model.clear()
+	var states = { 	CueState.STAND  : ProjectSettings.get("game/exercise/stand"),
+					CueState.SQUAT  : ProjectSettings.get("game/exercise/squat"),
+					CueState.PUSHUP  : ProjectSettings.get("game/exercise/pushup"),
+					CueState.CRUNCH  : ProjectSettings.get("game/exercise/crunch"),
+					CueState.JUMP  : ProjectSettings.get("game/exercise/jump"),
+				}
+				
+	for key in states:
+		exercise_state_model[key] = {}
+		for key_2 in states:
+			if exercise_state_model_template[key].has(key_2):
+				var val = exercise_state_model_template[key][key_2]
+				if key != key_2 and states[key_2]:
+					exercise_state_model[key][key_2] = val
+	print (str(exercise_state_model))
+
 func state_transition(old_state, state_model):
 	var state_selector = rng.randi()%100
 	var new_state = old_state
@@ -350,14 +390,14 @@ func handle_stand_cues(target_time):
 	
 	if cue_selector == CueSelector.HAND:
 		if node_selector < 50:	
-			var n = create_and_attach_cue("left", -x,y_hand, target_time)
+			var n = create_and_attach_cue("left", -x,y_hand, target_time, -hand_cue_offset)
 			if double_punch:
-				var n2 = create_and_attach_cue("left", -x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time + double_punch_delay, -double_punch_delay*dd_df)
+				var n2 = create_and_attach_cue("left", -x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time + double_punch_delay, -hand_cue_offset-double_punch_delay*dd_df)
 				n.activate_path_cue(n2)
 		else:			
-			var n = create_and_attach_cue("right", x,y_hand, target_time)
+			var n = create_and_attach_cue("right", x,y_hand, target_time, -hand_cue_offset)
 			if double_punch:
-				var n2 = create_and_attach_cue("right", x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time + double_punch_delay, -double_punch_delay*dd_df)
+				var n2 = create_and_attach_cue("right", x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time + double_punch_delay, -hand_cue_offset-double_punch_delay*dd_df)
 				n.activate_path_cue(n2)
 	else:
 		create_and_attach_cue("head", x_head, y_head, target_time)
@@ -387,9 +427,9 @@ func handle_squat_cues(target_time):
 	
 	if cue_selector == CueSelector.HAND:
 		if node_selector < 50:	
-			var n = create_and_attach_cue("left", -x,y_hand, target_time)
+			var n = create_and_attach_cue("left", -x,y_hand, target_time, -hand_cue_offset)
 		else:			
-			var n = create_and_attach_cue("right", x,y_hand, target_time)
+			var n = create_and_attach_cue("right", x,y_hand, target_time, -hand_cue_offset)
 	else:
 		create_and_attach_cue("head", x_head, y_head, target_time)
 	
@@ -445,9 +485,9 @@ func handle_pushup_cues(target_time):
 	if pushup_state == PushupState.REGULAR:
 		create_and_attach_cue("head", x_head, y_head, target_time)
 	elif pushup_state == PushupState.LEFT_HAND:
-			var n = create_and_attach_cue("left", -x,y_hand, target_time)
+			var n = create_and_attach_cue("left", -x,y_hand, target_time, -hand_cue_offset)
 	elif pushup_state == PushupState.RIGHT_HAND:
-			var n = create_and_attach_cue("right", x,y_hand, target_time)
+			var n = create_and_attach_cue("right", x,y_hand, target_time, -hand_cue_offset)
 	elif pushup_state == PushupState.LEFT_SIDEPLANK or pushup_state == PushupState.RIGHT_SIDEPLANK:
 		#side plank
 		x_head = 0
