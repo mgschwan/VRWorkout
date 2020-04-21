@@ -14,25 +14,25 @@
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
 [ext_resource path="res://dark_green.tres" type="Material" id=13]
 
-[sub_resource type="CylinderMesh" id=3]
+[sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
 
-[sub_resource type="CylinderShape" id=4]
+[sub_resource type="CylinderShape" id=2]
 radius = 0.2
 height = 0.2
 
-[sub_resource type="CylinderMesh" id=5]
+[sub_resource type="CylinderMesh" id=3]
 top_radius = 0.2
 bottom_radius = 0.2
 height = 0.1
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=4]
 albedo_color = Color( 0.0823529, 0, 0.654902, 1 )
 
-[sub_resource type="BoxShape" id=1]
+[sub_resource type="BoxShape" id=5]
 extents = Vector3( 0.0951286, 0.110867, 0.00811744 )
 
-[sub_resource type="CubeMesh" id=2]
+[sub_resource type="CubeMesh" id=6]
 size = Vector3( 0.2, 0.1, 0.1 )
 
 [node name="Spatial" type="Spatial"]
@@ -95,22 +95,22 @@ transform = Transform( 0.913545, 0, 0.406737, 0, 1, 0, -0.406737, 0, 0.913545, 0
 
 [node name="Exhaust2" type="MeshInstance" parent="platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.03367, -1.06538, 0.00227052 )
-mesh = SubResource( 3 )
+mesh = SubResource( 1 )
 material/0 = ExtResource( 7 )
 
 [node name="Exhaust" type="MeshInstance" parent="platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0152078, -1.06538, 6.08919 )
-mesh = SubResource( 3 )
+mesh = SubResource( 1 )
 material/0 = ExtResource( 7 )
 
 [node name="Exhaust3" type="MeshInstance" parent="platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.07026, -1.06538, -0.00397336 )
-mesh = SubResource( 3 )
+mesh = SubResource( 1 )
 material/0 = ExtResource( 7 )
 
 [node name="Exhaust4" type="MeshInstance" parent="platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0262713, -1.06538, -6.08258 )
-mesh = SubResource( 3 )
+mesh = SubResource( 1 )
 material/0 = ExtResource( 7 )
 
 [node name="BPM" type="StaticBody" parent="."]
@@ -119,11 +119,11 @@ script = ExtResource( 8 )
 
 [node name="CollisionShape" type="CollisionShape" parent="BPM"]
 transform = Transform( 1, 7.45058e-08, -1.19209e-07, 1.49012e-08, 1, -1.49012e-08, -1.49012e-07, 0, 1, 0, -0.050589, 0 )
-shape = SubResource( 4 )
+shape = SubResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="BPM"]
-mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
 
 [node name="bpm_text" parent="BPM" instance=ExtResource( 2 )]
 transform = Transform( -0.198599, -0.00948017, -0.0216437, -0.00939057, 0.199775, -0.0013372, 0.0216827, -0.000311606, -0.198821, -0.0667288, 0.0478439, -0.0206856 )
@@ -139,7 +139,7 @@ script = ExtResource( 11 )
 
 [node name="onshape" type="CollisionShape" parent="BeastModeSelector"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000761986, -0.0341799 )
-shape = SubResource( 1 )
+shape = SubResource( 5 )
 
 [node name="Spatial" parent="BeastModeSelector" instance=ExtResource( 2 )]
 transform = Transform( 0.2, 0, 0, 0, -4.37114e-09, -0.2, 0, 0.1, -8.74228e-09, 0.11109, 0.00226212, -0.0386255 )
@@ -151,7 +151,7 @@ default_text = "Beast mode off"
 
 [node name="MeshInstance2" type="MeshInstance" parent="BeastModeSelector"]
 transform = Transform( 1, 0, 0, 0, 2.32633, 0, 0, 0, 1, 0, 0, -0.0905116 )
-mesh = SubResource( 2 )
+mesh = SubResource( 6 )
 material/0 = ExtResource( 10 )
 
 [node name="claws" parent="BeastModeSelector" instance=ExtResource( 12 )]
@@ -198,8 +198,14 @@ offtext = "Squat off"
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131597, 1.252, -0.923 )
 ontext = "Pushup on"
 offtext = "Pushup off"
+
+[node name="BurpeeSwitch" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0963057, 1.252, -0.923 )
+ontext = "Burpees on"
+offtext = "Burpees off"
 [connection signal="toggled" from="JumpSwitch" to="." method="_on_JumpSwitch_toggled"]
 [connection signal="toggled" from="StandSwitch" to="." method="_on_StandSwitch_toggled"]
 [connection signal="toggled" from="CrunchSwitch" to="." method="_on_CrunchSwitch_toggled"]
 [connection signal="toggled" from="SquatSwitch" to="." method="_on_SquatSwitch_toggled"]
 [connection signal="toggled" from="PushupSwitch" to="." method="_on_PushupSwitch_toggled"]
+[connection signal="toggled" from="BurpeeSwitch" to="." method="_on_BurpeeSwitch_toggled"]

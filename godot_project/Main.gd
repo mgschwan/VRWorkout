@@ -45,6 +45,7 @@ enum CueState {
 	PUSHUP = 2,
 	CRUNCH = 3,
 	JUMP = 4,
+	BURPEE = 5,
 };
 
 enum CueSelector {
@@ -96,7 +97,15 @@ var cue_paramerters = {
 		},
 		CueSelector.HAND : {
 		}
+	},
+	CueState.BURPEE : {
+		CueSelector.HEAD : {
+			"yoffset" : 0.6
+		},
+		CueSelector.HAND : {
+		}
 	}	
+
 }
 
 
@@ -134,6 +143,8 @@ func state_string(state):
 		return "pushup"
 	elif state == CueState.CRUNCH:
 		return "crunch"
+	elif state == CueState.BURPEE:
+		return "burpee"
 	
 	return "unknown"
 
@@ -149,6 +160,8 @@ func display_state(state):
 		psign.pushup()
 	elif state == CueState.CRUNCH:
 		psign.crunch()
+	elif state == CueState.BURPEE:
+		psign.jump()  #TODO Add Burpee Sign
 	
 var update_counter = 0
 func update_info(hits, max_hits, points):
@@ -319,11 +332,12 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 	move_modifier.start()
 	return cue_node
 	
-var exercise_state_model_template = { CueState.STAND: { CueState.SQUAT: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.JUMP: 10},
+var exercise_state_model_template = { CueState.STAND: { CueState.SQUAT: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.JUMP: 10, CueState.BURPEE: 10},
 					CueState.SQUAT: { CueState.STAND: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10},
-					CueState.PUSHUP: { CueState.STAND: 10, CueState.SQUAT: 10},
+					CueState.PUSHUP: { CueState.STAND: 10, CueState.SQUAT: 10, CueState.BURPEE: 10},
 					CueState.CRUNCH: { CueState.STAND: 10, CueState.SQUAT: 10},
-					CueState.JUMP: {CueState.STAND: 50}, 
+					CueState.JUMP: {CueState.STAND: 50, CueState.BURPEE: 10}, 
+					CueState.BURPEE: {CueState.STAND: 50}, 
 					}
 	
 var exercise_state_model = {}
@@ -335,6 +349,7 @@ func get_start_exercise():
 					CueState.PUSHUP  : ProjectSettings.get("game/exercise/pushup"),
 					CueState.CRUNCH  : ProjectSettings.get("game/exercise/crunch"),
 					CueState.JUMP  : ProjectSettings.get("game/exercise/jump"),
+					CueState.BURPEE  : ProjectSettings.get("game/exercise/burpees"),
 				}
 	for key in states:
 		if states[key]:
@@ -350,6 +365,7 @@ func populate_state_model():
 					CueState.PUSHUP  : ProjectSettings.get("game/exercise/pushup"),
 					CueState.CRUNCH  : ProjectSettings.get("game/exercise/crunch"),
 					CueState.JUMP  : ProjectSettings.get("game/exercise/jump"),
+					CueState.BURPEE  : ProjectSettings.get("game/exercise/burpees"),
 				}
 				
 	for key in states:
@@ -412,6 +428,37 @@ func handle_jump_cues(target_time):
 	var y_head = player_height + 0.32
 	var x = 0
 	var x_head = 0
+	
+	create_and_attach_cue("head", x_head, y_head, target_time)
+
+
+
+	
+enum BurpeeState {
+	PUSHUP_HIGH = 0,
+	PUSHUP_LOW = 1,
+	JUMP = 2,
+};	
+	
+var burpee_state_model = { BurpeeState.PUSHUP_HIGH : { BurpeeState.PUSHUP_LOW: 100},
+						BurpeeState.PUSHUP_LOW : { BurpeeState.JUMP: 100},
+						BurpeeState.JUMP : { BurpeeState.PUSHUP_HIGH: 100},
+					};
+	
+var burpee_state = BurpeeState.JUMP
+
+
+func handle_burpee_cues(target_time):
+	burpee_state = state_transition (burpee_state, burpee_state_model)
+	var y_head = 0
+	var x_head = 0
+
+	if burpee_state == BurpeeState.PUSHUP_HIGH:
+		y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
+	elif burpee_state == BurpeeState.PUSHUP_LOW:
+		y_head = 0.2
+	else:
+		y_head = player_height + 0.32
 	
 	create_and_attach_cue("head", x_head, y_head, target_time)
 	
@@ -550,6 +597,8 @@ func emit_cue_node(target_time):
 			handle_squat_cues(target_time)
 		elif cue_emitter_state == CueState.CRUNCH:
 			handle_crunch_cues(target_time)
+		elif cue_emitter_state == CueState.BURPEE:
+			handle_burpee_cues(target_time)
 		else: #CueState.PUSHUP
 			handle_pushup_cues(target_time)
 
@@ -565,6 +614,8 @@ func switch_boxman(state, name):
 		boxman.switch_to_situps()
 	elif cue_emitter_state == CueState.PUSHUP:
 		boxman.switch_to_plank()
+	elif cue_emitter_state == CueState.BURPEE:
+		boxman.switch_to_jumping() #TODO make a burpee animation
 
 
 func _on_exit_button_pressed(body):

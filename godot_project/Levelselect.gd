@@ -26,6 +26,8 @@ func _ready():
 	get_node("CrunchSwitch").value = ProjectSettings.get("game/exercise/crunch")
 	get_node("CrunchSwitch").update_switch()
 
+	get_node("BurpeeSwitch").value = ProjectSettings.get("game/exercise/burpees")
+	get_node("BurpeeSwitch").update_switch()
 
 
 	
@@ -59,3 +61,7 @@ func _on_SquatSwitch_toggled(value):
 
 func _on_PushupSwitch_toggled(value):
 	ProjectSettings.set("game/exercise/pushup", value)
+
+
+func _on_BurpeeSwitch_toggled(value):
+	ProjectSettings.set("game/exercise/burpees", value)

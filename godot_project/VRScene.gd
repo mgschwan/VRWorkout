@@ -55,6 +55,7 @@ func setup_globals():
 	ProjectSettings.set("game/exercise/squat", true)
 	ProjectSettings.set("game/exercise/pushup", true)
 	ProjectSettings.set("game/exercise/crunch", true)
+	ProjectSettings.set("game/exercise/burpees", true)
 
 
 func _initialize_OVR_API():
@@ -74,17 +75,37 @@ func _initialize_OVR_API():
 	if (ovr_tracking_transform): ovr_tracking_transform = ovr_tracking_transform.new()
 	if (ovr_utilities): ovr_utilities = ovr_utilities.new()
 
+func handle_mobile_permissions():
+	#TODO Request permissions for external storage
+	print ("Checking permissions")
+	var perm = OS.get_granted_permissions()
+	var read_storage_perm = false
+	var write_storage_perm = false
+	
+	for p in perm:
+		print ("Permissions %s already granted"%p)
+		if p == "android.permission.READ_EXTERNAL_STORAGE":
+			read_storage_perm = true
+		elif p == "android.permission.WRITE_EXTERNAL_STORAGE":
+			write_storage_perm = true
+	
+	if not (read_storage_perm and write_storage_perm):
+		print ("Requesting permissions")
+		OS.request_permissions()
+
 
 func initialize():
 	var arvr_ovr_mobile_interface = ARVRServer.find_interface("OVRMobile");
 	var arvr_oculus_interface = ARVRServer.find_interface("Oculus");
 	var arvr_open_vr_interface = ARVRServer.find_interface("OpenVR");
 	
-	
+
 	vr_mode = false
 	cam = get_node("ARVROrigin/ARVRCamera")
 
 	if arvr_ovr_mobile_interface:
+		handle_mobile_permissions()
+
 		# the init config needs to be done before arvr_interface.initialize()
 		ovr_init_config = load("res://addons/godot_ovrmobile/OvrInitConfig.gdns");
 		if (ovr_init_config):
@@ -98,6 +119,7 @@ func initialize():
 			Engine.target_fps = 72
 			_initialize_OVR_API()
 			vr_mode = true
+		
 	elif arvr_oculus_interface:
 		if arvr_oculus_interface.initialize():
 			vr_mode = true
