@@ -5,7 +5,7 @@ Virtual reality fitness workout game for Oculus Quest
 
 A virtual reality music workout game built with [Godot Engine](https://godotengine.org/)
 
-The game sould be a physically engaging VR experience that is somewhat comparable to a short calisthenics workout (or a long one if you play for extended periods). Compared to other music games like Beat Saber and Box VR there should be more muscle groups activated due to the changes between standing, squatting, pushups and crunches. 
+The game sould be a physically engaging VR experience that is somewhat comparable to a short calisthenics workout (or a long one if you play for extended periods). Compared to other music games like Beat Saber and Box VR there should be more muscle groups activated due to the changes between standing, squatting, pushups, side planks, crunches, jumping and burpees. 
 
 But as with all games it is up to the player to actually work out and not cheat it's way through the movements. The only opponent in this game is the players body itself, if you really engage in it you will feel the exertion it brings with it.
 
@@ -16,6 +16,7 @@ Positions:
 * Squatting. The game will require deep squats
 * Crunches. You don't need to do repetitive crunches but be on your back and try to hit the head and double hand cues
 * Pushups. Try to hit the hand cues while in the pushup position (one handed punches will activate your core muscles). The head cues will drive your movement up and down
+* Burpees. Hit the head cues in the pushup position then immediately jump up to hit the head cue in the jump position.
 
 The game switches between those four positions to avoid a monotone workout.
 

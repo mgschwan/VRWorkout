@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -13,7 +13,7 @@
 [ext_resource path="res://beastmode.gd" type="Script" id=11]
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
 [ext_resource path="res://dark_green.tres" type="Material" id=13]
-[ext_resource path="res://hand_fist.tres" type="Material" id=14]
+[ext_resource path="res://assets/palm_fist.jpg" type="Texture" id=14]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -36,8 +36,17 @@ extents = Vector3( 0.0951286, 0.110867, 0.00811744 )
 [sub_resource type="CubeMesh" id=6]
 size = Vector3( 0.2, 0.1, 0.1 )
 
-[sub_resource type="QuadMesh" id=8]
-size = Vector2( 2, 1 )
+[sub_resource type="PlaneMesh" id=7]
+size = Vector2( 1.6, 0.2 )
+
+[sub_resource type="SpatialMaterial" id=8]
+flags_transparent = true
+flags_unshaded = true
+params_blend_mode = 1
+params_use_alpha_scissor = true
+params_alpha_scissor_threshold = 0.98
+albedo_texture = ExtResource( 14 )
+uv1_scale = Vector3( 1, 0.5, 1 )
 
 [node name="Spatial" type="Spatial"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
@@ -107,7 +116,7 @@ mesh = SubResource( 1 )
 material/0 = ExtResource( 7 )
 
 [node name="Exhaust" type="MeshInstance" parent="platform"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0152078, -1.06538, 6.08919 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0152076, -1.06538, 6.08919 )
 mesh = SubResource( 1 )
 material/0 = ExtResource( 7 )
 
@@ -213,9 +222,9 @@ ontext = "Burpees on"
 offtext = "Burpees off"
 
 [node name="HandPalm" type="MeshInstance" parent="."]
-transform = Transform( -0.260991, -0.0332951, -0.480455, 1.10006e-08, 0.292303, -0.22507, 0.147932, -0.0587412, -0.847647, 0.528531, 2.09364, 0.890031 )
-mesh = SubResource( 8 )
-material/0 = ExtResource( 14 )
+transform = Transform( -0.266796, -0.137152, -0.0100947, 0.00230991, 0.00213046, -0.999945, 0.137166, -0.266805, -0.00279537, 0.676758, 1.64896, 1.08787 )
+mesh = SubResource( 7 )
+material/0 = SubResource( 8 )
 [connection signal="toggled" from="JumpSwitch" to="." method="_on_JumpSwitch_toggled"]
 [connection signal="toggled" from="StandSwitch" to="." method="_on_StandSwitch_toggled"]
 [connection signal="toggled" from="CrunchSwitch" to="." method="_on_CrunchSwitch_toggled"]

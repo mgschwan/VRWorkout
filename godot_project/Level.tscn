@@ -39,6 +39,7 @@ albedo_texture = SubResource( 3 )
 extents = Vector3( 0.455611, 0.0926839, 0.161588 )
 
 [node name="Main" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0225873, -0.0546217, 0.0125537 )
 script = ExtResource( 1 )
 
 [node name="Viewport" type="Viewport" parent="."]

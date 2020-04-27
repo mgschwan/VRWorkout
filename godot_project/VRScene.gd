@@ -51,7 +51,7 @@ func setup_globals():
 	ProjectSettings.set("game/beast_mode", false)
 	ProjectSettings.set("game/bpm", 100)
 	ProjectSettings.set("game/exercise/jump", true)
-	ProjectSettings.set("game/exercise/stand", true)
+	ProjectSettings.set("game/exercise/stand",true)
 	ProjectSettings.set("game/exercise/squat", true)
 	ProjectSettings.set("game/exercise/pushup", true)
 	ProjectSettings.set("game/exercise/crunch", true)

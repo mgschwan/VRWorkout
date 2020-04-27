@@ -7,6 +7,9 @@ extends Spatial
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	print ("Local addresses: %s"%str(IP.get_local_addresses()))
+	
+	
 	get_node("MainText").print_info("VRWorkout\nSelect song by touching a block\nBest played hands only - no controllers\nPosition yourself between the blue poles\nRun in place to get multipliers")
 	
 	get_node("Tutorial").print_info("How to play\n- Hit the hand cues to the beat of the music\n- Head cues should only be touched no headbutts\n- Run in place to receive point multipliers!\nThe optimal time to hit the cues is when the\nrotating marker meets the static one")	

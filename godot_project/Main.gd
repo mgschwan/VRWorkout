@@ -456,9 +456,9 @@ enum BurpeeState {
 	JUMP = 2,
 };	
 
-var burpee_state_model = { BurpeeState.PUSHUP_LOW : { BurpeeState.PUSHUP_HIGH: 100},
-						BurpeeState.PUSHUP_HIGH : { BurpeeState.JUMP: 100},
-						BurpeeState.JUMP : { BurpeeState.PUSHUP_LOW: 100},
+var burpee_state_model = { BurpeeState.PUSHUP_LOW : { BurpeeState.JUMP: 100},
+						BurpeeState.PUSHUP_HIGH : { BurpeeState.PUSHUP_LOW: 100},
+						BurpeeState.JUMP : { BurpeeState.PUSHUP_HIGH: 100},
 					};
 	
 var burpee_state = BurpeeState.JUMP
@@ -475,10 +475,10 @@ func handle_burpee_cues(target_time):
 	if burpee_state == BurpeeState.PUSHUP_HIGH:
 		switch_floor_sign("hands")
 		y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
-		temporary_cue_space_extension = 1.2
 	elif burpee_state == BurpeeState.PUSHUP_LOW:
 		switch_floor_sign("hands")
-		y_head = 0.2
+		y_head = 0.3
+		temporary_cue_space_extension = 1.5
 	else:
 		switch_floor_sign("feet")
 		y_head = player_height + jump_offset
