@@ -22,7 +22,7 @@ The game switches between those four positions to avoid a monotone workout.
 
 **DISCLAIMER: Use at your own risk! This game does not check if you bump into your surroundings. Since this is a physical workout game there is lot's of movement which bears the risk of injury. You acknowledge that this software is free and you are using it at your own risk**
 
-![Logo](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_logo_new.jpg)
+![Logo](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_godot_transparent_figures.jpg)
 
 ## Install
 
