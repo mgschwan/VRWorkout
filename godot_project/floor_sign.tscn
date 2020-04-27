@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://left_foot.tscn" type="PackedScene" id=1]
+[ext_resource path="res://handprint_right.tscn" type="PackedScene" id=2]
+[ext_resource path="res://floor_sign.gd" type="Script" id=3]
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 3 )
+
+[node name="Hands" type="Spatial" parent="."]
+visible = false
+
+[node name="hand_right" parent="Hands" instance=ExtResource( 2 )]
+transform = Transform( 0.22, 0, 0, 0, 0.22, 0, 0, 0, 0.22, 0.317, 0, 0 )
+
+[node name="hand_left" parent="Hands" instance=ExtResource( 2 )]
+transform = Transform( -0.22, 7.16851e-08, 0, -7.16851e-08, -0.22, 0, 0, 0, 0.22, -0.317166, 0, 0 )
+
+[node name="Feet" type="Spatial" parent="."]
+visible = false
+
+[node name="left_foot" parent="Feet" instance=ExtResource( 1 )]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -0.2, 0, 0 )
+
+[node name="right_foot" parent="Feet" instance=ExtResource( 1 )]
+transform = Transform( -0.2, 6.51683e-08, 0, -6.51683e-08, -0.2, 0, 0, 0, 0.2, 0.2, 0, 0 )

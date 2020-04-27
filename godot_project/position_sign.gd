@@ -15,7 +15,7 @@ func stand():
 
 func jump():
 	var player = get_node("MeshInstance/AnimationPlayer")
-	player.play("stand")
+	player.play("jump")
 	play_sfx("player_jump")
 
 func pushup():
@@ -27,6 +27,11 @@ func crunch():
 	var player = get_node("MeshInstance/AnimationPlayer")
 	player.play("crunch")
 	play_sfx("player_crunch")
+
+func burpee():
+	var player = get_node("MeshInstance/AnimationPlayer")
+	player.play("burpee")
+	play_sfx("player_burpee")
 
 
 func start_sign(start, end, duration):

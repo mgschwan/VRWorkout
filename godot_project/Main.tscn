@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://models/red_material.tres" type="Material" id=15]
 [ext_resource path="res://audio/head_hit.wav" type="AudioStream" id=16]
 [ext_resource path="res://audio/hand_hit.wav" type="AudioStream" id=17]
+[ext_resource path="res://RemoteInterface.gd" type="Script" id=18]
 
 [sub_resource type="SphereShape" id=1]
 radius = 0.2
@@ -141,6 +142,9 @@ transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 5, 4 )
 light_energy = 0.2
 light_indirect_energy = 0.1
 light_specular = 0.2
+
+[node name="RemoteInterface" type="Node" parent="ARVROrigin"]
+script = ExtResource( 18 )
 [connection signal="body_entered" from="ARVROrigin/ARVRCamera/AreaHead" to="ARVROrigin/ARVRCamera/AreaHead" method="_on_AreaHead_body_entered"]
 [connection signal="body_entered" from="ARVROrigin/left_controller/AreaLeft" to="ARVROrigin/left_controller/AreaLeft" method="_on_Area_body_entered"]
 [connection signal="exit_event" from="ARVROrigin/left_controller/AreaLeft" to="." method="_on_level_finished"]

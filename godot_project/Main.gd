@@ -16,6 +16,7 @@ var fly_time = 3.0
 var emit_early = 0 #Time it takes the cue to reach the target area. autocalculated
 var fly_distance = 0.0 #How far the cue flies, autocalculated
 var hand_cue_offset = 0.60
+var jump_offset = 0.42
 var player_height = 0
 var run_point_multiplier = 1
 var beast_mode
@@ -23,6 +24,9 @@ var beast_mode
 var running_speed = 0
 	
 var current_difficulty = 0
+var exercise_changed = true
+
+
 
 var cue_horiz = preload("res://cue_h_obj.tscn")
 var cue_vert = preload("res://cue_v_obj.tscn")
@@ -73,8 +77,8 @@ var cue_paramerters = {
 	CueState.PUSHUP : {
 		CueSelector.HEAD : {
 			"xrange" : 0.4,
-			"yoffset" : 0.2,
-			"yrange" : 0.6
+			"yoffset" : 0.25,
+			"yrange" : 0.55
 		},
 		CueSelector.HAND : {
 		}
@@ -108,7 +112,6 @@ var cue_paramerters = {
 
 }
 
-
 var cue_emitter_state = CueState.STAND
 var cue_selector = CueSelector.HEAD
 
@@ -125,7 +128,6 @@ var beast_chance = 0.1
 var last_emit = 0.0
 var state_transition_pause = 1.5
 var head_y_pos = 0
-var state_changed = true
 var last_state_change = 0.0
 
 var rng = RandomNumberGenerator.new()
@@ -161,7 +163,7 @@ func display_state(state):
 	elif state == CueState.CRUNCH:
 		psign.crunch()
 	elif state == CueState.BURPEE:
-		psign.jump()  #TODO Add Burpee Sign
+		psign.burpee()  #TODO Add Burpee Sign
 	
 var update_counter = 0
 func update_info(hits, max_hits, points):
@@ -288,7 +290,18 @@ func _on_tween_completed(obj,path):
 	cue_emitter.score_miss()
 	obj.queue_free()
 
-
+func switch_floor_sign(type):
+	var sign_node = get_node("FloorSign")
+	if type == "hands":
+		sign_node.show_feet(false)
+		sign_node.show_hands(true)
+	elif type == "feet":
+		sign_node.show_hands(false)
+		sign_node.show_feet(true)
+	else:
+		sign_node.show_hands(false)
+		sign_node.show_feet(false)
+		
 func update_cue_timing():
 	fly_distance = abs(cue_emitter.translation.z-target.translation.z) + 2	
 	var time_to_target = abs(cue_emitter.translation.z-target.translation.z) / fly_distance
@@ -306,7 +319,9 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 	else:
 		head_y_pos = y
 		cue_node = cue_head.instance()
-
+		if cue_type == "head_extended":
+			cue_node.extended = true
+			
 	cue_node.target_time = target_time
 	cue_node.start_time = cue_emitter.current_playback_time
 	
@@ -320,7 +335,7 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 		cue_node.set_transform( cue_node.get_transform().rotated(Vector3(0,0,1), 3.1415926))
 	elif cue_type == "head_left":
 		cue_node.set_transform( cue_node.get_transform().rotated(Vector3(0,0,1), 3.1415926/2))
-	if cue_type == "head_right":
+	elif cue_type == "head_right":
 		cue_node.set_transform( cue_node.get_transform().rotated(Vector3(0,0,1), 3*3.1415926/2))
 	
 	if cue_type == "left" or cue_type == "right":
@@ -391,6 +406,8 @@ func state_transition(old_state, state_model):
 	
 	
 func handle_stand_cues(target_time):
+	switch_floor_sign("feet")
+	
 	var node_selector = rng.randi()%100
 	
 	var y_hand = player_height-0.2 + rng.randf() * 0.3
@@ -424,14 +441,13 @@ func handle_stand_cues(target_time):
 	
 	
 func handle_jump_cues(target_time):
+	switch_floor_sign("feet")
 	var y_hand = player_height
-	var y_head = player_height + 0.32
+	var y_head = player_height + jump_offset
 	var x = 0
 	var x_head = 0
 	
 	create_and_attach_cue("head", x_head, y_head, target_time)
-
-
 
 	
 enum BurpeeState {
@@ -439,30 +455,43 @@ enum BurpeeState {
 	PUSHUP_LOW = 1,
 	JUMP = 2,
 };	
-	
-var burpee_state_model = { BurpeeState.PUSHUP_HIGH : { BurpeeState.PUSHUP_LOW: 100},
-						BurpeeState.PUSHUP_LOW : { BurpeeState.JUMP: 100},
-						BurpeeState.JUMP : { BurpeeState.PUSHUP_HIGH: 100},
+
+var burpee_state_model = { BurpeeState.PUSHUP_LOW : { BurpeeState.PUSHUP_HIGH: 100},
+						BurpeeState.PUSHUP_HIGH : { BurpeeState.JUMP: 100},
+						BurpeeState.JUMP : { BurpeeState.PUSHUP_LOW: 100},
 					};
 	
 var burpee_state = BurpeeState.JUMP
 
 
 func handle_burpee_cues(target_time):
+	if exercise_changed:
+		burpee_state = BurpeeState.JUMP
+		
 	burpee_state = state_transition (burpee_state, burpee_state_model)
 	var y_head = 0
 	var x_head = 0
 
 	if burpee_state == BurpeeState.PUSHUP_HIGH:
+		switch_floor_sign("hands")
 		y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
+		temporary_cue_space_extension = 1.2
 	elif burpee_state == BurpeeState.PUSHUP_LOW:
+		switch_floor_sign("hands")
 		y_head = 0.2
 	else:
-		y_head = player_height + 0.32
+		switch_floor_sign("feet")
+		y_head = player_height + jump_offset
+		temporary_cue_space_extension = 1.2
 	
-	create_and_attach_cue("head", x_head, y_head, target_time)
+	if burpee_state == BurpeeState.JUMP:
+		create_and_attach_cue("head_extended", x_head, y_head, target_time)
+	else:
+		create_and_attach_cue("head", x_head, y_head, target_time)
 	
 func handle_squat_cues(target_time):
+	switch_floor_sign("feet")
+	
 	var node_selector = rng.randi()%100
 
 	var y_head = player_height/2 + cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
@@ -485,6 +514,8 @@ func handle_squat_cues(target_time):
 	
 	
 func handle_crunch_cues(target_time):
+	switch_floor_sign("none")
+	
 	var node_selector = rng.randi()%100
 	
 	var x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
@@ -514,15 +545,17 @@ enum PushupState {
 };	
 	
 var pushup_state_model = { PushupState.REGULAR : { PushupState.LEFT_HAND : 15, PushupState.RIGHT_HAND: 15, PushupState.LEFT_SIDEPLANK: 10, PushupState.RIGHT_SIDEPLANK: 10},
-					PushupState.LEFT_HAND : { PushupState.REGULAR: 25, PushupState.RIGHT_HAND: 5, PushupState.LEFT_SIDEPLANK: 10},
-					PushupState.RIGHT_HAND : { PushupState.REGULAR: 25, PushupState.LEFT_HAND: 5, PushupState.RIGHT_SIDEPLANK: 10},
-					PushupState.LEFT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.LEFT_HAND: 10},
+					PushupState.LEFT_HAND : { PushupState.REGULAR: 25, PushupState.RIGHT_HAND: 5, PushupState.RIGHT_SIDEPLANK: 10},
+					PushupState.RIGHT_HAND : { PushupState.REGULAR: 25, PushupState.LEFT_HAND: 5, PushupState.LEFT_SIDEPLANK: 10},
+					PushupState.LEFT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.RIGHT_HAND: 10},
 					PushupState.RIGHT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.LEFT_HAND: 10},
 					};
 	
 var pushup_state = PushupState.REGULAR
 	
 func handle_pushup_cues(target_time):
+	switch_floor_sign("hands")
+	
 	pushup_state = state_transition (pushup_state, pushup_state_model)
 	
 	var node_selector = rng.randi()%100
@@ -564,12 +597,11 @@ func emit_cue_node(target_time):
 	else:
 		min_cue_space = level_min_cue_space
 			
-	state_changed = false
+	var state_changed = false
 	if last_state_change + min_state_duration < cue_emitter.current_playback_time:
 		var old_state = cue_emitter_state
 		cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model)
 		if old_state != cue_emitter_state:
-			#Emit a head cue if the state has changed
 			state_changed = true
 			last_state_change = cue_emitter.current_playback_time
 			infolayer.print_info(state_string(cue_emitter_state).to_upper(), "main")
@@ -601,11 +633,17 @@ func emit_cue_node(target_time):
 			handle_burpee_cues(target_time)
 		else: #CueState.PUSHUP
 			handle_pushup_cues(target_time)
-
+		exercise_changed = false
+	else:
+		exercise_changed = true
+		
 func switch_boxman(state, name):
 	var boxman = get_node(name)
 	if cue_emitter_state == CueState.STAND:
-		boxman.switch_to_stand()
+		if name == "boxman2":
+			boxman.switch_to_run()
+		else:
+			boxman.switch_to_stand()
 	elif cue_emitter_state == CueState.JUMP:
 		boxman.switch_to_jumping()
 	elif cue_emitter_state == CueState.SQUAT:
@@ -615,7 +653,7 @@ func switch_boxman(state, name):
 	elif cue_emitter_state == CueState.PUSHUP:
 		boxman.switch_to_plank()
 	elif cue_emitter_state == CueState.BURPEE:
-		boxman.switch_to_jumping() #TODO make a burpee animation
+		boxman.switch_to_plank() #TODO make a burpee animation
 
 
 func _on_exit_button_pressed(body):

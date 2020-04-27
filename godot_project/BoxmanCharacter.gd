@@ -155,6 +155,11 @@ func switch_to_stand():
 	to_stand(true)
 	add_state(BoxmanAnimations.Idle)
 	play_current_animation(true)
+	
+func switch_to_run():
+	to_stand(true)
+	add_state(BoxmanAnimations.Run)
+	play_current_animation(true)
 
 func switch_to_plank():
 	to_stand(true)

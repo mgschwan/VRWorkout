@@ -1,6 +1,6 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=20 format=2]
 
-[ext_resource path="res://stick-figure.jpg" type="Texture" id=1]
+[ext_resource path="res://stick-figure.png" type="Texture" id=1]
 [ext_resource path="res://position_sign.gd" type="Script" id=2]
 [ext_resource path="res://audio/instruction_jump.wav" type="AudioStream" id=3]
 [ext_resource path="res://audio/instruction_now.wav" type="AudioStream" id=4]
@@ -8,15 +8,44 @@
 [ext_resource path="res://audio/instruction_pushup.wav" type="AudioStream" id=6]
 [ext_resource path="res://audio/instruction_stand.wav" type="AudioStream" id=7]
 [ext_resource path="res://audio/instruction_crunch.wav" type="AudioStream" id=8]
+[ext_resource path="res://audio/instruction_burpee.wav" type="AudioStream" id=9]
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 1.5, 1.5 )
 
 [sub_resource type="SpatialMaterial" id=2]
+flags_transparent = true
 flags_unshaded = true
 albedo_texture = ExtResource( 1 )
-uv1_scale = Vector3( 0.5, 0.5, 1 )
-uv1_offset = Vector3( 0.5, 0, 0 )
+uv1_scale = Vector3( 0.25, 0.25, 1 )
+uv1_offset = Vector3( 0.5, 0.25, 0 )
+
+[sub_resource type="Animation" id=10]
+resource_name = "burpee"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.5, 0.25, 0 ) ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "crunch"
@@ -30,7 +59,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0.5, 0, 0 ) ]
+"values": [ Vector3( 0.25, 0, 0 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath(".:material/0:uv1_scale")
@@ -42,7 +71,34 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0.5, 0.5, 1 ) ]
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "jump"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.5, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -57,7 +113,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0.5, 0.5, 1 ) ]
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath(".:material/0:uv1_offset")
@@ -69,7 +125,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0.5, 0 ) ]
+"values": [ Vector3( 0, 0.25, 0 ) ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -84,7 +140,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0.5, 0.5, 1 ) ]
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath(".:material/0:uv1_offset")
@@ -96,7 +152,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0.5, 0.5, 0 ) ]
+"values": [ Vector3( 0.25, 0.25, 0 ) ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -111,7 +167,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0.5, 0.5, 1 ) ]
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath(".:material/0:uv1_offset")
@@ -143,7 +199,9 @@ mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="MeshInstance"]
+anims/burpee = SubResource( 10 )
 anims/crunch = SubResource( 3 )
+anims/jump = SubResource( 9 )
 anims/pushup = SubResource( 4 )
 anims/squat = SubResource( 5 )
 anims/stand = SubResource( 6 )
@@ -182,9 +240,15 @@ bus = "Voice"
 stream = ExtResource( 3 )
 volume_db = 5.0
 bus = "Voice"
+
+[node name="player_burpee" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = 5.0
+bus = "Voice"
 [connection signal="finished" from="player_squat" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_crunch" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_stand" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_pushup" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_now" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_jump" to="." method="_on_sfx_finished"]
+[connection signal="finished" from="player_burpee" to="." method="_on_sfx_finished"]

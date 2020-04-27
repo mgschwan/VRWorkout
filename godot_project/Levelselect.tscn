@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://beastmode.gd" type="Script" id=11]
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
 [ext_resource path="res://dark_green.tres" type="Material" id=13]
+[ext_resource path="res://hand_fist.tres" type="Material" id=14]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -34,6 +35,9 @@ extents = Vector3( 0.0951286, 0.110867, 0.00811744 )
 
 [sub_resource type="CubeMesh" id=6]
 size = Vector3( 0.2, 0.1, 0.1 )
+
+[sub_resource type="QuadMesh" id=8]
+size = Vector2( 2, 1 )
 
 [node name="Spatial" type="Spatial"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
@@ -88,6 +92,10 @@ environment = ExtResource( 4 )
 
 [node name="MainText" parent="." instance=ExtResource( 2 )]
 transform = Transform( -1.57224e-07, -0.974043, 0.226362, 1.68587e-07, -0.226362, -0.974043, 1, -1.14981e-07, 1.998e-07, 1.54548, 2.30713, 2.5179e-07 )
+default_text = "VRWorkout"
+
+[node name="Tutorial" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, -7.24042e-08, 1.89905e-07, 1.68587e-07, -0.226362, -0.974043, 1.13513e-07, 0.974043, -0.226362, -0.180543, 2.30713, -1.1989 )
 default_text = "VRWorkout"
 
 [node name="platform" parent="." instance=ExtResource( 5 )]
@@ -203,6 +211,11 @@ offtext = "Pushup off"
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0963057, 1.252, -0.923 )
 ontext = "Burpees on"
 offtext = "Burpees off"
+
+[node name="HandPalm" type="MeshInstance" parent="."]
+transform = Transform( -0.260991, -0.0332951, -0.480455, 1.10006e-08, 0.292303, -0.22507, 0.147932, -0.0587412, -0.847647, 0.528531, 2.09364, 0.890031 )
+mesh = SubResource( 8 )
+material/0 = ExtResource( 14 )
 [connection signal="toggled" from="JumpSwitch" to="." method="_on_JumpSwitch_toggled"]
 [connection signal="toggled" from="StandSwitch" to="." method="_on_StandSwitch_toggled"]
 [connection signal="toggled" from="CrunchSwitch" to="." method="_on_CrunchSwitch_toggled"]

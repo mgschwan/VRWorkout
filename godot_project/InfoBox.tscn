@@ -37,6 +37,8 @@ margin_bottom = 40.0
 [node name="Text" type="Label" parent="ViewportInfo/CanvasLayer/VBoxContainer"]
 margin_right = 204.0
 margin_bottom = 78.0
+size_flags_horizontal = 5
+size_flags_vertical = 5
 custom_fonts/font = SubResource( 1 )
 text = "DemoText"
 
