@@ -26,6 +26,7 @@ var running_speed = 0
 var current_difficulty = 0
 var exercise_changed = true
 
+var next_exercise = CueState.STAND
 
 
 var cue_horiz = preload("res://cue_h_obj.tscn")
@@ -132,8 +133,6 @@ var last_state_change = 0.0
 
 var rng = RandomNumberGenerator.new()
 
-
-
 func state_string(state):
 	if state == CueState.STAND:
 		return "stand"
@@ -150,6 +149,27 @@ func state_string(state):
 	
 	return "unknown"
 
+func string_to_state(s):
+	var  retVal = CueState.STAND
+	if s == "stand":
+		retVal = CueState.STAND
+	elif s == "jump":
+		retVal = CueState.JUMP
+	elif s == "squat":
+		retVal = CueState.SQUAT
+	elif s == "pushup":
+		retVal = CueState.PUSHUP
+	elif s == "crunch":
+		retVal = CueState.CRUNCH
+	elif s == "burpee":
+		retVal = CueState.BURPEE
+	
+	return retVal
+
+
+
+
+
 func display_state(state):
 	var psign = get_node("PositionSign")
 	if state == CueState.STAND:
@@ -164,6 +184,9 @@ func display_state(state):
 		psign.crunch()
 	elif state == CueState.BURPEE:
 		psign.burpee()  #TODO Add Burpee Sign
+	
+	get_node("ExerciseSelector").select(state_string(state))
+	
 	
 var update_counter = 0
 func update_info(hits, max_hits, points):
@@ -704,3 +727,7 @@ func _on_boxman_beast_attack_successful():
 
 func _on_boxman_beast_killed():
 	cue_emitter.score_positive_hits(10)
+
+
+func _on_ExerciseSelector_selected(type):
+	cue_emitter_state = string_to_state(type)

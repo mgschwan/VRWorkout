@@ -1,0 +1,401 @@
+[gd_scene load_steps=23 format=2]
+
+[ext_resource path="res://stick-figure.png" type="Texture" id=1]
+[ext_resource path="res://ExerciseSign.gd" type="Script" id=2]
+[ext_resource path="res://ExerciseSelector.gd" type="Script" id=3]
+[ext_resource path="res://neon_blue.tres" type="Material" id=4]
+[ext_resource path="res://IndividualExerciseButton.gd" type="Script" id=5]
+
+[sub_resource type="PlaneMesh" id=1]
+size = Vector2( 1.5, 1.5 )
+
+[sub_resource type="SpatialMaterial" id=9]
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 0.25, 0.25, 1 )
+uv1_offset = Vector3( 0.5, 0.25, 0 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "burpee"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.5, 0.25, 0 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "crunch"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.25, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "jump"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.5, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "pushup"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.25, 0 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "squat"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.25, 0.25, 0 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "stand"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="PlaneMesh" id=16]
+size = Vector2( 1.8, 1.4 )
+
+[sub_resource type="SpatialMaterial" id=17]
+flags_transparent = true
+albedo_color = Color( 0.568627, 0.568627, 0.568627, 0.576471 )
+
+[sub_resource type="BoxShape" id=18]
+extents = Vector3( 0.898739, 0.150319, 0.663572 )
+
+[sub_resource type="SpatialMaterial" id=10]
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 0.25, 0.25, 1 )
+uv1_offset = Vector3( 0.5, 0.25, 0 )
+
+[sub_resource type="SpatialMaterial" id=11]
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 0.25, 0.25, 1 )
+uv1_offset = Vector3( 0.5, 0.25, 0 )
+
+[sub_resource type="SpatialMaterial" id=12]
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 0.25, 0.25, 1 )
+uv1_offset = Vector3( 0.5, 0.25, 0 )
+
+[sub_resource type="SpatialMaterial" id=13]
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 0.25, 0.25, 1 )
+uv1_offset = Vector3( 0.5, 0.25, 0 )
+
+[sub_resource type="SpatialMaterial" id=14]
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 0.25, 0.25, 1 )
+uv1_offset = Vector3( 0.5, 0.25, 0 )
+
+[sub_resource type="PlaneMesh" id=15]
+size = Vector2( 1.8, 1.4 )
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 3 )
+
+[node name="Standsign" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )
+material/0 = SubResource( 9 )
+script = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Standsign"]
+anims/burpee = SubResource( 3 )
+anims/crunch = SubResource( 4 )
+anims/jump = SubResource( 5 )
+anims/pushup = SubResource( 6 )
+anims/squat = SubResource( 7 )
+anims/stand = SubResource( 8 )
+
+[node name="bg" type="MeshInstance" parent="Standsign"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
+mesh = SubResource( 16 )
+material/0 = SubResource( 17 )
+
+[node name="SignBody" type="StaticBody" parent="Standsign"]
+script = ExtResource( 5 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Standsign/SignBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.122172, 0 )
+shape = SubResource( 18 )
+
+[node name="Squatsign" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 10 )
+script = ExtResource( 2 )
+current_sign = "squat"
+
+[node name="bg" type="MeshInstance" parent="Squatsign"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
+mesh = SubResource( 16 )
+material/0 = SubResource( 17 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Squatsign"]
+anims/burpee = SubResource( 3 )
+anims/crunch = SubResource( 4 )
+anims/jump = SubResource( 5 )
+anims/pushup = SubResource( 6 )
+anims/squat = SubResource( 7 )
+anims/stand = SubResource( 8 )
+
+[node name="SignBody" type="StaticBody" parent="Squatsign"]
+script = ExtResource( 5 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Squatsign/SignBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.122172, 0 )
+shape = SubResource( 18 )
+
+[node name="Pushupsign" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 11 )
+script = ExtResource( 2 )
+current_sign = "pushup"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Pushupsign"]
+anims/burpee = SubResource( 3 )
+anims/crunch = SubResource( 4 )
+anims/jump = SubResource( 5 )
+anims/pushup = SubResource( 6 )
+anims/squat = SubResource( 7 )
+anims/stand = SubResource( 8 )
+
+[node name="bg" type="MeshInstance" parent="Pushupsign"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
+mesh = SubResource( 16 )
+material/0 = SubResource( 17 )
+
+[node name="SignBody" type="StaticBody" parent="Pushupsign"]
+script = ExtResource( 5 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Pushupsign/SignBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.122172, 0 )
+shape = SubResource( 18 )
+
+[node name="Jumpsign" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.5 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 12 )
+script = ExtResource( 2 )
+current_sign = "jump"
+
+[node name="bg" type="MeshInstance" parent="Jumpsign"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
+mesh = SubResource( 16 )
+material/0 = SubResource( 17 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Jumpsign"]
+anims/burpee = SubResource( 3 )
+anims/crunch = SubResource( 4 )
+anims/jump = SubResource( 5 )
+anims/pushup = SubResource( 6 )
+anims/squat = SubResource( 7 )
+anims/stand = SubResource( 8 )
+
+[node name="SignBody" type="StaticBody" parent="Jumpsign"]
+script = ExtResource( 5 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Jumpsign/SignBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.122172, 0 )
+shape = SubResource( 18 )
+
+[node name="Crunchsign" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 13 )
+script = ExtResource( 2 )
+current_sign = "crunch"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Crunchsign"]
+anims/burpee = SubResource( 3 )
+anims/crunch = SubResource( 4 )
+anims/jump = SubResource( 5 )
+anims/pushup = SubResource( 6 )
+anims/squat = SubResource( 7 )
+anims/stand = SubResource( 8 )
+
+[node name="bg" type="MeshInstance" parent="Crunchsign"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
+mesh = SubResource( 16 )
+material/0 = SubResource( 17 )
+
+[node name="SignBody" type="StaticBody" parent="Crunchsign"]
+script = ExtResource( 5 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Crunchsign/SignBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.122172, 0 )
+shape = SubResource( 18 )
+
+[node name="Burpeesign" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.5 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 14 )
+script = ExtResource( 2 )
+current_sign = "burpee"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Burpeesign"]
+anims/burpee = SubResource( 3 )
+anims/crunch = SubResource( 4 )
+anims/jump = SubResource( 5 )
+anims/pushup = SubResource( 6 )
+anims/squat = SubResource( 7 )
+anims/stand = SubResource( 8 )
+
+[node name="bg" type="MeshInstance" parent="Burpeesign"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
+mesh = SubResource( 16 )
+material/0 = SubResource( 17 )
+
+[node name="SignBody" type="StaticBody" parent="Burpeesign"]
+script = ExtResource( 5 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Burpeesign/SignBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.122172, 0 )
+shape = SubResource( 18 )
+
+[node name="highlight" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0 )
+mesh = SubResource( 15 )
+material/0 = ExtResource( 4 )
+[connection signal="selected" from="Standsign/SignBody" to="." method="_on_SignBody_selected"]
+[connection signal="selected" from="Squatsign/SignBody" to="." method="_on_SignBody_selected"]
+[connection signal="selected" from="Pushupsign/SignBody" to="." method="_on_SignBody_selected"]
+[connection signal="selected" from="Jumpsign/SignBody" to="." method="_on_SignBody_selected"]
+[connection signal="selected" from="Crunchsign/SignBody" to="." method="_on_SignBody_selected"]
+[connection signal="selected" from="Burpeesign/SignBody" to="." method="_on_SignBody_selected"]

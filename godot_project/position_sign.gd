@@ -4,33 +4,27 @@ var music_volume = 0
 var inside_sfx = false
 
 func squat():
-	var player = get_node("MeshInstance/AnimationPlayer")
-	player.play("squat")
+	get_node("ExerciseSign").play("squat")
 	play_sfx("player_squat")
 	
 func stand():
-	var player = get_node("MeshInstance/AnimationPlayer")
-	player.play("stand")
+	get_node("ExerciseSign").play("stand")
 	play_sfx("player_stand")
 
 func jump():
-	var player = get_node("MeshInstance/AnimationPlayer")
-	player.play("jump")
+	get_node("ExerciseSign").play("jump")
 	play_sfx("player_jump")
 
 func pushup():
-	var player = get_node("MeshInstance/AnimationPlayer")
-	player.play("pushup")
+	get_node("ExerciseSign").play("pushup")
 	play_sfx("player_pushup")
 
 func crunch():
-	var player = get_node("MeshInstance/AnimationPlayer")
-	player.play("crunch")
+	get_node("ExerciseSign").play("crunch")
 	play_sfx("player_crunch")
 
 func burpee():
-	var player = get_node("MeshInstance/AnimationPlayer")
-	player.play("burpee")
+	get_node("ExerciseSign").play("burpee")
 	play_sfx("player_burpee")
 
 

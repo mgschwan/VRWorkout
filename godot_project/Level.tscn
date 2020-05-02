@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://spawn_timer.gd" type="Script" id=2]
@@ -18,6 +18,7 @@
 [ext_resource path="res://boxman_character.tscn" type="PackedScene" id=16]
 [ext_resource path="res://PointIndicatorOrigin.tscn" type="PackedScene" id=17]
 [ext_resource path="res://floor_sign.tscn" type="PackedScene" id=18]
+[ext_resource path="res://ExerciseSelector.tscn" type="PackedScene" id=19]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -169,6 +170,9 @@ transform = Transform( 0.763243, 0, -0.476927, 0, 0.9, 0, 0.476927, 0, 0.763243,
 
 [node name="FloorSign" parent="." instance=ExtResource( 18 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0706311 )
+
+[node name="ExerciseSelector" parent="." instance=ExtResource( 19 )]
+transform = Transform( -8.74228e-09, -0.2, 8.74228e-09, 0, -8.74228e-09, -0.2, 0.2, -8.74228e-09, 3.82137e-16, 1.11235, 0.315031, -0.350501 )
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
 [connection signal="timeout" from="UpdateTimer" to="." method="_on_UpdateTimer_timeout"]
@@ -176,3 +180,4 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0706311 )
 [connection signal="beast_killed" from="boxman" to="." method="_on_boxman_beast_killed"]
 [connection signal="beast_attack_successful" from="boxman2" to="." method="_on_boxman_beast_attack_successful"]
 [connection signal="beast_killed" from="boxman2" to="." method="_on_boxman_beast_killed"]
+[connection signal="selected" from="ExerciseSelector" to="." method="_on_ExerciseSelector_selected"]

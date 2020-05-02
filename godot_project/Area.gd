@@ -9,6 +9,7 @@ func _ready():
 	hit_player = get_node("hit_player")
 
 func _on_Area_body_entered(body):
+	print ("Touched %s"%body.name)
 	if body.has_method("has_been_hit"):
 		if body.cue_type == "hand":
 			var controller = get_parent()
