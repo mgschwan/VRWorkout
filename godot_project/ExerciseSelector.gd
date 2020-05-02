@@ -5,6 +5,8 @@ signal selected(type)
 export var selected = "stand"
 var step = -1.5
 
+var first_hit = ""
+
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -35,7 +37,11 @@ func select(item):
 	selected = item
 	update_selector()
 
-
+#Sign has to be hit twice to prevent accidential selection
 func _on_SignBody_selected(item):
-	select(item)	
-	emit_signal("selected",item)
+	if item == first_hit:
+		select(item)	
+		emit_signal("selected",item)
+		first_hit = ""
+	else:
+		first_hit = item

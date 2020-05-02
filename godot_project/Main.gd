@@ -93,7 +93,7 @@ var cue_paramerters = {
 		CueSelector.HAND : {
 			"xrange" : 0.1,
 			"xspread" : 0.2,
-			"yoffset" : 0.8,
+			"yoffset" : 0.9,
 			"yrange" : 0.2
 		}
 	},	
@@ -501,7 +501,7 @@ func handle_burpee_cues(target_time):
 	elif burpee_state == BurpeeState.PUSHUP_LOW:
 		switch_floor_sign("hands")
 		y_head = 0.3
-		temporary_cue_space_extension = 1.5
+		temporary_cue_space_extension = 0.9
 	else:
 		switch_floor_sign("feet")
 		y_head = player_height + jump_offset
@@ -612,6 +612,18 @@ func handle_pushup_cues(target_time):
 			create_and_attach_cue("left", x, y_hand, target_time + hand_delay, -hand_delay * dd_df)
 		temporary_cue_space_extension = 2.5
 
+func internal_state_change():
+	state_changed = true
+	last_state_change = cue_emitter.current_playback_time
+	infolayer.print_info(state_string(cue_emitter_state).to_upper(), "main")
+	get_node("PositionSign").start_sign(cue_emitter.translation, get_node("target").translation, emit_early)
+	if not boxman1.in_beast_mode:
+		switch_boxman(cue_emitter_state,"boxman")
+	if not boxman2.in_beast_mode:
+		switch_boxman(cue_emitter_state,"boxman2")
+	display_state(cue_emitter_state)
+
+var state_changed = false
 func emit_cue_node(target_time):
 	print ("State: %s"%state_string(cue_emitter_state))
 	# Increase the cue speed for hand cues
@@ -620,20 +632,11 @@ func emit_cue_node(target_time):
 	else:
 		min_cue_space = level_min_cue_space
 			
-	var state_changed = false
 	if last_state_change + min_state_duration < cue_emitter.current_playback_time:
 		var old_state = cue_emitter_state
 		cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model)
 		if old_state != cue_emitter_state:
-			state_changed = true
-			last_state_change = cue_emitter.current_playback_time
-			infolayer.print_info(state_string(cue_emitter_state).to_upper(), "main")
-			get_node("PositionSign").start_sign(cue_emitter.translation, get_node("target").translation, emit_early)
-			if not boxman1.in_beast_mode:
-				switch_boxman(cue_emitter_state,"boxman")
-			if not boxman2.in_beast_mode:
-				switch_boxman(cue_emitter_state,"boxman2")
-			display_state(cue_emitter_state)
+			internal_state_change()
 			
 	if cue_emitter_state == CueState.STAND and beast_mode:
 		if not boxman1.in_beast_mode and not boxman2.in_beast_mode:
@@ -659,6 +662,7 @@ func emit_cue_node(target_time):
 		exercise_changed = false
 	else:
 		exercise_changed = true
+		state_changed = false
 		
 func switch_boxman(state, name):
 	var boxman = get_node(name)
@@ -731,3 +735,6 @@ func _on_boxman_beast_killed():
 
 func _on_ExerciseSelector_selected(type):
 	cue_emitter_state = string_to_state(type)
+	last_state_change = cue_emitter.current_playback_time
+	internal_state_change()
+

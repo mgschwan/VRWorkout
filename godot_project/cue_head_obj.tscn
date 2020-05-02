@@ -112,7 +112,7 @@ transform = Transform( 1.01034, 0.000906242, 0.00129629, -0.000902207, 1.0155, 0
 shape = SubResource( 4 )
 
 [node name="CollisionShapeExtended" type="CollisionShape" parent="."]
-transform = Transform( 1.01034, 0.000906242, 0.00129629, -0.000902207, 1.0155, 0.000442253, -0.0012959, -0.000445667, 1.01034, 0, -0.0136241, 3.88151 )
+transform = Transform( 1.01034, 0.000906242, 0.00129629, -0.000902207, 1.0155, 0.000442253, -0.0012959, -0.000445667, 1.01034, 0, -0.0136241, -0.0181158 )
 shape = SubResource( 5 )
 disabled = true
 
