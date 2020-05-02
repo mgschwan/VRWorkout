@@ -36,17 +36,23 @@ __Please enable "Hand Tracking" in the experimental features section of your Ocu
 
 ## How to play
 
+* Try to hit the hand cues to the beat of the music. Play with **open palms** to improve tacking
+* The head cue has to be touched with your head. Just touch it, no headbutting
+* Run in place to receive point multipliers, up to 4x
+* If you want to switch out an exercise during play double tap the new exercise twice in the exercise selector to your right
 
-Upon start you will see several different blocks. Touch one of them to select a level and difficulty. 
-Try to stand as upright as possible for the game to determine your height.
+The optimal time to hit the cues is when the marker that rotates around the cue touches the second one.
 
-Try to hit the hand cues when they are between the two blue poles, you can also see the correct time for the hit when the two white markers at each cue start to overlap. The head cue has to be touched (not hit) with your head (don't try to headbutt them).
+Upon start you will see several different blocks. Touch one of them at the desired difficulty spot to select a level and difficulty.
+To disable exercises switch them on/off with the switches to your left.
 
-Jog in place to receive a point multiplier, run faster to get up to 4x points.
+Exiting a stage during play:  On the top of the left blue pole is a sign to exit a stage.
 
 __Freeplay mode__
 
-To play along your own songs just play them on your own device (smartphone, sound system, smart speaker) and drum in the beats on the blue drum. Once you are satisfied with the beat start one of the Freeplay modes. They will only play the soundeffects and emit the cues according to the beat you have set.
+Play with your own music in Freeplay mode*
+Put on some music in the background (maybe using the nullnMusic player) and hit the blue drum in the main menu to the beat of the music.
+Once the beat is set select one of the freeplay modes to your right. They will send the cues according to the BPM you set but without playing any music.
 
 __Beast mode__
 
