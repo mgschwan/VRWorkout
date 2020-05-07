@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://GrooveDisplay.gd" type="Script" id=2]
+
+[sub_resource type="SphereMesh" id=1]
+radius = 0.1
+height = 0.1
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_transparent = true
+flags_unshaded = true
+albedo_color = Color( 0.996078, 1, 0.392157, 0.611765 )
+
+[sub_resource type="Animation" id=3]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ), Vector3( 3, 3, 3 ), Vector3( 1, 1, 1 ) ]
+}
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="FirstLevel" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="Tween" type="Tween" parent="FirstLevel"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FirstLevel"]
+anims/beat = SubResource( 3 )

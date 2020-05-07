@@ -20,6 +20,8 @@ var jump_offset = 0.42
 var player_height = 0
 var run_point_multiplier = 1
 var beast_mode
+var redistribution_speed = 0.05
+
 	
 var running_speed = 0
 	
@@ -27,6 +29,8 @@ var current_difficulty = 0
 var exercise_changed = true
 
 var next_exercise = CueState.STAND
+
+var groove_display
 
 
 var cue_horiz = preload("res://cue_h_obj.tscn")
@@ -213,6 +217,8 @@ func _ready():
 	boxman1 = get_node("boxman")
 	boxman2 = get_node("boxman2")
 	
+	groove_display = get_node("GrooveDisplay")
+	
 	update_cue_timing()
 	
 	var songs = File.new()
@@ -287,8 +293,14 @@ func setup_difficulty(d):
 var last_playback_time = 0
 func _process(delta):
 	#cue_emitter.current_playback_time += delta
-	cue_emitter.current_playback_time = stream.get_playback_position()
+	cue_emitter.current_playback_time = stream.get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
 	if beat_index < len(beats)-1 and cue_emitter.current_playback_time + emit_early > beats[beat_index]:	
+
+		if beat_index % 2 == 0:
+			if beat_index < len(beats)-2:
+				groove_display.set_next_beat(beats[beat_index+2]-cue_emitter.current_playback_time, 1)
+		groove_display.set_next_beat(beats[beat_index]-cue_emitter.current_playback_time, 0)	
+		
 		if last_emit + min_cue_space < cue_emitter.current_playback_time and last_state_change + state_transition_pause < cue_emitter.current_playback_time:		
 			if last_emit + temporary_cue_space_extension <  cue_emitter.current_playback_time:
 				temporary_cue_space_extension = 0
@@ -299,7 +311,7 @@ func _process(delta):
 		beat_index += 1
 		infolayer.print_info("FINISHED", "main")
 	
-	if cue_emitter.current_playback_time < last_playback_time:
+	if cue_emitter.current_playback_time < last_playback_time - 1.0:
 		stream.stop()
 	else:		
 		last_playback_time = cue_emitter.current_playback_time
@@ -415,16 +427,55 @@ func populate_state_model():
 					exercise_state_model[key][key_2] = val
 	print (str(exercise_state_model))
 
-func state_transition(old_state, state_model):
+func update_distribution(distribution, index, delta):
+	var tmp = delta / len(distribution)
+	var total = 0
+	for k in distribution.keys():
+		if k != index:
+			distribution[k] = min(0.99, distribution[k] + tmp)
+			total = total + distribution[k]
+	distribution[index] = max (0.01, distribution[index]-delta)
+	total = total + distribution[index]
+	for k in distribution.keys():
+		distribution[k] = distribution[k] / total
+	return distribution
+	
+
+# If current_distribution is set the probabilities are normalized by the actual distribution
+func state_transition(old_state, state_model, current_distribution = null):
+	var probabilities = state_model[old_state]
+	print ("Probabilities pre: %s"%str(probabilities))
+	if len(probabilities) < len(state_model):
+		var sum = 0
+		for k in probabilities.keys():
+			sum = sum + probabilities[k]
+		probabilities[old_state] = max(0,100-sum)
+			
+	if current_distribution != null:
+		if len(current_distribution) < len(state_model):
+			current_distribution.clear()
+			for k in state_model.keys():
+				current_distribution[k] = 1.0/len(state_model)
+		var total = 0
+		for k in probabilities.keys():
+			probabilities[k] = probabilities[k] * current_distribution[k]
+			total = total + probabilities[k]
+		for k in probabilities.keys():
+			probabilities[k] = 100 * probabilities[k] / total
+		print ("Probabilities: %s"%str(probabilities))
 	var state_selector = rng.randi()%100
 	var new_state = old_state
-	var probabilities = state_model[old_state]
+	
 	var cumulative_probability = 0
 	for k in probabilities.keys():
 		cumulative_probability += probabilities[k]
 		if state_selector < cumulative_probability:
 			new_state = k
 			break
+	
+	if current_distribution != null:
+		current_distribution = update_distribution(current_distribution, new_state, redistribution_speed)
+		print ("Distribution: %s"%str(current_distribution))
 	return new_state
 	
 	
@@ -575,11 +626,13 @@ var pushup_state_model = { PushupState.REGULAR : { PushupState.LEFT_HAND : 15, P
 					};
 	
 var pushup_state = PushupState.REGULAR
-	
+
+var pushup_distribution = {}
+
 func handle_pushup_cues(target_time):
 	switch_floor_sign("hands")
 	
-	pushup_state = state_transition (pushup_state, pushup_state_model)
+	pushup_state = state_transition (pushup_state, pushup_state_model, pushup_distribution)
 	
 	var node_selector = rng.randi()%100
 

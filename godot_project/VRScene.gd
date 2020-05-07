@@ -1,7 +1,8 @@
 extends Spatial
 
-var level_blueprint = preload("res://Level.tscn")
-var levelselect_blueprint = preload("res://Levelselect.tscn")
+var level_blueprint = null 
+var levelselect_blueprint = null  
+var splashscreen = preload("res://Splashscreen.tscn").instance()
 var levelselect
 var level = null
 var cam = null
@@ -136,16 +137,19 @@ func initialize():
 		#Not running in VR / Demo mode
 		cam.translation.y = 1.5
 		cam.rotation.x = -0.4
-		get_node("ARVROrigin/right_controller/AreaRight/DemoTimer").start()
 
 	
 	
-	
+
 	
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	setup_globals()
+	splashscreen.head_node = get_node("ARVROrigin/ARVRCamera")
+	splashscreen.connect("splash_screen_finished", self,"_on_Splashscreen_finished")
+	add_child(splashscreen)
+	
 	for i in range(200):
 		player_height_stat.append(0)
 
@@ -173,9 +177,11 @@ func _ready():
 		ball_r.show()
 	
 	get_node("ARVROrigin/ARVRCamera").vr_mode = vr_mode
-	levelselect = levelselect_blueprint.instance()
-	levelselect.translation = Vector3(0,0,0)
-	add_child(levelselect)
+	
+	
+	level_blueprint = preload("res://Level.tscn")
+	levelselect_blueprint = preload("res://Levelselect.tscn")
+
 	
 func _on_level_finished	():
 	if record_tracker_data:
@@ -336,6 +342,14 @@ func set_beast_mode(enabled):
 	ProjectSettings.set("game/beast_mode",enabled)
 	left_controller.set_beast_mode(enabled)
 	right_controller.set_beast_mode(enabled)
-	
-	
-	
+
+
+func _on_Splashscreen_finished():
+	levelselect = levelselect_blueprint.instance()
+	levelselect.translation = Vector3(0,0,0)
+
+	splashscreen.queue_free()
+	add_child(levelselect)
+	if not vr_mode:
+		get_node("ARVROrigin/right_controller/AreaRight/DemoTimer").start()
+

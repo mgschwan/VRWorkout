@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://spawn_timer.gd" type="Script" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://PointIndicatorOrigin.tscn" type="PackedScene" id=17]
 [ext_resource path="res://floor_sign.tscn" type="PackedScene" id=18]
 [ext_resource path="res://ExerciseSelector.tscn" type="PackedScene" id=19]
+[ext_resource path="res://GrooveDisplay.tscn" type="PackedScene" id=20]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -140,7 +141,7 @@ wait_time = 0.1
 autostart = true
 
 [node name="RunIndicator" parent="." instance=ExtResource( 15 )]
-transform = Transform( 0.911698, 0, 0.410862, 0, 1, 0, -0.410862, 0, 0.911698, -2.53434, 1.96339, -8.99281 )
+transform = Transform( 0.986972, 0, 0.160897, 0, 1, 0, -0.160897, 0, 0.986972, 0.15379, 2.56887, -10.2223 )
 
 [node name="scene" parent="." instance=ExtResource( 7 )]
 transform = Transform( -8.74228e-09, 0, -0.2, 0, 0.2, 0, 0.2, 0, -8.74228e-09, -0.961048, -0.195288, -0.521821 )
@@ -173,6 +174,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0706311 )
 
 [node name="ExerciseSelector" parent="." instance=ExtResource( 19 )]
 transform = Transform( -8.74228e-09, -0.2, 8.74228e-09, 0, -8.74228e-09, -0.2, 0.2, -8.74228e-09, 3.82137e-16, 1.11235, 0.315031, -0.350501 )
+
+[node name="GrooveDisplay" parent="." instance=ExtResource( 20 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 2.36304, -4.23735 )
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
 [connection signal="timeout" from="UpdateTimer" to="." method="_on_UpdateTimer_timeout"]
