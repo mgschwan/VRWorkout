@@ -20,7 +20,7 @@ var jump_offset = 0.42
 var player_height = 0
 var run_point_multiplier = 1
 var beast_mode
-var redistribution_speed = 0.05
+var redistribution_speed = 0.025
 
 	
 var running_speed = 0

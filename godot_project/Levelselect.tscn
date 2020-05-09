@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
 [ext_resource path="res://dark_green.tres" type="Material" id=13]
 [ext_resource path="res://assets/palm_fist.jpg" type="Texture" id=14]
+[ext_resource path="res://Tutorial.tscn" type="PackedScene" id=15]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -226,6 +227,9 @@ offtext = "Burpees off"
 transform = Transform( -0.266796, -0.137152, -0.0100947, 0.00230991, 0.00213046, -0.999945, 0.137166, -0.266805, -0.00279537, 0.676758, 1.64896, 1.08787 )
 mesh = SubResource( 7 )
 material/0 = SubResource( 8 )
+
+[node name="TutorialVideo" parent="." instance=ExtResource( 15 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.04662, 0.781789, -1.70517e-07 )
 [connection signal="toggled" from="JumpSwitch" to="." method="_on_JumpSwitch_toggled"]
 [connection signal="toggled" from="StandSwitch" to="." method="_on_StandSwitch_toggled"]
 [connection signal="toggled" from="CrunchSwitch" to="." method="_on_CrunchSwitch_toggled"]

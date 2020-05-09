@@ -4,7 +4,7 @@
 [ext_resource path="res://InfoBox.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFont" id=1]
-size = 64
+size = 52
 font_data = ExtResource( 1 )
 
 [sub_resource type="PlaneMesh" id=2]
@@ -36,7 +36,7 @@ margin_bottom = 40.0
 
 [node name="Text" type="Label" parent="ViewportInfo/CanvasLayer/VBoxContainer"]
 margin_right = 204.0
-margin_bottom = 78.0
+margin_bottom = 63.0
 size_flags_horizontal = 5
 size_flags_vertical = 5
 custom_fonts/font = SubResource( 1 )

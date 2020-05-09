@@ -9,7 +9,7 @@
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 1.5, 1.5 )
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=2]
 flags_transparent = true
 flags_unshaded = true
 albedo_texture = ExtResource( 1 )
@@ -178,29 +178,15 @@ tracks/1/keys = {
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 
-[sub_resource type="PlaneMesh" id=16]
+[sub_resource type="PlaneMesh" id=9]
 size = Vector2( 1.8, 1.4 )
-
-[sub_resource type="SpatialMaterial" id=17]
-flags_transparent = true
-albedo_color = Color( 0.568627, 0.568627, 0.568627, 0.576471 )
-
-[sub_resource type="BoxShape" id=18]
-extents = Vector3( 0.898739, 0.150319, 0.663572 )
 
 [sub_resource type="SpatialMaterial" id=10]
 flags_transparent = true
-flags_unshaded = true
-albedo_texture = ExtResource( 1 )
-uv1_scale = Vector3( 0.25, 0.25, 1 )
-uv1_offset = Vector3( 0.5, 0.25, 0 )
+albedo_color = Color( 0.568627, 0.568627, 0.568627, 0.576471 )
 
-[sub_resource type="SpatialMaterial" id=11]
-flags_transparent = true
-flags_unshaded = true
-albedo_texture = ExtResource( 1 )
-uv1_scale = Vector3( 0.25, 0.25, 1 )
-uv1_offset = Vector3( 0.5, 0.25, 0 )
+[sub_resource type="BoxShape" id=11]
+extents = Vector3( 0.898739, 0.150319, 0.663572 )
 
 [sub_resource type="SpatialMaterial" id=12]
 flags_transparent = true
@@ -223,7 +209,21 @@ albedo_texture = ExtResource( 1 )
 uv1_scale = Vector3( 0.25, 0.25, 1 )
 uv1_offset = Vector3( 0.5, 0.25, 0 )
 
-[sub_resource type="PlaneMesh" id=15]
+[sub_resource type="SpatialMaterial" id=15]
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 0.25, 0.25, 1 )
+uv1_offset = Vector3( 0.5, 0.25, 0 )
+
+[sub_resource type="SpatialMaterial" id=16]
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 0.25, 0.25, 1 )
+uv1_offset = Vector3( 0.5, 0.25, 0 )
+
+[sub_resource type="PlaneMesh" id=17]
 size = Vector2( 1.8, 1.4 )
 
 [node name="Spatial" type="Spatial"]
@@ -231,7 +231,7 @@ script = ExtResource( 3 )
 
 [node name="Standsign" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )
-material/0 = SubResource( 9 )
+material/0 = SubResource( 2 )
 script = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Standsign"]
@@ -244,27 +244,27 @@ anims/stand = SubResource( 8 )
 
 [node name="bg" type="MeshInstance" parent="Standsign"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
-mesh = SubResource( 16 )
-material/0 = SubResource( 17 )
+mesh = SubResource( 9 )
+material/0 = SubResource( 10 )
 
 [node name="SignBody" type="StaticBody" parent="Standsign"]
 script = ExtResource( 5 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Standsign/SignBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.122172, 0 )
-shape = SubResource( 18 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.8, 0, -0.209, 0 )
+shape = SubResource( 11 )
 
 [node name="Squatsign" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5 )
 mesh = SubResource( 1 )
-material/0 = SubResource( 10 )
+material/0 = SubResource( 12 )
 script = ExtResource( 2 )
 current_sign = "squat"
 
 [node name="bg" type="MeshInstance" parent="Squatsign"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
-mesh = SubResource( 16 )
-material/0 = SubResource( 17 )
+mesh = SubResource( 9 )
+material/0 = SubResource( 10 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Squatsign"]
 anims/burpee = SubResource( 3 )
@@ -278,13 +278,13 @@ anims/stand = SubResource( 8 )
 script = ExtResource( 5 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Squatsign/SignBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.122172, 0 )
-shape = SubResource( 18 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.8, 0, -0.209, 0 )
+shape = SubResource( 11 )
 
 [node name="Pushupsign" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3 )
 mesh = SubResource( 1 )
-material/0 = SubResource( 11 )
+material/0 = SubResource( 13 )
 script = ExtResource( 2 )
 current_sign = "pushup"
 
@@ -298,27 +298,27 @@ anims/stand = SubResource( 8 )
 
 [node name="bg" type="MeshInstance" parent="Pushupsign"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
-mesh = SubResource( 16 )
-material/0 = SubResource( 17 )
+mesh = SubResource( 9 )
+material/0 = SubResource( 10 )
 
 [node name="SignBody" type="StaticBody" parent="Pushupsign"]
 script = ExtResource( 5 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Pushupsign/SignBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.122172, 0 )
-shape = SubResource( 18 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.8, 0, -0.209, 0 )
+shape = SubResource( 11 )
 
 [node name="Jumpsign" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.5 )
 mesh = SubResource( 1 )
-material/0 = SubResource( 12 )
+material/0 = SubResource( 14 )
 script = ExtResource( 2 )
 current_sign = "jump"
 
 [node name="bg" type="MeshInstance" parent="Jumpsign"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
-mesh = SubResource( 16 )
-material/0 = SubResource( 17 )
+mesh = SubResource( 9 )
+material/0 = SubResource( 10 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Jumpsign"]
 anims/burpee = SubResource( 3 )
@@ -332,13 +332,13 @@ anims/stand = SubResource( 8 )
 script = ExtResource( 5 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Jumpsign/SignBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.122172, 0 )
-shape = SubResource( 18 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.8, 0, -0.209, 0 )
+shape = SubResource( 11 )
 
 [node name="Crunchsign" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6 )
 mesh = SubResource( 1 )
-material/0 = SubResource( 13 )
+material/0 = SubResource( 15 )
 script = ExtResource( 2 )
 current_sign = "crunch"
 
@@ -352,20 +352,20 @@ anims/stand = SubResource( 8 )
 
 [node name="bg" type="MeshInstance" parent="Crunchsign"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
-mesh = SubResource( 16 )
-material/0 = SubResource( 17 )
+mesh = SubResource( 9 )
+material/0 = SubResource( 10 )
 
 [node name="SignBody" type="StaticBody" parent="Crunchsign"]
 script = ExtResource( 5 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Crunchsign/SignBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.122172, 0 )
-shape = SubResource( 18 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.8, 0, -0.209, 0 )
+shape = SubResource( 11 )
 
 [node name="Burpeesign" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.5 )
 mesh = SubResource( 1 )
-material/0 = SubResource( 14 )
+material/0 = SubResource( 16 )
 script = ExtResource( 2 )
 current_sign = "burpee"
 
@@ -379,19 +379,19 @@ anims/stand = SubResource( 8 )
 
 [node name="bg" type="MeshInstance" parent="Burpeesign"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
-mesh = SubResource( 16 )
-material/0 = SubResource( 17 )
+mesh = SubResource( 9 )
+material/0 = SubResource( 10 )
 
 [node name="SignBody" type="StaticBody" parent="Burpeesign"]
 script = ExtResource( 5 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Burpeesign/SignBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.122172, 0 )
-shape = SubResource( 18 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.8, 0, -0.209451, 0 )
+shape = SubResource( 11 )
 
 [node name="highlight" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0 )
-mesh = SubResource( 15 )
+mesh = SubResource( 17 )
 material/0 = ExtResource( 4 )
 [connection signal="selected" from="Standsign/SignBody" to="." method="_on_SignBody_selected"]
 [connection signal="selected" from="Squatsign/SignBody" to="." method="_on_SignBody_selected"]

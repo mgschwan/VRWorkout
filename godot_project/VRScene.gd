@@ -308,8 +308,6 @@ func _process(delta):
 		tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
 
 
-
-
 func _on_Area_level_selected(num, diff):
 	if level == null:
 		set_beast_mode(ProjectSettings.get("game/beast_mode"))

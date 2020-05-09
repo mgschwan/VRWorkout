@@ -10,24 +10,24 @@
 flags_unshaded = true
 albedo_texture = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=3]
 size = 20
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
 font_data = ExtResource( 2 )
 
-[sub_resource type="PlaneMesh" id=3]
+[sub_resource type="PlaneMesh" id=4]
 size = Vector2( 2, 1 )
 
-[sub_resource type="ViewportTexture" id=4]
+[sub_resource type="ViewportTexture" id=5]
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="SpatialMaterial" id=5]
+[sub_resource type="SpatialMaterial" id=6]
 resource_local_to_scene = true
 flags_transparent = true
 flags_unshaded = true
 albedo_color = Color( 1, 1, 1, 0.619608 )
-albedo_texture = SubResource( 4 )
+albedo_texture = SubResource( 5 )
 
 [sub_resource type="Environment" id=7]
 background_mode = 1
@@ -56,7 +56,7 @@ margin_bottom = 256.0
 [node name="RichTextLabel" type="RichTextLabel" parent="Viewport/CanvasLayer/MarginContainer"]
 margin_right = 507.0
 margin_bottom = 251.0
-custom_fonts/normal_font = SubResource( 6 )
+custom_fonts/normal_font = SubResource( 3 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "DISCLAIMER: Use at your own risk!
@@ -77,8 +77,8 @@ scroll_active = false
 
 [node name="Text" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.366095, -0.930577, 0, 0.930577, 0.366095, 0, 0.281223, -1.177 )
-mesh = SubResource( 3 )
-material/0 = SubResource( 5 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 6 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 7 )

@@ -22,7 +22,7 @@ var min_nod_rot = PI/6.0
 
 var nod_count = 0
 var last_down_count = 0
-var nod_target = 8
+var nod_target = 5
 
 func _process(delta):
 	var r = head_node.rotation.x

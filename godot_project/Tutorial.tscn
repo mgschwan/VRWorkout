@@ -1,31 +1,20 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/pushup_sample.webm" type="VideoStream" id=1]
-
-[sub_resource type="ViewportTexture" id=3]
-viewport_path = NodePath("Viewport")
-
-[sub_resource type="SpatialMaterial" id=1]
-resource_local_to_scene = true
-albedo_texture = SubResource( 3 )
-
-[sub_resource type="PlaneMesh" id=2]
-material = SubResource( 1 )
-size = Vector2( 1.92, 1.08 )
+[ext_resource path="res://VideoWall.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ExerciseSelector.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Tutorial.gd" type="Script" id=3]
+[ext_resource path="res://InfoBox.tscn" type="PackedScene" id=4]
 
 [node name="Spatial" type="Spatial"]
+script = ExtResource( 3 )
 
-[node name="Viewport" type="Viewport" parent="."]
-size = Vector2( 1024, 512 )
-render_target_v_flip = true
-render_target_update_mode = 3
+[node name="Selector" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.1, 0, 0, 0, -2.18557e-08, -0.1, 0, 0.5, -4.37114e-09, 0.552336, 0, 0 )
 
-[node name="VideoPlayer" type="VideoPlayer" parent="Viewport"]
-margin_right = 40.0
-margin_bottom = 40.0
-stream = ExtResource( 1 )
-autoplay = true
+[node name="Videowall" parent="." instance=ExtResource( 1 )]
+transform = Transform( 2, 0, 0, 0, -8.74228e-08, -2, 0, 2, -8.74228e-08, 0, 0.548099, -1.86683 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-mesh = SubResource( 2 )
-material/0 = null
+[node name="Title" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.47715, -1.84014 )
+default_text = "demo"
+[connection signal="selected" from="Selector" to="." method="_on_Selector_selected"]
