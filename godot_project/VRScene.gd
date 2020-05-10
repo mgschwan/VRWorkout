@@ -9,7 +9,7 @@ var cam = null
 var difficulty = 0
 var height = 1.8
 var vr_mode = true
-export var beast_mode = false
+var beast_mode = false
 export var record_tracker_data = false
 
 
@@ -181,8 +181,7 @@ func _ready():
 	
 	level_blueprint = preload("res://Level.tscn")
 	levelselect_blueprint = preload("res://Levelselect.tscn")
-
-	
+		
 func _on_level_finished	():
 	if record_tracker_data:
 		print ("Storing tracker data")

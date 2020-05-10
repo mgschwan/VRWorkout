@@ -20,6 +20,7 @@ var jump_offset = 0.42
 var player_height = 0
 var run_point_multiplier = 1
 var beast_mode
+var stand_avoid_head_cue = 0.5
 var redistribution_speed = 0.025
 
 	
@@ -36,6 +37,7 @@ var groove_display
 var cue_horiz = preload("res://cue_h_obj.tscn")
 var cue_vert = preload("res://cue_v_obj.tscn")
 var cue_head = preload("res://cue_head_obj.tscn")
+var cue_head_avoid = preload("res://cue_head_obj_avoid.tscn")
 var environment = preload("res://outdoor_env.tres")
 var infolayer
 
@@ -208,6 +210,9 @@ func _ready():
 		rng.set_seed(0)
 		
 	populate_state_model()
+	beast_mode = ProjectSettings.get("game/beast_mode")
+	
+	
 	cue_emitter_state = get_start_exercise()
 		
 	infolayer = get_node("Viewport/InfoLayer")
@@ -277,7 +282,7 @@ func setup_difficulty(d):
 	if d == 2:
 		level_min_cue_space = 0.5
 		level_min_state_duration = 10.0 
-		beast_chance = 0.4
+		beast_chance = 0.3
 	elif d == 1:
 		level_min_cue_space = 1.0
 		level_min_state_duration = 15.0 
@@ -353,9 +358,12 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 		cue_node = cue_vert.instance()
 	else:
 		head_y_pos = y
-		cue_node = cue_head.instance()
-		if cue_type == "head_extended":
-			cue_node.extended = true
+		if cue_type == "head_avoid":
+			cue_node = cue_head_avoid.instance()
+		else:
+			cue_node = cue_head.instance()
+			if cue_type == "head_extended":
+				cue_node.extended = true
 			
 	cue_node.target_time = target_time
 	cue_node.start_time = cue_emitter.current_playback_time
@@ -510,6 +518,10 @@ func handle_stand_cues(target_time):
 				var n2 = create_and_attach_cue("right", x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time + double_punch_delay, -hand_cue_offset-double_punch_delay*dd_df)
 				n.activate_path_cue(n2)
 	else:
+		if rng.randf() < stand_avoid_head_cue:
+			create_and_attach_cue("head_avoid", x_head-0.4, y_head, target_time)
+			create_and_attach_cue("head_avoid", x_head+0.4, y_head, target_time)
+			create_and_attach_cue("head_avoid", x_head, y_head, target_time, 0.4)
 		create_and_attach_cue("head", x_head, y_head, target_time)
 	
 	
@@ -690,10 +702,11 @@ func emit_cue_node(target_time):
 		cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model)
 		if old_state != cue_emitter_state:
 			internal_state_change()
-			
+
 	if cue_emitter_state == CueState.STAND and beast_mode:
 		if not boxman1.in_beast_mode and not boxman2.in_beast_mode:
-			if rng.randf() < beast_chance:
+			var beast_tmp = rng.randf()
+			if beast_tmp < beast_chance:
 				var boxman = boxman1 
 				if rng.randf() < 0.5:
 					 boxman = boxman2

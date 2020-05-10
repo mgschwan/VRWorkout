@@ -8,6 +8,8 @@ var target_time = 0.0
 var start_time = 0.0
 var cue_type = "head"
 var extended = false
+export var avoid = false
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

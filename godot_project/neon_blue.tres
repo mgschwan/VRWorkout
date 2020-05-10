@@ -1,6 +1,9 @@
 [gd_resource type="SpatialMaterial" format=2]
 
 [resource]
+params_cull_mode = 2
+params_grow = true
+params_grow_amount = 0.01
 albedo_color = Color( 0.133333, 0, 0.611765, 1 )
 emission_enabled = true
 emission = Color( 0, 0.0235294, 0.403922, 1 )

@@ -19,7 +19,7 @@ func _ready():
 #	pass
 
 func score_negative_hits(hits):
-	self.hits = max(self.hits-10, 0)
+	self.hits = max(self.hits-hits, 0)
 	max_hits += hits
 	point_indicator.emit_text("-%d hits"%hits, "red")
 
