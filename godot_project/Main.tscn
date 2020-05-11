@@ -22,17 +22,17 @@
 [sub_resource type="SphereShape" id=1]
 radius = 0.2
 
-[sub_resource type="CubeMesh" id=4]
+[sub_resource type="CubeMesh" id=2]
 
-[sub_resource type="SpatialMaterial" id=5]
+[sub_resource type="SpatialMaterial" id=3]
 flags_transparent = true
 flags_unshaded = true
 params_cull_mode = 2
 albedo_color = Color( 0.752941, 0, 0, 0.345098 )
 
-[sub_resource type="SphereShape" id=2]
+[sub_resource type="SphereShape" id=4]
 
-[sub_resource type="SphereMesh" id=3]
+[sub_resource type="SphereMesh" id=5]
 
 [node name="VRScene" type="Spatial"]
 script = ExtResource( 1 )
@@ -40,6 +40,7 @@ script = ExtResource( 1 )
 [node name="ARVROrigin" type="ARVROrigin" parent="."]
 
 [node name="ARVRCamera" type="ARVRCamera" parent="ARVROrigin"]
+far = 200.0
 script = ExtResource( 2 )
 
 [node name="AreaHead" type="Area" parent="ARVROrigin/ARVRCamera"]
@@ -55,8 +56,8 @@ volume_db = 3.969
 [node name="ScreenTint" type="MeshInstance" parent="ARVROrigin/ARVRCamera"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
 visible = false
-mesh = SubResource( 4 )
-material/0 = SubResource( 5 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
 
 [node name="left_controller" type="ARVRController" parent="ARVROrigin"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1.6, 0 )
@@ -68,7 +69,7 @@ script = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="ARVROrigin/left_controller/AreaLeft"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.0654641 )
-shape = SubResource( 2 )
+shape = SubResource( 4 )
 
 [node name="Spatial" parent="ARVROrigin/left_controller/AreaLeft" instance=ExtResource( 7 )]
 transform = Transform( -0.2, -7.45058e-09, -3.01992e-08, -7.45058e-09, 0.2, 0, 3.01992e-08, 0, -0.2, 2.38419e-07, 0.0224875, 0.0321004 )
@@ -87,13 +88,13 @@ wait_time = 0.2
 [node name="good_hit" type="MeshInstance" parent="ARVROrigin/left_controller"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
 visible = false
-mesh = SubResource( 3 )
+mesh = SubResource( 5 )
 material/0 = ExtResource( 14 )
 
 [node name="bad_hit" type="MeshInstance" parent="ARVROrigin/left_controller"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
 visible = false
-mesh = SubResource( 3 )
+mesh = SubResource( 5 )
 material/0 = ExtResource( 15 )
 
 [node name="hand_model" parent="ARVROrigin/left_controller" instance=ExtResource( 11 )]
@@ -116,7 +117,7 @@ script = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="ARVROrigin/right_controller/AreaRight"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.0654641 )
-shape = SubResource( 2 )
+shape = SubResource( 4 )
 
 [node name="DemoTimer" type="Timer" parent="ARVROrigin/right_controller/AreaRight"]
 wait_time = 15.0
@@ -136,13 +137,13 @@ transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, -0.12 )
 [node name="good_hit" type="MeshInstance" parent="ARVROrigin/right_controller"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
 visible = false
-mesh = SubResource( 3 )
+mesh = SubResource( 5 )
 material/0 = ExtResource( 14 )
 
 [node name="bad_hit" type="MeshInstance" parent="ARVROrigin/right_controller"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
 visible = false
-mesh = SubResource( 3 )
+mesh = SubResource( 5 )
 material/0 = ExtResource( 15 )
 
 [node name="hand_model" parent="ARVROrigin/right_controller" instance=ExtResource( 10 )]

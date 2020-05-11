@@ -329,7 +329,11 @@ func _on_exit_timer_timeout():
 	
 
 func _on_tween_completed(obj,path):
-	cue_emitter.score_miss()
+	if obj.has_method("should_be_avoided") and obj.should_be_avoided():
+		#Maybe score for avoiding
+		pass
+	else:
+		cue_emitter.score_miss()
 	obj.queue_free()
 
 func switch_floor_sign(type):
@@ -520,17 +524,18 @@ func handle_stand_cues(target_time):
 				var n2 = create_and_attach_cue("right", x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time + double_punch_delay, -hand_cue_offset-double_punch_delay*dd_df)
 				n.activate_path_cue(n2)
 	else:
-		if rng.randf() < stand_avoid_head_cue:
+		if ducking_mode and rng.randf() < stand_avoid_head_cue:
+			temporary_cue_space_extension = 1.0
 			if abs(x_head) > 0.3:
 				#If the head is far out, make the blockade diagonal
 				create_and_attach_cue("head_avoid", x_head-sign(x_head)*0.4, y_head, target_time)
-				create_and_attach_cue("head_avoid", x_head-sign(x_head)*0.2, y_head, target_time, 0.3)
+				create_and_attach_cue("head_avoid", x_head-sign(x_head)*0.2, y_head, target_time, 0.4)
 			else:
 				#Otherwise make it straight
-				create_and_attach_cue("head_avoid", x_head-0.3, y_head, target_time, 0.6)
-				create_and_attach_cue("head_avoid", x_head+0.3, y_head, target_time, 0.6)
+				create_and_attach_cue("head_avoid", x_head-0.3, y_head, target_time, 0.8)
+				create_and_attach_cue("head_avoid", x_head+0.3, y_head, target_time, 0.8)
 				
-			create_and_attach_cue("head_avoid", x_head, y_head, target_time, 0.6)
+			create_and_attach_cue("head_avoid", x_head, y_head, target_time, 0.8)
 		create_and_attach_cue("head", x_head, y_head, target_time)
 	
 	

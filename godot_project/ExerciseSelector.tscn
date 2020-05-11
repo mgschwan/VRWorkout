@@ -390,7 +390,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.8, 0, -0.209451, 0 )
 shape = SubResource( 11 )
 
 [node name="highlight" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
 mesh = SubResource( 17 )
 material/0 = ExtResource( 4 )
 [connection signal="selected" from="Standsign/SignBody" to="." method="_on_SignBody_selected"]

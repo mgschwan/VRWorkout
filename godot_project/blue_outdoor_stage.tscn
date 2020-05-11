@@ -27,4 +27,4 @@ material/0 = SubResource( 1 )
 material/0 = SubResource( 2 )
 
 [node name="retro_sun" parent="." index="2" instance=ExtResource( 2 )]
-transform = Transform( 7.96294e-14, -4.88762e-07, 3, -3, -4.88762e-07, 0, 4.88762e-07, -3, -4.88762e-07, -0.168069, 2.59825, -7.44617 )
+transform = Transform( 7.96294e-14, -4.88762e-07, 3, -3, -4.88762e-07, 0, 4.88762e-07, -3, -4.88762e-07, -0.168069, 2.50243, -7.44617 )

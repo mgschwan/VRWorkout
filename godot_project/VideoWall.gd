@@ -20,16 +20,24 @@ func _ready():
 
 func play(stream_name):
 	var player = get_node("Viewport/Control/VideoPlayer")
-	if player.is_playing():
-		player.stop()
-	
+	stop()
+		
 	var stream = VideoStreamWebm.new()
 	if streams.has(stream_name):
 		stream.set_file(streams[stream_name])
 		player.stream = stream
 		player.play()
 	
+func stop():
+	var player = get_node("Viewport/Control/VideoPlayer")
+	if player.is_playing():
+		player.stop()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_VisibilityNotifier_camera_exited(camera):
+	print ("Videowall stop")
+	stop()
