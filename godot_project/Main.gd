@@ -19,7 +19,8 @@ var hand_cue_offset = 0.60
 var jump_offset = 0.42
 var player_height = 0
 var run_point_multiplier = 1
-var beast_mode
+var beast_mode = false
+var ducking_mode = false
 var stand_avoid_head_cue = 0.5
 var redistribution_speed = 0.025
 
@@ -211,6 +212,7 @@ func _ready():
 		
 	populate_state_model()
 	beast_mode = ProjectSettings.get("game/beast_mode")
+	ducking_mode = ProjectSettings.get("game/exercise/duck")
 	
 	
 	cue_emitter_state = get_start_exercise()
@@ -519,9 +521,16 @@ func handle_stand_cues(target_time):
 				n.activate_path_cue(n2)
 	else:
 		if rng.randf() < stand_avoid_head_cue:
-			create_and_attach_cue("head_avoid", x_head-0.4, y_head, target_time)
-			create_and_attach_cue("head_avoid", x_head+0.4, y_head, target_time)
-			create_and_attach_cue("head_avoid", x_head, y_head, target_time, 0.4)
+			if abs(x_head) > 0.3:
+				#If the head is far out, make the blockade diagonal
+				create_and_attach_cue("head_avoid", x_head-sign(x_head)*0.4, y_head, target_time)
+				create_and_attach_cue("head_avoid", x_head-sign(x_head)*0.2, y_head, target_time, 0.3)
+			else:
+				#Otherwise make it straight
+				create_and_attach_cue("head_avoid", x_head-0.3, y_head, target_time, 0.6)
+				create_and_attach_cue("head_avoid", x_head+0.3, y_head, target_time, 0.6)
+				
+			create_and_attach_cue("head_avoid", x_head, y_head, target_time, 0.6)
 		create_and_attach_cue("head", x_head, y_head, target_time)
 	
 	

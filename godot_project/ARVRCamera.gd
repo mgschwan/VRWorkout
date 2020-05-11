@@ -66,3 +66,11 @@ func _process(delta):
 	uinterval += 1
 	#if uinterval % 50 == 0:
 	#	print ("%.2f "%avg_y + " %.2f"%average_interval + " Steps: %d"%steps +" Speed %.2f"%self.get_running_speed())
+	
+func tint_screen(duration):
+	get_node("ScreenTint").show()
+	yield(get_tree().create_timer(duration),"timeout")
+	get_node("ScreenTint").hide()
+		
+		
+	

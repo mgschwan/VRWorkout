@@ -12,6 +12,7 @@ var vr_mode = true
 var beast_mode = false
 export var record_tracker_data = false
 
+var screen_tint_node
 
 var left_controller
 var right_controller
@@ -57,6 +58,7 @@ func setup_globals():
 	ProjectSettings.set("game/exercise/pushup", true)
 	ProjectSettings.set("game/exercise/crunch", true)
 	ProjectSettings.set("game/exercise/burpees", false)
+	ProjectSettings.set("game/exercise/duck", true)
 
 
 func _initialize_OVR_API():
@@ -146,6 +148,7 @@ func initialize():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	setup_globals()
+	screen_tint_node = get_node("ARVROrigin/ARVRCamera/ScreenTint")
 	splashscreen.head_node = get_node("ARVROrigin/ARVRCamera")
 	splashscreen.connect("splash_screen_finished", self,"_on_Splashscreen_finished")
 	add_child(splashscreen)

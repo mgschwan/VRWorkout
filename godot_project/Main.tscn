@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -22,6 +22,14 @@
 [sub_resource type="SphereShape" id=1]
 radius = 0.2
 
+[sub_resource type="CubeMesh" id=4]
+
+[sub_resource type="SpatialMaterial" id=5]
+flags_transparent = true
+flags_unshaded = true
+params_cull_mode = 2
+albedo_color = Color( 0.752941, 0, 0, 0.345098 )
+
 [sub_resource type="SphereShape" id=2]
 
 [sub_resource type="SphereMesh" id=3]
@@ -43,6 +51,12 @@ shape = SubResource( 1 )
 [node name="hit_player" type="AudioStreamPlayer" parent="ARVROrigin/ARVRCamera/AreaHead"]
 stream = ExtResource( 16 )
 volume_db = 3.969
+
+[node name="ScreenTint" type="MeshInstance" parent="ARVROrigin/ARVRCamera"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+visible = false
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
 
 [node name="left_controller" type="ARVRController" parent="ARVROrigin"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1.6, 0 )

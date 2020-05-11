@@ -223,6 +223,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0963057, 1.252, -0.923 )
 ontext = "Burpees on"
 offtext = "Burpees off"
 
+[node name="DuckSwitch" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.096, 1.523, -0.923 )
+ontext = "Ducking on"
+offtext = "Ducking off"
+
 [node name="HandPalm" type="MeshInstance" parent="."]
 transform = Transform( -0.266796, -0.137152, -0.0100947, 0.00230991, 0.00213046, -0.999945, 0.137166, -0.266805, -0.00279537, 0.676758, 1.64896, 1.08787 )
 mesh = SubResource( 7 )
@@ -236,3 +241,4 @@ transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.0466
 [connection signal="toggled" from="SquatSwitch" to="." method="_on_SquatSwitch_toggled"]
 [connection signal="toggled" from="PushupSwitch" to="." method="_on_PushupSwitch_toggled"]
 [connection signal="toggled" from="BurpeeSwitch" to="." method="_on_BurpeeSwitch_toggled"]
+[connection signal="toggled" from="DuckSwitch" to="." method="_on_DuckSwitch_toggled"]

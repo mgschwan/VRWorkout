@@ -35,6 +35,8 @@ func _ready():
 	get_node("BurpeeSwitch").value = ProjectSettings.get("game/exercise/burpees")
 	get_node("BurpeeSwitch").update_switch()
 
+	get_node("DuckSwitch").value = ProjectSettings.get("game/exercise/duck")
+	get_node("DuckSwitch").update_switch()
 
 	
 func set_main_text(text):
@@ -71,3 +73,7 @@ func _on_PushupSwitch_toggled(value):
 
 func _on_BurpeeSwitch_toggled(value):
 	ProjectSettings.set("game/exercise/burpees", value)
+
+
+func _on_DuckSwitch_toggled(value):
+	ProjectSettings.set("game/exercise/duck", value)

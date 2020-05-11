@@ -6,7 +6,7 @@
 [ext_resource path="res://models/claw_metal.material" type="Material" id=6]
 
 [sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.0951286, 0.110867, 0.00811744 )
+extents = Vector3( 0.0776907, 0.091341, 0.00811744 )
 
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 0.2, 0.1, 0.1 )
