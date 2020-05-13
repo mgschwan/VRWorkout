@@ -58,7 +58,7 @@ func setup_globals():
 	ProjectSettings.set("game/exercise/pushup", true)
 	ProjectSettings.set("game/exercise/crunch", true)
 	ProjectSettings.set("game/exercise/burpees", false)
-	ProjectSettings.set("game/exercise/duck", true)
+	ProjectSettings.set("game/exercise/duck", false)
 
 
 func _initialize_OVR_API():
