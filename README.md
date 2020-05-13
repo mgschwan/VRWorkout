@@ -89,7 +89,7 @@ Once everything is installed import the project.godot file from the godot_projec
 
 __Latest version__
 
-[![v0.9.7](https://img.youtube.com/vi/mknXbyVJm3c/0.jpg)](https://www.youtube.com/watch?v=mknXbyVJm3c)
+[![v0.9.7](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/workout_video_playscreen.jpg)](https://www.youtube.com/watch?v=mknXbyVJm3c)
 
 __Older gameplay__
 
