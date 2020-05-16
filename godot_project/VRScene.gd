@@ -230,9 +230,12 @@ func add_element_to_history(history, measurement):
 	if len(history) > prediction_history_size:
 		history.pop_back()			
 
+var hand_ball_adjusted = false
+
 #If the handtracking has lost the hand update the path for prediction_limt_ms before hiding it
 func _update_hand_model(hand: ARVRController, model : Spatial, offset_model: Spatial, history):
 	if ovr_hand_tracking: # check if the hand tracking API was loaded
+	
 		# scale of the hand model as reported by VrApi
 		var ls = ovr_hand_tracking.get_hand_scale(hand.controller_id);
 		var now = OS.get_ticks_msec()	
@@ -302,6 +305,14 @@ func _process(delta):
 			left_controller.set_beast_mode(tmp)
 			right_controller.set_beast_mode(tmp)
 			
+#	if in_hand_mode and not hand_ball_adjusted:
+#		left_controller.get_node("AreaLeft/CollisionShape").translation.x = -0.05
+#		left_controller.get_node("AreaLeft/handle_ball").translation.x = -0.05
+#		left_controller.get_node("AreaRight/CollisionShape").translation.x = 0.05
+#		left_controller.get_node("AreaRight/handle_ball").translation.x = 0.05
+#		hand_ball_adjusted = true
+			
+			
 		
 	_update_hand_model(left_controller, left_collision_root, ball_l, last_left_controller);
 	_update_hand_model(right_controller, right_collision_root, ball_r, last_right_controller);
@@ -334,6 +345,10 @@ func _on_Timer_timeout():
 
 func get_running_speed():
 	var s = get_node("ARVROrigin/ARVRCamera").get_running_speed()
+	return s
+
+func get_groove_bpm():
+	var s = get_node("ARVROrigin/ARVRCamera").get_groove_bpm()
 	return s
 
 	

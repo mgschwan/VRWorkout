@@ -22,6 +22,8 @@ func _ready():
 		
 	get_node("head_cue/TargetTimer").animate_timer(target_time-start_time)
 
+	
+
 func has_been_hit():
 	if not hit:
 		get_node("tween").stop_all()
@@ -34,6 +36,7 @@ func has_been_hit():
 		get_node("CollisionShapeExtended").disabled = true
 		get_node("sprinkle").emitting = true
 		get_node("head_cue/AnimationPlayer").play("explode")
+
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	get_node("sprinkle").emitting = false

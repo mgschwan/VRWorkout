@@ -9,7 +9,7 @@ export var level_number = -1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_node("Text").print_info(song_name)
+	get_node("Text").print_info("[b][i][color=black]%s[/color][/i][/b]"%song_name)
 	pass # Replace with function body.
 
 func get_level():

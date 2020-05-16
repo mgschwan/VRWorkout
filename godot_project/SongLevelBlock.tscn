@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=1]
 [ext_resource path="res://SongLevelBlock.gd" type="Script" id=2]
 [ext_resource path="res://SongVariant.gd" type="Script" id=3]
+[ext_resource path="res://TextBlockTrapezoid.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CubeMesh" id=1]
-size = Vector3( 1, 0.3, 0.5 )
+size = Vector3( 1, 0.3, 0.1 )
 
 [sub_resource type="SpatialMaterial" id=2]
 albedo_color = Color( 0.4, 0.4, 0.4, 1 )
@@ -17,14 +18,12 @@ extents = Vector3( 0.0970637, 0.05, 0.05 )
 script = ExtResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
+visible = false
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
-[node name="Text" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.564001, -0.340644, 0.262836 )
-
 [node name="Easy" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00472498, 0.0821968, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0690573, 0.101127, -0.239349 )
 script = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Easy"]
@@ -36,7 +35,7 @@ transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0
 default_text = "Easy"
 
 [node name="Medium" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.394105, 0.0820164, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.329668, 0.10093, -0.239 )
 script = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Medium"]
@@ -48,7 +47,7 @@ transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0
 default_text = "Medium"
 
 [node name="Hard" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.812, 0.082, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.747668, 0.10093, -0.239 )
 script = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Hard"]
@@ -58,3 +57,6 @@ shape = SubResource( 3 )
 [node name="Text" parent="Hard" instance=ExtResource( 1 )]
 transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0.0363488, -0.418977, 0.259873 )
 default_text = "Hard"
+
+[node name="Text" parent="." instance=ExtResource( 4 )]
+transform = Transform( -0.45, 6.03983e-08, 1.98007e-15, 0, -1.74846e-08, 0.3, 6.79481e-08, 0.4, 1.31134e-08, 0, 0, 0 )

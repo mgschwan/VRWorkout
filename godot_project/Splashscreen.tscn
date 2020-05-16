@@ -14,6 +14,7 @@ albedo_texture = ExtResource( 1 )
 size = 20
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
+use_filter = true
 font_data = ExtResource( 2 )
 
 [sub_resource type="PlaneMesh" id=4]
@@ -24,7 +25,6 @@ viewport_path = NodePath("Viewport")
 
 [sub_resource type="SpatialMaterial" id=6]
 resource_local_to_scene = true
-flags_transparent = true
 flags_unshaded = true
 albedo_color = Color( 1, 1, 1, 0.619608 )
 albedo_texture = SubResource( 5 )
@@ -42,6 +42,8 @@ material/0 = SubResource( 2 )
 
 [node name="Viewport" type="Viewport" parent="."]
 size = Vector2( 512, 256 )
+msaa = 6
+disable_3d = true
 render_target_v_flip = true
 render_target_update_mode = 3
 
@@ -76,7 +78,7 @@ Nod 5x to confirm that you have read and agree to this disclaimer"
 scroll_active = false
 
 [node name="Text" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.366095, -0.930577, 0, 0.930577, 0.366095, 0, 0.281223, -1.177 )
+transform = Transform( 1, 0, 0, 0, 0.366095, -0.930577, 0, 0.930577, 0.366095, 0, 0.383265, -1.94985 )
 mesh = SubResource( 4 )
 material/0 = SubResource( 6 )
 

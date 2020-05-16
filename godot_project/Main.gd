@@ -23,6 +23,7 @@ var beast_mode = false
 var ducking_mode = false
 var stand_avoid_head_cue = 0.5
 var redistribution_speed = 0.025
+var song_current_bpm = 0
 
 	
 var running_speed = 0
@@ -33,6 +34,7 @@ var exercise_changed = true
 var next_exercise = CueState.STAND
 
 var groove_display
+var trophy_list
 
 
 var cue_horiz = preload("res://cue_h_obj.tscn")
@@ -224,6 +226,8 @@ func _ready():
 	boxman1 = get_node("boxman")
 	boxman2 = get_node("boxman2")
 	
+	trophy_list = get_node("TrophyList")
+	
 	groove_display = get_node("GrooveDisplay")
 	
 	update_cue_timing()
@@ -302,7 +306,10 @@ func _process(delta):
 	#cue_emitter.current_playback_time += delta
 	cue_emitter.current_playback_time = stream.get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
 	if beat_index < len(beats)-1 and cue_emitter.current_playback_time + emit_early > beats[beat_index]:	
-
+		if beat_index > 0:
+			var beat_delta = beats[beat_index]-beats[beat_index-1]
+			if beat_delta > 0:
+				song_current_bpm = (3*song_current_bpm + 60/beat_delta)/4
 		if beat_index % 2 == 0:
 			if beat_index < len(beats)-2:
 				groove_display.set_next_beat(beats[beat_index+2]-cue_emitter.current_playback_time, 1)
@@ -390,6 +397,7 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 	if cue_type == "left" or cue_type == "right":
 		var alpha = atan2(x,y-head_y_pos)
 		cue_node.set_transform(cue_node.get_transform().rotated(Vector3(0,0,1),-alpha))
+
 	
 	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),fly_time,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	move_modifier.connect("tween_completed",self,"_on_tween_completed")
@@ -766,6 +774,7 @@ func switch_boxman(state, name):
 func _on_exit_button_pressed(body):
 	emit_signal("level_finished")
 
+var last_run_update = 0		
 func setup_multiplier(running_speed):
 	var xx = get_node("RunIndicator")
 	if running_speed > 13.5:
@@ -781,12 +790,33 @@ func setup_multiplier(running_speed):
 		xx.stop()
 		run_point_multiplier = 1
 
+	var now = OS.get_ticks_msec()
+	var delta = (now-last_run_update)/1000.0
+	if last_run_update > 0 and run_point_multiplier > 1:
+		trophy_list.set_runtime(trophy_list.runtime + delta)
+	last_run_update = now
+
+
 func get_points():
 	return {"points": cue_emitter.points, "hits": cue_emitter.hits, "max_hits": cue_emitter.max_hits,"time": last_playback_time}
-		
-var gui_update = 0	
+
+var last_grooove_update = 0
+func update_groove(groove_bpm):
+	var now = OS.get_ticks_msec()
+	var delta = (now - last_grooove_update)/1000.0
+	if last_grooove_update > 0:
+		if groove_bpm > 0:
+			var multiplier = song_current_bpm / groove_bpm
+			print ("Current_bpm: %f Song BPM: %f  Mult: %f"%[groove_bpm, song_current_bpm, multiplier])
+			if abs(multiplier-1) < 0.1 or abs(multiplier-2) < 0.1 or abs(multiplier-4) < 0.1:
+				#Groove detected
+				trophy_list.set_groovetime(trophy_list.groove + delta)
+	last_grooove_update = now	
+
+var gui_update = 0
 func _on_UpdateTimer_timeout():
 	running_speed = self.get_parent().get_running_speed()
+	update_groove(self.get_parent().get_groove_bpm())
 	setup_multiplier(running_speed)
 	if gui_update % 10 == 0:
 		self.update_info(cue_emitter.hits, cue_emitter.max_hits, cue_emitter.points)

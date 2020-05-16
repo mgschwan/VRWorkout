@@ -1,0 +1,63 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://fonts/Droid_Sans_Bold.tres" type="DynamicFont" id=1]
+[ext_resource path="res://fonts/Droid_Sans_Regular.tres" type="DynamicFont" id=2]
+[ext_resource path="res://models/text_block.gltf" type="PackedScene" id=3]
+[ext_resource path="res://models/super_white.material" type="Material" id=4]
+[ext_resource path="res://models/black.material" type="Material" id=5]
+[ext_resource path="res://TextBlockTrapezoid.gd" type="Script" id=6]
+[ext_resource path="res://fonts/Droid_Sans_Bold_Big.tres" type="DynamicFont" id=7]
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="ViewportTexture" id=1]
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="SpatialMaterial" id=2]
+resource_local_to_scene = true
+flags_unshaded = true
+albedo_texture = SubResource( 1 )
+
+[node name="text_block" instance=ExtResource( 3 )]
+script = ExtResource( 6 )
+
+[node name="Viewport" type="Viewport" parent="." index="0"]
+size = Vector2( 512, 256 )
+msaa = 6
+disable_3d = true
+usage = 0
+render_target_v_flip = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Viewport" index="0"]
+
+[node name="Panel" type="Panel" parent="Viewport/CanvasLayer" index="0"]
+margin_right = 512.0
+margin_bottom = 256.0
+custom_styles/panel = SubResource( 3 )
+
+[node name="MarginContainer" type="MarginContainer" parent="Viewport/CanvasLayer/Panel" index="0"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 512.0
+margin_bottom = 256.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Viewport/CanvasLayer/Panel/MarginContainer" index="0"]
+margin_right = 492.0
+margin_bottom = 236.0
+custom_fonts/bold_italics_font = ExtResource( 7 )
+custom_fonts/bold_font = ExtResource( 1 )
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 0.764706, 0.764706, 0.764706, 1 )
+bbcode_enabled = true
+bbcode_text = "[b][i][color=black]Demotext[/color][/i][/b]
+[b]Demo[/b]
+This is a demo"
+text = "Demotext
+Demo
+This is a demo"
+
+[node name="Plane" parent="." index="1"]
+material/0 = ExtResource( 4 )
+material/1 = ExtResource( 5 )
+material/2 = SubResource( 2 )

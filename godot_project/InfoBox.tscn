@@ -5,6 +5,8 @@
 
 [sub_resource type="DynamicFont" id=1]
 size = 52
+use_mipmaps = true
+use_filter = true
 font_data = ExtResource( 1 )
 
 [sub_resource type="PlaneMesh" id=2]
@@ -25,17 +27,19 @@ script = ExtResource( 2 )
 [node name="ViewportInfo" type="Viewport" parent="."]
 size = Vector2( 1024, 512 )
 transparent_bg = true
+msaa = 6
+disable_3d = true
 usage = 0
 render_target_v_flip = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="ViewportInfo"]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ViewportInfo/CanvasLayer"]
+[node name="Container" type="MarginContainer" parent="ViewportInfo/CanvasLayer"]
 margin_right = 40.0
 margin_bottom = 40.0
 
-[node name="Text" type="Label" parent="ViewportInfo/CanvasLayer/VBoxContainer"]
-margin_right = 204.0
+[node name="Text" type="Label" parent="ViewportInfo/CanvasLayer/Container"]
+margin_right = 167.0
 margin_bottom = 63.0
 size_flags_horizontal = 5
 size_flags_vertical = 5

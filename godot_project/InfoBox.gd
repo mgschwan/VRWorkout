@@ -17,4 +17,4 @@ func _ready():
 
 
 func print_info(text):
-	get_node("ViewportInfo/CanvasLayer/VBoxContainer/Text").text = text
+	get_node("ViewportInfo/CanvasLayer/Container/Text").text = text

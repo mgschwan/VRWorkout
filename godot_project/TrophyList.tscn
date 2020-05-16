@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Trophy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://TrophyList.gd" type="Script" id=2]
+[ext_resource path="res://TextBlockTrapezoid.tscn" type="PackedScene" id=3]
+
+[node name="TrophyList" type="Spatial"]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+script = ExtResource( 2 )
+
+[node name="trophy" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.8, -1.86265e-10, 2.38418e-08, 1.86265e-10, 0.8, 9.3132e-11, -2.38418e-08, -9.3132e-11, 0.8, 0, 0, 0 )
+
+[node name="Runtime" parent="." instance=ExtResource( 3 )]
+transform = Transform( -3.25841e-07, 2, 3.25841e-07, 0, -3.25841e-07, 2, 2, 3.25841e-07, 5.30863e-14, 0, -2.54141, 0 )
+
+[node name="Groovetime" parent="." instance=ExtResource( 3 )]
+transform = Transform( -3.25841e-07, 2, 3.25841e-07, 0, -3.25841e-07, 2, 2, 3.25841e-07, 5.30863e-14, 0, -4.94079, 0 )

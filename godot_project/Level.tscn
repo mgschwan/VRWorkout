@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://spawn_timer.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://ForestScene.tscn" type="PackedScene" id=4]
 [ext_resource path="res://HudLayer.tscn" type="PackedScene" id=5]
 [ext_resource path="res://cue_emitter.gd" type="Script" id=6]
+[ext_resource path="res://TrophyList.tscn" type="PackedScene" id=7]
 [ext_resource path="res://default_env.tres" type="Environment" id=8]
 [ext_resource path="res://position_sign.tscn" type="PackedScene" id=9]
 [ext_resource path="res://dark_green.tres" type="Material" id=10]
@@ -177,6 +178,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.001, -0.586 )
 
 [node name="mat" parent="MainStage" instance=ExtResource( 22 )]
 transform = Transform( -6.99382e-10, 0, 0.018, 0, 0.02, 0, -0.016, 0, -7.86805e-10, 0.109178, -0.01, 0.493 )
+
+[node name="TrophyList" parent="." instance=ExtResource( 7 )]
+transform = Transform( 0.161756, 0, -0.117622, 0, 0.2, 0, 0.117622, 0, 0.161756, -1.96862, 2.03119, -1.42694 )
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
 [connection signal="timeout" from="UpdateTimer" to="." method="_on_UpdateTimer_timeout"]
