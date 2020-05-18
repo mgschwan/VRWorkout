@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://SongSelector.gd" type="Script" id=1]
+[ext_resource path="res://SongLevelBlock.tscn" type="PackedScene" id=2]
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="SongBlocks" type="Spatial" parent="."]
+
+[node name="Element2" parent="SongBlocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.676956, 0.416, 0 )
+level_number = 1
+
+[node name="Element4" parent="SongBlocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.677, -0.006, 0 )
+level_number = 3
+
+[node name="Element6" parent="SongBlocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.677, -0.438, 0 )
+level_number = 5
+
+[node name="Element1" parent="SongBlocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.657302, 0.415715, 0 )
+level_number = 0
+
+[node name="Element3" parent="SongBlocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.657302, -0.00565302, 0 )
+level_number = 2
+
+[node name="Element5" parent="SongBlocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.657302, -0.437727, 0 )
+level_number = 4
+[connection signal="selected" from="SongBlocks/Element2" to="." method="_on_level_block_selected"]
+[connection signal="selected" from="SongBlocks/Element4" to="." method="_on_level_block_selected"]
+[connection signal="selected" from="SongBlocks/Element6" to="." method="_on_level_block_selected"]
+[connection signal="selected" from="SongBlocks/Element1" to="." method="_on_level_block_selected"]
+[connection signal="selected" from="SongBlocks/Element3" to="." method="_on_level_block_selected"]
+[connection signal="selected" from="SongBlocks/Element5" to="." method="_on_level_block_selected"]

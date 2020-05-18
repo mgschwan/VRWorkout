@@ -59,6 +59,7 @@ func setup_globals():
 	ProjectSettings.set("game/exercise/crunch", true)
 	ProjectSettings.set("game/exercise/burpees", false)
 	ProjectSettings.set("game/exercise/duck", false)
+	ProjectSettings.set("game/exercise/sprint", false)
 
 
 func _initialize_OVR_API():
@@ -101,7 +102,6 @@ func initialize():
 	var arvr_ovr_mobile_interface = ARVRServer.find_interface("OVRMobile");
 	var arvr_oculus_interface = ARVRServer.find_interface("Oculus");
 	var arvr_open_vr_interface = ARVRServer.find_interface("OpenVR");
-	
 
 	vr_mode = false
 	cam = get_node("ARVROrigin/ARVRCamera")
@@ -140,11 +140,6 @@ func initialize():
 		cam.translation.y = 1.5
 		cam.rotation.x = -0.4
 
-	
-	
-
-	
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	setup_globals()
@@ -165,7 +160,7 @@ func _ready():
 	right_collision_root = get_node("ARVROrigin/right_controller/AreaRight")
 	
 	left_controller = get_node("ARVROrigin/left_controller")
-	right_controller = get_node("ARVROrigin/right_controller")
+	right_controller = get_node("ARVROrigin/right_controller")	
 	
 	#ball_l.hide()
 	#ball_r.hide()
@@ -184,6 +179,7 @@ func _ready():
 	
 	level_blueprint = preload("res://Level.tscn")
 	levelselect_blueprint = preload("res://Levelselect.tscn")
+	
 		
 func _on_level_finished	():
 	if record_tracker_data:
@@ -206,6 +202,8 @@ func _on_level_finished	():
 	level = null 
 	levelselect = levelselect_blueprint.instance()
 	levelselect.translation = Vector3(0,0,0)
+	levelselect.connect("level_selected",self,"_on_Area_level_selected")
+
 	add_child(levelselect)
 	levelselect.set_main_text("Player results\n\nLast round\nPoints: %d"%last_points+" Duration: %.2f"%last_played+"\nTotal\nPoints: %d"%total_points+" Duration: %.2f"%total_played) 
 
@@ -321,12 +319,13 @@ func _process(delta):
 		tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
 
 
-func _on_Area_level_selected(num, diff):
+func _on_Area_level_selected(filename, diff, num):
 	if level == null:
 		set_beast_mode(ProjectSettings.get("game/beast_mode"))
 		level = level_blueprint.instance()
 		
 		difficulty = diff
+		level.audio_filename = filename
 		level.song_index_parameter = num
 		level.player_height = height
 		level.bpm = ProjectSettings.get("game/bpm")
@@ -338,7 +337,7 @@ func _on_Area_level_selected(num, diff):
 	
 
 func _on_Timer_timeout():
-	_on_Area_level_selected(-1, 0)
+	_on_Area_level_selected("res://audio/vrworkout.ogg", 0, 1)
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)
 	print(get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").stream.get_length())
@@ -362,6 +361,8 @@ func set_beast_mode(enabled):
 func _on_Splashscreen_finished():
 	levelselect = levelselect_blueprint.instance()
 	levelselect.translation = Vector3(0,0,0)
+	levelselect.connect("level_selected",self,"_on_Area_level_selected")
+
 
 	splashscreen.queue_free()
 	add_child(levelselect)

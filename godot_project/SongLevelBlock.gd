@@ -1,16 +1,23 @@
 extends StaticBody
 export var song_name = "default"
 export var level_number = -1
+export var song_filename = ""
+
+signal selected(filename, difficulty, level_number)
 
 # Declare member variables here. Examples:
+
 # var a = 2
 # var b = "text"
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_node("Text").print_info("[b][i][color=black]%s[/color][/i][/b]"%song_name)
-	pass # Replace with function body.
+	set_text(song_name)
+
+func set_text(text):
+	get_node("Text").print_info("[b][i][color=black]%s[/color][/i][/b]"%text)
+
 
 func get_level():
 	return level_number
@@ -19,7 +26,14 @@ func get_level():
 func get_difficulty_selector():
 	return 0
 	
+#Spin the card and set the song info
+func set_song_info(text,filename):
+	song_filename = filename
+	get_node("AnimationPlayer").play("spin")	
+	#yield(get_tree().create_timer(0.2),"timeout")
+	set_text(text)
 	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+
+func _on_difficulty_selected(difficulty):
+	print("Selected difficulty")
+	emit_signal("selected", song_filename, difficulty, level_number)

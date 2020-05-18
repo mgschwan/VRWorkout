@@ -1,14 +1,32 @@
 extends Spatial
 
+signal level_selected(filename, difficulty, level_number)
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 
+func get_song_list():
+	var songs = File.new()
+	songs.open('res://audio/songs.json', File.READ)
+	
+	var tmp = songs.get_as_text()
+	var song_dict = JSON.parse(tmp).result
+	songs.close()
+	
+	var song_list = []
+	var name
+	for name in song_dict.keys():
+		song_list.append(name)
+
+	return song_list
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print ("Local addresses: %s"%str(IP.get_local_addresses()))
 	
+	var songs = get_song_list()
+	get_node("SongSelector").set_songs(songs)
 	
 	get_node("MainText").print_info("VRWorkout\nSelect song by touching a block\nBest played hands only - no controllers\nPosition yourself between the blue poles\nRun in place to get multipliers\n\nTurn around for a tutorial")
 	
@@ -38,7 +56,10 @@ func _ready():
 	get_node("DuckSwitch").value = ProjectSettings.get("game/exercise/duck")
 	get_node("DuckSwitch").update_switch()
 
-	
+	get_node("SprintSwitch").value = ProjectSettings.get("game/exercise/sprint")
+	get_node("SprintSwitch").update_switch()
+
+
 func set_main_text(text):
 	get_node("MainText").print_info(text)
 
@@ -77,3 +98,11 @@ func _on_BurpeeSwitch_toggled(value):
 
 func _on_DuckSwitch_toggled(value):
 	ProjectSettings.set("game/exercise/duck", value)
+
+
+func _on_SprintSwitch_toggled(value):
+	ProjectSettings.set("game/exercise/sprint", value)
+
+
+func _on_SongSelector_level_selected(filename, difficulty, level_number):
+	emit_signal("level_selected", filename, difficulty, level_number)

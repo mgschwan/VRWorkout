@@ -33,13 +33,4 @@ func _on_Area_body_entered(body):
 		body.beat()
 	elif body.has_method("touched_by_controller"):
 		body.touched_by_controller(get_parent(), get_parent().get_parent().get_parent())
-	else:	
-		var name = body.name
-		var level = -1
-		var difficulty = 0
-		if body.has_method("get_level"):
-			level = body.get_level()
-			if body.has_method("get_difficulty_selector"):
-				difficulty = body.get_difficulty_selector()
-				print ("Level selected %d %d"%[level,difficulty])
-				emit_signal("level_selected", level, difficulty)
+

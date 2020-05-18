@@ -1,5 +1,7 @@
 extends StaticBody
 
+signal difficulty_selected(difficulty)
+
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -20,6 +22,16 @@ func get_difficulty_selector():
 		return 2
 	return 0
 		
+
+func touched_by_controller(obj, root):
+	print ("Difficulty touched")
+	emit_signal("difficulty_selected",get_difficulty_selector())
+	
+	
+	
+	
+
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

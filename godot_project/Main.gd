@@ -4,6 +4,8 @@ extends Spatial
 signal level_finished
 
 var song_index_parameter = 0
+var audio_filename = ""
+
 export var random_seed = true
 
 var beats = []
@@ -60,6 +62,7 @@ enum CueState {
 	CRUNCH = 3,
 	JUMP = 4,
 	BURPEE = 5,
+	SPRINT = 6,
 };
 
 enum CueSelector {
@@ -155,6 +158,8 @@ func state_string(state):
 		return "crunch"
 	elif state == CueState.BURPEE:
 		return "burpee"
+	elif state == CueState.SPRINT:
+		return "sprint"
 	
 	return "unknown"
 
@@ -172,6 +177,8 @@ func string_to_state(s):
 		retVal = CueState.CRUNCH
 	elif s == "burpee":
 		retVal = CueState.BURPEE
+	elif s == "sprint":
+		retVal = CueState.SPRINT
 	
 	return retVal
 
@@ -232,13 +239,6 @@ func _ready():
 	
 	update_cue_timing()
 	
-	var songs = File.new()
-	songs.open('res://audio/songs.json', File.READ)
-	
-	var tmp = songs.get_as_text()
-	var song_dict = JSON.parse(tmp).result
-	songs.close()
-	
 	beat_index = 0
 
 	setup_difficulty(current_difficulty)
@@ -264,24 +264,38 @@ func _ready():
 			pos += delta
 		stream.connect("stream_finished", self, "_on_AudioStreamPlayer_finished")
 		self.add_child(stream)
-	
 	else:
-		selected_song = song_dict.keys()[song_index_parameter]
-	
-		beats = song_dict[selected_song]
+		selected_song = audio_filename
+				
+		var beat_file = File.new()
+		var error = beat_file.open("%s.json"%audio_filename, File.READ)
+		beats = []
+		
+		if error == OK:
+			var tmp = JSON.parse(beat_file.get_as_text()).result
+			beat_file.close()
+			beats = tmp.get("beats", [])
+			print ("Beats: %s"%str(beats))
+		else: 
+			print ("Could not open beat list")
 
 		var audio_file = File.new()
-		var audio_filename = "res://audio/%s"%selected_song
+		#var audio_filename = "res://audio/%s"%selected_song
 		
 		infolayer.print_info("Loading song %s"%audio_filename)
-		audio_file.open(audio_filename,File.READ)
+		print ("Loading song: %s"%audio_filename)
+		error = audio_file.open(audio_filename,File.READ)
 		infolayer.append_info(" / File opened %s" % str(audio_file.is_open()))
 		infolayer.print_info(state_string(cue_emitter_state).to_upper(), "main")
 		infolayer.print_info("Player height: %.2f Difficulty: %.2f/%.2f"%[player_height, min_cue_space, min_state_duration], "debug")
 
 		var audio_resource = ResourceLoader.load(audio_filename)
-		stream = get_node("AudioStreamPlayer")
-		stream.stream = audio_resource
+		if audio_resource:
+			stream = get_node("AudioStreamPlayer")
+			stream.stream = audio_resource
+		else:
+			print ("Could not load audio")
+			emit_signal("level_finished")	
 	stream.play()
 	
 func setup_difficulty(d):
@@ -404,12 +418,13 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 	move_modifier.start()
 	return cue_node
 	
-var exercise_state_model_template = { CueState.STAND: { CueState.SQUAT: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.JUMP: 10, CueState.BURPEE: 10},
-					CueState.SQUAT: { CueState.STAND: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10},
+var exercise_state_model_template = { CueState.STAND: { CueState.SQUAT: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.JUMP: 10, CueState.BURPEE: 10, CueState.SPRINT: 10},
+					CueState.SQUAT: { CueState.STAND: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.SPRINT: 10},
 					CueState.PUSHUP: { CueState.STAND: 10, CueState.SQUAT: 10, CueState.BURPEE: 10},
 					CueState.CRUNCH: { CueState.STAND: 10, CueState.SQUAT: 10},
 					CueState.JUMP: {CueState.STAND: 50, CueState.BURPEE: 10}, 
 					CueState.BURPEE: {CueState.STAND: 50}, 
+					CueState.SPRINT: {CueState.STAND: 50, CueState.JUMP: 10, CueState.SQUAT: 10}, 
 					}
 	
 var exercise_state_model = {}
@@ -422,6 +437,7 @@ func get_start_exercise():
 					CueState.CRUNCH  : ProjectSettings.get("game/exercise/crunch"),
 					CueState.JUMP  : ProjectSettings.get("game/exercise/jump"),
 					CueState.BURPEE  : ProjectSettings.get("game/exercise/burpees"),
+					CueState.SPRINT  : ProjectSettings.get("game/exercise/sprint"),
 				}
 	for key in states:
 		if states[key]:
@@ -438,6 +454,7 @@ func populate_state_model():
 					CueState.CRUNCH  : ProjectSettings.get("game/exercise/crunch"),
 					CueState.JUMP  : ProjectSettings.get("game/exercise/jump"),
 					CueState.BURPEE  : ProjectSettings.get("game/exercise/burpees"),
+					CueState.SPRINT  : ProjectSettings.get("game/exercise/sprint"),
 				}
 				
 	for key in states:
@@ -500,6 +517,10 @@ func state_transition(old_state, state_model, current_distribution = null):
 		print ("Distribution: %s"%str(current_distribution))
 	return new_state
 	
+
+func handle_sprint_cues(target_time):
+	switch_floor_sign("feet")
+
 	
 func handle_stand_cues(target_time):
 	switch_floor_sign("feet")
@@ -745,6 +766,8 @@ func emit_cue_node(target_time):
 			handle_crunch_cues(target_time)
 		elif cue_emitter_state == CueState.BURPEE:
 			handle_burpee_cues(target_time)
+		elif cue_emitter_state == CueState.SPRINT:
+			handle_sprint_cues(target_time)
 		else: #CueState.PUSHUP
 			handle_pushup_cues(target_time)
 		exercise_changed = false

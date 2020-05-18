@@ -30,6 +30,8 @@ func update_selector():
 		index = 4
 	elif selected == "burpee":
 		index = 5
+	elif selected == "sprint":
+		index = 6
 
 	get_node("highlight").translation.z = step*index
 

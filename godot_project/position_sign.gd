@@ -27,6 +27,12 @@ func burpee():
 	get_node("ExerciseSign").play("burpee")
 	play_sfx("player_burpee")
 
+func sprint():
+	get_node("ExerciseSign").play("sprint")
+	play_sfx("player_sprint")
+
+
+
 
 func start_sign(start, end, duration):
 	var move_modifier = Tween.new()

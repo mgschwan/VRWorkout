@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://dark_green.tres" type="Material" id=13]
 [ext_resource path="res://assets/palm_fist.jpg" type="Texture" id=14]
 [ext_resource path="res://Tutorial.tscn" type="PackedScene" id=15]
+[ext_resource path="res://SongSelector.tscn" type="PackedScene" id=16]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -55,31 +56,37 @@ script = ExtResource( 1 )
 
 [node name="Level1" parent="." instance=ExtResource( 6 )]
 transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.10362, 1.60047, -0.25993 )
+visible = false
 song_name = "VRWorkout Theme"
 level_number = 0
 
 [node name="Level3" parent="." instance=ExtResource( 6 )]
 transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.10362, 1.40346, -0.25993 )
+visible = false
 song_name = "Like This"
 level_number = 2
 
 [node name="Level5" parent="." instance=ExtResource( 6 )]
 transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.1033, 1.20408, -0.26 )
+visible = false
 song_name = "Shameless promotion"
 level_number = 4
 
 [node name="Level2" parent="." instance=ExtResource( 6 )]
 transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.10362, 1.60047, 0.424775 )
+visible = false
 song_name = "Deeper in yourself"
 level_number = 1
 
 [node name="Level4" parent="." instance=ExtResource( 6 )]
 transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.103, 1.403, 0.425 )
+visible = false
 song_name = "The game has changed"
 level_number = 3
 
 [node name="Level6" parent="." instance=ExtResource( 6 )]
 transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.103, 1.204, 0.425 )
+visible = false
 song_name = "Scomber clarity"
 level_number = 5
 
@@ -228,6 +235,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.096, 1.523, -0.923 )
 ontext = "Ducking on"
 offtext = "Ducking off"
 
+[node name="SprintSwitch" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.096, 1.523, -0.923 )
+ontext = "Sprint on"
+offtext = "Sprint off"
+
 [node name="HandPalm" type="MeshInstance" parent="."]
 transform = Transform( -0.266796, -0.137152, -0.0100947, 0.00230991, 0.00213046, -0.999945, 0.137166, -0.266805, -0.00279537, 0.676758, 1.64896, 1.08787 )
 mesh = SubResource( 7 )
@@ -235,6 +247,12 @@ material/0 = SubResource( 8 )
 
 [node name="TutorialVideo" parent="." instance=ExtResource( 15 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.04662, 0.781789, -1.70517e-07 )
+
+[node name="SongSelector" parent="." instance=ExtResource( 16 )]
+transform = Transform( -2.62268e-08, 0, -1, 0, 0.6, 0, 0.6, 0, -4.37114e-08, 1.09793, 1.43304, 1.78876e-07 )
+[connection signal="selected" from="Freeplay1" to="." method="_on_level_block_selected"]
+[connection signal="selected" from="Freeplay2" to="." method="_on_level_block_selected"]
+[connection signal="selected" from="Freeplay3" to="." method="_on_level_block_selected"]
 [connection signal="toggled" from="JumpSwitch" to="." method="_on_JumpSwitch_toggled"]
 [connection signal="toggled" from="StandSwitch" to="." method="_on_StandSwitch_toggled"]
 [connection signal="toggled" from="CrunchSwitch" to="." method="_on_CrunchSwitch_toggled"]
@@ -242,3 +260,5 @@ transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.0466
 [connection signal="toggled" from="PushupSwitch" to="." method="_on_PushupSwitch_toggled"]
 [connection signal="toggled" from="BurpeeSwitch" to="." method="_on_BurpeeSwitch_toggled"]
 [connection signal="toggled" from="DuckSwitch" to="." method="_on_DuckSwitch_toggled"]
+[connection signal="toggled" from="SprintSwitch" to="." method="_on_SprintSwitch_toggled"]
+[connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]

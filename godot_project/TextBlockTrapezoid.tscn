@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://fonts/Droid_Sans_Bold.tres" type="DynamicFont" id=1]
 [ext_resource path="res://fonts/Droid_Sans_Regular.tres" type="DynamicFont" id=2]
@@ -18,6 +18,9 @@ viewport_path = NodePath("Viewport")
 resource_local_to_scene = true
 flags_unshaded = true
 albedo_texture = SubResource( 1 )
+
+[sub_resource type="PlaneMesh" id=4]
+size = Vector2( 2, 1 )
 
 [node name="text_block" instance=ExtResource( 3 )]
 script = ExtResource( 6 )
@@ -61,3 +64,8 @@ This is a demo"
 material/0 = ExtResource( 4 )
 material/1 = ExtResource( 5 )
 material/2 = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="." index="2"]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, -0.01, 0 )
+mesh = SubResource( 4 )
+material/0 = ExtResource( 5 )
