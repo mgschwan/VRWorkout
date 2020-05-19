@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -13,7 +13,6 @@
 [ext_resource path="res://beastmode.gd" type="Script" id=11]
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
 [ext_resource path="res://dark_green.tres" type="Material" id=13]
-[ext_resource path="res://assets/palm_fist.jpg" type="Texture" id=14]
 [ext_resource path="res://Tutorial.tscn" type="PackedScene" id=15]
 [ext_resource path="res://SongSelector.tscn" type="PackedScene" id=16]
 
@@ -37,18 +36,6 @@ extents = Vector3( 0.0951286, 0.110867, 0.00811744 )
 
 [sub_resource type="CubeMesh" id=6]
 size = Vector3( 0.2, 0.1, 0.1 )
-
-[sub_resource type="PlaneMesh" id=7]
-size = Vector2( 1.6, 0.2 )
-
-[sub_resource type="SpatialMaterial" id=8]
-flags_transparent = true
-flags_unshaded = true
-params_blend_mode = 1
-params_use_alpha_scissor = true
-params_alpha_scissor_threshold = 0.98
-albedo_texture = ExtResource( 14 )
-uv1_scale = Vector3( 1, 0.5, 1 )
 
 [node name="Spatial" type="Spatial"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
@@ -236,20 +223,21 @@ ontext = "Ducking on"
 offtext = "Ducking off"
 
 [node name="SprintSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.096, 1.523, -0.923 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324165, 1.523, -0.923 )
 ontext = "Sprint on"
 offtext = "Sprint off"
 
-[node name="HandPalm" type="MeshInstance" parent="."]
-transform = Transform( -0.266796, -0.137152, -0.0100947, 0.00230991, 0.00213046, -0.999945, 0.137166, -0.266805, -0.00279537, 0.676758, 1.64896, 1.08787 )
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
+[node name="KneesaverSwitch" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, 1.252, -0.923 )
+value = true
+ontext = "Knee saver on"
+offtext = "Knee saver off"
 
 [node name="TutorialVideo" parent="." instance=ExtResource( 15 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.04662, 0.781789, -1.70517e-07 )
 
 [node name="SongSelector" parent="." instance=ExtResource( 16 )]
-transform = Transform( -2.62268e-08, 0, -1, 0, 0.6, 0, 0.6, 0, -4.37114e-08, 1.09793, 1.43304, 1.78876e-07 )
+transform = Transform( -1.74846e-08, 0, -1, 0, 0.4, 0, 0.4, 0, -4.37114e-08, 1.09793, 1.43304, 1.78876e-07 )
 [connection signal="selected" from="Freeplay1" to="." method="_on_level_block_selected"]
 [connection signal="selected" from="Freeplay2" to="." method="_on_level_block_selected"]
 [connection signal="selected" from="Freeplay3" to="." method="_on_level_block_selected"]
@@ -261,4 +249,5 @@ transform = Transform( -2.62268e-08, 0, -1, 0, 0.6, 0, 0.6, 0, -4.37114e-08, 1.0
 [connection signal="toggled" from="BurpeeSwitch" to="." method="_on_BurpeeSwitch_toggled"]
 [connection signal="toggled" from="DuckSwitch" to="." method="_on_DuckSwitch_toggled"]
 [connection signal="toggled" from="SprintSwitch" to="." method="_on_SprintSwitch_toggled"]
+[connection signal="toggled" from="KneesaverSwitch" to="." method="_on_SprintSwitch_toggled"]
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]

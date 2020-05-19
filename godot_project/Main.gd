@@ -23,6 +23,7 @@ var player_height = 0
 var run_point_multiplier = 1
 var beast_mode = false
 var ducking_mode = false
+var kneesaver_mode = false
 var stand_avoid_head_cue = 0.5
 var redistribution_speed = 0.025
 var song_current_bpm = 0
@@ -199,7 +200,9 @@ func display_state(state):
 	elif state == CueState.CRUNCH:
 		psign.crunch()
 	elif state == CueState.BURPEE:
-		psign.burpee()  #TODO Add Burpee Sign
+		psign.burpee() 
+	elif state == CueState.SPRINT:
+		psign.sprint() 
 	
 	get_node("ExerciseSelector").select(state_string(state))
 	
@@ -222,6 +225,12 @@ func _ready():
 	populate_state_model()
 	beast_mode = ProjectSettings.get("game/beast_mode")
 	ducking_mode = ProjectSettings.get("game/exercise/duck")
+	kneesaver_mode = ProjectSettings.get("game/exercise/kneesaver")
+	
+	if kneesaver_mode:
+		cue_paramerters[CueState.SQUAT][CueSelector.HEAD]["yoffset"] = player_height * 0.1666
+	cue_paramerters[CueState.SQUAT][CueSelector.HEAD]["yrange"] = player_height * 0.3
+	
 	
 	
 	cue_emitter_state = get_start_exercise()
@@ -280,7 +289,6 @@ func _ready():
 			print ("Could not open beat list")
 
 		var audio_file = File.new()
-		#var audio_filename = "res://audio/%s"%selected_song
 		
 		infolayer.print_info("Loading song %s"%audio_filename)
 		print ("Loading song: %s"%audio_filename)
@@ -296,7 +304,8 @@ func _ready():
 		else:
 			print ("Could not load audio")
 			emit_signal("level_finished")	
-	stream.play()
+	if stream:
+		stream.play()
 	
 func setup_difficulty(d):
 	if d == 2:
@@ -622,7 +631,7 @@ func handle_squat_cues(target_time):
 	switch_floor_sign("feet")
 	
 	var node_selector = rng.randi()%100
-
+	
 	var y_head = player_height/2 + cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
 	var y_hand = y_head + (rng.randf() * 0.4 - 0.2)
 	var x = 0.3 + rng.randf() * 0.45
@@ -792,6 +801,8 @@ func switch_boxman(state, name):
 		boxman.switch_to_plank()
 	elif cue_emitter_state == CueState.BURPEE:
 		boxman.switch_to_plank() #TODO make a burpee animation
+	elif cue_emitter_state == CueState.SPRINT:
+		boxman.switch_to_run() 
 
 
 func _on_exit_button_pressed(body):
@@ -831,7 +842,7 @@ func update_groove(groove_bpm):
 		if groove_bpm > 0:
 			var multiplier = song_current_bpm / groove_bpm
 			print ("Current_bpm: %f Song BPM: %f  Mult: %f"%[groove_bpm, song_current_bpm, multiplier])
-			if abs(multiplier-1) < 0.1 or abs(multiplier-2) < 0.1 or abs(multiplier-4) < 0.1:
+			if abs(multiplier-1) < 0.15 or abs(multiplier-2) < 0.2 or abs(multiplier-4) < 0.3:
 				#Groove detected
 				trophy_list.set_groovetime(trophy_list.groove + delta)
 	last_grooove_update = now	

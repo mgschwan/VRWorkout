@@ -58,8 +58,9 @@ func setup_globals():
 	ProjectSettings.set("game/exercise/pushup", true)
 	ProjectSettings.set("game/exercise/crunch", true)
 	ProjectSettings.set("game/exercise/burpees", false)
-	ProjectSettings.set("game/exercise/duck", false)
+	ProjectSettings.set("game/exercise/duck", true)
 	ProjectSettings.set("game/exercise/sprint", false)
+	ProjectSettings.set("game/exercise/kneesaver", true)
 
 
 func _initialize_OVR_API():
@@ -337,7 +338,7 @@ func _on_Area_level_selected(filename, diff, num):
 	
 
 func _on_Timer_timeout():
-	_on_Area_level_selected("res://audio/vrworkout.ogg", 0, 1)
+	_on_Area_level_selected("res://audio/songs/vrworkout.ogg", 0, 1)
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)
 	print(get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").stream.get_length())

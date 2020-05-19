@@ -6,18 +6,20 @@ signal level_selected(filename, difficulty, level_number)
 # var a = 2
 # var b = "text"
 
-func get_song_list():
-	var songs = File.new()
-	songs.open('res://audio/songs.json', File.READ)
-	
-	var tmp = songs.get_as_text()
-	var song_dict = JSON.parse(tmp).result
-	songs.close()
-	
+func get_song_list(path):
 	var song_list = []
-	var name
-	for name in song_dict.keys():
-		song_list.append(name)
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin()
+	var fname = dir.get_next()
+	while fname != "":
+		if not dir.current_is_dir():
+			var fields = fname.split(".")
+			print (str(fields))
+			if fields and fields[-1] == "ogg":
+				var full_path = "%s/%s"%[dir.get_current_dir(),fname]
+				song_list.append(full_path)
+		fname = dir.get_next()
 
 	return song_list
 	
@@ -25,7 +27,9 @@ func get_song_list():
 func _ready():
 	print ("Local addresses: %s"%str(IP.get_local_addresses()))
 	
-	var songs = get_song_list()
+	var songs = get_song_list("res://audio/songs")
+	songs += get_song_list("res://audio/nonfree_songs")
+	print (str(songs))
 	get_node("SongSelector").set_songs(songs)
 	
 	get_node("MainText").print_info("VRWorkout\nSelect song by touching a block\nBest played hands only - no controllers\nPosition yourself between the blue poles\nRun in place to get multipliers\n\nTurn around for a tutorial")

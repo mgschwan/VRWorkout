@@ -165,7 +165,7 @@ transform = Transform( 0.763243, 0, -0.476927, 0, 0.9, 0, 0.476927, 0, 0.763243,
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0908899, -0.0706311 )
 
 [node name="ExerciseSelector" parent="." instance=ExtResource( 19 )]
-transform = Transform( -8.74228e-09, -0.2, 8.74228e-09, 0, -8.74228e-09, -0.2, 0.2, -8.74228e-09, 3.82137e-16, 1.11235, 0.315031, -0.350501 )
+transform = Transform( -6.55671e-09, -0.15, 6.55671e-09, 0, -6.55671e-09, -0.15, 0.15, -6.55671e-09, 2.86603e-16, 1.11235, 0.55107, -0.350501 )
 
 [node name="GrooveDisplay" parent="." instance=ExtResource( 20 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 2.36304, -4.23735 )

@@ -26,6 +26,9 @@ func get_level():
 func get_difficulty_selector():
 	return 0
 	
+func is_in_animation():
+	return get_node("AnimationPlayer").is_playing()
+	
 #Spin the card and set the song info
 func set_song_info(text,filename):
 	song_filename = filename
