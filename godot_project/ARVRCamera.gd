@@ -99,5 +99,15 @@ func tint_screen(duration):
 	yield(get_tree().create_timer(duration),"timeout")
 	get_node("ScreenTint").hide()
 		
+func blackout_screen(blackout):
+	if blackout:
+		print ("Blackout screen")
+		get_node("Blackout").show()
+	else:
+		print ("Show screen")
+		get_node("Blackout").hide()
+
+
+
 		
 	

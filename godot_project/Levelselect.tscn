@@ -239,9 +239,9 @@ transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.0466
 
 [node name="SongSelector" parent="." instance=ExtResource( 16 )]
 transform = Transform( -1.74846e-08, 0, -1, 0, 0.4, 0, 0.4, 0, -4.37114e-08, 1.09793, 1.43304, 1.78876e-07 )
-[connection signal="selected" from="Freeplay1" to="." method="_on_level_block_selected"]
-[connection signal="selected" from="Freeplay2" to="." method="_on_level_block_selected"]
-[connection signal="selected" from="Freeplay3" to="." method="_on_level_block_selected"]
+[connection signal="selected" from="Freeplay1" to="." method="_on_SongSelector_level_selected"]
+[connection signal="selected" from="Freeplay2" to="." method="_on_SongSelector_level_selected"]
+[connection signal="selected" from="Freeplay3" to="." method="_on_SongSelector_level_selected"]
 [connection signal="toggled" from="JumpSwitch" to="." method="_on_JumpSwitch_toggled"]
 [connection signal="toggled" from="StandSwitch" to="." method="_on_StandSwitch_toggled"]
 [connection signal="toggled" from="CrunchSwitch" to="." method="_on_CrunchSwitch_toggled"]

@@ -308,10 +308,10 @@ func _process(delta):
 
 	if not vr_mode:
 		if Input.is_key_pressed(KEY_P):
-		    # start screen capture
-		    var image = get_viewport().get_texture().get_data()
-		    image.flip_y()
-		    image.save_png("/tmp/vrworkout_screenshot_%d.png"%OS.get_ticks_msec())
+			# start screen capture
+			var image = get_viewport().get_texture().get_data()
+			image.flip_y()
+			image.save_png("/tmp/vrworkout_screenshot_%d.png"%OS.get_ticks_msec())
 	
 	if level == null:
 		player_height_stat[ clamp(int(100*cam.translation.y),0,len(player_height_stat)-1) ] += 1
@@ -388,6 +388,7 @@ func set_beast_mode(enabled):
 
 
 func _on_Splashscreen_finished():
+	get_viewport().get_camera().blackout_screen(true)
 	levelselect = levelselect_blueprint.instance()
 	levelselect.translation = Vector3(0,0,0)
 	levelselect.connect("level_selected",self,"_on_Area_level_selected")

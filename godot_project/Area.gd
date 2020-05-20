@@ -26,8 +26,6 @@ func _on_Area_body_entered(body):
 		else:
 			# Ignore if the hand controller touched the head cue
 			pass
-	elif body.name == "exit_button":
-		emit_signal("exit_event")
 	elif body.has_method("beat"):
 		print ("Beat hit")
 		body.beat()

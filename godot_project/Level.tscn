@@ -11,7 +11,7 @@
 [ext_resource path="res://position_sign.tscn" type="PackedScene" id=9]
 [ext_resource path="res://dark_green.tres" type="Material" id=10]
 [ext_resource path="res://models/blue_transparent.material" type="Material" id=11]
-[ext_resource path="res://IslandScene.tscn" type="PackedScene" id=13]
+[ext_resource path="res://exit_button.gd" type="Script" id=12]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=14]
 [ext_resource path="res://RunIndicator.tscn" type="PackedScene" id=15]
 [ext_resource path="res://boxman_character.tscn" type="PackedScene" id=16]
@@ -128,6 +128,7 @@ material/0 = ExtResource( 10 )
 
 [node name="exit_button" type="StaticBody" parent="target"]
 transform = Transform( -8.74228e-08, 1, -8.74228e-09, 0, -4.37114e-08, -0.2, -2, -4.37114e-08, 3.82137e-16, -1.57509, 0.750559, -1.12659 )
+script = ExtResource( 12 )
 
 [node name="exit_text" parent="target/exit_button" instance=ExtResource( 14 )]
 transform = Transform( 1, -1.77636e-15, 1.32349e-23, 0, 1, -8.88178e-16, 1.69407e-21, -1.42109e-14, 1, 0, 0, 0 )
@@ -139,10 +140,6 @@ shape = SubResource( 7 )
 
 [node name="PositionSign" parent="." instance=ExtResource( 9 )]
 transform = Transform( 0.5, 0, 0, 0, -4.37114e-08, -0.5, 0, 1, -2.18557e-08, -1.79988, 0.513339, -4.91669 )
-visible = false
-
-[node name="FloatingStage" parent="." instance=ExtResource( 13 )]
-transform = Transform( 0.720909, 0.0282943, -0.00137606, -0.0392356, 0.999175, -0.0104441, 0.00149615, 0.0105109, 0.999944, -1.36659, 2.8993, 1.70094 )
 visible = false
 
 [node name="UpdateTimer" type="Timer" parent="."]
@@ -183,6 +180,7 @@ transform = Transform( -6.99382e-10, 0, 0.018, 0, 0.02, 0, -0.016, 0, -7.86805e-
 transform = Transform( 0.161756, 0, -0.117622, 0, 0.2, 0, 0.117622, 0, 0.161756, -1.96862, 2.03119, -1.42694 )
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
+[connection signal="touched" from="target/exit_button" to="." method="_on_exit_button_pressed"]
 [connection signal="timeout" from="UpdateTimer" to="." method="_on_UpdateTimer_timeout"]
 [connection signal="beast_attack_successful" from="boxman" to="." method="_on_boxman_beast_attack_successful"]
 [connection signal="beast_killed" from="boxman" to="." method="_on_boxman_beast_killed"]

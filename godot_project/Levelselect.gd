@@ -78,6 +78,10 @@ func _ready():
 	get_node("KneesaverSwitch").value = ProjectSettings.get("game/exercise/kneesaver")
 	get_node("KneesaverSwitch").update_switch()
 
+	get_viewport().get_camera().blackout_screen(false)
+
+
+
 
 func set_main_text(text):
 	get_node("MainText").print_info(text)

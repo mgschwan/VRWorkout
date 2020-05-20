@@ -36,6 +36,8 @@ func _process(delta):
 			print("Nod %d"%nod_count)
 			nod_count = nod_count +1
 		if nod_count >= nod_target:
+			get_viewport().get_camera().blackout_screen(true)
+			yield(get_tree().create_timer(0.2),"timeout")
 			emit_signal("splash_screen_finished")
 		last_extreme_angle = last_angle
 	if sign(r-last_angle) != 0:

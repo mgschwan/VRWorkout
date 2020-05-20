@@ -803,7 +803,7 @@ func switch_boxman(state, name):
 		boxman.switch_to_run() 
 
 
-func _on_exit_button_pressed(body):
+func _on_exit_button_pressed():
 	emit_signal("level_finished")
 
 var last_run_update = 0		
