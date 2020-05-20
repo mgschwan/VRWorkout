@@ -3,6 +3,9 @@ extends Spatial
 var level_blueprint = null 
 var levelselect_blueprint = null  
 var splashscreen = preload("res://Splashscreen.tscn").instance()
+var left_controller_blueprint = preload("res://Left_Controller_Tree.tscn")
+var right_controller_blueprint = preload("res://Right_Controller_Tree.tscn")
+
 var levelselect
 var level = null
 var cam = null
@@ -12,7 +15,9 @@ var vr_mode = true
 var beast_mode = false
 export var record_tracker_data = false
 
+var arvr_interface = null
 var screen_tint_node
+
 
 var left_controller
 var right_controller
@@ -99,10 +104,42 @@ func handle_mobile_permissions():
 		OS.request_permissions()
 
 
+func _on_Tracker_added(tracker_name, type, id):
+	print ("Tracker added: %s / %d / %d"%[tracker_name, type, id])	
+	
+	if type == ARVRServer.TRACKER_CONTROLLER:
+		print ("New controller added %s"%tracker_name.to_lower())
+		var is_left = false
+		if tracker_name.to_lower().find("left") >= 0:
+			is_left = true
+			
+		if is_left:
+			print ("Left controller")
+			if left_controller != null:
+				print ("Remove existing controller")
+				left_controller.queue_free()
+			left_controller = left_controller_blueprint.instance()
+			left_controller.controller_id = id
+			get_node("ARVROrigin").add_child(left_controller)
+			ball_l = left_controller.get_node("AreaLeft/handle_ball")
+			left_collision_root = left_controller.get_node("AreaLeft")
+		else:				
+			print ("Right controller")
+			if right_controller != null:
+				print ("Remove existing controller")
+				right_controller.queue_free()
+			right_controller = right_controller_blueprint.instance()
+			right_controller.controller_id = id
+			get_node("ARVROrigin").add_child(right_controller)
+			ball_r = right_controller.get_node("AreaRight/handle_ball")
+			right_collision_root = right_controller.get_node("AreaRight")
+
 func initialize():
 	var arvr_ovr_mobile_interface = ARVRServer.find_interface("OVRMobile");
 	var arvr_oculus_interface = ARVRServer.find_interface("Oculus");
 	var arvr_open_vr_interface = ARVRServer.find_interface("OpenVR");
+
+	ARVRServer.connect("tracker_added",self,"_on_Tracker_added")
 
 	vr_mode = false
 	cam = get_node("ARVROrigin/ARVRCamera")
@@ -117,6 +154,7 @@ func initialize():
 			ovr_init_config.set_render_target_size_multiplier(1) # setting to 1 here is the default
 		
 		if arvr_ovr_mobile_interface.initialize():
+			arvr_interface = arvr_ovr_mobile_interface
 			get_viewport().arvr = true
 			get_viewport().hdr = false
 			OS.vsync_enabled = false
@@ -126,12 +164,14 @@ func initialize():
 		
 	elif arvr_oculus_interface:
 		if arvr_oculus_interface.initialize():
+			arvr_interface = arvr_oculus_interface
 			vr_mode = true
 			get_viewport().arvr = true;
 			Engine.target_fps = 80 # TODO: this is headset dependent (RiftS == 80)=> figure out how to get this info at runtime
 			OS.vsync_enabled = false;
 	elif arvr_open_vr_interface:
 		if arvr_open_vr_interface.initialize():
+			arvr_interface = arvr_open_vr_interface
 			get_viewport().arvr = true;
 			Engine.target_fps = 90 # TODO: this is headset dependent => figure out how to get this info at runtime
 			OS.vsync_enabled = false;
@@ -140,6 +180,7 @@ func initialize():
 		#Not running in VR / Demo mode
 		cam.translation.y = 1.5
 		cam.rotation.x = -0.4
+		
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -151,29 +192,11 @@ func _ready():
 	
 	for i in range(200):
 		player_height_stat.append(0)
-
-	ball_l = get_node("ARVROrigin/left_controller/AreaLeft/handle_ball")
-	var hand_l = get_node("ARVROrigin/left_controller/AreaLeft/Spatial")
-	left_collision_root = get_node("ARVROrigin/left_controller/AreaLeft")
-	
-	ball_r = get_node("ARVROrigin/right_controller/AreaRight/handle_ball")
-	var hand_r = get_node("ARVROrigin/right_controller/AreaRight/Spatial")
-	right_collision_root = get_node("ARVROrigin/right_controller/AreaRight")
-	
-	left_controller = get_node("ARVROrigin/left_controller")
-	right_controller = get_node("ARVROrigin/right_controller")	
-	
-	#ball_l.hide()
-	#ball_r.hide()
 	
 	initialize() #VR specific initialization
 	
 	if ovr_hand_tracking: 
-		hand_l.hide()
-		hand_r.hide()
 		ovr_hand_tracking = ovr_hand_tracking.new()
-		ball_l.show()
-		ball_r.show()
 	
 	get_node("ARVROrigin/ARVRCamera").vr_mode = vr_mode
 	
@@ -301,8 +324,10 @@ func _process(delta):
 	else:
 		if beast_mode:
 			var tmp = level.beast_mode_supported()
-			left_controller.set_beast_mode(tmp)
-			right_controller.set_beast_mode(tmp)
+			if left_controller:
+				left_controller.set_beast_mode(tmp)
+			if right_controller:
+				right_controller.set_beast_mode(tmp)
 			
 #	if in_hand_mode and not hand_ball_adjusted:
 #		left_controller.get_node("AreaLeft/CollisionShape").translation.x = -0.05
@@ -312,11 +337,12 @@ func _process(delta):
 #		hand_ball_adjusted = true
 			
 			
-		
-	_update_hand_model(left_controller, left_collision_root, ball_l, last_left_controller);
-	_update_hand_model(right_controller, right_collision_root, ball_r, last_right_controller);
+	if left_controller:
+		_update_hand_model(left_controller, left_collision_root, ball_l, last_left_controller);
+	if right_controller:
+		_update_hand_model(right_controller, right_collision_root, ball_r, last_right_controller);
 
-	if record_tracker_data:
+	if record_tracker_data and left_controller and right_controller:
 		tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
 
 
@@ -337,7 +363,7 @@ func _on_Area_level_selected(filename, diff, num):
 		add_child(level)	
 	
 
-func _on_Timer_timeout():
+func _on_DemoTimer_timeout():
 	_on_Area_level_selected("res://audio/songs/vrworkout.ogg", 0, 1)
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)
@@ -355,8 +381,10 @@ func get_groove_bpm():
 func set_beast_mode(enabled):
 	beast_mode = enabled
 	ProjectSettings.set("game/beast_mode",enabled)
-	left_controller.set_beast_mode(enabled)
-	right_controller.set_beast_mode(enabled)
+	if left_controller:
+		left_controller.set_beast_mode(enabled)
+	if right_controller:
+		right_controller.set_beast_mode(enabled)
 
 
 func _on_Splashscreen_finished():
@@ -368,5 +396,7 @@ func _on_Splashscreen_finished():
 	splashscreen.queue_free()
 	add_child(levelselect)
 	if not vr_mode:
-		get_node("ARVROrigin/right_controller/AreaRight/DemoTimer").start()
+		get_node("DemoTimer").start()
+
+
 
