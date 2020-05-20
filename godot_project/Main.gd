@@ -72,59 +72,65 @@ enum CueSelector {
 };
 	
 	
-var cue_paramerters = {
-	CueState.STAND : {
-		CueSelector.HEAD : {
-		},
-		CueSelector.HAND : {
-		}
-	},	
-	CueState.SQUAT : {
-		CueSelector.HEAD : {
-			"yoffset" : 0.0,
-			"yrange" : 0.5,
-		},
-		CueSelector.HAND :  {
-			"xspread" : 0.6
-		}		
-	},	
-	CueState.PUSHUP : {
-		CueSelector.HEAD : {
-			"xrange" : 0.4,
-			"yoffset" : 0.25,
-			"yrange" : 0.55
-		},
-		CueSelector.HAND : {
-		}
-	},	
-	CueState.CRUNCH : {
-		CueSelector.HEAD : {
-			"xrange" : 0.3,
-			"yoffset": 0.35,
-			"yrange": 0.1
-		},
-		CueSelector.HAND : {
-			"xrange" : 0.1,
-			"xspread" : 0.2,
-			"yoffset" : 0.9,
-			"yrange" : 0.2
-		}
-	},	
-	CueState.JUMP : {
-		CueSelector.HEAD : {
-		},
-		CueSelector.HAND : {
-		}
-	},
-	CueState.BURPEE : {
-		CueSelector.HEAD : {
-			"yoffset" : 0.6
-		},
-		CueSelector.HAND : {
-		}
-	}	
+var cue_parameters = {}
 
-}
+#Populate the cue parameters according to difficulty and player height
+func setup_cue_parameters(difficulty, player_height):
+	cue_parameters = {
+		CueState.STAND : {
+			CueSelector.HEAD : {
+			},
+			CueSelector.HAND : {
+			}
+		},	
+		CueState.SQUAT : {
+			CueSelector.HEAD : {
+				"yoffset" : 0.0,
+				"yrange" : player_height * 0.3,
+			},
+			CueSelector.HAND :  {
+				"xspread" : 0.6
+			}		
+		},	
+		CueState.PUSHUP : {
+			CueSelector.HEAD : {
+				"xrange" : 0.4,
+				"yoffset" : 0.25,
+				"yrange" : 0.55
+			},
+			CueSelector.HAND : {
+			}
+		},	
+		CueState.CRUNCH : {
+			CueSelector.HEAD : {
+				"xrange" : 0.3,
+				"yoffset": 0.35,
+				"yrange": 0.1
+			},
+			CueSelector.HAND : {
+				"xrange" : 0.1,
+				"xspread" : 0.2,
+				"yoffset" : player_height * 0.526,
+				"yrange" : 0.2
+			}
+		},	
+		CueState.JUMP : {
+			CueSelector.HEAD : {
+			},
+			CueSelector.HAND : {
+			}
+		},
+		CueState.BURPEE : {
+			CueSelector.HEAD : {
+				"yoffset" : 0.6
+			},
+			CueSelector.HAND : {
+			}
+		}	
+	}
+	if kneesaver_mode:
+		cue_parameters[CueState.SQUAT][CueSelector.HEAD]["yoffset"] = player_height * 0.18
+
 
 var cue_emitter_state = CueState.STAND
 var cue_selector = CueSelector.HEAD
@@ -180,11 +186,7 @@ func string_to_state(s):
 		retVal = CueState.BURPEE
 	elif s == "sprint":
 		retVal = CueState.SPRINT
-	
 	return retVal
-
-
-
 
 
 func display_state(state):
@@ -225,13 +227,7 @@ func _ready():
 	populate_state_model()
 	beast_mode = ProjectSettings.get("game/beast_mode")
 	ducking_mode = ProjectSettings.get("game/exercise/duck")
-	kneesaver_mode = ProjectSettings.get("game/exercise/kneesaver")
-	
-	if kneesaver_mode:
-		cue_paramerters[CueState.SQUAT][CueSelector.HEAD]["yoffset"] = player_height * 0.1666
-	cue_paramerters[CueState.SQUAT][CueSelector.HEAD]["yrange"] = player_height * 0.3
-	
-	
+	kneesaver_mode = ProjectSettings.get("game/exercise/kneesaver")	
 	
 	cue_emitter_state = get_start_exercise()
 		
@@ -307,6 +303,7 @@ func _ready():
 	if stream:
 		stream.play()
 	
+	
 func setup_difficulty(d):
 	if d == 2:
 		level_min_cue_space = 0.5
@@ -323,6 +320,7 @@ func setup_difficulty(d):
 	min_cue_space = level_min_cue_space
 	min_state_duration = level_min_state_duration
 	current_difficulty = d
+	setup_cue_parameters(d, player_height)
 		
 var last_playback_time = 0
 func _process(delta):
@@ -612,7 +610,7 @@ func handle_burpee_cues(target_time):
 
 	if burpee_state == BurpeeState.PUSHUP_HIGH:
 		switch_floor_sign("hands")
-		y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
+		y_head = cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
 	elif burpee_state == BurpeeState.PUSHUP_LOW:
 		switch_floor_sign("hands")
 		y_head = 0.3
@@ -632,10 +630,10 @@ func handle_squat_cues(target_time):
 	
 	var node_selector = rng.randi()%100
 	
-	var y_head = player_height/2 + cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
+	var y_head = player_height/2 + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"]
 	var y_hand = y_head + (rng.randf() * 0.4 - 0.2)
 	var x = 0.3 + rng.randf() * 0.45
-	var x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HAND]["xspread"] - cue_paramerters[cue_emitter_state][CueSelector.HAND]["xspread"]/2
+	var x_head = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"] - cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]/2
 	
 	if cue_selector == CueSelector.HAND and node_selector < 30:
 		cue_selector = CueSelector.HEAD
@@ -656,10 +654,10 @@ func handle_crunch_cues(target_time):
 	
 	var node_selector = rng.randi()%100
 	
-	var x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
-	var y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
-	var y_hand = cue_paramerters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HAND]["yrange"]
-	var x = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HAND]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HAND]["xrange"]/2
+	var x_head = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
+	var y_head = cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"]
+	var y_hand = cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
+	var x = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"]/2
 	
 	if cue_selector == CueSelector.HAND and node_selector < 80:
 		cue_selector = CueSelector.HEAD
@@ -667,7 +665,7 @@ func handle_crunch_cues(target_time):
 		cue_selector = CueSelector.HAND
 	
 	if cue_selector == CueSelector.HAND:
-		var spread = cue_paramerters[cue_emitter_state][CueSelector.HAND]["xspread"]/2.0+rng.randf()*cue_paramerters[cue_emitter_state][CueSelector.HAND]["xspread"]
+		var spread = cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]/2.0+rng.randf()*cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]
 		create_and_attach_cue("right", x+spread,y_hand, target_time)
 		create_and_attach_cue("left", x-spread,y_hand, target_time)
 	else:
@@ -700,9 +698,9 @@ func handle_pushup_cues(target_time):
 	
 	var node_selector = rng.randi()%100
 
-	var y_head = cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["yrange"]
+	var y_head = cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"]
 	var x = 0.3 + rng.randf() * 0.25
-	var x_head = rng.randf() * cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_paramerters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
+	var x_head = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
 	var y_hand = 0.3 + rng.randf() * 0.4
 	
 	if pushup_state == PushupState.REGULAR:

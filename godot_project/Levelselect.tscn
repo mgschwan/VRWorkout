@@ -224,6 +224,7 @@ offtext = "Ducking off"
 
 [node name="SprintSwitch" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324165, 1.523, -0.923 )
+visible = false
 ontext = "Sprint on"
 offtext = "Sprint off"
 
@@ -249,5 +250,5 @@ transform = Transform( -1.74846e-08, 0, -1, 0, 0.4, 0, 0.4, 0, -4.37114e-08, 1.0
 [connection signal="toggled" from="BurpeeSwitch" to="." method="_on_BurpeeSwitch_toggled"]
 [connection signal="toggled" from="DuckSwitch" to="." method="_on_DuckSwitch_toggled"]
 [connection signal="toggled" from="SprintSwitch" to="." method="_on_SprintSwitch_toggled"]
-[connection signal="toggled" from="KneesaverSwitch" to="." method="_on_SprintSwitch_toggled"]
+[connection signal="toggled" from="KneesaverSwitch" to="." method="_on_KneesaverSwitch_toggled"]
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]

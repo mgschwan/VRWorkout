@@ -27,8 +27,20 @@ func get_song_list(path):
 func _ready():
 	print ("Local addresses: %s"%str(IP.get_local_addresses()))
 	
-	var songs = get_song_list("res://audio/songs")
-	songs += get_song_list("res://audio/nonfree_songs")
+	var songs = ["res://audio/songs/vrworkout.ogg",
+			"res://audio/songs/cdk_deeper_in_yourself.ogg",
+			"res://audio/songs/cdk_like_this.ogg",
+			"res://audio/songs/cdk_the_game_has_changed.ogg",
+			"res://audio/songs/ffact_shameless_site_promotion.ogg",
+			"res://audio/songs/scomber_clarity.ogg",
+			"res://audio/songs/vrworkout_beater.ogg",
+			"res://audio/nonfree_songs/Slayers_of_the_Ice_Dragon.ogg"]
+	
+	#get_song_list("res://audio/songs")
+	#songs += get_song_list("res://audio/nonfree_songs")
+	
+	
+	
 	print (str(songs))
 	get_node("SongSelector").set_songs(songs)
 	
@@ -62,6 +74,9 @@ func _ready():
 
 	get_node("SprintSwitch").value = ProjectSettings.get("game/exercise/sprint")
 	get_node("SprintSwitch").update_switch()
+
+	get_node("KneesaverSwitch").value = ProjectSettings.get("game/exercise/kneesaver")
+	get_node("KneesaverSwitch").update_switch()
 
 
 func set_main_text(text):
@@ -106,6 +121,10 @@ func _on_DuckSwitch_toggled(value):
 
 func _on_SprintSwitch_toggled(value):
 	ProjectSettings.set("game/exercise/sprint", value)
+
+func _on_KneesaverSwitch_toggled(value):
+	ProjectSettings.set("game/exercise/kneesaver", value)
+
 
 
 func _on_SongSelector_level_selected(filename, difficulty, level_number):

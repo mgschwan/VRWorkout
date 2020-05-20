@@ -2,4 +2,4 @@
 *.import
 */addons/godot_ovrmobile
 *.apk
-*/nonfree_songs
+godot_project/audio/nonfree_songs/*
