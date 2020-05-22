@@ -16,9 +16,9 @@ func _on_Area_body_entered(body):
 			var velocity = controller.get_hit_velocity()
 			print ("Velocity %.4f"%velocity)
 			if velocity > 1.25:
-				var hand = "left"
-				if controller.name == "right_controller":
-					hand = "right"
+				var hand = "right"
+				if controller.is_left:
+					hand = "left"
 				var p = body.has_been_hit(hand)
 				if p >= 0:
 					hit_player.play(0)
@@ -32,3 +32,6 @@ func _on_Area_body_entered(body):
 	elif body.has_method("touched_by_controller"):
 		body.touched_by_controller(get_parent(), get_parent().get_parent().get_parent())
 
+func _on_Area_body_exited(body):
+	if body.has_method("released_by_controller"):
+		body.released_by_controller(get_parent(), get_parent().get_parent().get_parent())

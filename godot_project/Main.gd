@@ -247,26 +247,14 @@ func _ready():
 	beat_index = 0
 
 	setup_difficulty(current_difficulty)
+
+	beats = []
 	
 	if song_index_parameter < 0:
 		#freeplay mode
 		stream = DummyAudioStream.new(abs(song_index_parameter)*100)
 		selected_song = "Freeplay"
 		print ("BPM %.2f"%bpm)
-		beats = []
-		var delta = max(0.1, 60.0/float(max(1,bpm)))
-		
-		var now = OS.get_ticks_msec()
-		
-		var pos = 0
-		#get the correct starting time
-		var elapsed = (now - first_beat)/1000.0
-		pos =  (ceil(elapsed/delta) - elapsed/delta)*delta
-		print ("Start at: %.2f"%pos)
-		
-		while pos < stream.stream.get_length()-delta:
-			beats.append(pos)
-			pos += delta
 		stream.connect("stream_finished", self, "_on_AudioStreamPlayer_finished")
 		self.add_child(stream)
 	else:
@@ -300,6 +288,22 @@ func _ready():
 		else:
 			print ("Could not load audio")
 			emit_signal("level_finished")	
+	
+	#If the song has not beats use the default beats
+	if len(beats) == 0 and stream.stream:
+		var delta = max(0.1, 60.0/float(max(1,bpm)))
+		var now = OS.get_ticks_msec()	
+		var pos = 0
+		#get the correct starting time
+		var elapsed = (now - first_beat)/1000.0
+		pos =  (ceil(elapsed/delta) - elapsed/delta)*delta
+		print ("Start at: %.2f"%pos)
+				
+		while pos < stream.stream.get_length()-delta:
+			beats.append(pos)
+			pos += delta
+
+
 	if stream:
 		stream.play()
 	

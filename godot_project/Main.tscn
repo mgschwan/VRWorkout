@@ -57,6 +57,7 @@ material/0 = SubResource( 5 )
 
 [node name="OmniLight" type="DirectionalLight" parent="ARVROrigin"]
 transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 5, 4 )
+visible = false
 light_energy = 0.2
 light_indirect_energy = 0.1
 light_specular = 0.2

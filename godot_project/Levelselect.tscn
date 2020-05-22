@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -13,8 +13,10 @@
 [ext_resource path="res://beastmode.gd" type="Script" id=11]
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
 [ext_resource path="res://dark_green.tres" type="Material" id=13]
+[ext_resource path="res://models/Material_001.material" type="Material" id=14]
 [ext_resource path="res://Tutorial.tscn" type="PackedScene" id=15]
 [ext_resource path="res://SongSelector.tscn" type="PackedScene" id=16]
+[ext_resource path="res://ControllerAdjuster.gd" type="Script" id=17]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -36,6 +38,13 @@ extents = Vector3( 0.0951286, 0.110867, 0.00811744 )
 
 [sub_resource type="CubeMesh" id=6]
 size = Vector3( 0.2, 0.1, 0.1 )
+
+[sub_resource type="SphereShape" id=7]
+radius = 0.1
+
+[sub_resource type="SphereMesh" id=8]
+radius = 0.1
+height = 0.2
 
 [node name="Spatial" type="Spatial"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
@@ -239,6 +248,21 @@ transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.0466
 
 [node name="SongSelector" parent="." instance=ExtResource( 16 )]
 transform = Transform( -1.74846e-08, 0, -1, 0, 0.4, 0, 0.4, 0, -4.37114e-08, 1.09793, 1.43304, 1.78876e-07 )
+
+[node name="ControllerAdjuster" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.471274, 1.60599, -1.0476 )
+script = ExtResource( 17 )
+
+[node name="CollisionShape" type="CollisionShape" parent="ControllerAdjuster"]
+shape = SubResource( 7 )
+
+[node name="Sphere" type="MeshInstance" parent="ControllerAdjuster"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.19209e-07 )
+mesh = SubResource( 8 )
+material/0 = ExtResource( 14 )
+
+[node name="Text" parent="ControllerAdjuster" instance=ExtResource( 2 )]
+transform = Transform( 0.2, -1.52897e-07, 2.13313e-08, 3.05795e-08, 0.345347, -0.187695, 2.13313e-08, 0.938475, 0.0690695, 0.117676, 0.0301707, 0.100452 )
 [connection signal="selected" from="Freeplay1" to="." method="_on_SongSelector_level_selected"]
 [connection signal="selected" from="Freeplay2" to="." method="_on_SongSelector_level_selected"]
 [connection signal="selected" from="Freeplay3" to="." method="_on_SongSelector_level_selected"]

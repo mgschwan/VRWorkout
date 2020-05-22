@@ -16,8 +16,11 @@ func get_song_list(path):
 		if not dir.current_is_dir():
 			var fields = fname.split(".")
 			print (str(fields))
-			if fields and fields[-1] == "ogg":
-				var full_path = "%s/%s"%[dir.get_current_dir(),fname]
+			if fields and (fields[-1] == "ogg" or fields[-1] == "import"):
+				var tmpf = fname
+				if fields[-1] == "import":
+					tmpf = fname.rsplit(".",true,1)[0]
+				var full_path = "%s/%s"%[dir.get_current_dir(),tmpf]
 				song_list.append(full_path)
 		fname = dir.get_next()
 
@@ -27,19 +30,22 @@ func get_song_list(path):
 func _ready():
 	print ("Local addresses: %s"%str(IP.get_local_addresses()))
 	
-	var songs = ["res://audio/songs/vrworkout.ogg",
-			"res://audio/songs/cdk_deeper_in_yourself.ogg",
-			"res://audio/songs/cdk_like_this.ogg",
-			"res://audio/songs/cdk_the_game_has_changed.ogg",
-			"res://audio/songs/ffact_shameless_site_promotion.ogg",
-			"res://audio/songs/scomber_clarity.ogg",
-			"res://audio/songs/vrworkout_beater.ogg",
-			"res://audio/nonfree_songs/Slayers_of_the_Ice_Dragon.ogg"]
+	var songs = []
+#			 ["res://audio/songs/vrworkout.ogg",
+#			"res://audio/songs/cdk_deeper_in_yourself.ogg",
+#			"res://audio/songs/cdk_like_this.ogg",
+#			"res://audio/songs/cdk_the_game_has_changed.ogg",
+#			"res://audio/songs/ffact_shameless_site_promotion.ogg",
+#			"res://audio/songs/scomber_clarity.ogg",
+#			"res://audio/songs/vrworkout_beater.ogg",
+#			"res://audio/nonfree_songs/Slayers_of_the_Ice_Dragon.ogg",
+#			"res://audio/nonfree_songs/Duty_to_Humanity.ogg"]
 	
-	#get_song_list("res://audio/songs")
-	#songs += get_song_list("res://audio/nonfree_songs")
 	
 	
+	songs += get_song_list("res://audio/songs")
+	songs += get_song_list("res://audio/nonfree_songs")
+	songs += get_song_list("/sdcard/Music/Workout")	
 	
 	print (str(songs))
 	get_node("SongSelector").set_songs(songs)
@@ -79,8 +85,6 @@ func _ready():
 	get_node("KneesaverSwitch").update_switch()
 
 	get_viewport().get_camera().blackout_screen(false)
-
-
 
 
 func set_main_text(text):

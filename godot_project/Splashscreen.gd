@@ -24,6 +24,8 @@ var nod_count = 0
 var last_down_count = 0
 var nod_target = 5
 
+var nod_complete = false
+
 func _process(delta):
 	var r = head_node.rotation.x
 	var ts = OS.get_ticks_msec()
@@ -35,7 +37,8 @@ func _process(delta):
 		if abs(last_extreme_angle-last_angle) > min_nod_rot:
 			print("Nod %d"%nod_count)
 			nod_count = nod_count +1
-		if nod_count >= nod_target:
+		if nod_count >= nod_target and not nod_complete:
+			nod_complete = true
 			get_viewport().get_camera().blackout_screen(true)
 			yield(get_tree().create_timer(0.2),"timeout")
 			emit_signal("splash_screen_finished")

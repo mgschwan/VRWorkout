@@ -143,6 +143,8 @@ For suggestions/feedback join the discord group [VRWorkout Dojo](https://discord
 ## Credits:
 
 ### Music
+* ‘Duty to Humanity’ composed and performed by Moumoku.” [Link to artist](https://artbymoumoku.org/​)
+* 'Slayers of the Ice Dragon' composed and performed by Nagoonberries Music. [Link to artist](https://soundcloud.com/nagoonberries)
 * Odder Stuff (Duckettized) by 7OOP3D (c) copyright 2019 Licensed under a Creative Commons Attribution Noncommercial  (3.0) license. http://dig.ccmixter.org/files/7OOP3D/60150 Ft: Duckett
 * Drive by Alex (c) copyright 2013 Licensed under a Creative Commons Attribution (3.0) license. http://dig.ccmixter.org/files/AlexBeroza/43098 Ft: cdk & Darryl J
 * Deeper In Yourself (cdk mix) by Analog By Nature (c) copyright 2012 Licensed under a Creative Commons Attribution Noncommercial  (3.0) license. http://dig.ccmixter.org/files/cdk/39241 Ft: Covert

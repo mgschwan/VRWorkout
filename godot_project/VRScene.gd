@@ -120,9 +120,10 @@ func _on_Tracker_added(tracker_name, type, id):
 				left_controller.queue_free()
 			left_controller = left_controller_blueprint.instance()
 			left_controller.controller_id = id
+			left_controller.is_left = true
 			get_node("ARVROrigin").add_child(left_controller)
-			ball_l = left_controller.get_node("AreaLeft/handle_ball")
-			left_collision_root = left_controller.get_node("AreaLeft")
+			ball_l = left_controller.get_node("Area/handle_ball")
+			left_collision_root = left_controller.get_node("Area")
 		else:				
 			print ("Right controller")
 			if right_controller != null:
@@ -130,9 +131,10 @@ func _on_Tracker_added(tracker_name, type, id):
 				right_controller.queue_free()
 			right_controller = right_controller_blueprint.instance()
 			right_controller.controller_id = id
+			right_controller.is_left = false
 			get_node("ARVROrigin").add_child(right_controller)
-			ball_r = right_controller.get_node("AreaRight/handle_ball")
-			right_collision_root = right_controller.get_node("AreaRight")
+			ball_r = right_controller.get_node("Area/handle_ball")
+			right_collision_root = right_controller.get_node("Area")
 
 func initialize():
 	var arvr_ovr_mobile_interface = ARVRServer.find_interface("OVRMobile");
@@ -329,14 +331,7 @@ func _process(delta):
 			if right_controller:
 				right_controller.set_beast_mode(tmp)
 			
-#	if in_hand_mode and not hand_ball_adjusted:
-#		left_controller.get_node("AreaLeft/CollisionShape").translation.x = -0.05
-#		left_controller.get_node("AreaLeft/handle_ball").translation.x = -0.05
-#		left_controller.get_node("AreaRight/CollisionShape").translation.x = 0.05
-#		left_controller.get_node("AreaRight/handle_ball").translation.x = 0.05
-#		hand_ball_adjusted = true
-			
-			
+		
 	if left_controller:
 		_update_hand_model(left_controller, left_collision_root, ball_l, last_left_controller);
 	if right_controller:
