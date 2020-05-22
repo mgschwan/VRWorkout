@@ -1,9 +1,9 @@
 # VRWorkout
 Virtual reality fitness workout game for Oculus Quest
 
-[![Oculus Quest Download](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/download_button_oculusquest.png)](https://github.com/mgschwan/VRWorkout/releases/latest/download/VRWorkout.apk)
+[![Oculus Quest Download](https://github.com/mgschwan/VRWorkout/raw/master/web_assets/download_button_oculusquest.png)](https://github.com/mgschwan/VRWorkout/releases/latest/download/VRWorkout.apk)
 
-[![Windows Download](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/download_button_windows.png)](https://github.com/mgschwan/VRWorkout/releases/latest/download/VRWorkout_win.zip)
+[![Windows Download](https://github.com/mgschwan/VRWorkout/raw/master/web_assets/download_button_windows.png)](https://github.com/mgschwan/VRWorkout/releases/latest/download/VRWorkout_win.zip)
 
 ## What is this?
 
