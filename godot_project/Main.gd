@@ -268,7 +268,7 @@ func _ready():
 			var tmp = JSON.parse(beat_file.get_as_text()).result
 			beat_file.close()
 			beats = tmp.get("beats", [])
-			print ("Beats: %s"%str(beats))
+			print ("%d beats loaded"%len(beats))
 		else: 
 			print ("Could not open beat list")
 

@@ -7,24 +7,26 @@ signal level_selected(filename, difficulty, level_number)
 # var b = "text"
 
 func get_song_list(path):
-	var song_list = []
+	var song_dict = {}
 	var dir = Directory.new()
-	dir.open(path)
-	dir.list_dir_begin()
-	var fname = dir.get_next()
-	while fname != "":
-		if not dir.current_is_dir():
-			var fields = fname.split(".")
-			print (str(fields))
-			if fields and (fields[-1] == "ogg" or fields[-1] == "import"):
-				var tmpf = fname
-				if fields[-1] == "import":
-					tmpf = fname.rsplit(".",true,1)[0]
-				var full_path = "%s/%s"%[dir.get_current_dir(),tmpf]
-				song_list.append(full_path)
-		fname = dir.get_next()
-
-	return song_list
+	var ec = dir.open(path)
+	
+	if ec == OK:
+		dir.list_dir_begin()
+		var fname = dir.get_next()
+		while fname != "":
+			if not dir.current_is_dir():
+				var fields = fname.split(".")
+				print (str(fields))
+				if fields and (fields[-1] == "ogg" or fields[-1] == "import"):
+					var tmpf = fname
+					if fields[-1] == "import":
+						tmpf = fname.rsplit(".",true,1)[0]
+					var full_path = "%s/%s"%[dir.get_current_dir(),tmpf]
+					song_dict[full_path] = 1
+			fname = dir.get_next()
+	
+	return song_dict.keys()
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -56,7 +58,11 @@ func _ready():
 	
 	get_node("BeastModeSelector").beast_mode = ProjectSettings.get("game/beast_mode")
 	get_node("BeastModeSelector").update_switch()
-	
+	if ProjectSettings.get("game/is_oculusquest"):
+		get_node("BeastModeSelector").show()
+	else:
+		get_node("BeastModeSelector").queue_free()
+
 	get_node("JumpSwitch").value = ProjectSettings.get("game/exercise/jump")
 	get_node("JumpSwitch").update_switch()
 	
@@ -80,6 +86,10 @@ func _ready():
 
 	get_node("SprintSwitch").value = ProjectSettings.get("game/exercise/sprint")
 	get_node("SprintSwitch").update_switch()
+	
+	#Not properly implemeneted yet
+	get_node("SprintSwitch").queue_free()
+
 
 	get_node("KneesaverSwitch").value = ProjectSettings.get("game/exercise/kneesaver")
 	get_node("KneesaverSwitch").update_switch()

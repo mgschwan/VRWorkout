@@ -27,7 +27,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.5 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( -90, 180, 0 ), Vector3( -90, 360, 0 ), Vector3( -90, 180, 0 ) ]
+"values": [ Vector3( -90, 180, 0 ), Vector3( 45, 180, 0 ), Vector3( -90, 180, 0 ) ]
 }
 
 [node name="StaticBody" type="StaticBody"]
@@ -39,7 +39,7 @@ mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
 [node name="Text" parent="." instance=ExtResource( 4 )]
-transform = Transform( -0.45, 1.30337e-07, 1.59259e-14, 0, -6.51683e-08, 0.3, 1.46629e-07, 0.4, 4.88762e-08, 0, 0, 0 )
+transform = Transform( -0.45, 3.49691e-08, 1.14641e-15, 0, -1.74846e-08, 0.3, 3.93403e-08, 0.4, 1.31134e-08, 0, 0, 0 )
 
 [node name="Easy" type="StaticBody" parent="Text"]
 transform = Transform( -2.22222, 7.8429e-21, 7.24092e-07, 8.14603e-07, -4.07302e-07, 2.5, 1.76954e-13, 3.33333, 5.43069e-07, 0.153461, -0.598373, 0.33709 )

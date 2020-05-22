@@ -1,6 +1,10 @@
 # VRWorkout
 Virtual reality fitness workout game for Oculus Quest
 
+[![Oculus Quest Download](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/download_oculusquest.png)](https://github.com/mgschwan/VRWorkout/releases/latest/download/VRWorkout.apk)
+
+[![Windows Download](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/download_windows.png)](https://github.com/mgschwan/VRWorkout/releases/latest/download/VRWorkout_win.zip)
+
 ## What is this?
 
 A virtual reality music workout game built with [Godot Engine](https://godotengine.org/)
@@ -143,7 +147,7 @@ For suggestions/feedback join the discord group [VRWorkout Dojo](https://discord
 ## Credits:
 
 ### Music
-* ‘Duty to Humanity’ composed and performed by Moumoku.” [Link to artist](https://artbymoumoku.org/​)
+* ‘Duty to Humanity’ composed and performed by Moumoku. [Link to artist](https://artbymoumoku.org/​)
 * 'Slayers of the Ice Dragon' composed and performed by Nagoonberries Music. [Link to artist](https://soundcloud.com/nagoonberries)
 * Odder Stuff (Duckettized) by 7OOP3D (c) copyright 2019 Licensed under a Creative Commons Attribution Noncommercial  (3.0) license. http://dig.ccmixter.org/files/7OOP3D/60150 Ft: Duckett
 * Drive by Alex (c) copyright 2013 Licensed under a Creative Commons Attribution (3.0) license. http://dig.ccmixter.org/files/AlexBeroza/43098 Ft: cdk & Darryl J

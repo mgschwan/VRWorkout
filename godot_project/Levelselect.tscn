@@ -13,7 +13,7 @@
 [ext_resource path="res://beastmode.gd" type="Script" id=11]
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
 [ext_resource path="res://dark_green.tres" type="Material" id=13]
-[ext_resource path="res://models/Material_001.material" type="Material" id=14]
+[ext_resource path="res://models/gold.material" type="Material" id=14]
 [ext_resource path="res://Tutorial.tscn" type="PackedScene" id=15]
 [ext_resource path="res://SongSelector.tscn" type="PackedScene" id=16]
 [ext_resource path="res://ControllerAdjuster.gd" type="Script" id=17]
@@ -233,7 +233,6 @@ offtext = "Ducking off"
 
 [node name="SprintSwitch" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324165, 1.523, -0.923 )
-visible = false
 ontext = "Sprint on"
 offtext = "Sprint off"
 
@@ -250,7 +249,7 @@ transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.0466
 transform = Transform( -1.74846e-08, 0, -1, 0, 0.4, 0, 0.4, 0, -4.37114e-08, 1.09793, 1.43304, 1.78876e-07 )
 
 [node name="ControllerAdjuster" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.471274, 1.60599, -1.0476 )
+transform = Transform( 0.925256, 0, 0.379343, 0, 1, 0, -0.379343, 0, 0.925256, -0.540017, 1.60599, -0.974139 )
 script = ExtResource( 17 )
 
 [node name="CollisionShape" type="CollisionShape" parent="ControllerAdjuster"]
