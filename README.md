@@ -5,7 +5,7 @@ Virtual reality fitness workout game for Oculus Quest
 
 [![Windows Download](https://github.com/mgschwan/VRWorkout/raw/master/web_assets/download_button_windows.png)](https://github.com/mgschwan/VRWorkout/releases/latest/download/VRWorkout_win.zip)
 
-[![SideQuest Install](https://github.com/mgschwan/VRWorkout/raw/master/web_assets/insatll_button_sidequest.png)](https://sidequestvr.com/#/app/413)
+[![SideQuest Install](https://github.com/mgschwan/VRWorkout/raw/master/web_assets/install_button_sidequest.png)](https://sidequestvr.com/#/app/413)
 
 
 ## What is this?
