@@ -41,7 +41,7 @@ __Please enable "Hand Tracking" in the experimental features section of your Ocu
 
 ## How to play
 
-[Handtracking](https://github.com/mgschwan/VRWorkout/raw/master/web_assets/vrworkout_hand_suggestion.jpg)
+![Handtracking](https://github.com/mgschwan/VRWorkout/raw/master/web_assets/vrworkout_hand_suggestion.jpg)
 
 * Try to hit the hand cues to the beat of the music. Play with **open palms** to improve tacking
 * The head cue has to be touched with your head. Just touch it, no headbutting
