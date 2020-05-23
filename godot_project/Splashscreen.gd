@@ -11,7 +11,7 @@ var head_node = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	get_node("WarmupInfo").print_info("Don't forget to\nwarm up\nbefore playing!")
 
 
 var last_extreme_angle = 0

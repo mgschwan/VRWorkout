@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://assets/vrworkout_godot.jpg" type="Texture" id=1]
 [ext_resource path="res://fonts/bebas.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Splashscreen.gd" type="Script" id=3]
 [ext_resource path="res://assets/palm_fist.jpg" type="Texture" id=4]
+[ext_resource path="res://InfoBox.tscn" type="PackedScene" id=5]
 
 [sub_resource type="PlaneMesh" id=1]
 
@@ -100,3 +101,6 @@ material/0 = SubResource( 9 )
 __meta__ = {
 "_editor_description_": "werr"
 }
+
+[node name="WarmupInfo" parent="." instance=ExtResource( 5 )]
+transform = Transform( 0.978953, 0.204086, -8.92088e-09, 0, -4.37114e-08, -1, -0.204086, 0.978953, -4.27914e-08, -0.79466, 0.893581, -2.64804 )

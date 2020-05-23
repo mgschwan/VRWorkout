@@ -57,15 +57,15 @@ var arvr_open_vr_interface = null;
 func setup_globals():
 	ProjectSettings.set("game/beast_mode", false)
 	ProjectSettings.set("game/bpm", 100)
-	ProjectSettings.set("game/exercise/jump", false)
+	ProjectSettings.set("game/exercise/jump", true)
 	ProjectSettings.set("game/exercise/stand",true)
-	ProjectSettings.set("game/exercise/squat", false)
-	ProjectSettings.set("game/exercise/pushup", false)
-	ProjectSettings.set("game/exercise/crunch", false)
-	ProjectSettings.set("game/exercise/burpees", false)
+	ProjectSettings.set("game/exercise/squat", true)
+	ProjectSettings.set("game/exercise/pushup", true)
+	ProjectSettings.set("game/exercise/crunch", true)
+	ProjectSettings.set("game/exercise/burpees", true)
 	ProjectSettings.set("game/exercise/duck", true)
 	ProjectSettings.set("game/exercise/sprint", false)
-	ProjectSettings.set("game/exercise/kneesaver", true)
+	ProjectSettings.set("game/exercise/kneesaver", false)
 
 	ProjectSettings.set("game/is_oculusquest", false)
 

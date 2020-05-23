@@ -29,8 +29,6 @@ The game switches between those four positions to avoid a monotone workout.
 
 **DISCLAIMER: Use at your own risk! This game does not check if you bump into your surroundings. Since this is a physical workout game there is lot's of movement which bears the risk of injury. You acknowledge that this software is free and you are using it at your own risk**
 
-![Logo](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_godot_transparent_figures.jpg)
-
 ## Install
 
 * Either directly through [Sidequest](https://sidequestvr.com/#/app/413) 
@@ -42,6 +40,8 @@ __Please enable "Hand Tracking" in the experimental features section of your Ocu
 
 
 ## How to play
+
+[Handtracking](https://github.com/mgschwan/VRWorkout/raw/master/web_assets/vrworkout_hand_suggestion.jpg)
 
 * Try to hit the hand cues to the beat of the music. Play with **open palms** to improve tacking
 * The head cue has to be touched with your head. Just touch it, no headbutting
@@ -141,6 +141,9 @@ Beast mode - Beast attack
 ![Screenshot 1](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_menu.jpg)
 
 ![Screenshot 3](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_side.jpg)
+
+![Logo](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/vrworkout_godot_transparent_figures.jpg)
+
 
 ## Feedback
 
