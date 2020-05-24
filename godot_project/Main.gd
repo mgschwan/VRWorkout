@@ -217,6 +217,26 @@ func update_info(hits, max_hits, points):
 	if update_counter % 5 == 0:
 		infolayer.print_info("Player height: %.2f Difficulty: %d/%.2f/%.2f"%[player_height, current_difficulty, min_cue_space, min_state_duration], "debug")
 	update_counter += 1
+
+func load_audio_resource(filename):
+	var resource = null
+	
+	if filename.find("res://") == 0:
+		resource = ResourceLoader.load(filename)
+	else:
+		var f = File.new()
+		
+		if  f.file_exists(filename):
+			print ("External resource exists")
+			f.open(filename, File.READ)
+			var buffer = f.get_buffer(f.get_len())
+			resource = AudioStreamOGGVorbis.new()
+			resource.data = buffer
+		else:
+			print ("External resource does not exist")
+
+	return resource
+
 	
 func _ready():
 	if random_seed:
@@ -250,6 +270,9 @@ func _ready():
 
 	beats = []
 	
+	print ("Initializing AUDIO")
+	print ("File: %s"%audio_filename)
+	
 	if song_index_parameter < 0:
 		#freeplay mode
 		stream = DummyAudioStream.new(abs(song_index_parameter)*100)
@@ -272,18 +295,19 @@ func _ready():
 		else: 
 			print ("Could not open beat list")
 
-		var audio_file = File.new()
+		#var audio_file = File.new()
 		
 		infolayer.print_info("Loading song %s"%audio_filename)
 		print ("Loading song: %s"%audio_filename)
-		error = audio_file.open(audio_filename,File.READ)
-		infolayer.append_info(" / File opened %s" % str(audio_file.is_open()))
+		#error = audio_file.open(audio_filename,File.READ)
+		#infolayer.append_info(" / File opened %s" % str(audio_file.is_open()))
 		infolayer.print_info(state_string(cue_emitter_state).to_upper(), "main")
 		infolayer.print_info("Player height: %.2f Difficulty: %.2f/%.2f"%[player_height, min_cue_space, min_state_duration], "debug")
 
-		var audio_resource = ResourceLoader.load(audio_filename)
+		var audio_resource = load_audio_resource(audio_filename)
+		stream = get_node("AudioStreamPlayer")
+
 		if audio_resource:
-			stream = get_node("AudioStreamPlayer")
 			stream.stream = audio_resource
 		else:
 			print ("Could not load audio")
