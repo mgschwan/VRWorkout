@@ -86,9 +86,30 @@ func get_running_speed():
 		
 var uinterval = 0
 
+
+var height_warning_level = 0
+
+func calculate_height_warning_level(height):
+	var retVal = 0
+	if height < 0.17:
+		retVal = 4
+	elif height < 0.19:
+		retVal = 3
+	elif height < 0.21:
+		retVal = 2
+	elif height < 0.25:
+		retVal = 1
+	return retVal
+
 func _process(delta):
 	update_positions(self.translation)	
 	update_groove(self.translation)
+
+	var new_warning_level =  calculate_height_warning_level(self.translation.y)
+	if new_warning_level != height_warning_level:
+		get_node("HUDView").set_warning_level(new_warning_level)
+		height_warning_level = new_warning_level
+	
 	uinterval += 1
 	if uinterval % 50 == 0:
 		print ("Average groove time: %.f"%average_groove_time)
@@ -108,6 +129,18 @@ func blackout_screen(blackout):
 		get_node("Blackout").hide()
 
 
+func show_hud(show):
+	var t = get_node("HUDHideTimer")
+	if show:
+		if not t.is_stopped():
+			t.stop()
+		get_node("HUDView").show()
+		get_node("../Mirrorview").show()
+	else:
+		if t.is_stopped():
+			t.wait_time = 0.2
+			t.start()
 
-		
-	
+func _on_HUDHideTimer_timeout():
+	get_node("HUDView").hide()
+	get_node("../Mirrorview").hide()

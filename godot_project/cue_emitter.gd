@@ -9,9 +9,12 @@ var hits = 0
 var max_hits = 0
 var point_indicator
 
+var hud_enabled = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	point_indicator = get_node("PointIndicatorOrigin")
+	hud_enabled = ProjectSettings.get("game/hud_enabled")
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -42,3 +45,16 @@ func score_hit(delta):
 	point_indicator.emit_text("+%d"%hit_points,"green")
 	get_parent().update_info(hits,max_hits,points) 
 	return p
+
+
+func _on_VisibilityNotifier_camera_entered(camera):
+	if hud_enabled:
+		var main_camera = get_viewport().get_camera()
+		if camera == main_camera:
+			main_camera.show_hud(false)
+
+func _on_VisibilityNotifier_camera_exited(camera):
+	if hud_enabled:
+		var main_camera = get_viewport().get_camera()
+		if camera == main_camera:
+			main_camera.show_hud(true)

@@ -94,6 +94,13 @@ script = ExtResource( 6 )
 [node name="PointIndicatorOrigin" parent="cue_emitter" instance=ExtResource( 17 )]
 transform = Transform( 0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -0.16725, 2.36562, 3.68116 )
 
+[node name="Position3D" type="Position3D" parent="cue_emitter"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.51152, 0 )
+
+[node name="VisibilityNotifier" type="VisibilityNotifier" parent="cue_emitter/Position3D"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.959816, 0 )
+aabb = AABB( -1, -0.256859, -1, 2, 0.513717, 2 )
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 bus = "Music"
 
@@ -179,6 +186,8 @@ transform = Transform( -6.99382e-10, 0, 0.018, 0, 0.02, 0, -0.016, 0, -7.86805e-
 [node name="TrophyList" parent="." instance=ExtResource( 7 )]
 transform = Transform( 0.161756, 0, -0.117622, 0, 0.2, 0, 0.117622, 0, 0.161756, -1.96862, 2.03119, -1.42694 )
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
+[connection signal="camera_entered" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_entered"]
+[connection signal="camera_exited" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_exited"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
 [connection signal="touched" from="target/exit_button" to="." method="_on_exit_button_pressed"]
 [connection signal="timeout" from="UpdateTimer" to="." method="_on_UpdateTimer_timeout"]

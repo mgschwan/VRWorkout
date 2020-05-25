@@ -68,6 +68,7 @@ func setup_globals():
 	ProjectSettings.set("game/exercise/kneesaver", false)
 
 	ProjectSettings.set("game/is_oculusquest", false)
+	ProjectSettings.set("game/hud_enabled", true)
 
 	
 
@@ -214,6 +215,8 @@ func _ready():
 		
 func _on_level_finished	():
 	get_viewport().get_camera().blackout_screen(true)
+	get_viewport().get_camera().show_hud(false)
+	
 	if record_tracker_data:
 		print ("Storing tracker data")
 		var f = File.new()
