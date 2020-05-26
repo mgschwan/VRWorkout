@@ -407,4 +407,5 @@ func _on_Splashscreen_finished():
 		get_node("DemoTimer").start()
 
 
-
+func _on_HeartRateReceiver_heart_rate_received(hr):
+	get_node("ARVROrigin/ARVRCamera/HUDView/HR").print_info("HR: %d"%hr)
