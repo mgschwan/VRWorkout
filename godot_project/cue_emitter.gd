@@ -11,6 +11,10 @@ var point_indicator
 
 var hud_enabled = false
 
+signal show_hud()
+signal hide_hud()
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	point_indicator = get_node("PointIndicatorOrigin")
@@ -49,12 +53,8 @@ func score_hit(delta):
 
 func _on_VisibilityNotifier_camera_entered(camera):
 	if hud_enabled:
-		var main_camera = get_viewport().get_camera()
-		if camera == main_camera:
-			main_camera.show_hud(false)
+		emit_signal("hide_hud")
 
 func _on_VisibilityNotifier_camera_exited(camera):
 	if hud_enabled:
-		var main_camera = get_viewport().get_camera()
-		if camera == main_camera:
-			main_camera.show_hud(true)
+		emit_signal("show_hud")

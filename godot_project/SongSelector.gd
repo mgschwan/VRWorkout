@@ -4,6 +4,7 @@ signal level_selected(filename, difficulty, level_number)
 
 
 var song_list = []
+var song_infos = {}
 var page = 0
 
 
@@ -20,13 +21,29 @@ func update_song_list():
 			var filename = song_list[idx+offset]
 			var song_name = filename.rsplit(".")[0].rsplit("/")[-1]
 			song_name = song_name.replace("_"," ")
-			get_node("SongBlocks/Element%d"%(idx+1)).set_song_info(song_name,filename)
+			var song_info = song_infos.get(filename,{})
+			var artist = song_info.get("artist","")
+			get_node("SongBlocks/Element%d"%(idx+1)).set_song_info(song_name,filename,artist)
 		else:
 			get_node("SongBlocks/Element%d"%(idx+1)).set_song_info("empty",null)
-	get_node("NextPage").print_info("[b][i]Page %d/%d[/i][b]"%[page+1,pages])
+	get_node("NextPage").print_info("[b]\n  Page %d/%d[b]"%[page+1,pages])
+
+func get_song_infos(songs):
+	var infos = {}
+	for song in songs:
+		var beat_file = File.new()
+		var error = beat_file.open("%s.json"%song, File.READ)
+		if error == OK:
+			var tmp = JSON.parse(beat_file.get_as_text()).result
+			beat_file.close()
+			if tmp:
+				var artist = tmp.get("artist", "")
+				infos[song] = {"artist": artist}
+	return infos
 
 func set_songs(songs):
 	song_list = songs
+	song_infos = get_song_infos(songs)
 	update_song_list()
 
 # Called when the node enters the scene tree for the first time.

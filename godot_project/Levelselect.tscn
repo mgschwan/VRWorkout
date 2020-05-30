@@ -221,6 +221,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131597, 1.252, -0.923 )
 ontext = "Pushup on"
 offtext = "Pushup off"
 
+[node name="SafePushupSwitch" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131597, 0.992445, -0.923 )
+ontext = "Safe pushups on"
+offtext = "Safe pushup off"
+
 [node name="BurpeeSwitch" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0963057, 1.252, -0.923 )
 ontext = "Burpees on"
@@ -270,6 +275,7 @@ transform = Transform( 0.2, -1.52897e-07, 2.13313e-08, 3.05795e-08, 0.345347, -0
 [connection signal="toggled" from="CrunchSwitch" to="." method="_on_CrunchSwitch_toggled"]
 [connection signal="toggled" from="SquatSwitch" to="." method="_on_SquatSwitch_toggled"]
 [connection signal="toggled" from="PushupSwitch" to="." method="_on_PushupSwitch_toggled"]
+[connection signal="toggled" from="SafePushupSwitch" to="." method="_on_SafePushupSwitch_toggled"]
 [connection signal="toggled" from="BurpeeSwitch" to="." method="_on_BurpeeSwitch_toggled"]
 [connection signal="toggled" from="DuckSwitch" to="." method="_on_DuckSwitch_toggled"]
 [connection signal="toggled" from="SprintSwitch" to="." method="_on_SprintSwitch_toggled"]

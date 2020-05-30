@@ -1,25 +1,27 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://fonts/Droid_Sans_Bold.tres" type="DynamicFont" id=1]
+[ext_resource path="res://fonts/Droid_Sans_Bold_Big.tres" type="DynamicFont" id=1]
 [ext_resource path="res://fonts/Droid_Sans_Regular.tres" type="DynamicFont" id=2]
 [ext_resource path="res://models/text_block.gltf" type="PackedScene" id=3]
-[ext_resource path="res://models/super_white.material" type="Material" id=4]
 [ext_resource path="res://models/black.material" type="Material" id=5]
 [ext_resource path="res://TextBlockTrapezoid.gd" type="Script" id=6]
-[ext_resource path="res://fonts/Droid_Sans_Bold_Big.tres" type="DynamicFont" id=7]
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="ViewportTexture" id=1]
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.152941, 0.129412, 0.533333, 1 )
+
+[sub_resource type="ViewportTexture" id=3]
+flags = 12
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="SpatialMaterial" id=4]
 resource_local_to_scene = true
 flags_unshaded = true
-albedo_texture = SubResource( 1 )
+albedo_texture = SubResource( 3 )
 
-[sub_resource type="PlaneMesh" id=4]
+[sub_resource type="PlaneMesh" id=5]
 size = Vector2( 2, 1 )
 
 [node name="text_block" instance=ExtResource( 3 )]
@@ -37,7 +39,7 @@ render_target_v_flip = true
 [node name="Panel" type="Panel" parent="Viewport/CanvasLayer" index="0"]
 margin_right = 512.0
 margin_bottom = 256.0
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="Viewport/CanvasLayer/Panel" index="0"]
 margin_left = 20.0
@@ -48,24 +50,26 @@ margin_bottom = 256.0
 [node name="RichTextLabel" type="RichTextLabel" parent="Viewport/CanvasLayer/Panel/MarginContainer" index="0"]
 margin_right = 492.0
 margin_bottom = 236.0
-custom_fonts/bold_italics_font = ExtResource( 7 )
+custom_fonts/bold_italics_font = ExtResource( 1 )
 custom_fonts/bold_font = ExtResource( 1 )
 custom_fonts/normal_font = ExtResource( 2 )
-custom_colors/default_color = Color( 0.764706, 0.764706, 0.764706, 1 )
+custom_colors/default_color = Color( 0.792157, 0.792157, 0.792157, 1 )
 bbcode_enabled = true
-bbcode_text = "[b][i][color=black]Demotext[/color][/i][/b]
-[b]Demo[/b]
-This is a demo"
-text = "Demotext
-Demo
-This is a demo"
+bbcode_text = "by Artist
+[b][i]Demotext[/i][/b]
+
+"
+text = "by Artist
+Demotext
+
+"
 
 [node name="Plane" parent="." index="1"]
-material/0 = ExtResource( 4 )
+material/0 = SubResource( 2 )
 material/1 = ExtResource( 5 )
-material/2 = SubResource( 2 )
+material/2 = SubResource( 4 )
 
 [node name="MeshInstance" type="MeshInstance" parent="." index="2"]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, -0.01, 0 )
-mesh = SubResource( 4 )
+mesh = SubResource( 5 )
 material/0 = ExtResource( 5 )

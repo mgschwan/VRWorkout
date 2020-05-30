@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://models/gray_hud.material" type="Material" id=7]
 [ext_resource path="res://HeartRateReceiver.gd" type="Script" id=8]
 [ext_resource path="res://AreaHead.gd" type="Script" id=9]
-[ext_resource path="res://InfoBox.tscn" type="PackedScene" id=10]
 [ext_resource path="res://audio/head_hit.wav" type="AudioStream" id=16]
 [ext_resource path="res://RemoteInterface.gd" type="Script" id=18]
 
@@ -33,17 +32,20 @@ params_cull_mode = 2
 albedo_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="PlaneMesh" id=6]
-size = Vector2( 0.55, 0.275 )
+size = Vector2( 0.74, 0.37 )
 
-[sub_resource type="ViewportTexture" id=8]
+[sub_resource type="ViewportTexture" id=7]
+flags = 4
 viewport_path = NodePath("ARVROrigin/ARVRCamera/Viewport")
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=8]
 resource_local_to_scene = true
 render_priority = -1
 flags_unshaded = true
-flags_no_depth_test = true
-albedo_texture = SubResource( 8 )
+albedo_texture = SubResource( 7 )
+detail_enabled = true
+detail_blend_mode = 3
+detail_uv_layer = 0
 
 [sub_resource type="PlaneMesh" id=9]
 size = Vector2( 0.56, 0.285 )
@@ -58,7 +60,7 @@ far = 200.0
 script = ExtResource( 2 )
 
 [node name="RemoteTransform" type="RemoteTransform" parent="ARVROrigin/ARVRCamera"]
-transform = Transform( 1, 0, 0, 0, 0.343201, -0.939262, 0, 0.939262, 0.343201, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, -0.0153054, -0.999883, 0, 0.999883, -0.0153054, 0, 0, 0 )
 remote_path = NodePath("../Viewport/Camera")
 update_rotation = false
 
@@ -89,6 +91,7 @@ msaa = 6
 render_target_v_flip = true
 
 [node name="Camera" type="Camera" parent="ARVROrigin/ARVRCamera/Viewport"]
+transform = Transform( 1, 0, 0, 0, 0.934857, -0.355025, 0, 0.355025, 0.934857, 0, 0, 0 )
 
 [node name="HUDView" type="Spatial" parent="ARVROrigin/ARVRCamera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.108, -0.878 )
@@ -98,7 +101,7 @@ script = ExtResource( 6 )
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.073, 0.251 )
 visible = false
 mesh = SubResource( 6 )
-material/0 = SubResource( 7 )
+material/0 = SubResource( 8 )
 
 [node name="MeshInstance" type="MeshInstance" parent="ARVROrigin/ARVRCamera/HUDView/Camview"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.002, 0 )
@@ -142,22 +145,14 @@ visible = false
 [node name="too_low" parent="ARVROrigin/ARVRCamera/HUDView/Level4" instance=ExtResource( 5 )]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.523, -0.052, 0 )
 
-[node name="HR" parent="ARVROrigin/ARVRCamera/HUDView" instance=ExtResource( 10 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1.322, -0.792, 0 )
-default_text = "HR: 0"
-
 [node name="HUDHideTimer" type="Timer" parent="ARVROrigin/ARVRCamera"]
 one_shot = true
 
 [node name="Mirrorview" type="MeshInstance" parent="ARVROrigin"]
-transform = Transform( 3, 0, 0, 0, 1, -3.57628e-07, 0, 1.19209e-07, 3, 0, -0.478, -0.72 )
+transform = Transform( 3, 0, 0, 0, 1, -3.57628e-07, 0, 1.19209e-07, 3, 0, -0.45, -0.763932 )
+visible = false
 mesh = SubResource( 6 )
-material/0 = SubResource( 7 )
-
-[node name="MeshInstance" type="MeshInstance" parent="ARVROrigin/Mirrorview"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.002, 0 )
-mesh = SubResource( 9 )
-material/0 = ExtResource( 7 )
+material/0 = SubResource( 8 )
 
 [node name="OmniLight" type="DirectionalLight" parent="ARVROrigin"]
 transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 5, 4 )
@@ -178,4 +173,3 @@ script = ExtResource( 8 )
 [connection signal="body_entered" from="ARVROrigin/ARVRCamera/AreaHead" to="ARVROrigin/ARVRCamera/AreaHead" method="_on_AreaHead_body_entered"]
 [connection signal="timeout" from="ARVROrigin/ARVRCamera/HUDHideTimer" to="ARVROrigin/ARVRCamera" method="_on_HUDHideTimer_timeout"]
 [connection signal="timeout" from="DemoTimer" to="." method="_on_DemoTimer_timeout"]
-[connection signal="heart_rate_received" from="HeartRateReceiver" to="." method="_on_HeartRateReceiver_heart_rate_received"]

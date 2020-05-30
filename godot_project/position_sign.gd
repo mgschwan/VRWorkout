@@ -1,5 +1,8 @@
 extends Spatial
 
+
+signal state_change_completed
+
 var music_volume = 0
 var inside_sfx = false
 
@@ -48,6 +51,7 @@ func _on_tween_completed(obj, path):
 	print ("Hide")
 	play_sfx("player_now")
 	obj.hide()
+	emit_signal("state_change_completed")
 
 
 func play_sfx(name):

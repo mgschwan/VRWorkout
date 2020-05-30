@@ -30,8 +30,6 @@ func get_song_list(path):
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print ("Local addresses: %s"%str(IP.get_local_addresses()))
-	
 	var songs = []
 #			 ["res://audio/songs/vrworkout.ogg",
 #			"res://audio/songs/cdk_deeper_in_yourself.ogg",
@@ -47,8 +45,10 @@ func _ready():
 	
 	songs += get_song_list("res://audio/songs")
 	songs += get_song_list("res://audio/nonfree_songs")
-	songs += get_song_list("/sdcard/Music/Workout")	
-	
+	var external_dir = ProjectSettings.get("application/config/music_directory")
+	if external_dir:
+		songs += get_song_list(external_dir)	
+
 	print (str(songs))
 	get_node("SongSelector").set_songs(songs)
 	
@@ -74,6 +74,9 @@ func _ready():
 	
 	get_node("PushupSwitch").value = ProjectSettings.get("game/exercise/pushup")
 	get_node("PushupSwitch").update_switch()
+	
+	get_node("SafePushupSwitch").value = ProjectSettings.get("game/hud_enabled")
+	get_node("SafePushupSwitch").update_switch()
 
 	get_node("CrunchSwitch").value = ProjectSettings.get("game/exercise/crunch")
 	get_node("CrunchSwitch").update_switch()
@@ -143,7 +146,11 @@ func _on_SprintSwitch_toggled(value):
 func _on_KneesaverSwitch_toggled(value):
 	ProjectSettings.set("game/exercise/kneesaver", value)
 
+func _on_SafePushupSwitch_toggled(value):
+	ProjectSettings.set("game/hud_enabled", value)
 
 
 func _on_SongSelector_level_selected(filename, difficulty, level_number):
 	emit_signal("level_selected", filename, difficulty, level_number)
+
+

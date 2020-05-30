@@ -238,11 +238,16 @@ func load_audio_resource(filename):
 	return resource
 
 	
+func _on_HeartRateData(hr):
+	get_node("heart_coin").set_hr(hr)
+	
 func _ready():
 	if random_seed:
 		rng.randomize()
 	else:
 		rng.set_seed(0)
+		
+	get_tree().get_current_scene().get_node("HeartRateReceiver").connect("heart_rate_received", self,"_on_HeartRateData")	
 		
 	populate_state_model()
 	beast_mode = ProjectSettings.get("game/beast_mode")
@@ -330,6 +335,8 @@ func _ready():
 
 	if stream:
 		stream.play()
+		
+	update_safe_pushup()
 	
 	
 func setup_difficulty(d):
@@ -807,8 +814,18 @@ func emit_cue_node(target_time):
 			handle_pushup_cues(target_time)
 		exercise_changed = false
 	else:
+		update_safe_pushup()
 		exercise_changed = true
 		state_changed = false
+		
+func update_safe_pushup():
+	var main_camera = get_viewport().get_camera()
+	if cue_emitter_state == CueState.BURPEE or cue_emitter_state == CueState.PUSHUP:
+		main_camera.show_hud(true)
+		get_node("MainStage/mat").open_mat()
+	else:
+		get_node("MainStage/mat").close_mat()
+		main_camera.show_hud(false)
 		
 func switch_boxman(state, name):
 	var boxman = get_node(name)
@@ -908,3 +925,9 @@ func _on_ExerciseSelector_selected(type):
 	last_state_change = cue_emitter.current_playback_time
 	internal_state_change()
 
+
+func _on_PositionSign_state_change_completed():
+	update_safe_pushup()
+	
+		
+		

@@ -38,7 +38,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.657302, -0.437727, 0 )
 level_number = 4
 
 [node name="NextPage" parent="." instance=ExtResource( 3 )]
-transform = Transform( -0.2, 8.74228e-08, 7.64274e-16, 0, -4.37114e-08, 0.2, 1.74846e-08, 1, 8.74228e-09, 1.70944, 0, 0 )
+transform = Transform( -0.25, -1.50996e-07, -1.65006e-15, 0, -4.37114e-08, 0.25, -3.7749e-08, 1, 1.09278e-08, 1.7626, 0, 0 )
 defaultext = "[b][i]Next page[/i][/b]"
 
 [node name="StaticBody" type="StaticBody" parent="NextPage"]

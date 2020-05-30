@@ -23,6 +23,7 @@ _global_script_class_icons={
 config/name="VRworkout"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
+config/music_directory="/sdcard/Music/Workout"
 
 [gdnative]
 

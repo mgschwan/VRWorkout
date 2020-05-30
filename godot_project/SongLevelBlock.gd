@@ -13,10 +13,10 @@ signal selected(filename, difficulty, level_number)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	set_text(song_name)
+	set_text(song_name,"")
 
-func set_text(text):
-	get_node("Text").print_info("[b][i][color=black]%s[/color][/i][/b]"%text)
+func set_text(text, artist):
+	get_node("Text").print_info("by %s\n[b][i]%s[/i][/b]"%[artist,text])
 
 
 func get_level():
@@ -30,11 +30,11 @@ func is_in_animation():
 	return get_node("AnimationPlayer").is_playing()
 	
 #Spin the card and set the song info
-func set_song_info(text,filename):
+func set_song_info(text,filename, artist = ""):
 	song_filename = filename
 	get_node("AnimationPlayer").play("spin")	
 	#yield(get_tree().create_timer(0.2),"timeout")
-	set_text(text)
+	set_text(text, artist)
 	
 
 func _on_difficulty_selected(difficulty):

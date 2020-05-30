@@ -13,6 +13,10 @@ var head_node = null
 func _ready():
 	get_node("WarmupInfo").print_info("Don't forget to\nwarm up\nbefore playing!")
 
+	var text = "IP addresses:\n"
+	for a in IP.get_local_addresses():
+		text += "%s\n"%str(a)
+	get_node("Network").print_info(text)
 
 var last_extreme_angle = 0
 var last_angle = 0

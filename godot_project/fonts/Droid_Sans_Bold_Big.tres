@@ -3,8 +3,7 @@
 [ext_resource path="res://fonts/droid-sans/DroidSans-Bold.ttf" type="DynamicFontData" id=1]
 
 [resource]
-size = 64
-outline_size = 3
-use_mipmaps = true
+size = 52
+outline_color = Color( 0.839216, 0.839216, 0.839216, 1 )
 use_filter = true
 font_data = ExtResource( 1 )

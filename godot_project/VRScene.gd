@@ -56,7 +56,7 @@ var arvr_open_vr_interface = null;
 
 func setup_globals():
 	ProjectSettings.set("game/beast_mode", false)
-	ProjectSettings.set("game/bpm", 100)
+	ProjectSettings.set("game/bpm", 120)
 	ProjectSettings.set("game/exercise/jump", true)
 	ProjectSettings.set("game/exercise/stand",true)
 	ProjectSettings.set("game/exercise/squat", true)
@@ -371,7 +371,7 @@ func _on_Area_level_selected(filename, diff, num):
 
 func _on_DemoTimer_timeout():
 	#_on_Area_level_selected("res://audio/songs/vrworkout.ogg", 0, 1)
-	_on_Area_level_selected("/home/developer/Music/Workout/Borealis.ogg", 0, 1)
+	_on_Area_level_selected("res://audio/songs/120BPM_Test.ogg", 0, 1)
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)
 	print(get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").stream.get_length())
@@ -407,5 +407,3 @@ func _on_Splashscreen_finished():
 		get_node("DemoTimer").start()
 
 
-func _on_HeartRateReceiver_heart_rate_received(hr):
-	get_node("ARVROrigin/ARVRCamera/HUDView/HR").print_info("HR: %d"%hr)
