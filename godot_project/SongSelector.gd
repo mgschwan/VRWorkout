@@ -48,6 +48,13 @@ func set_songs(songs):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var hrr = get_tree().current_scene.get_node("HeartRateReceiver")
+	if hrr and hrr.hr_active:
+		var nodes = get_node("SongBlocks").get_children()
+		for n in nodes:
+			if n.has_method("enable_automatic"):
+				n.enable_automatic()
+
 	update_song_list()
 	pass # Replace with function body.
 

@@ -2,6 +2,8 @@ extends ARVRController
 
 var is_left = false
 
+var tracking_lost = false
+
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"

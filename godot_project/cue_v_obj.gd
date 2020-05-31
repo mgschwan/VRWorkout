@@ -7,6 +7,7 @@ var hit = false
 var target_time = 0.0
 var start_time = 0.0
 var cue_type = "hand"
+export(bool) var cue_left = true
 var coupled_node = null 
 var parent
 

@@ -18,6 +18,9 @@ func _ready():
 func set_text(text, artist):
 	get_node("Text").print_info("by %s\n[b][i]%s[/i][/b]"%[artist,text])
 
+func enable_automatic():
+	get_node("Text/Auto").show()
+
 
 func get_level():
 	return level_number

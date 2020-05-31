@@ -51,6 +51,22 @@ func score_hit(delta):
 	return p
 
 
+func get_closest_cue(pos, type, left = true):
+	var nodes = self.get_children()
+	var mindist = 1000
+	var selected_node = null
+	
+	for n in nodes:
+		var cue_type = n.get("cue_type")
+		var is_left = n.get("cue_left")
+		if cue_type == "hand" and not n.hit:
+			if left == is_left:
+				var d = pos.distance_to(n.global_transformation.origin)
+				if d < mindist:
+					selected_node = n
+					mindist = d
+	return selected_node
+		
 func _on_VisibilityNotifier_camera_entered(camera):
 	if hud_enabled:
 		emit_signal("hide_hud")

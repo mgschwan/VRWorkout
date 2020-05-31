@@ -28,6 +28,10 @@ var stand_avoid_head_cue = 0.5
 var redistribution_speed = 0.025
 var song_current_bpm = 0
 
+var target_hr = 140
+var auto_difficulty = false
+var avg_hr = 60	
+	
 	
 var running_speed = 0
 	
@@ -79,8 +83,14 @@ func setup_cue_parameters(difficulty, player_height):
 	cue_parameters = {
 		CueState.STAND : {
 			CueSelector.HEAD : {
+				"xrange" : 1.0,
+				"yoffset" : 0.0
 			},
 			CueSelector.HAND : {
+				"xoffset" : 0.2,
+				"xrange" : 0.45,
+				"yoffset" : -0.2,
+				"yrange" : 0.3			
 			}
 		},	
 		CueState.SQUAT : {
@@ -110,7 +120,7 @@ func setup_cue_parameters(difficulty, player_height):
 			CueSelector.HAND : {
 				"xrange" : 0.1,
 				"xspread" : 0.2,
-				"yoffset" : player_height * 0.526,
+				"yoffset" : player_height * 0.526 + difficulty * player_height/20.0,
 				"yrange" : 0.2
 			}
 		},	
@@ -215,7 +225,7 @@ func update_info(hits, max_hits, points):
 	var total = int(stream.stream.get_length())
 	infolayer.print_info("Hits %d/%d - Song: %d/%.1f%% - Points: %d - Speed: %.1f"% [hits,max_hits,song_pos,float(100*song_pos)/total,points,running_speed])
 	if update_counter % 5 == 0:
-		infolayer.print_info("Player height: %.2f Difficulty: %d/%.2f/%.2f"%[player_height, current_difficulty, min_cue_space, min_state_duration], "debug")
+		infolayer.print_info("Player height: %.2f Difficulty: %.1f/%.2f/%.2f"%[player_height, current_difficulty, min_cue_space, min_state_duration], "debug")
 	update_counter += 1
 
 func load_audio_resource(filename):
@@ -237,9 +247,15 @@ func load_audio_resource(filename):
 
 	return resource
 
-	
+var last_update = 0
 func _on_HeartRateData(hr):
+	avg_hr = 0.1 * hr + 0.9  * avg_hr
 	get_node("heart_coin").set_hr(hr)
+	if auto_difficulty:
+		var now = OS.get_ticks_msec()
+		if now - last_update > 5000:
+			setup_difficulty(-1)
+
 	
 func _ready():
 	if random_seed:
@@ -338,20 +354,19 @@ func _ready():
 		
 	update_safe_pushup()
 	
+func setup_difficulty(diff):
+	if diff < 0:
+		auto_difficulty = true
 	
-func setup_difficulty(d):
-	if d == 2:
-		level_min_cue_space = 0.5
-		level_min_state_duration = 10.0 
-		beast_chance = 0.3
-	elif d == 1:
-		level_min_cue_space = 1.0
-		level_min_state_duration = 15.0 
-		beast_chance = 0.2
-	else:	
-		level_min_cue_space = 1.5
-		level_min_state_duration = 20.0
-		beast_chance = 0.1
+	if auto_difficulty:
+		diff = 1.0 + min(1.0,max(-1.0,(target_hr - avg_hr)/10.0))
+		
+	var d = diff
+	
+	level_min_state_duration = 20 - d * 5.0 
+	beast_chance = 0.1 + d/10.0
+	level_min_cue_space = 1.5 - d*0.5
+			
 	min_cue_space = level_min_cue_space
 	min_state_duration = level_min_state_duration
 	current_difficulty = d
@@ -569,10 +584,10 @@ func handle_stand_cues(target_time):
 	
 	var node_selector = rng.randi()%100
 	
-	var y_hand = player_height-0.2 + rng.randf() * 0.3
-	var y_head = player_height
-	var x = 0.2 + rng.randf() * 0.45
-	var x_head = rng.randf() - 0.5
+	var y_hand = player_height + cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
+	var y_head = player_height + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
+	var x = cue_parameters[cue_emitter_state][CueSelector.HAND]["xoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"]
+	var x_head = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2.0
 	
 	if cue_selector == CueSelector.HAND and node_selector < 20:
 		cue_selector = CueSelector.HEAD
@@ -814,7 +829,8 @@ func emit_cue_node(target_time):
 			handle_pushup_cues(target_time)
 		exercise_changed = false
 	else:
-		update_safe_pushup()
+		if cue_emitter_state == CueState.BURPEE or cue_emitter_state == CueState.PUSHUP:
+			update_safe_pushup()
 		exercise_changed = true
 		state_changed = false
 		
@@ -930,4 +946,27 @@ func _on_PositionSign_state_change_completed():
 	update_safe_pushup()
 	
 		
+var auto_hit_distance = 0.3
+func controller_tracking_lost(controller):
+	var node = cue_emitter.get_closest_cue(controller.global_transform.origin, "hand", controller.is_left)
+	print ("Tracking lost. Closest object: %s"%str(node))
+	if node:
+		if node.global_transform.origin.distance_to(controller.global_transform.origin) < auto_hit_distance:
+			var type = "right"
+			if controller.is_left:
+				type = "left"
+				
+			node.has_been_hit(type)
+	
+func controller_tracking_regained(controller):
+	var node = cue_emitter.get_closest_cue(controller.global_transform.origin, "hand", controller.is_left)
+	print ("Tracking regained. Closest object: %s"%str(node))
+
+	if node:
+		if node.global_transform.origin.distance_to(controller.global_transform.origin) < auto_hit_distance:
+			var type = "right"
+			if controller.is_left:
+				type = "left"
+				
+			node.has_been_hit(type)
 		

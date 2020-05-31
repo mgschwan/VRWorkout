@@ -16,6 +16,8 @@ func get_level():
 	return get_parent().level_number
 	
 func get_difficulty_selector():
+	if self.name == "Auto":
+		return -1
 	if self.name == "Medium":
 		return 1
 	if self.name == "Hard":

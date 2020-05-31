@@ -69,7 +69,10 @@ func setup_globals():
 
 	ProjectSettings.set("game/is_oculusquest", false)
 	ProjectSettings.set("game/hud_enabled", true)
-
+	
+	ProjectSettings.set("game/target_hr", 140)
+	ProjectSettings.set("game/hud_enabled", true)
+	
 	
 
 
@@ -108,6 +111,13 @@ func handle_mobile_permissions():
 		print ("Requesting permissions")
 		OS.request_permissions()
 
+func _on_Controller_Tracking_Lost(controller):
+	if level != null:
+		level.controller_tracking_lost(controller)
+	
+func _on_Controller_Tracking_Regained(controller):
+	if level != null:
+		level.controller_tracking_regained(controller)
 
 func _on_Tracker_added(tracker_name, type, id):
 	print ("Tracker added: %s / %d / %d"%[tracker_name, type, id])	
@@ -279,6 +289,11 @@ func _update_hand_model(hand: ARVRController, model : Spatial, offset_model: Spa
 		var delta_t = now - last["ts"]
 		var confidence = ovr_hand_tracking.get_hand_pose(hand.controller_id, _vrapi_bone_orientations);
 		if confidence > 0:
+			
+			if hand.tracking_lost:
+				_on_Controller_Tracking_Regained(hand)
+				hand.tracking_lost = false
+
 			hand.update_bone_orientations(_vrapi_bone_orientations, confidence)
 			in_hand_mode = true
 			if delta_t > prediction_limit_ms:
@@ -295,6 +310,9 @@ func _update_hand_model(hand: ARVRController, model : Spatial, offset_model: Spa
 				model.show()
 		elif model.visible and in_hand_mode:
 			#print ("Prediction for Controller %d delta: %.3f"%[hand.controller_id, delta_t])
+			if not hand.tracking_lost:
+				_on_Controller_Tracking_Lost(hand)
+				hand.tracking_lost = true
 			if delta_t < prediction_limit_ms:
 				var vec = last["vector"]
 				var predict_v = vec * delta_t / prediction_max_dist

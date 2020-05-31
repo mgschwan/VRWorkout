@@ -12,6 +12,7 @@ var server = WebSocketServer.new()
 var peer = null
 var last_received = 0
 var message_interval_limit = 1000
+var hr_active = false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -38,6 +39,7 @@ func _data_received(id):
 	var hr = int(packet.get_string_from_ascii())
 
 	if OS.get_ticks_msec() > last_received + message_interval_limit:
+		hr_active = true
 		emit_signal("heart_rate_received",hr)
 		last_received = now
 	else:

@@ -77,8 +77,22 @@ shape = SubResource( 3 )
 transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0.0363488, -0.418977, 0.259873 )
 default_text = "Hard"
 
+[node name="Auto" type="StaticBody" parent="Text"]
+transform = Transform( -2.22222, 3.55754e-20, 7.24092e-07, 8.14603e-07, -4.07302e-07, 2.5, 1.76954e-13, 3.33333, 5.43069e-07, -2.04485, -0.597499, 0.984169 )
+visible = false
+script = ExtResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Text/Auto"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.403139, -0.204894, 0.227256 )
+shape = SubResource( 3 )
+
+[node name="Text" parent="Text/Auto" instance=ExtResource( 1 )]
+transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0.0363488, -0.418977, 0.259873 )
+default_text = "Auto"
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/spin = SubResource( 4 )
 [connection signal="difficulty_selected" from="Text/Easy" to="." method="_on_difficulty_selected"]
 [connection signal="difficulty_selected" from="Text/Medium" to="." method="_on_difficulty_selected"]
 [connection signal="difficulty_selected" from="Text/Hard" to="." method="_on_difficulty_selected"]
+[connection signal="difficulty_selected" from="Text/Auto" to="." method="_on_difficulty_selected"]

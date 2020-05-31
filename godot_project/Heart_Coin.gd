@@ -22,5 +22,5 @@ func _process(delta):
 	if bpm > 0 and last_beat + 60/bpm < current_time:
 		#next beat
 		if not anim.is_playing():
-			anim.play("beat")
+			anim.play("beat",-1.0,0.2)
 		last_beat = current_time	

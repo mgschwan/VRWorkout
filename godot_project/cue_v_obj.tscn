@@ -166,38 +166,38 @@ tracks/6/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="CylinderMesh" id=10]
+[sub_resource type="CylinderMesh" id=3]
 top_radius = 1.8
 bottom_radius = 1.8
 height = 0.1
 
-[sub_resource type="CylinderMesh" id=9]
+[sub_resource type="CylinderMesh" id=4]
 top_radius = 2.0
 bottom_radius = 2.0
 height = 0.1
 
-[sub_resource type="CylinderShape" id=11]
+[sub_resource type="CylinderShape" id=5]
 radius = 0.12
 height = 0.0897926
 
-[sub_resource type="SpatialMaterial" id=12]
+[sub_resource type="SpatialMaterial" id=6]
 flags_unshaded = true
 params_blend_mode = 1
 albedo_color = Color( 1, 0.984314, 0.603922, 0.380392 )
 
-[sub_resource type="SphereMesh" id=13]
-material = SubResource( 12 )
+[sub_resource type="SphereMesh" id=7]
+material = SubResource( 6 )
 radius = 0.02
 height = 0.04
 radial_segments = 16
 rings = 8
 
-[sub_resource type="CylinderMesh" id=14]
+[sub_resource type="CylinderMesh" id=8]
 top_radius = 0.01
 bottom_radius = 0.01
 height = 1.0
 
-[sub_resource type="CylinderMesh" id=8]
+[sub_resource type="CylinderMesh" id=9]
 top_radius = 0.001
 bottom_radius = 0.001
 height = 1.0
@@ -222,23 +222,23 @@ transform = Transform( 20, 0, 0, 0, -8.74228e-07, 20, 0, -20, -8.74228e-07, 0, 0
 
 [node name="Backdrop" type="MeshInstance" parent="Circle"]
 transform = Transform( 1, 0, 0, 0, 1, -7.10543e-15, 0, 7.10543e-15, 1, 0, -0.166, -4.44089e-16 )
-mesh = SubResource( 10 )
+mesh = SubResource( 3 )
 material/0 = ExtResource( 6 )
 
 [node name="Backdrop2" type="MeshInstance" parent="Circle"]
 transform = Transform( 1, 0, 0, 0, 1, -2.4869e-14, 0, 2.13163e-14, 1, 0, -0.299948, 5.85506e-09 )
-mesh = SubResource( 9 )
+mesh = SubResource( 4 )
 material/0 = ExtResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 0.6, 0, 0, 0, -4.37114e-08, -0.6, 0, 1, -2.62268e-08, 0, 0, 0 )
-shape = SubResource( 11 )
+shape = SubResource( 5 )
 
 [node name="sprinkle" type="CPUParticles" parent="."]
 cast_shadow = 0
 emitting = false
 amount = 16
-mesh = SubResource( 13 )
+mesh = SubResource( 7 )
 direction = Vector3( 0, 1, 0 )
 spread = 34.21
 flatness = 0.5
@@ -255,11 +255,11 @@ visible = false
 
 [node name="cone" type="MeshInstance" parent="path"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.5 )
-mesh = SubResource( 14 )
+mesh = SubResource( 8 )
 material/0 = ExtResource( 5 )
 
 [node name="cone2" type="MeshInstance" parent="path"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.5 )
-mesh = SubResource( 8 )
+mesh = SubResource( 9 )
 material/0 = ExtResource( 2 )
 [connection signal="animation_finished" from="Circle/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
