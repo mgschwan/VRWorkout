@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://InfoBox.tscn" type="PackedScene" id=1]
 [ext_resource path="res://SongLevelBlock.gd" type="Script" id=2]
 [ext_resource path="res://SongVariant.gd" type="Script" id=3]
 [ext_resource path="res://TextBlockTrapezoid.tscn" type="PackedScene" id=4]
+[ext_resource path="res://TextElement.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1, 0.3, 0.1 )
@@ -12,7 +12,7 @@ size = Vector3( 1, 0.3, 0.1 )
 albedo_color = Color( 0.4, 0.4, 0.4, 1 )
 
 [sub_resource type="BoxShape" id=3]
-extents = Vector3( 0.0970637, 0.05, 0.05 )
+extents = Vector3( 0.0970637, 0.05, 0.0179533 )
 
 [sub_resource type="Animation" id=4]
 resource_name = "spin"
@@ -45,13 +45,14 @@ transform = Transform( -0.45, 3.49691e-08, 1.14641e-15, 0, -1.74846e-08, 0.3, 3.
 transform = Transform( -2.22222, 7.8429e-21, 7.24092e-07, 8.14603e-07, -4.07302e-07, 2.5, 1.76954e-13, 3.33333, 5.43069e-07, 0.153461, -0.598373, 0.33709 )
 script = ExtResource( 3 )
 
+[node name="Text" parent="Text/Easy" instance=ExtResource( 5 )]
+transform = Transform( 0.08, 1.90735e-08, -8.33728e-16, 0, -3.49691e-09, -0.08, -1.90735e-08, 0.08, -3.49691e-09, -0.412048, -0.193445, 0.241295 )
+text = "Easy"
+viewport_width = 128
+
 [node name="CollisionShape" type="CollisionShape" parent="Text/Easy"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.403139, -0.204894, 0.227256 )
 shape = SubResource( 3 )
-
-[node name="Text" parent="Text/Easy" instance=ExtResource( 1 )]
-transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0.00357199, -0.418977, 0.259873 )
-default_text = "Easy"
 
 [node name="Medium" type="StaticBody" parent="Text"]
 transform = Transform( -2.22222, 7.8429e-21, 7.24092e-07, 8.14603e-07, -4.07302e-07, 2.5, 1.76954e-13, 3.33333, 5.43069e-07, -0.732596, -0.5975, 0.336433 )
@@ -61,9 +62,10 @@ script = ExtResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.403139, -0.204894, 0.227256 )
 shape = SubResource( 3 )
 
-[node name="Text" parent="Text/Medium" instance=ExtResource( 1 )]
-transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0.0336198, -0.418977, 0.259873 )
-default_text = "Medium"
+[node name="Text" parent="Text/Medium" instance=ExtResource( 5 )]
+transform = Transform( 0.08, 1.90735e-08, -8.33729e-16, -1.58819e-22, -3.49691e-09, -0.08, -1.90735e-08, 0.08, -3.49691e-09, -0.410218, -0.193248, 0.240946 )
+text = "Medium"
+viewport_width = 192
 
 [node name="Hard" type="StaticBody" parent="Text"]
 transform = Transform( -2.22222, 7.8429e-21, 7.24092e-07, 8.14603e-07, -4.07302e-07, 2.5, 1.76954e-13, 3.33333, 5.43069e-07, -1.66148, -0.597499, 0.336433 )
@@ -73,22 +75,23 @@ script = ExtResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.403139, -0.204894, 0.227256 )
 shape = SubResource( 3 )
 
-[node name="Text" parent="Text/Hard" instance=ExtResource( 1 )]
-transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0.0363488, -0.418977, 0.259873 )
-default_text = "Hard"
+[node name="Text" parent="Text/Hard" instance=ExtResource( 5 )]
+transform = Transform( 0.08, 1.90735e-08, -8.3373e-16, -1.58819e-22, -3.49691e-09, -0.0800001, -1.90735e-08, 0.08, -3.49692e-09, -0.404416, -0.193248, 0.240945 )
+text = "Hard"
+viewport_width = 128
 
 [node name="Auto" type="StaticBody" parent="Text"]
-transform = Transform( -2.22222, 3.55754e-20, 7.24092e-07, 8.14603e-07, -4.07302e-07, 2.5, 1.76954e-13, 3.33333, 5.43069e-07, -2.04485, -0.597499, 0.984169 )
-visible = false
+transform = Transform( -2.22222, 3.55754e-20, 7.24092e-07, 8.14603e-07, -4.07302e-07, 2.5, 1.76954e-13, 3.33333, 5.43069e-07, -2.0871, -0.597499, 1.04443 )
 script = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Text/Auto"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.403139, -0.204894, 0.227256 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.403139, -0.216103, 0.227256 )
 shape = SubResource( 3 )
 
-[node name="Text" parent="Text/Auto" instance=ExtResource( 1 )]
-transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.5, 0, 0.5, -8.14603e-08, 0.0363488, -0.418977, 0.259873 )
-default_text = "Auto"
+[node name="Text" parent="Text/Auto" instance=ExtResource( 5 )]
+transform = Transform( 0.08, 1.90734e-08, -8.33734e-16, -1.5882e-22, -3.4969e-09, -0.0800002, -1.90734e-08, 0.08, -3.49693e-09, -0.436679, -0.226592, 0.240945 )
+text = "Auto"
+viewport_width = 128
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/spin = SubResource( 4 )

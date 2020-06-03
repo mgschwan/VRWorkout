@@ -1,15 +1,17 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://ToggleSwitch.gd" type="Script" id=1]
-[ext_resource path="res://dark_green.tres" type="Material" id=4]
-[ext_resource path="res://InfoBox.tscn" type="PackedScene" id=5]
-[ext_resource path="res://models/claw_metal.material" type="Material" id=6]
+[ext_resource path="res://TextElement.tscn" type="PackedScene" id=2]
+[ext_resource path="res://models/pale_white.material" type="Material" id=3]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.0776907, 0.091341, 0.00811744 )
 
 [sub_resource type="CubeMesh" id=2]
-size = Vector3( 0.2, 0.1, 0.1 )
+size = Vector3( 0.2, 0.1, 0.02 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0, 0, 0, 1 )
 
 [node name="ToggleSwitch" type="StaticBody"]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.946268, 1.41069, -0.776881 )
@@ -19,29 +21,29 @@ script = ExtResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000761986, -0.0341799 )
 shape = SubResource( 1 )
 
-[node name="ontext" parent="." instance=ExtResource( 5 )]
-transform = Transform( 0.2, 0, 0, 0, -4.37114e-09, -0.2, 0, 0.1, -8.74228e-09, 0.11109, 0.00226212, -0.0386255 )
-default_text = "Beast mode on"
-
-[node name="offtext" parent="." instance=ExtResource( 5 )]
-transform = Transform( 0.2, 0, 0, 0, -4.37114e-09, -0.2, 0, 0.1, -8.74228e-09, 0.116712, -0.123031, -0.0386255 )
-default_text = "Beast mode off"
-
 [node name="MeshInstance2" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 2.32633, 0, 0, 0, 1, 0, 0, -0.0905116 )
+transform = Transform( 1, 0, 0, 0, 2.32633, 0, 0, 0, 1, 0, 0, -0.0486761 )
 mesh = SubResource( 2 )
-material/0 = ExtResource( 6 )
+material/0 = SubResource( 3 )
 
 [node name="switch" type="CSGBox" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.25, 0, -0.0599999, -0.031 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.25, 0, -0.0599999, -0.0383017 )
 width = 0.2
 height = 0.1
-depth = 0.1
-material = ExtResource( 4 )
+depth = 0.0147652
+material = ExtResource( 3 )
 
 [node name="CSGBox2" type="CSGBox" parent="switch"]
 operation = 2
 width = 0.18
 height = 0.08
 depth = 0.2
-material = ExtResource( 4 )
+material = ExtResource( 3 )
+
+[node name="ontext" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.08, 0, 0, 0, 0, -0.08, 0, 0, -3.49691e-09, -0.00220668, 0.0662912, -0.0386257 )
+text = "default on"
+
+[node name="offtext" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.08, 0, 0, 0, 0, -0.08, 0, 0, -3.49691e-09, -0.00220668, -0.0475992, -0.0386257 )
+text = "default of"

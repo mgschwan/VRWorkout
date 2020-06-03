@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://models/heart_coin.gltf" type="PackedScene" id=1]
 [ext_resource path="res://Heart_Coin.gd" type="Script" id=2]
@@ -26,6 +26,21 @@ tracks/0/keys = {
 [sub_resource type="SpatialMaterial" id=3]
 flags_unshaded = true
 albedo_color = Color( 0.835294, 0.905882, 0, 1 )
+
+[sub_resource type="PrismMesh" id=8]
+size = Vector3( 0.2, 0.2, 0.2 )
+
+[sub_resource type="SpatialMaterial" id=11]
+flags_unshaded = true
+albedo_color = Color( 0.254902, 0, 0.705882, 1 )
+
+[sub_resource type="SpatialMaterial" id=9]
+flags_unshaded = true
+albedo_color = Color( 0.0392157, 0.74902, 0, 1 )
+
+[sub_resource type="SpatialMaterial" id=10]
+flags_unshaded = true
+albedo_color = Color( 0.596078, 0.207843, 0.207843, 1 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 92
@@ -56,6 +71,27 @@ anims/beat = SubResource( 2 )
 material/0 = ExtResource( 3 )
 material/1 = SubResource( 3 )
 
+[node name="actual" type="Spatial" parent="Circle" index="0"]
+
+[node name="MeshInstance" type="MeshInstance" parent="Circle/actual" index="0"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -3.06809e-09, -0.940703 )
+mesh = SubResource( 8 )
+material/0 = SubResource( 11 )
+
+[node name="low" type="Spatial" parent="Circle" index="1"]
+
+[node name="MeshInstance" type="MeshInstance" parent="Circle/low" index="0"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -3.06809e-09, -0.940703 )
+mesh = SubResource( 8 )
+material/0 = SubResource( 9 )
+
+[node name="high" type="Spatial" parent="Circle" index="2"]
+
+[node name="MeshInstance" type="MeshInstance" parent="Circle/high" index="0"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -3.06809e-09, -0.940703 )
+mesh = SubResource( 8 )
+material/0 = SubResource( 10 )
+
 [node name="Viewport" type="Viewport" parent="." index="3"]
 size = Vector2( 256, 256 )
 transparent_bg = true
@@ -73,10 +109,8 @@ margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="Label" type="Label" parent="Viewport/CanvasLayer/CenterContainer" index="0"]
-margin_left = 20.0
-margin_top = 21.0
-margin_right = 122.0
-margin_bottom = 129.0
+margin_right = 102.0
+margin_bottom = 108.0
 custom_fonts/font = SubResource( 4 )
 text = "60"
 

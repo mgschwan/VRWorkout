@@ -58,23 +58,20 @@ func setup_globals():
 	ProjectSettings.set("game/beast_mode", false)
 	ProjectSettings.set("game/bpm", 120)
 	ProjectSettings.set("game/exercise/jump", true)
-	ProjectSettings.set("game/exercise/stand",true)
+	ProjectSettings.set("game/exercise/stand", true)
 	ProjectSettings.set("game/exercise/squat", true)
 	ProjectSettings.set("game/exercise/pushup", true)
 	ProjectSettings.set("game/exercise/crunch", true)
 	ProjectSettings.set("game/exercise/burpees", false)
 	ProjectSettings.set("game/exercise/duck", true)
-	ProjectSettings.set("game/exercise/sprint", false)
+	ProjectSettings.set("game/exercise/sprint", true)
 	ProjectSettings.set("game/exercise/kneesaver", false)
 
 	ProjectSettings.set("game/is_oculusquest", false)
-	ProjectSettings.set("game/hud_enabled", true)
+	ProjectSettings.set("game/hud_enabled", false)
 	
 	ProjectSettings.set("game/target_hr", 140)
-	ProjectSettings.set("game/hud_enabled", true)
 	
-	
-
 
 func _initialize_OVR_API():
 	# load the .gdns classes.
@@ -389,7 +386,7 @@ func _on_Area_level_selected(filename, diff, num):
 
 func _on_DemoTimer_timeout():
 	#_on_Area_level_selected("res://audio/songs/vrworkout.ogg", 0, 1)
-	_on_Area_level_selected("res://audio/songs/120BPM_Test.ogg", 0, 1)
+	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 0, 1)
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)
 	print(get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").stream.get_length())

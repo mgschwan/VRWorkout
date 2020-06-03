@@ -39,6 +39,15 @@ func score_positive_hits(hits):
 func score_miss():
 	point_indicator.emit_text("miss", "red")
 
+func score_points(hit_points):
+	if hit_points > 0:
+		points += hit_points
+		hits += 1
+		max_hits += 1
+		point_indicator.emit_text("+%d"%hit_points,"green")
+		get_parent().update_info(hits,max_hits,points) 
+	return hit_points
+
 func score_hit(delta):
 	var multiplier = get_parent().run_point_multiplier
 	var p = int(200 - min(delta*1000, 200))

@@ -12,6 +12,10 @@ var page = 0
 # var a = 2
 # var b = "text"
 
+func get_song_name(filename):
+	var tmp = filename.rsplit(".")[0].rsplit("/")[-1]
+	return tmp.replace("_"," ")
+	
 func update_song_list():
 	var offset = page * 6
 	var pages = ceil(len(song_list)/6.0)
@@ -19,8 +23,7 @@ func update_song_list():
 	for idx in range(6):
 		if len(song_list) > idx+offset:
 			var filename = song_list[idx+offset]
-			var song_name = filename.rsplit(".")[0].rsplit("/")[-1]
-			song_name = song_name.replace("_"," ")
+			var song_name = get_song_name(filename)
 			var song_info = song_infos.get(filename,{})
 			var artist = song_info.get("artist","")
 			get_node("SongBlocks/Element%d"%(idx+1)).set_song_info(song_name,filename,artist)
@@ -41,8 +44,21 @@ func get_song_infos(songs):
 				infos[song] = {"artist": artist}
 	return infos
 
+func sort_song_list(songs):
+	var retVal = []
+	var song_dict = {}
+	for s in songs:
+		var song_name = get_song_name(s)
+		song_dict[song_name.to_lower()] = s
+		
+	var song_tmp = song_dict.keys()
+	song_tmp.sort()
+	for s in song_tmp:
+		retVal.append(song_dict[s])
+	return retVal
+
 func set_songs(songs):
-	song_list = songs
+	song_list = sort_song_list(songs)
 	song_infos = get_song_infos(songs)
 	update_song_list()
 

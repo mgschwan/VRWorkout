@@ -28,6 +28,8 @@ func get_song_list(path):
 	
 	return song_dict.keys()
 	
+
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var songs = []
@@ -89,10 +91,6 @@ func _ready():
 
 	get_node("SprintSwitch").value = ProjectSettings.get("game/exercise/sprint")
 	get_node("SprintSwitch").update_switch()
-	
-	#Not properly implemeneted yet
-	get_node("SprintSwitch").queue_free()
-
 
 	get_node("KneesaverSwitch").value = ProjectSettings.get("game/exercise/kneesaver")
 	get_node("KneesaverSwitch").update_switch()

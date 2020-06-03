@@ -18,6 +18,14 @@ func _ready():
 		text += "%s\n"%str(a)
 	get_node("Network").print_info(text)
 
+	var external_dir = ProjectSettings.get("application/config/music_directory")
+	if external_dir:
+		get_node("MusicDirectory").print_info("Place custom OGG songs in:\n%s"%external_dir)
+
+
+
+
+
 var last_extreme_angle = 0
 var last_angle = 0
 var dir = 1

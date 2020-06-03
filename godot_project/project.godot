@@ -33,4 +33,5 @@ singletons=[ "res://addons/godot_ovrmobile/godot_ovrmobile.gdnlib" ]
 
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
+quality/filters/msaa=6
 environment/default_environment="res://default_env.tres"

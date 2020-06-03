@@ -29,9 +29,12 @@ var redistribution_speed = 0.025
 var song_current_bpm = 0
 
 var target_hr = 140
+var low_hr = 130
+var high_hr = 150
 var auto_difficulty = false
 var avg_hr = 60	
 	
+var hud_enabled = false	
 	
 var running_speed = 0
 	
@@ -251,6 +254,8 @@ var last_update = 0
 func _on_HeartRateData(hr):
 	avg_hr = 0.1 * hr + 0.9  * avg_hr
 	get_node("heart_coin").set_hr(hr)
+	get_node("heart_coin").set_marker("actual", avg_hr)
+	
 	if auto_difficulty:
 		var now = OS.get_ticks_msec()
 		if now - last_update > 5000:
@@ -269,6 +274,15 @@ func _ready():
 	beast_mode = ProjectSettings.get("game/beast_mode")
 	ducking_mode = ProjectSettings.get("game/exercise/duck")
 	kneesaver_mode = ProjectSettings.get("game/exercise/kneesaver")	
+	target_hr = ProjectSettings.get("game/target_hr")	
+	hud_enabled = ProjectSettings.get("game/hud_enabled")	
+	
+	low_hr = target_hr - 10
+	high_hr = target_hr + 10
+	
+	get_node("heart_coin").set_marker("low", low_hr)
+	get_node("heart_coin").set_marker("high", high_hr)
+	
 	
 	cue_emitter_state = get_start_exercise()
 		
@@ -574,10 +588,15 @@ func state_transition(old_state, state_model, current_distribution = null):
 		print ("Distribution: %s"%str(current_distribution))
 	return new_state
 	
-
+var sprint_multiplier = 10.0
+var last_sprint_update = 0
 func handle_sprint_cues(target_time):
 	switch_floor_sign("feet")
-
+	var now = OS.get_ticks_msec()
+	var delta = now - last_sprint_update
+	var points = sprint_multiplier * running_speed * delta / 1000.0
+	last_sprint_update = now
+	cue_emitter.score_points(points)
 	
 func handle_stand_cues(target_time):
 	switch_floor_sign("feet")
@@ -831,17 +850,19 @@ func emit_cue_node(target_time):
 	else:
 		if cue_emitter_state == CueState.BURPEE or cue_emitter_state == CueState.PUSHUP:
 			update_safe_pushup()
+			
 		exercise_changed = true
 		state_changed = false
 		
 func update_safe_pushup():
-	var main_camera = get_viewport().get_camera()
-	if cue_emitter_state == CueState.BURPEE or cue_emitter_state == CueState.PUSHUP:
-		main_camera.show_hud(true)
-		get_node("MainStage/mat").open_mat()
-	else:
-		get_node("MainStage/mat").close_mat()
-		main_camera.show_hud(false)
+	if hud_enabled:
+		var main_camera = get_viewport().get_camera()
+		if cue_emitter_state == CueState.BURPEE or cue_emitter_state == CueState.PUSHUP:
+			main_camera.show_hud(true)
+			get_node("MainStage/mat").open_mat()
+		else:
+			get_node("MainStage/mat").close_mat()
+			main_camera.show_hud(false)
 		
 func switch_boxman(state, name):
 	var boxman = get_node(name)
@@ -909,6 +930,13 @@ func update_groove(groove_bpm):
 var gui_update = 0
 func _on_UpdateTimer_timeout():
 	running_speed = self.get_parent().get_running_speed()
+	var gauge = get_node("rungauge")
+	if cue_emitter_state == CueState.SPRINT and not gauge.visible:
+			gauge.show()
+	elif cue_emitter_state != CueState.SPRINT and gauge.value_text:
+			gauge.hide()
+
+	gauge.set_value(running_speed)
 	update_groove(self.get_parent().get_groove_bpm())
 	setup_multiplier(running_speed)
 	if gui_update % 10 == 0:

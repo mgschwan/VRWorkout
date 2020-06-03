@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -9,14 +9,14 @@
 [ext_resource path="res://models/blue_transparent.material" type="Material" id=7]
 [ext_resource path="res://BPM.gd" type="Script" id=8]
 [ext_resource path="res://audio/snare_hit.wav" type="AudioStream" id=9]
-[ext_resource path="res://models/claw_metal.material" type="Material" id=10]
+[ext_resource path="res://models/pale_white.material" type="Material" id=10]
 [ext_resource path="res://beastmode.gd" type="Script" id=11]
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
-[ext_resource path="res://dark_green.tres" type="Material" id=13]
 [ext_resource path="res://models/gold.material" type="Material" id=14]
 [ext_resource path="res://Tutorial.tscn" type="PackedScene" id=15]
 [ext_resource path="res://SongSelector.tscn" type="PackedScene" id=16]
 [ext_resource path="res://ControllerAdjuster.gd" type="Script" id=17]
+[ext_resource path="res://TextElement.tscn" type="PackedScene" id=18]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -37,7 +37,10 @@ albedo_color = Color( 0.0823529, 0, 0.654902, 1 )
 extents = Vector3( 0.0951286, 0.110867, 0.00811744 )
 
 [sub_resource type="CubeMesh" id=6]
-size = Vector3( 0.2, 0.1, 0.1 )
+size = Vector3( 0.2, 0.1, 0.02 )
+
+[sub_resource type="SpatialMaterial" id=9]
+albedo_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="SphereShape" id=7]
 radius = 0.1
@@ -163,18 +166,10 @@ script = ExtResource( 11 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000761986, -0.0341799 )
 shape = SubResource( 5 )
 
-[node name="Spatial" parent="BeastModeSelector" instance=ExtResource( 2 )]
-transform = Transform( 0.2, 0, 0, 0, -4.37114e-09, -0.2, 0, 0.1, -8.74228e-09, 0.11109, 0.00226212, -0.0386255 )
-default_text = "Beast mode on"
-
-[node name="Spatial2" parent="BeastModeSelector" instance=ExtResource( 2 )]
-transform = Transform( 0.2, 0, 0, 0, -4.37114e-09, -0.2, 0, 0.1, -8.74228e-09, 0.116712, -0.123031, -0.0386255 )
-default_text = "Beast mode off"
-
 [node name="MeshInstance2" type="MeshInstance" parent="BeastModeSelector"]
-transform = Transform( 1, 0, 0, 0, 2.32633, 0, 0, 0, 1, 0, 0, -0.0905116 )
+transform = Transform( 1, 0, 0, 0, 2.32633, 0, 0, 0, 1, 0, 0, -0.0505549 )
 mesh = SubResource( 6 )
-material/0 = ExtResource( 10 )
+material/0 = SubResource( 9 )
 
 [node name="claws" parent="BeastModeSelector" instance=ExtResource( 12 )]
 transform = Transform( -0.00642908, 0.0032691, -0.00692675, -0.0072954, 0.000141297, 0.00683792, 0.00233326, 0.0094495, 0.0022941, 0.0630277, 0.148197, 5.96046e-08 )
@@ -183,18 +178,26 @@ transform = Transform( -0.00642908, 0.0032691, -0.00692675, -0.0072954, 0.000141
 transform = Transform( 0.00668362, 0.00311082, 0.00675663, -0.00677895, -0.00119168, 0.00725436, -0.00306188, 0.00942882, -0.00131234, -0.105832, 0.148197, 5.96046e-08 )
 
 [node name="switch" type="CSGBox" parent="BeastModeSelector"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.25, 0, -0.0599999, -0.031 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.25, 0, -0.0599999, -0.0384666 )
 width = 0.2
 height = 0.1
-depth = 0.1
-material = ExtResource( 13 )
+depth = 0.0137625
+material = ExtResource( 10 )
 
 [node name="CSGBox2" type="CSGBox" parent="BeastModeSelector/switch"]
 operation = 2
 width = 0.18
 height = 0.08
 depth = 0.2
-material = ExtResource( 13 )
+material = ExtResource( 10 )
+
+[node name="ontext" parent="BeastModeSelector" instance=ExtResource( 18 )]
+transform = Transform( 0.08, -1.62921e-07, 5.6972e-16, 0, -4.37114e-08, -0.08, 1.30337e-08, 1, -3.49691e-09, 0, 0.0685738, -0.0392407 )
+text = "Beast mode on"
+
+[node name="offtext" parent="BeastModeSelector" instance=ExtResource( 18 )]
+transform = Transform( 0.08, -1.62921e-07, 5.6972e-16, 0, -4.37114e-08, -0.08, 1.30337e-08, 1, -3.49691e-09, 0, -0.0454426, -0.0392407 )
+text = "Beast mode off"
 
 [node name="JumpSwitch" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.608729, 1.25165, -0.923035 )
@@ -254,7 +257,7 @@ transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.0466
 transform = Transform( -1.74846e-08, 0, -1, 0, 0.4, 0, 0.4, 0, -4.37114e-08, 1.09793, 1.43304, 1.78876e-07 )
 
 [node name="ControllerAdjuster" type="StaticBody" parent="."]
-transform = Transform( 0.925256, 0, 0.379343, 0, 1, 0, -0.379343, 0, 0.925256, -0.540017, 1.60599, -0.974139 )
+transform = Transform( 0.925256, 0, 0.379343, 0, 1, 0, -0.379343, 0, 0.925256, -0.594399, 1.60599, -0.853792 )
 script = ExtResource( 17 )
 
 [node name="CollisionShape" type="CollisionShape" parent="ControllerAdjuster"]
