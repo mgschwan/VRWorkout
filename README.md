@@ -8,6 +8,10 @@ Virtual reality fitness workout game for Oculus Quest
 [![SideQuest Install](https://github.com/mgschwan/VRWorkout/raw/master/web_assets/install_button_sidequest.png)](https://sidequestvr.com/#/app/413)
 
 
+For a quick overview take a look at a short gameplay video
+
+[![v0.9.7](https://github.com/mgschwan/VRWorkout/blob/master/web_assets/workout_video_playscreen.jpg)](https://www.youtube.com/watch?v=mknXbyVJm3c)
+
 ## What is this?
 
 A virtual reality music workout game built with [Godot Engine](https://godotengine.org/)
