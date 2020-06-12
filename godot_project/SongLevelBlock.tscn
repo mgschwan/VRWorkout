@@ -82,6 +82,7 @@ viewport_width = 128
 
 [node name="Auto" type="StaticBody" parent="Text"]
 transform = Transform( -2.22222, 3.55754e-20, 7.24092e-07, 8.14603e-07, -4.07302e-07, 2.5, 1.76954e-13, 3.33333, 5.43069e-07, -2.0871, -0.597499, 1.04443 )
+visible = false
 script = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Text/Auto"]

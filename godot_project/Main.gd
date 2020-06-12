@@ -931,9 +931,7 @@ var gui_update = 0
 func _on_UpdateTimer_timeout():
 	running_speed = self.get_parent().get_running_speed()
 	var gauge = get_node("rungauge")
-	if cue_emitter_state == CueState.SPRINT and not gauge.visible:
-			gauge.show()
-	elif cue_emitter_state != CueState.SPRINT and gauge.value_text:
+	if cue_emitter_state != CueState.SPRINT and gauge.value_text:
 			gauge.hide()
 
 	gauge.set_value(running_speed)
@@ -972,7 +970,10 @@ func _on_ExerciseSelector_selected(type):
 
 func _on_PositionSign_state_change_completed():
 	update_safe_pushup()
-	
+	var gauge = get_node("rungauge")
+	if cue_emitter_state == CueState.SPRINT and not gauge.visible:
+		gauge.show()
+
 		
 var auto_hit_distance = 0.3
 func controller_tracking_lost(controller):

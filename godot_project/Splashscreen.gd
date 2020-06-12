@@ -18,7 +18,8 @@ func _ready():
 		text += "%s\n"%str(a)
 	get_node("Network").print_info(text)
 
-	var external_dir = ProjectSettings.get("application/config/music_directory")
+	var external_dir = ProjectSettings.get("game/external_songs")
+	
 	if external_dir:
 		get_node("MusicDirectory").print_info("Place custom OGG songs in:\n%s"%external_dir)
 

@@ -24,6 +24,7 @@ config/name="VRworkout"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 config/music_directory="/sdcard/Music/Workout"
+config/pc_music_directory="C:/VRWorkout"
 
 [gdnative]
 

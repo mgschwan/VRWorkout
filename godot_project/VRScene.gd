@@ -71,7 +71,9 @@ func setup_globals():
 	ProjectSettings.set("game/hud_enabled", false)
 	
 	ProjectSettings.set("game/target_hr", 140)
+	ProjectSettings.set("game/external_songs", null)
 	
+
 
 func _initialize_OVR_API():
 	# load the .gdns classes.
@@ -158,8 +160,14 @@ func initialize():
 	vr_mode = false
 	cam = get_node("ARVROrigin/ARVRCamera")
 
+
+	ProjectSettings.set("game/external_songs", ProjectSettings.get("application/config/pc_music_directory"))
+	print (ProjectSettings.get("game/external_songs"))
+
 	if arvr_ovr_mobile_interface:
 		ProjectSettings.set("game/is_oculusquest", true)
+		ProjectSettings.set("game/external_songs", ProjectSettings.get("application/config/music_directory"))
+
 		handle_mobile_permissions()
 
 		# the init config needs to be done before arvr_interface.initialize()
@@ -200,6 +208,8 @@ func initialize():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	setup_globals()
+	initialize() #VR specific initialization
+
 	screen_tint_node = get_node("ARVROrigin/ARVRCamera/ScreenTint")
 	splashscreen.head_node = get_node("ARVROrigin/ARVRCamera")
 	splashscreen.connect("splash_screen_finished", self,"_on_Splashscreen_finished")
@@ -208,7 +218,6 @@ func _ready():
 	for i in range(200):
 		player_height_stat.append(0)
 	
-	initialize() #VR specific initialization
 	
 	if ovr_hand_tracking: 
 		ovr_hand_tracking = ovr_hand_tracking.new()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -12,11 +12,13 @@
 [ext_resource path="res://models/pale_white.material" type="Material" id=10]
 [ext_resource path="res://beastmode.gd" type="Script" id=11]
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
+[ext_resource path="res://TextPanel.tscn" type="PackedScene" id=13]
 [ext_resource path="res://models/gold.material" type="Material" id=14]
 [ext_resource path="res://Tutorial.tscn" type="PackedScene" id=15]
 [ext_resource path="res://SongSelector.tscn" type="PackedScene" id=16]
 [ext_resource path="res://ControllerAdjuster.gd" type="Script" id=17]
 [ext_resource path="res://TextElement.tscn" type="PackedScene" id=18]
+[ext_resource path="res://InfoBoxOpaque.tscn" type="PackedScene" id=19]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -39,13 +41,13 @@ extents = Vector3( 0.0951286, 0.110867, 0.00811744 )
 [sub_resource type="CubeMesh" id=6]
 size = Vector3( 0.2, 0.1, 0.02 )
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=7]
 albedo_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="SphereShape" id=7]
+[sub_resource type="SphereShape" id=8]
 radius = 0.1
 
-[sub_resource type="SphereMesh" id=8]
+[sub_resource type="SphereMesh" id=9]
 radius = 0.1
 height = 0.2
 
@@ -107,34 +109,30 @@ level_number = -3
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 4 )
 
-[node name="MainText" parent="." instance=ExtResource( 2 )]
-transform = Transform( -1.57224e-07, -0.974043, 0.226362, 1.68587e-07, -0.226362, -0.974043, 1, -1.14981e-07, 1.998e-07, 1.54548, 2.30713, 2.5179e-07 )
-default_text = "VRWorkout"
-
-[node name="Tutorial" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, -7.24042e-08, 1.89905e-07, 1.68587e-07, -0.226362, -0.974043, 1.13513e-07, 0.974043, -0.226362, -0.180543, 2.30713, -1.1989 )
-default_text = "VRWorkout"
-
 [node name="platform" parent="." instance=ExtResource( 5 )]
 transform = Transform( 0.913545, 0, 0.406737, 0, 1, 0, -0.406737, 0, 0.913545, 0, -0.346909, 0 )
 
 [node name="Exhaust2" type="MeshInstance" parent="platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.03367, -1.06538, 0.00227052 )
+visible = false
 mesh = SubResource( 1 )
 material/0 = ExtResource( 7 )
 
 [node name="Exhaust" type="MeshInstance" parent="platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0152076, -1.06538, 6.08919 )
+visible = false
 mesh = SubResource( 1 )
 material/0 = ExtResource( 7 )
 
 [node name="Exhaust3" type="MeshInstance" parent="platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.07026, -1.06538, -0.00397336 )
+visible = false
 mesh = SubResource( 1 )
 material/0 = ExtResource( 7 )
 
 [node name="Exhaust4" type="MeshInstance" parent="platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0262713, -1.06538, -6.08258 )
+visible = false
 mesh = SubResource( 1 )
 material/0 = ExtResource( 7 )
 
@@ -169,7 +167,7 @@ shape = SubResource( 5 )
 [node name="MeshInstance2" type="MeshInstance" parent="BeastModeSelector"]
 transform = Transform( 1, 0, 0, 0, 2.32633, 0, 0, 0, 1, 0, 0, -0.0505549 )
 mesh = SubResource( 6 )
-material/0 = SubResource( 9 )
+material/0 = SubResource( 7 )
 
 [node name="claws" parent="BeastModeSelector" instance=ExtResource( 12 )]
 transform = Transform( -0.00642908, 0.0032691, -0.00692675, -0.0072954, 0.000141297, 0.00683792, 0.00233326, 0.0094495, 0.0022941, 0.0630277, 0.148197, 5.96046e-08 )
@@ -261,15 +259,28 @@ transform = Transform( 0.925256, 0, 0.379343, 0, 1, 0, -0.379343, 0, 0.925256, -
 script = ExtResource( 17 )
 
 [node name="CollisionShape" type="CollisionShape" parent="ControllerAdjuster"]
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
 [node name="Sphere" type="MeshInstance" parent="ControllerAdjuster"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.19209e-07 )
-mesh = SubResource( 8 )
+mesh = SubResource( 9 )
 material/0 = ExtResource( 14 )
 
 [node name="Text" parent="ControllerAdjuster" instance=ExtResource( 2 )]
 transform = Transform( 0.2, -1.52897e-07, 2.13313e-08, 3.05795e-08, 0.345347, -0.187695, 2.13313e-08, 0.938475, 0.0690695, 0.117676, 0.0301707, 0.100452 )
+
+[node name="MainText" parent="." instance=ExtResource( 19 )]
+transform = Transform( -1.54463e-07, -0.974043, 0.226362, -7.37582e-08, -0.226362, -0.974043, 1, -1.6715e-07, -3.68791e-08, 1.55057, 2.30847, 2.5262e-07 )
+default_text = "VRWorkout"
+
+[node name="text_panel" parent="MainText" instance=ExtResource( 13 )]
+transform = Transform( 1.1, 0, -9.32587e-16, 0, 1, 0, 1.70974e-15, 0, 0.6, 6.68336e-11, -0.00769687, 0.00178862 )
+
+[node name="Tutorial" parent="." instance=ExtResource( 19 )]
+transform = Transform( 1, -8.45779e-09, -7.37582e-08, -7.37582e-08, -0.226362, -0.974043, -8.45779e-09, 0.974043, -0.226362, -0.20336, 2.31827, -1.34073 )
+
+[node name="text_panel" parent="Tutorial" instance=ExtResource( 13 )]
+transform = Transform( 1.2, 0, 0, 0, 1, 9.97291e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
 [connection signal="selected" from="Freeplay1" to="." method="_on_SongSelector_level_selected"]
 [connection signal="selected" from="Freeplay2" to="." method="_on_SongSelector_level_selected"]
 [connection signal="selected" from="Freeplay3" to="." method="_on_SongSelector_level_selected"]

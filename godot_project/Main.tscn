@@ -149,7 +149,7 @@ transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.523, -0.052, 0 )
 one_shot = true
 
 [node name="Mirrorview" type="MeshInstance" parent="ARVROrigin"]
-transform = Transform( 3, 0, 0, 0, 1, -3.57628e-07, 0, 1.19209e-07, 3, 0, -0.45, -0.763932 )
+transform = Transform( 3.4, 0, 0, 0, 0.89312, -1.52938, 0, 0.449818, 3.03661, 0, -0.272726, -0.763932 )
 visible = false
 mesh = SubResource( 6 )
 material/0 = SubResource( 8 )

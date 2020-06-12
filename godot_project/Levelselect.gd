@@ -47,7 +47,8 @@ func _ready():
 	
 	songs += get_song_list("res://audio/songs")
 	songs += get_song_list("res://audio/nonfree_songs")
-	var external_dir = ProjectSettings.get("application/config/music_directory")
+	var external_dir = ProjectSettings.get("game/external_songs")
+
 	if external_dir:
 		songs += get_song_list(external_dir)	
 
