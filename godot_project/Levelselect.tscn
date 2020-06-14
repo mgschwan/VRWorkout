@@ -248,6 +248,12 @@ value = true
 ontext = "Knee saver on"
 offtext = "Knee saver off"
 
+[node name="YogaSwitch" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, 0.992, -0.92 )
+value = true
+ontext = "Yoga on"
+offtext = "Yoga off"
+
 [node name="TutorialVideo" parent="." instance=ExtResource( 15 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.04662, 0.781789, -1.70517e-07 )
 
@@ -294,4 +300,5 @@ transform = Transform( 1.2, 0, 0, 0, 1, 9.97291e-15, 0, -1.66215e-14, 0.6, 0, -0
 [connection signal="toggled" from="DuckSwitch" to="." method="_on_DuckSwitch_toggled"]
 [connection signal="toggled" from="SprintSwitch" to="." method="_on_SprintSwitch_toggled"]
 [connection signal="toggled" from="KneesaverSwitch" to="." method="_on_KneesaverSwitch_toggled"]
+[connection signal="toggled" from="YogaSwitch" to="." method="_on_YogaSwitch_toggled"]
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]

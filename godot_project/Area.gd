@@ -10,7 +10,15 @@ func _ready():
 
 func _on_Area_body_entered(body):
 	print ("Touched %s"%body.name)
-	if body.has_method("has_been_hit"):
+	
+	if body.has_method("begin_hold") and body.is_hold_cue:
+		if body.cue_type == "hand":
+			var controller = get_parent()
+			var hand = "right"
+			if controller.is_left:
+				hand = "left"
+			body.begin_hold(hand)		
+	elif body.has_method("has_been_hit"):
 		if body.cue_type == "hand":
 			var controller = get_parent()
 			var velocity = controller.get_hit_velocity()
@@ -26,6 +34,13 @@ func _on_Area_body_entered(body):
 		else:
 			# Ignore if the hand controller touched the head cue
 			pass
+	elif body.has_method("begin_hold") and body.is_hold_cue:
+		if body.cue_type == "hand":
+			var controller = get_parent()
+			var hand = "right"
+			if controller.is_left:
+				hand = "left"
+			body.begin_hold(hand)		
 	elif body.has_method("beat"):
 		print ("Beat hit")
 		body.beat()
@@ -33,5 +48,12 @@ func _on_Area_body_entered(body):
 		body.touched_by_controller(get_parent(), get_parent().get_parent().get_parent())
 
 func _on_Area_body_exited(body):
-	if body.has_method("released_by_controller"):
+	if body.has_method("end_hold") and body.is_hold_cue:
+		if body.cue_type == "hand":
+			var controller = get_parent()
+			var hand = "right"
+			if controller.is_left:
+				hand = "left"
+			body.end_hold(hand)		
+	elif body.has_method("released_by_controller"):
 		body.released_by_controller(get_parent(), get_parent().get_parent().get_parent())

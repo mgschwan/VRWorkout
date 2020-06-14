@@ -90,6 +90,9 @@ func _ready():
 	get_node("DuckSwitch").value = ProjectSettings.get("game/exercise/duck")
 	get_node("DuckSwitch").update_switch()
 
+	get_node("YogaSwitch").value = ProjectSettings.get("game/exercise/yoga")
+	get_node("YogaSwitch").update_switch()
+
 	get_node("SprintSwitch").value = ProjectSettings.get("game/exercise/sprint")
 	get_node("SprintSwitch").update_switch()
 
@@ -152,4 +155,5 @@ func _on_SafePushupSwitch_toggled(value):
 func _on_SongSelector_level_selected(filename, difficulty, level_number):
 	emit_signal("level_selected", filename, difficulty, level_number)
 
-
+func _on_YogaSwitch_toggled(value):
+	ProjectSettings.set("game/exercise/yoga", value)

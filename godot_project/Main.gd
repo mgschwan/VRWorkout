@@ -71,6 +71,7 @@ enum CueState {
 	JUMP = 4,
 	BURPEE = 5,
 	SPRINT = 6,
+	YOGA = 7,
 };
 
 enum CueSelector {
@@ -139,6 +140,12 @@ func setup_cue_parameters(difficulty, player_height):
 			},
 			CueSelector.HAND : {
 			}
+		},	
+		CueState.YOGA : {
+			CueSelector.HEAD : {
+			},
+			CueSelector.HAND : {
+			}
 		}	
 	}
 	if kneesaver_mode:
@@ -180,6 +187,8 @@ func state_string(state):
 		return "burpee"
 	elif state == CueState.SPRINT:
 		return "sprint"
+	elif state == CueState.YOGA:
+		return "yoga"
 	
 	return "unknown"
 
@@ -199,6 +208,8 @@ func string_to_state(s):
 		retVal = CueState.BURPEE
 	elif s == "sprint":
 		retVal = CueState.SPRINT
+	elif s == "yoga":
+		retVal = CueState.YOGA
 	return retVal
 
 
@@ -218,6 +229,10 @@ func display_state(state):
 		psign.burpee() 
 	elif state == CueState.SPRINT:
 		psign.sprint() 
+	elif state == CueState.YOGA:
+		#TODO: Add sign
+		pass
+		
 	
 	get_node("ExerciseSelector").select(state_string(state))
 	
@@ -450,9 +465,9 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 	cue_emitter.max_hits += 1
 	var cue_node
 
-	if cue_type == "right":
+	if cue_type == "right" or cue_type == "right_hold":
 		cue_node = cue_horiz.instance()
-	elif cue_type == "left":
+	elif cue_type == "left" or cue_type == "left_hold":
 		cue_node = cue_vert.instance()
 	else:
 		head_y_pos = y
@@ -462,9 +477,16 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 			cue_node = cue_head.instance()
 			if cue_type == "head_extended":
 				cue_node.extended = true
+	if cue_type in ["right_hold", "left_hold"]:
+		cue_node.is_hold_cue = true
 			
 	cue_node.target_time = target_time
 	cue_node.start_time = cue_emitter.current_playback_time
+	#TODO should be cue_node.target_time - cue_node.start_time but that breaks
+	#the double punch
+	print ("Fly time: %f Actual fly time: %f"%[fly_time, (cue_node.target_time - cue_node.start_time)])
+	var actual_flytime = cue_node.target_time - cue_node.start_time
+	
 	
 	var main_node = get_node("cue_emitter")
 	var move_modifier = Tween.new()
@@ -479,12 +501,12 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 	elif cue_type == "head_right":
 		cue_node.set_transform( cue_node.get_transform().rotated(Vector3(0,0,1), 3*3.1415926/2))
 	
-	if cue_type == "left" or cue_type == "right":
+	if cue_type in ["left", "right", "left_hold", "right_hold"]:
 		var alpha = atan2(x,y-head_y_pos)
 		cue_node.set_transform(cue_node.get_transform().rotated(Vector3(0,0,1),-alpha))
 
 	
-	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),fly_time,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	move_modifier.connect("tween_completed",self,"_on_tween_completed")
 	move_modifier.start()
 	return cue_node
@@ -496,6 +518,7 @@ var exercise_state_model_template = { CueState.STAND: { CueState.SQUAT: 10, CueS
 					CueState.JUMP: {CueState.STAND: 50, CueState.BURPEE: 10}, 
 					CueState.BURPEE: {CueState.STAND: 50}, 
 					CueState.SPRINT: {CueState.STAND: 50, CueState.JUMP: 10, CueState.SQUAT: 10}, 
+					CueState.YOGA: { CueState.STAND: 50 },
 					}
 	
 var exercise_state_model = {}
@@ -509,6 +532,7 @@ func get_start_exercise():
 					CueState.JUMP  : ProjectSettings.get("game/exercise/jump"),
 					CueState.BURPEE  : ProjectSettings.get("game/exercise/burpees"),
 					CueState.SPRINT  : ProjectSettings.get("game/exercise/sprint"),
+					CueState.YOGA  : ProjectSettings.get("game/exercise/yoga"),
 				}
 	for key in states:
 		if states[key]:
@@ -526,6 +550,7 @@ func populate_state_model():
 					CueState.JUMP  : ProjectSettings.get("game/exercise/jump"),
 					CueState.BURPEE  : ProjectSettings.get("game/exercise/burpees"),
 					CueState.SPRINT  : ProjectSettings.get("game/exercise/sprint"),
+					CueState.YOGA  : ProjectSettings.get("game/exercise/yoga"),
 				}
 				
 	for key in states:
@@ -597,6 +622,27 @@ func handle_sprint_cues(target_time):
 	var points = sprint_multiplier * running_speed * delta / 1000.0
 	last_sprint_update = now
 	cue_emitter.score_points(points)
+
+
+enum YogaState {
+	LEFT = 0,
+	RIGHT = 1,
+};	
+
+var yoga_state_model = { YogaState.LEFT : { YogaState.RIGHT: 100},
+						YogaState.RIGHT : { YogaState.LEFT: 100},
+					};
+var yoga_state = YogaState.LEFT
+
+func handle_yoga_cues(target_time):
+	switch_floor_sign("feet")
+	yoga_state = state_transition(yoga_state, yoga_state_model)
+
+	if yoga_state == YogaState.LEFT:
+		create_and_attach_cue("left_hold", -0.3*player_height, 0.7 * player_height, target_time+5)
+	else:
+		create_and_attach_cue("right_hold", 0.3*player_height, 0.7 * player_height, target_time+5)
+
 	
 func handle_stand_cues(target_time):
 	switch_floor_sign("feet")
@@ -621,13 +667,13 @@ func handle_stand_cues(target_time):
 		if node_selector < 50:	
 			var n = create_and_attach_cue("left", -x,y_hand, target_time, -hand_cue_offset)
 			if double_punch:
-				var n2 = create_and_attach_cue("left", -x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time + double_punch_delay, -hand_cue_offset-double_punch_delay*dd_df)
-				n.activate_path_cue(n2)
+				var n2 = create_and_attach_cue("left", -x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time , -hand_cue_offset-double_punch_delay*dd_df)
+				n2.activate_path_cue(n)
 		else:			
 			var n = create_and_attach_cue("right", x,y_hand, target_time, -hand_cue_offset)
 			if double_punch:
-				var n2 = create_and_attach_cue("right", x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time + double_punch_delay, -hand_cue_offset-double_punch_delay*dd_df)
-				n.activate_path_cue(n2)
+				var n2 = create_and_attach_cue("right", x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time , -hand_cue_offset-double_punch_delay*dd_df)
+				n2.activate_path_cue(n)
 	else:
 		if ducking_mode and rng.randf() < stand_avoid_head_cue:
 			temporary_cue_space_extension = 1.0
@@ -844,6 +890,8 @@ func emit_cue_node(target_time):
 			handle_burpee_cues(target_time)
 		elif cue_emitter_state == CueState.SPRINT:
 			handle_sprint_cues(target_time)
+		elif cue_emitter_state == CueState.YOGA:
+			handle_yoga_cues(target_time)
 		else: #CueState.PUSHUP
 			handle_pushup_cues(target_time)
 		exercise_changed = false
@@ -921,7 +969,7 @@ func update_groove(groove_bpm):
 	if last_grooove_update > 0:
 		if groove_bpm > 0:
 			var multiplier = song_current_bpm / groove_bpm
-			print ("Current_bpm: %f Song BPM: %f  Mult: %f"%[groove_bpm, song_current_bpm, multiplier])
+			#print ("Current_bpm: %f Song BPM: %f  Mult: %f"%[groove_bpm, song_current_bpm, multiplier])
 			if abs(multiplier-1) < 0.15 or abs(multiplier-2) < 0.2 or abs(multiplier-4) < 0.3:
 				#Groove detected
 				trophy_list.set_groovetime(trophy_list.groove + delta)

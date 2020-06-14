@@ -66,6 +66,7 @@ func setup_globals():
 	ProjectSettings.set("game/exercise/duck", true)
 	ProjectSettings.set("game/exercise/sprint", true)
 	ProjectSettings.set("game/exercise/kneesaver", false)
+	ProjectSettings.set("game/exercise/yoga", false)
 
 	ProjectSettings.set("game/is_oculusquest", false)
 	ProjectSettings.set("game/hud_enabled", false)

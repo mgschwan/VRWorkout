@@ -4,6 +4,8 @@ extends StaticBody
 # var a = 2
 # var b = "text"
 var hit = false
+var is_hold_cue = false
+var hold_time = 1.0
 var target_time = 0.0
 var start_time = 0.0
 var cue_type = "hand"
@@ -11,18 +13,66 @@ export(bool) var cue_left = true
 var coupled_node = null 
 var parent
 
+var hold_start = 0
+var holding = false
+
+var dot_template = null
+
+var hold_node 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	hold_node = get_node("Circle/hold")
+	dot_template = get_node("dot")
+	var target_timer = get_node("Circle/TargetTimer")
+	if is_hold_cue:
+		hold_node.show()
+		target_timer.hide()
+	else:
+		hold_node.hide()
+		target_timer.show()
+		target_timer.animate_timer(target_time-start_time)
 	parent = self.get_parent()
-	get_node("Circle/TargetTimer").animate_timer(target_time-start_time)
-	pass # Replace with function body.
+
+
+func create_path_dot():
+	var node = MeshInstance.new()
+	node.mesh = SphereMesh.new()
+	node.mesh.radius = 0.02
+	node.mesh.height = 0.04
+	node.mesh.rings = 3
+	node.mesh.radial_segments = 6
+	return node
+
 
 var path_calculated = false
 func _process(delta):
+	if not hit and is_hold_cue and holding:
+		var now = OS.get_ticks_msec()
+		var rd = now - hold_start
+		if hold_time:
+			var angle = 2*PI * rd/1000.0*hold_time
+			hold_node.rotation.y = angle
+		if 1000.0 * hold_time < now - hold_start:
+			var hand = "right"
+			if cue_left:
+				hand = "left"
+			has_been_hit(hand)
+	
+	
 	if not path_calculated and coupled_node:
-		var n = get_node("path")
-		n.look_at(coupled_node.global_transform.origin,Vector3(0,1,0))
-		n.get_node("cone").scale.z = (n.global_transform.origin - coupled_node.global_transform.origin).length()
+		var tw = get_node("tween")
+		if tw and tw.is_active():
+			#The tween of the coupled node may have a different start value
+			#so we need to wait until tween of th coupled node is active
+			var d = global_transform.origin - coupled_node.global_transform.origin
+			for i in range(4):		
+				var dot = dot_template.duplicate()
+				dot.show()
+				add_child(dot)
+				dot.global_transform.origin = global_transform.origin-(i+1)*d/5.0 
+				print ("A: %s B: %s  d: %s"%[str(global_transform.origin), str(coupled_node.global_transform.origin),str(dot.global_transform.origin)])
+			path_calculated = true
+	elif coupled_node == null:
 		path_calculated = true
 
 #Returns the points the hit created or -1 if it was hit by the wrong hand
@@ -40,10 +90,19 @@ func has_been_hit(hand = "unknown"):
 		get_node("path").hide()
 	return points
 
+func begin_hold(hand = "unknown"):
+	if has_node(hand):
+		holding = true
+		hold_start = OS.get_ticks_msec()
+
+func end_hold(hand = "unknown"):
+	if has_node(hand):
+		holding = false
+		hold_time = OS.get_ticks_msec() - hold_start
+		print ("Cue held for %f msec"%float(hold_time))
+
 func activate_path_cue(target):
 	coupled_node = target
-	var n = get_node("path")
-	n.show()
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	get_node("sprinkle").emitting = false

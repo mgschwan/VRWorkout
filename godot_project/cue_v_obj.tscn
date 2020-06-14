@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://cue_v_obj.gd" type="Script" id=1]
 [ext_resource path="res://models/Berzerker.material" type="Material" id=2]
@@ -176,31 +176,47 @@ top_radius = 2.0
 bottom_radius = 2.0
 height = 0.1
 
-[sub_resource type="CylinderShape" id=5]
+[sub_resource type="SphereMesh" id=5]
+radius = 0.1
+height = 0.4
+radial_segments = 6
+rings = 3
+
+[sub_resource type="SpatialMaterial" id=6]
+flags_unshaded = true
+albedo_color = Color( 0.454902, 0.321569, 1, 1 )
+
+[sub_resource type="CylinderShape" id=7]
 radius = 0.12
 height = 0.0897926
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=8]
 flags_unshaded = true
 params_blend_mode = 1
 albedo_color = Color( 1, 0.984314, 0.603922, 0.380392 )
 
-[sub_resource type="SphereMesh" id=7]
-material = SubResource( 6 )
+[sub_resource type="SphereMesh" id=9]
+material = SubResource( 8 )
 radius = 0.02
 height = 0.04
 radial_segments = 16
 rings = 8
 
-[sub_resource type="CylinderMesh" id=8]
+[sub_resource type="CylinderMesh" id=10]
 top_radius = 0.01
 bottom_radius = 0.01
 height = 1.0
 
-[sub_resource type="CylinderMesh" id=9]
+[sub_resource type="CylinderMesh" id=11]
 top_radius = 0.001
 bottom_radius = 0.001
 height = 1.0
+
+[sub_resource type="SphereMesh" id=12]
+radius = 0.02
+height = 0.04
+radial_segments = 6
+rings = 3
 
 [node name="StaticBody" type="StaticBody"]
 script = ExtResource( 1 )
@@ -230,15 +246,23 @@ transform = Transform( 1, 0, 0, 0, 1, -2.4869e-14, 0, 2.13163e-14, 1, 0, -0.2999
 mesh = SubResource( 4 )
 material/0 = ExtResource( 2 )
 
+[node name="hold" type="Spatial" parent="Circle"]
+transform = Transform( 26.256, 0, 0, 0, -1.14769e-06, 19.7285, 0, -26.256, -8.62358e-07, 0, 0, 0 )
+
+[node name="hold_indicator" type="MeshInstance" parent="Circle/hold"]
+transform = Transform( 0.0380865, 0, 0, 0, 0.0506881, 0, 0, 0, 0.0380865, 0, 0.104, 0 )
+mesh = SubResource( 5 )
+material/0 = SubResource( 6 )
+
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 0.6, 0, 0, 0, -4.37114e-08, -0.6, 0, 1, -2.62268e-08, 0, 0, 0 )
-shape = SubResource( 5 )
+shape = SubResource( 7 )
 
 [node name="sprinkle" type="CPUParticles" parent="."]
 cast_shadow = 0
 emitting = false
 amount = 16
-mesh = SubResource( 7 )
+mesh = SubResource( 9 )
 direction = Vector3( 0, 1, 0 )
 spread = 34.21
 flatness = 0.5
@@ -255,11 +279,16 @@ visible = false
 
 [node name="cone" type="MeshInstance" parent="path"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.5 )
-mesh = SubResource( 8 )
+mesh = SubResource( 10 )
 material/0 = ExtResource( 5 )
 
 [node name="cone2" type="MeshInstance" parent="path"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.5 )
-mesh = SubResource( 9 )
+mesh = SubResource( 11 )
+material/0 = ExtResource( 2 )
+
+[node name="dot" type="MeshInstance" parent="."]
+visible = false
+mesh = SubResource( 12 )
 material/0 = ExtResource( 2 )
 [connection signal="animation_finished" from="Circle/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
