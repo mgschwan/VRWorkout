@@ -205,8 +205,8 @@ bottom_radius = 0.001
 height = 1.0
 
 [sub_resource type="SphereMesh" id=11]
-radius = 0.02
-height = 0.04
+radius = 0.01
+height = 0.02
 radial_segments = 6
 rings = 3
 

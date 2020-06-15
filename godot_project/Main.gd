@@ -461,7 +461,7 @@ func update_cue_timing():
 	emit_early = fly_time * time_to_target
 
 
-func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
+func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time = 0):
 	cue_emitter.max_hits += 1
 	var cue_node
 
@@ -482,11 +482,9 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0):
 			
 	cue_node.target_time = target_time
 	cue_node.start_time = cue_emitter.current_playback_time
-	#TODO should be cue_node.target_time - cue_node.start_time but that breaks
-	#the double punch
-	print ("Fly time: %f Actual fly time: %f"%[fly_time, (cue_node.target_time - cue_node.start_time)])
-	var actual_flytime = cue_node.target_time - cue_node.start_time
-	
+	var actual_flytime = fly_time
+	if fly_time == 0:
+		actual_flytime = self.fly_time
 	
 	var main_node = get_node("cue_emitter")
 	var move_modifier = Tween.new()
@@ -639,10 +637,9 @@ func handle_yoga_cues(target_time):
 	yoga_state = state_transition(yoga_state, yoga_state_model)
 
 	if yoga_state == YogaState.LEFT:
-		create_and_attach_cue("left_hold", -0.3*player_height, 0.7 * player_height, target_time+5)
+		create_and_attach_cue("left_hold", -0.3*player_height, 0.7 * player_height, target_time+7, 0, target_time+8)
 	else:
-		create_and_attach_cue("right_hold", 0.3*player_height, 0.7 * player_height, target_time+5)
-
+		create_and_attach_cue("right_hold", 0.3*player_height, 0.7 * player_height, target_time+7, 0, target_time+8)
 	
 func handle_stand_cues(target_time):
 	switch_floor_sign("feet")
