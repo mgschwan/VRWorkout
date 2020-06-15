@@ -639,9 +639,9 @@ func handle_yoga_cues(target_time):
 	yoga_state = state_transition(yoga_state, yoga_state_model)
 
 	if yoga_state == YogaState.LEFT:
-		create_and_attach_cue("left_hold", -0.3*player_height, 0.7 * player_height, target_time+7, 0, target_time+8)
+		create_and_attach_cue("left_hold", -0.3*player_height, 0.85 * player_height, target_time+2, 0, target_time+2.5)
 	else:
-		create_and_attach_cue("right_hold", 0.3*player_height, 0.7 * player_height, target_time+7, 0, target_time+8)
+		create_and_attach_cue("right_hold", 0.3*player_height, 0.85 * player_height, target_time+2, 0, target_time+2.5)
 	
 func handle_stand_cues(target_time):
 	switch_floor_sign("feet")
