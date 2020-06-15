@@ -395,6 +395,8 @@ func setup_difficulty(diff):
 	level_min_state_duration = 20 - d * 5.0 
 	beast_chance = 0.1 + d/10.0
 	level_min_cue_space = 1.5 - d*0.5
+	fly_time = 3.5-(d/2)
+	
 			
 	min_cue_space = level_min_cue_space
 	min_state_duration = level_min_state_duration
