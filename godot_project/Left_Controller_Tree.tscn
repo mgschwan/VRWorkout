@@ -56,14 +56,15 @@ visible = false
 mesh = SubResource( 2 )
 material/0 = ExtResource( 6 )
 
-[node name="RumbleTimer" type="Timer" parent="."]
-wait_time = 0.2
+[node name="hand_model" parent="Area" instance=ExtResource( 7 )]
+transform = Transform( 0.5, 0.866026, 0, -0.866026, 0.5, 0, 0, 0, 1, 0, 0, -0.12 )
 
-[node name="hand_model" parent="." instance=ExtResource( 7 )]
-
-[node name="forearm" parent="hand_model" instance=ExtResource( 8 )]
+[node name="forearm" parent="Area/hand_model" instance=ExtResource( 8 )]
 transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -0.288121, 1.19209e-07, 0 )
 visible = false
+
+[node name="RumbleTimer" type="Timer" parent="."]
+wait_time = 0.2
 
 [node name="CenterMarker" type="MeshInstance" parent="."]
 visible = false

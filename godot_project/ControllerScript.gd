@@ -24,19 +24,20 @@ func fix_global_transform(fix):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	if ProjectSettings.get("game/is_oculusquest"):
+		get_node("Area/hand_model").hand_tracking = true
 
 func update_bone_orientations(orientations, confidence):
-	get_node("hand_model").update_bone_orientations(orientations, confidence)
+	get_node("Area/hand_model").update_bone_orientations(orientations, confidence)
 
 func is_fist():
-	return get_node("hand_model").is_fist()
+	return get_node("Area/hand_model").is_fist()
 
 func set_beast_mode(enabled):
 	if enabled:
-		get_node("hand_model").beast_mode = true
+		get_node("Area/hand_model").beast_mode = true
 	else:
-		get_node("hand_model").beast_mode = false
+		get_node("Area/hand_model").beast_mode = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

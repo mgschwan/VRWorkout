@@ -70,7 +70,6 @@ func _process(delta):
 				dot.show()
 				add_child(dot)
 				dot.global_transform.origin = global_transform.origin-(i+1)*d/5.0 
-				print ("A: %s B: %s  d: %s"%[str(global_transform.origin), str(coupled_node.global_transform.origin),str(dot.global_transform.origin)])
 			path_calculated = true
 	elif coupled_node == null:
 		path_calculated = true
@@ -98,8 +97,8 @@ func begin_hold(hand = "unknown"):
 func end_hold(hand = "unknown"):
 	if has_node(hand):
 		holding = false
-		hold_time = OS.get_ticks_msec() - hold_start
-		print ("Cue held for %f msec"%float(hold_time))
+		var held = OS.get_ticks_msec() - hold_start
+		print ("Cue held for %f msec"%float(held))
 
 func activate_path_cue(target):
 	coupled_node = target

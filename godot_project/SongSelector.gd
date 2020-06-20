@@ -19,7 +19,6 @@ func get_song_name(filename):
 func update_song_list():
 	var offset = page * 6
 	var pages = ceil(len(song_list)/6.0)
-	var idx
 	for idx in range(6):
 		if len(song_list) > idx+offset:
 			var filename = song_list[idx+offset]

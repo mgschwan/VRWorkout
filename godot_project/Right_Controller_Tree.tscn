@@ -60,9 +60,10 @@ visible = false
 mesh = SubResource( 2 )
 material/0 = ExtResource( 7 )
 
-[node name="hand_model" parent="." instance=ExtResource( 10 )]
+[node name="hand_model" parent="Area" instance=ExtResource( 10 )]
+transform = Transform( 0.5, -0.866026, 0, 0.866026, 0.5, 0, 0, 0, 1, 0, 0, -0.12 )
 
-[node name="forearm" parent="hand_model" instance=ExtResource( 9 )]
+[node name="forearm" parent="Area/hand_model" instance=ExtResource( 9 )]
 transform = Transform( -4.37114e-08, -1, 0, -1, 4.37114e-08, 8.74228e-08, -8.74228e-08, 3.82137e-15, -1, 0.289307, 0, -1.19209e-07 )
 visible = false
 

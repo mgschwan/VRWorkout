@@ -98,10 +98,10 @@ func show_hands():
 
 func hide_hands():
 	mesh.hide()
-	
+
+var hand_tracking = false	
 func _ready():
-	hand = get_parent();
-	
+	hand = get_parent().get_parent();
 	if has_node("ArmatureRight"):
 		skel = get_node("ArmatureRight/Skeleton")
 		mesh = get_node("ArmatureRight/Skeleton/r_handMeshNode")
@@ -177,8 +177,9 @@ func _process(delta):
 
 
 func is_fist():
-	var thumb_state = get_finger_state_estimate(_vrapi_bone_orientations, ovrHandFingers.Thumb)
-	var index_state = get_finger_state_estimate(_vrapi_bone_orientations, ovrHandFingers.Index)
-	var middle_state = get_finger_state_estimate(_vrapi_bone_orientations, ovrHandFingers.Middle)
-	return thumb_state == SimpleFingerState.Bent and index_state == SimpleFingerState.Bent and middle_state == SimpleFingerState.Bent
-	
+	if hand_tracking:
+		var thumb_state = get_finger_state_estimate(_vrapi_bone_orientations, ovrHandFingers.Thumb)
+		var index_state = get_finger_state_estimate(_vrapi_bone_orientations, ovrHandFingers.Index)
+		var middle_state = get_finger_state_estimate(_vrapi_bone_orientations, ovrHandFingers.Middle)
+		return thumb_state == SimpleFingerState.Bent and index_state == SimpleFingerState.Bent and middle_state == SimpleFingerState.Bent
+	return true	

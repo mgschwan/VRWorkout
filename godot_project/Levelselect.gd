@@ -61,11 +61,7 @@ func _ready():
 	
 	get_node("BeastModeSelector").beast_mode = ProjectSettings.get("game/beast_mode")
 	get_node("BeastModeSelector").update_switch()
-	if ProjectSettings.get("game/is_oculusquest"):
-		get_node("BeastModeSelector").show()
-	else:
-		get_node("BeastModeSelector").queue_free()
-
+	
 	get_node("JumpSwitch").value = ProjectSettings.get("game/exercise/jump")
 	get_node("JumpSwitch").update_switch()
 	

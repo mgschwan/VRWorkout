@@ -124,8 +124,12 @@ func _on_Tracker_added(tracker_name, type, id):
 	
 	if type == ARVRServer.TRACKER_CONTROLLER:
 		print ("New controller added %s"%tracker_name.to_lower())
+			
+		var controller = ARVRController.new()
+		controller.controller_id = id
+		
 		var is_left = false
-		if tracker_name.to_lower().find("left") >= 0:
+		if controller.get_hand() == ARVRPositionalTracker.TRACKER_LEFT_HAND:
 			is_left = true
 			
 		if is_left:
