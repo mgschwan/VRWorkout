@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://models/Bezergreen.material" type="Material" id=1]
 [ext_resource path="res://models/fist_right.obj" type="ArrayMesh" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://TargetTimer.tscn" type="PackedScene" id=5]
 [ext_resource path="res://models/black.material" type="Material" id=6]
 [ext_resource path="res://models/green_ball_mat.material" type="Material" id=7]
+[ext_resource path="res://Hold_Ring.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Animation" id=1]
 length = 0.8
@@ -246,6 +247,9 @@ transform = Transform( 1, 0, 0, 0, -2.14369e-07, -0.76, 0, 1.31579, -1.2382e-07,
 transform = Transform( 1, 0, 0, 0, 1, -2.84217e-14, 0, 0, 1, 0, -2.01948, -2.19544e-07 )
 mesh = SubResource( 5 )
 material/0 = null
+
+[node name="hold_ring" parent="Circle" instance=ExtResource( 8 )]
+transform = Transform( 2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 0.6, 0, 0, 0, -4.37114e-08, -0.6, 0, 1, -2.62268e-08, 0, 0, 0 )

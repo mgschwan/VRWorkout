@@ -107,8 +107,12 @@ func get_last_beat():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+var controller_detail_set = false
+func _process(delta):
+	if not controller_detail_set:
+		print ("Set small controller")
+		get_tree().current_scene.set_detail_selection_mode(true)
+		controller_detail_set = true
 
 
 func _on_JumpSwitch_toggled(value):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://cue_v_obj.gd" type="Script" id=1]
 [ext_resource path="res://models/Berzerker.material" type="Material" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://TargetTimer.tscn" type="PackedScene" id=4]
 [ext_resource path="res://models/transparent_gray.material" type="Material" id=5]
 [ext_resource path="res://models/black.material" type="Material" id=6]
+[ext_resource path="res://Hold_Ring.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "explode"
@@ -253,6 +254,9 @@ transform = Transform( 26.256, 0, 0, 0, -1.14769e-06, 19.7285, 0, -26.256, -8.62
 transform = Transform( 0.0380865, 0, 0, 0, 0.0506881, 0, 0, 0, 0.0380865, 0, 0.104, 0 )
 mesh = SubResource( 5 )
 material/0 = SubResource( 6 )
+
+[node name="hold_ring" parent="Circle" instance=ExtResource( 7 )]
+transform = Transform( 2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 0.6, 0, 0, 0, -4.37114e-08, -0.6, 0, 1, -2.62268e-08, 0, 0, 0 )

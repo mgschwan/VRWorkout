@@ -70,7 +70,7 @@ func get_closest_cue(pos, type, left = true):
 		var is_left = n.get("cue_left")
 		if cue_type == "hand" and not n.hit:
 			if left == is_left:
-				var d = pos.distance_to(n.global_transformation.origin)
+				var d = pos.distance_to(n.global_transform.origin)
 				if d < mindist:
 					selected_node = n
 					mindist = d

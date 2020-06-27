@@ -23,8 +23,6 @@ var left_controller
 var right_controller
 var left_collision_root
 var right_collision_root
-var ball_l 
-var ball_r
 
 var in_hand_mode = false #auto detect hand_mode, can't revert back automatically
 var player_height_stat = []
@@ -53,28 +51,6 @@ var ovr_hand_tracking = null;
 var arvr_ovr_mobile_interface = null;
 var arvr_oculus_interface = null;
 var arvr_open_vr_interface = null;
-
-func setup_globals():
-	ProjectSettings.set("game/beast_mode", false)
-	ProjectSettings.set("game/bpm", 120)
-	ProjectSettings.set("game/exercise/jump", true)
-	ProjectSettings.set("game/exercise/stand", true)
-	ProjectSettings.set("game/exercise/squat", true)
-	ProjectSettings.set("game/exercise/pushup", true)
-	ProjectSettings.set("game/exercise/crunch", true)
-	ProjectSettings.set("game/exercise/burpees", false)
-	ProjectSettings.set("game/exercise/duck", true)
-	ProjectSettings.set("game/exercise/sprint", true)
-	ProjectSettings.set("game/exercise/kneesaver", false)
-	ProjectSettings.set("game/exercise/yoga", false)
-
-	ProjectSettings.set("game/is_oculusquest", false)
-	ProjectSettings.set("game/hud_enabled", false)
-	
-	ProjectSettings.set("game/target_hr", 140)
-	ProjectSettings.set("game/external_songs", null)
-	
-
 
 func _initialize_OVR_API():
 	# load the .gdns classes.
@@ -119,6 +95,13 @@ func _on_Controller_Tracking_Regained(controller):
 	if level != null:
 		level.controller_tracking_regained(controller)
 
+func _on_Tracker_removed(tracker_name, id):
+	for t in GameVariables.trackers:
+		if t.controller_id == id:
+			GameVariables.trackers.erase(t)
+			t.queue_free()
+			break
+			
 func _on_Tracker_added(tracker_name, type, id):
 	print ("Tracker added: %s / %d / %d"%[tracker_name, type, id])	
 	
@@ -131,29 +114,36 @@ func _on_Tracker_added(tracker_name, type, id):
 		var is_left = false
 		if controller.get_hand() == ARVRPositionalTracker.TRACKER_LEFT_HAND:
 			is_left = true
+		elif controller.get_hand() == ARVRPositionalTracker.TRACKER_HAND_UNKNOWN:	
+			#If the tracker can't be identified by the API try to identify it by name
+			is_left = (tracker_name.to_lower()).find("left") >= 0
+		controller.queue_free()
 			
+		#TODO: Make the controller universal without needing a left and right controller scene	
+		var new_controller = null		
 		if is_left:
 			print ("Left controller")
-			if left_controller != null:
-				print ("Remove existing controller")
-				left_controller.queue_free()
-			left_controller = left_controller_blueprint.instance()
-			left_controller.controller_id = id
-			left_controller.is_left = true
-			get_node("ARVROrigin").add_child(left_controller)
-			ball_l = left_controller.get_node("Area/handle_ball")
-			left_collision_root = left_controller.get_node("Area")
-		else:				
-			print ("Right controller")
-			if right_controller != null:
-				print ("Remove existing controller")
-				right_controller.queue_free()
-			right_controller = right_controller_blueprint.instance()
-			right_controller.controller_id = id
-			right_controller.is_left = false
-			get_node("ARVROrigin").add_child(right_controller)
-			ball_r = right_controller.get_node("Area/handle_ball")
-			right_collision_root = right_controller.get_node("Area")
+			new_controller = left_controller_blueprint.instance()
+			new_controller.is_left = true
+		else:			
+			print ("Right controller")	
+			new_controller = right_controller_blueprint.instance()
+			new_controller.is_left = false
+
+		new_controller.controller_id = id
+		get_node("ARVROrigin").add_child(new_controller)
+		new_controller.set_detail_select(GameVariables.detail_selection_mode)
+		GameVariables.trackers.append(new_controller)
+
+
+
+			
+func set_detail_selection_mode(value):
+	GameVariables.detail_selection_mode = value
+	for t in GameVariables.trackers:
+		if t:
+			print ("Set tracker detail (%s): %s"%[str(t),str(value)])
+			t.set_detail_select(value)
 
 func initialize():
 	var arvr_ovr_mobile_interface = ARVRServer.find_interface("OVRMobile");
@@ -161,6 +151,7 @@ func initialize():
 	var arvr_open_vr_interface = ARVRServer.find_interface("OpenVR");
 
 	ARVRServer.connect("tracker_added",self,"_on_Tracker_added")
+	ARVRServer.connect("tracker_removed",self, "_on_Tracker_removed")
 
 	vr_mode = false
 	cam = get_node("ARVROrigin/ARVRCamera")
@@ -172,6 +163,7 @@ func initialize():
 	if arvr_ovr_mobile_interface:
 		ProjectSettings.set("game/is_oculusquest", true)
 		ProjectSettings.set("game/external_songs", ProjectSettings.get("application/config/music_directory"))
+		
 
 		handle_mobile_permissions()
 
@@ -212,7 +204,9 @@ func initialize():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	setup_globals()
+	GameVariables.setup_globals()
+	GameVariables.setup_testing()
+
 	initialize() #VR specific initialization
 
 	screen_tint_node = get_node("ARVROrigin/ARVRCamera/ScreenTint")
@@ -232,7 +226,9 @@ func _ready():
 	
 	level_blueprint = preload("res://Level.tscn")
 	levelselect_blueprint = preload("res://Levelselect.tscn")
-	
+	if not vr_mode:
+		_on_Tracker_added("right", ARVRServer.TRACKER_CONTROLLER, 1)
+		GameVariables.trackers[0].translation.y = 1.5
 		
 func _on_level_finished	():
 	get_viewport().get_camera().blackout_screen(true)
@@ -267,8 +263,6 @@ func _on_level_finished	():
 	get_viewport().get_camera().blackout_screen(false)
 
 
-var last_left_controller = [{"pos": Vector3(0,0,0), "ts": 0, "vector": Vector3(0,0,0)}]
-var last_right_controller = [{"pos": Vector3(0,0,0), "ts": 0, "vector": Vector3(0,0,0)}]
 var prediction_limit_ms = 200
 var prediction_history_size = 10
 var prediction_max_dist = 0.2
@@ -366,19 +360,16 @@ func _process(delta):
 	else:
 		if beast_mode:
 			var tmp = level.beast_mode_supported()
-			if left_controller:
-				left_controller.set_beast_mode(tmp)
-			if right_controller:
-				right_controller.set_beast_mode(tmp)
-			
-		
-	if left_controller:
-		_update_hand_model(left_controller, left_collision_root, ball_l, last_left_controller);
-	if right_controller:
-		_update_hand_model(right_controller, right_collision_root, ball_r, last_right_controller);
+			for t in GameVariables.trackers:
+				if t:
+					t.set_beast_mode(tmp)
+	
+	for t in GameVariables.trackers:
+		if t:	
+			_update_hand_model(t, t.collision_root, t.model, t.last_controller);
 
-	if record_tracker_data and left_controller and right_controller:
-		tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
+	#if record_tracker_data and left_controller and right_controller:
+	#	tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
 
 
 func _on_Area_level_selected(filename, diff, num):
@@ -417,11 +408,9 @@ func get_groove_bpm():
 func set_beast_mode(enabled):
 	beast_mode = enabled
 	ProjectSettings.set("game/beast_mode",enabled)
-	if left_controller:
-		left_controller.set_beast_mode(enabled)
-	if right_controller:
-		right_controller.set_beast_mode(enabled)
-
+	for t in GameVariables.trackers:
+		if t:
+			t.set_beast_mode(enabled)
 
 func _on_Splashscreen_finished():
 	get_viewport().get_camera().blackout_screen(true)
@@ -434,5 +423,6 @@ func _on_Splashscreen_finished():
 	add_child(levelselect)
 	if not vr_mode:
 		get_node("DemoTimer").start()
+
 
 

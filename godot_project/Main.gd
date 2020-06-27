@@ -283,6 +283,8 @@ func _ready():
 	else:
 		rng.set_seed(0)
 		
+	get_tree().current_scene.set_detail_selection_mode(false)
+
 	get_tree().get_current_scene().get_node("HeartRateReceiver").connect("heart_rate_received", self,"_on_HeartRateData")	
 		
 	populate_state_model()
@@ -481,7 +483,7 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time =
 				cue_node.extended = true
 	if cue_type in ["right_hold", "left_hold"]:
 		cue_node.is_hold_cue = true
-		cue_node.hold_time = 2.0
+		cue_node.hold_time = 1.0
 	cue_node.target_time = target_time
 	cue_node.start_time = cue_emitter.current_playback_time
 	var actual_flytime = fly_time
@@ -639,9 +641,9 @@ func handle_yoga_cues(target_time):
 	yoga_state = state_transition(yoga_state, yoga_state_model)
 
 	if yoga_state == YogaState.LEFT:
-		create_and_attach_cue("left_hold", -0.3*player_height, 0.85 * player_height, target_time+1.5, 0, target_time+2)
+		create_and_attach_cue("left_hold", -0.3*player_height, 0.85 * player_height, target_time, 0)
 	else:
-		create_and_attach_cue("right_hold", 0.3*player_height, 0.85 * player_height, target_time+1.5, 0, target_time+2)
+		create_and_attach_cue("right_hold", 0.3*player_height, 0.85 * player_height, target_time, 0)
 	
 func handle_stand_cues(target_time):
 	switch_floor_sign("feet")

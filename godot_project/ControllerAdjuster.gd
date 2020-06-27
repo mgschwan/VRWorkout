@@ -8,18 +8,18 @@ func _ready():
 
 func touched_by_controller(obj, root):
 	if current_controller == null:
-		current_controller = get_tree().current_scene.left_controller
+		current_controller = obj #get_tree().current_scene.left_controller
 		
-		if obj.is_left:
-			current_controller = get_tree().current_scene.right_controller
-		
-		if current_controller:
-			current_controller.fix_global_transform(true)
+		for t in GameVariables.trackers:
+			if t and t.controller_id != current_controller.id:
+				t.fix_global_transform(true)
 	
 	
 func released_by_controller(obj, root):
 	if current_controller != null:
-		current_controller.fix_global_transform(false)
+		for t in GameVariables.trackers:
+			if t and t.controller_id != current_controller.id:
+				t.fix_global_transform(false)
 		current_controller = null
 
 

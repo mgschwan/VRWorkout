@@ -25,6 +25,11 @@ run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 config/music_directory="/sdcard/Music/Workout"
 config/pc_music_directory="C:/VRWorkout"
+config/vrhealth_config="/sdcard/vrhealth.txt"
+
+[autoload]
+
+GameVariables="*res://scenes/GameVariables.tscn"
 
 [gdnative]
 

@@ -4,9 +4,15 @@ var is_left = false
 
 var tracking_lost = false
 
+var collision_root = null
+var model = null
+
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+
+var last_controller = [{"pos": Vector3(0,0,0), "ts": 0, "vector": Vector3(0,0,0)}]
+
 var last_pos = [Vector3(0,0,0),Vector3(0,0,0),Vector3(0,0,0)]
 var last_time = [0,0,0]
 
@@ -24,6 +30,8 @@ func fix_global_transform(fix):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	collision_root = get_node("Area")
+	model = get_node("Area/handle_ball")
 	if ProjectSettings.get("game/is_oculusquest"):
 		get_node("Area/hand_model").hand_tracking = true
 
@@ -76,7 +84,13 @@ func _on_RumbleTimer_timeout():
 	get_node("Area/bad_hit").hide()
 	self.set_rumble(0.0)
 
-
+#Resize the controller to make menu selection easier
+func set_detail_select(value):
+	if value:
+		print ("Set detail mode")
+		get_node("Area").scale = Vector3(0.2,0.2,0.2)
+	else:
+		get_node("Area").scale = Vector3(1.0,1.0,1.0) 
 
 
 

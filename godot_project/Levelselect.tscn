@@ -249,7 +249,7 @@ ontext = "Knee saver on"
 offtext = "Knee saver off"
 
 [node name="YogaSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, 0.992, -0.92 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, -0.992, -0.92 )
 value = true
 ontext = "Warmup on"
 offtext = "Warmup off"
