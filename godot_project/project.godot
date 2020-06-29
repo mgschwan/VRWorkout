@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "DummyAudioStream",
 "language": "GDScript",
 "path": "res://DummyStream.gd"
+}, {
+"base": "Object",
+"class": "GameUtilities",
+"language": "GDScript",
+"path": "res://scripts/GameUtilities.gd"
 } ]
 _global_script_class_icons={
-"DummyAudioStream": ""
+"DummyAudioStream": "",
+"GameUtilities": ""
 }
 
 [application]

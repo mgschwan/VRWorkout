@@ -55,42 +55,6 @@ height = 0.2
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
 script = ExtResource( 1 )
 
-[node name="Level1" parent="." instance=ExtResource( 6 )]
-transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.10362, 1.60047, -0.25993 )
-visible = false
-song_name = "VRWorkout Theme"
-level_number = 0
-
-[node name="Level3" parent="." instance=ExtResource( 6 )]
-transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.10362, 1.40346, -0.25993 )
-visible = false
-song_name = "Like This"
-level_number = 2
-
-[node name="Level5" parent="." instance=ExtResource( 6 )]
-transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.1033, 1.20408, -0.26 )
-visible = false
-song_name = "Shameless promotion"
-level_number = 4
-
-[node name="Level2" parent="." instance=ExtResource( 6 )]
-transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.10362, 1.60047, 0.424775 )
-visible = false
-song_name = "Deeper in yourself"
-level_number = 1
-
-[node name="Level4" parent="." instance=ExtResource( 6 )]
-transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.103, 1.403, 0.425 )
-visible = false
-song_name = "The game has changed"
-level_number = 3
-
-[node name="Level6" parent="." instance=ExtResource( 6 )]
-transform = Transform( -8.14603e-08, 0, -0.5, 0, 0.5, 0, 0.5, 0, -8.14603e-08, 1.103, 1.204, 0.425 )
-visible = false
-song_name = "Scomber clarity"
-level_number = 5
-
 [node name="Freeplay1" parent="." instance=ExtResource( 6 )]
 transform = Transform( -0.5, 0, 1.03316e-07, 0, 0.5, 0, -1.03316e-07, 0, -0.5, 0.0179138, 1.6, 1.01773 )
 song_name = "Freeplay 1 hour"
@@ -249,7 +213,7 @@ ontext = "Knee saver on"
 offtext = "Knee saver off"
 
 [node name="YogaSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, -0.992, -0.92 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, 0.992, -0.92 )
 value = true
 ontext = "Warmup on"
 offtext = "Warmup off"

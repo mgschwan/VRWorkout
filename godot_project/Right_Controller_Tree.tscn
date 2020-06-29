@@ -30,15 +30,15 @@ script = ExtResource( 3 )
 wait_time = 0.2
 
 [node name="Area" type="Area" parent="."]
-transform = Transform( 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0, 1, 0, 0, 0.12 )
+transform = Transform( 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0, 1, 0, 0, 0 )
 script = ExtResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
-transform = Transform( 0.1, 3.72529e-09, 0, -3.72529e-09, 0.1, 0, 0, 0, 0.1, 0, 0, -0.0654641 )
+transform = Transform( 0.1, 3.72529e-09, 0, -3.72529e-09, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
 shape = SubResource( 1 )
 
 [node name="Spatial" parent="Area" instance=ExtResource( 1 )]
-transform = Transform( -0.2, 0, -6.51683e-08, 0, 0.2, 0, 6.51683e-08, 0, -0.2, 0, 0.022, 0.0319999 )
+transform = Transform( -0.2, 0, -6.51683e-08, 0, 0.2, 0, 6.51683e-08, 0, -0.2, 0, 0.022, 0.09 )
 visible = false
 
 [node name="hit_player" type="AudioStreamPlayer" parent="Area"]
@@ -46,22 +46,22 @@ stream = ExtResource( 6 )
 volume_db = -2.5
 
 [node name="handle_ball" parent="Area" instance=ExtResource( 8 )]
-transform = Transform( 0.05, 1.86265e-09, 0, -1.86265e-09, 0.05, 0, 0, 0, 0.05, 0, 0, -0.12 )
+transform = Transform( 0.05, 1.86265e-09, 0, -1.86265e-09, 0.05, 0, 0, 0, 0.05, 0, 0, 0 )
 
 [node name="good_hit" type="MeshInstance" parent="Area"]
-transform = Transform( 0.05, -0.0866026, 0, 0.0866026, 0.05, 0, 0, 0, 0.1, 0, 0, -0.12 )
+transform = Transform( 0.05, -0.0866026, 0, 0.0866026, 0.05, 0, 0, 0, 0.1, 0, 0, 0 )
 visible = false
 mesh = SubResource( 2 )
 material/0 = ExtResource( 4 )
 
 [node name="bad_hit" type="MeshInstance" parent="Area"]
-transform = Transform( 0.05, -0.0866026, 0, 0.0866026, 0.05, 0, 0, 0, 0.1, 0, 0, -0.12 )
+transform = Transform( 0.05, -0.0866026, 0, 0.0866026, 0.05, 0, 0, 0, 0.1, 0, 0, 0 )
 visible = false
 mesh = SubResource( 2 )
 material/0 = ExtResource( 7 )
 
 [node name="hand_model" parent="Area" instance=ExtResource( 10 )]
-transform = Transform( 0.5, -0.866026, 0, 0.866026, 0.5, 0, 0, 0, 1, 0, 0, -0.12 )
+transform = Transform( 0.5, -0.866026, 0, 0.866026, 0.5, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="forearm" parent="Area/hand_model" instance=ExtResource( 9 )]
 transform = Transform( -4.37114e-08, -1, 0, -1, 4.37114e-08, 8.74228e-08, -8.74228e-08, 3.82137e-15, -1, 0.289307, 0, -1.19209e-07 )

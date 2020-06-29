@@ -24,9 +24,6 @@ func _ready():
 		get_node("MusicDirectory").print_info("Place custom OGG songs in:\n%s"%external_dir)
 
 
-
-
-
 var last_extreme_angle = 0
 var last_angle = 0
 var dir = 1

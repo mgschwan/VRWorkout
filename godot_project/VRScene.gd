@@ -6,6 +6,9 @@ var splashscreen = preload("res://Splashscreen.tscn").instance()
 var left_controller_blueprint = preload("res://Left_Controller_Tree.tscn")
 var right_controller_blueprint = preload("res://Right_Controller_Tree.tscn")
 
+var gu = GameUtilities.new()
+
+
 var levelselect
 var level = null
 var cam = null
@@ -95,7 +98,9 @@ func _on_Controller_Tracking_Regained(controller):
 	if level != null:
 		level.controller_tracking_regained(controller)
 
-func _on_Tracker_removed(tracker_name, id):
+func _on_Tracker_removed(tracker_name, type, id):
+	print ("Tracker removed: %s / %d / %d"%[tracker_name, type, id])	
+
 	for t in GameVariables.trackers:
 		if t.controller_id == id:
 			GameVariables.trackers.erase(t)
@@ -117,6 +122,17 @@ func _on_Tracker_added(tracker_name, type, id):
 		elif controller.get_hand() == ARVRPositionalTracker.TRACKER_HAND_UNKNOWN:	
 			#If the tracker can't be identified by the API try to identify it by name
 			is_left = (tracker_name.to_lower()).find("left") >= 0
+			var is_right = (tracker_name.to_lower()).find("right") >= 0
+			
+			#If there are trackers that can't be identified make sure that at least
+			#one of them is assigned to left
+			if not is_left and not is_right:
+				for t in GameVariables.trackers:
+					if t.get_hand() == ARVRPositionalTracker.TRACKER_HAND_UNKNOWN:
+						if t.is_left == false:
+							is_left = true
+							break
+			
 		controller.queue_free()
 			
 		#TODO: Make the controller universal without needing a left and right controller scene	
@@ -204,8 +220,9 @@ func initialize():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	print ("Unique device id %s"%str(gu.get_device_id()))
 	GameVariables.setup_globals()
-	GameVariables.setup_testing()
 
 	initialize() #VR specific initialization
 
@@ -257,7 +274,12 @@ func _on_level_finished	():
 	levelselect.connect("level_selected",self,"_on_Area_level_selected")
 
 	add_child(levelselect)
-	levelselect.set_main_text("Player results\n\nLast round\nPoints: %d"%last_points+" Duration: %.2f"%last_played+"\nTotal\nPoints: %d"%total_points+" Duration: %.2f"%total_played) 
+	
+	
+	var last_played_str = gu.seconds_to_timestring(last_played)
+	var total_played_str = gu.seconds_to_timestring(total_played)
+	
+	levelselect.set_main_text("Player results\n\nLast round\nPoints: %d"%last_points+" Duration: %s"%last_played_str+"\nTotal\nPoints: %d"%total_points+" Duration: %s"%total_played_str) 
 
 	yield(get_tree().create_timer(1), "timeout")
 	get_viewport().get_camera().blackout_screen(false)
@@ -377,13 +399,12 @@ func _on_Area_level_selected(filename, diff, num):
 		set_beast_mode(ProjectSettings.get("game/beast_mode"))
 		level = level_blueprint.instance()
 		
-		difficulty = diff
+		GameVariables.difficulty = diff
 		level.audio_filename = filename
 		level.song_index_parameter = num
 		level.player_height = height
 		level.bpm = ProjectSettings.get("game/bpm")
 		level.first_beat = levelselect.get_last_beat()
-		level.setup_difficulty(difficulty)
 		level.connect("level_finished",self,"_on_level_finished")
 		levelselect.queue_free()
 		add_child(level)	
@@ -391,7 +412,8 @@ func _on_Area_level_selected(filename, diff, num):
 
 func _on_DemoTimer_timeout():
 	#_on_Area_level_selected("res://audio/songs/vrworkout.ogg", 0, 1)
-	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 0, 1)
+	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
+	#_on_Area_level_selected("res://home/developer/Music/Workout/mono.ogg", 2, 1)
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)
 	print(get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").stream.get_length())

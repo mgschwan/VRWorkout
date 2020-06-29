@@ -12,6 +12,11 @@ var groove = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	update_trophies()
+	var t = Tween.new()
+	get_node("trophy").add_child(t)
+	t.interpolate_property(get_node("trophy"),"rotation:y",0,2*PI,40,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	t.repeat = true
+	t.start()
 
 func update_trophies():
 	get_node("Runtime").set_text("[b][i][color=gray]Running time[/color][/i][b]\n\n[b]%d seconds[/b]"%runtime)

@@ -84,13 +84,16 @@ func _on_RumbleTimer_timeout():
 	get_node("Area/bad_hit").hide()
 	self.set_rumble(0.0)
 
-#Resize the controller to make menu selection easier
+
+
+#Resize the collision area to make menu selection easier
 func set_detail_select(value):
+	var main_area = get_node("Area/CollisionShape")
 	if value:
 		print ("Set detail mode")
-		get_node("Area").scale = Vector3(0.2,0.2,0.2)
+		main_area.scale = Vector3(0.05,0.05,0.05)
 	else:
-		get_node("Area").scale = Vector3(1.0,1.0,1.0) 
+		main_area.scale = Vector3(0.1,0.1,0.1)
 
 
 

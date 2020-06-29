@@ -1,7 +1,7 @@
 extends Spatial
 
-
 signal level_finished
+var gu = GameUtilities.new()
 
 var song_index_parameter = 0
 var audio_filename = ""
@@ -122,8 +122,9 @@ func setup_cue_parameters(difficulty, player_height):
 				"yrange": 0.1
 			},
 			CueSelector.HAND : {
+				"rotation_range": difficulty*35, #increase core rotation with difficulty
 				"xrange" : 0.1,
-				"xspread" : 0.2,
+				"xspread" : max(0.1, 0.2 - difficulty/10.0), #If core rotation increases, decrease spread
 				"yoffset" : player_height * 0.526 + difficulty * player_height/20.0,
 				"yrange" : 0.2
 			}
@@ -241,7 +242,10 @@ var update_counter = 0
 func update_info(hits, max_hits, points):
 	var song_pos = int(cue_emitter.current_playback_time)
 	var total = int(stream.stream.get_length())
-	infolayer.print_info("Hits %d/%d - Song: %d/%.1f%% - Points: %d - Speed: %.1f"% [hits,max_hits,song_pos,float(100*song_pos)/total,points,running_speed])
+	
+	var elapsed_string = gu.seconds_to_timestring(song_pos)
+	
+	infolayer.print_info("Hits %d/%d - Song: %s (%.1f%%) - Points: %d - Speed: %.1f"% [hits,max_hits,elapsed_string,float(100*song_pos)/total,points,running_speed])
 	if update_counter % 5 == 0:
 		infolayer.print_info("Player height: %.2f Difficulty: %.1f/%.2f/%.2f"%[player_height, current_difficulty, min_cue_space, min_state_duration], "debug")
 	update_counter += 1
@@ -314,10 +318,8 @@ func _ready():
 	
 	groove_display = get_node("GrooveDisplay")
 	
-	update_cue_timing()
-	
 	beat_index = 0
-
+	current_difficulty = GameVariables.difficulty
 	setup_difficulty(current_difficulty)
 
 	beats = []
@@ -379,8 +381,7 @@ func _ready():
 			beats.append(pos)
 			pos += delta
 
-
-	if stream:
+	if stream.stream:
 		stream.play()
 		
 	update_safe_pushup()
@@ -403,7 +404,11 @@ func setup_difficulty(diff):
 	min_cue_space = level_min_cue_space
 	min_state_duration = level_min_state_duration
 	current_difficulty = d
+
+	update_cue_timing()
+
 	setup_cue_parameters(d, player_height)
+	
 		
 var last_playback_time = 0
 func _process(delta):
@@ -483,7 +488,7 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time =
 				cue_node.extended = true
 	if cue_type in ["right_hold", "left_hold"]:
 		cue_node.is_hold_cue = true
-		cue_node.hold_time = 1.0
+		cue_node.hold_time = 0.5
 	cue_node.target_time = target_time
 	cue_node.start_time = cue_emitter.current_playback_time
 	var actual_flytime = fly_time
@@ -506,7 +511,6 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time =
 	if cue_type in ["left", "right", "left_hold", "right_hold"]:
 		var alpha = atan2(x,y-head_y_pos)
 		cue_node.set_transform(cue_node.get_transform().rotated(Vector3(0,0,1),-alpha))
-
 	
 	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	move_modifier.connect("tween_completed",self,"_on_tween_completed")
@@ -641,9 +645,9 @@ func handle_yoga_cues(target_time):
 	yoga_state = state_transition(yoga_state, yoga_state_model)
 
 	if yoga_state == YogaState.LEFT:
-		create_and_attach_cue("left_hold", -0.3*player_height, 0.85 * player_height, target_time, 0)
+		create_and_attach_cue("left_hold", -0.3*player_height, 0.85 * player_height, target_time, 0, target_time+0.5)
 	else:
-		create_and_attach_cue("right_hold", 0.3*player_height, 0.85 * player_height, target_time, 0)
+		create_and_attach_cue("right_hold", 0.3*player_height, 0.85 * player_height, target_time, 0, target_time+0.5)
 	
 func handle_stand_cues(target_time):
 	switch_floor_sign("feet")
@@ -770,10 +774,16 @@ func handle_crunch_cues(target_time):
 	
 	var node_selector = rng.randi()%100
 	
+	var rot = (rng.randf()-0.5) * deg2rad(cue_parameters[cue_emitter_state][CueSelector.HAND]["rotation_range"])
+		
 	var x_head = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
 	var y_head = cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"]
-	var y_hand = cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
+	
+	var rot_distance_reduction = max(0.4, 1.0 - (1.5 * abs(rot)/PI))
+	var y_hand = rot_distance_reduction *  cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
 	var x = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"]/2
+	
+	print ("Crunch Spread %.2f"%(cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]))
 	
 	if cue_selector == CueSelector.HAND and node_selector < 80:
 		cue_selector = CueSelector.HEAD
@@ -782,8 +792,11 @@ func handle_crunch_cues(target_time):
 	
 	if cue_selector == CueSelector.HAND:
 		var spread = cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]/2.0+rng.randf()*cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]
-		create_and_attach_cue("right", x+spread,y_hand, target_time)
-		create_and_attach_cue("left", x-spread,y_hand, target_time)
+		var t = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), Vector3(0,0,0)).rotated(Vector3(0,0,1), rot)
+		var tmp = t.xform(Vector3(x+spread,y_hand,0))		
+		create_and_attach_cue("right", tmp.x, tmp.y, target_time)
+		tmp = t.xform(Vector3(x-spread,y_hand,0))		
+		create_and_attach_cue("left", tmp.x,tmp.y, target_time)
 	else:
 		create_and_attach_cue("head", x_head, y_head, target_time)
 
@@ -842,6 +855,8 @@ func handle_pushup_cues(target_time):
 			create_and_attach_cue("head_right", x_head+0.3, y_head, target_time)
 			create_and_attach_cue("left", x, y_hand, target_time + hand_delay, -hand_delay * dd_df)
 		temporary_cue_space_extension = 2.5
+
+
 
 func internal_state_change():
 	state_changed = true
