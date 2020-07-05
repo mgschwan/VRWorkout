@@ -1,0 +1,85 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://TextElement.gd" type="Script" id=1]
+[ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://BlackTheme.theme" type="Theme" id=3]
+[ext_resource path="res://scripts/Button.gd" type="Script" id=4]
+[ext_resource path="res://audio/menu_selection.wav" type="AudioStream" id=5]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.078, 0.04, 0.008 )
+
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 0.2, 0.05, 0.02 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 32
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="PlaneMesh" id=7]
+size = Vector2( 2, 0.5 )
+
+[sub_resource type="ViewportTexture" id=6]
+viewport_path = NodePath("ontext/Viewport")
+
+[sub_resource type="SpatialMaterial" id=9]
+resource_local_to_scene = true
+flags_use_shadow_to_opacity = true
+albedo_texture = SubResource( 6 )
+
+[node name="Button" type="StaticBody"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+script = ExtResource( 4 )
+
+[node name="onshape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.19283e-10, -0.000761986, -0.0460597 )
+shape = SubResource( 1 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 2.32633, 0, 0, 0, 1, 0, 0, -0.0486761 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="ontext" type="Spatial" parent="."]
+transform = Transform( 0.08, 0, 0, 0, 0, -0.08, 0, 0, -3.49691e-09, -0.00220668, 0.0315681, -0.0386257 )
+script = ExtResource( 1 )
+text = "default on"
+
+[node name="Viewport" type="Viewport" parent="ontext"]
+size = Vector2( 256, 64 )
+msaa = 6
+render_target_v_flip = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="ontext/Viewport"]
+
+[node name="Panel" type="Panel" parent="ontext/Viewport/CanvasLayer"]
+margin_right = 256.0
+margin_bottom = 64.0
+custom_styles/panel = SubResource( 8 )
+
+[node name="Container" type="MarginContainer" parent="ontext/Viewport/CanvasLayer/Panel"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 82.0
+margin_bottom = 27.0
+theme = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="ontext/Viewport/CanvasLayer/Panel/Container"]
+margin_right = 165.0
+margin_bottom = 46.0
+custom_fonts/font = SubResource( 4 )
+text = "defaulttext"
+
+[node name="MeshInstance" type="MeshInstance" parent="ontext"]
+mesh = SubResource( 7 )
+material/0 = SubResource( 9 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )

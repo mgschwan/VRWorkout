@@ -869,14 +869,21 @@ func internal_state_change():
 		switch_boxman(cue_emitter_state,"boxman2")
 	display_state(cue_emitter_state)
 
-var state_changed = false
-func emit_cue_node(target_time):
-	print ("State: %s"%state_string(cue_emitter_state))
+
+func reset_cue_spacing():
+	min_cue_space = level_min_cue_space
+
+func adjust_cue_spacing():
 	# Increase the cue speed for hand cues
 	if cue_selector == CueSelector.HAND:
 		min_cue_space = level_min_cue_space / 2
 	else:
 		min_cue_space = level_min_cue_space
+
+var state_changed = false
+func emit_cue_node(target_time):
+	print ("State: %s"%state_string(cue_emitter_state))
+
 			
 	if last_state_change + min_state_duration < cue_emitter.current_playback_time:
 		var old_state = cue_emitter_state
@@ -893,14 +900,18 @@ func emit_cue_node(target_time):
 					 boxman = boxman2
 				boxman.activate_beast(Vector3(0,0,1),1.8)
 
+	reset_cue_spacing()
 	if not state_changed:
 		if cue_emitter_state == CueState.STAND:
+			adjust_cue_spacing()
 			handle_stand_cues(target_time)
 		elif cue_emitter_state == CueState.JUMP:
 			handle_jump_cues(target_time)
 		elif cue_emitter_state == CueState.SQUAT:
+			adjust_cue_spacing()
 			handle_squat_cues(target_time)
 		elif cue_emitter_state == CueState.CRUNCH:
+			adjust_cue_spacing()
 			handle_crunch_cues(target_time)
 		elif cue_emitter_state == CueState.BURPEE:
 			handle_burpee_cues(target_time)

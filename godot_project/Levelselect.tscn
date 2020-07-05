@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -19,6 +19,8 @@
 [ext_resource path="res://ControllerAdjuster.gd" type="Script" id=17]
 [ext_resource path="res://TextElement.tscn" type="PackedScene" id=18]
 [ext_resource path="res://InfoBoxOpaque.tscn" type="PackedScene" id=19]
+[ext_resource path="res://ExerciseCollection.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scenes/Button.tscn" type="PackedScene" id=21]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -120,124 +122,11 @@ default_text = "Hit to set bpm\\nfor Freeplay mode"
 stream = ExtResource( 9 )
 bus = "Voice"
 
-[node name="BeastModeSelector" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.132, 1.523, -0.923 )
-script = ExtResource( 11 )
-
-[node name="onshape" type="CollisionShape" parent="BeastModeSelector"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000761986, -0.0341799 )
-shape = SubResource( 5 )
-
-[node name="MeshInstance2" type="MeshInstance" parent="BeastModeSelector"]
-transform = Transform( 1, 0, 0, 0, 2.32633, 0, 0, 0, 1, 0, 0, -0.0505549 )
-mesh = SubResource( 6 )
-material/0 = SubResource( 7 )
-
-[node name="claws" parent="BeastModeSelector" instance=ExtResource( 12 )]
-transform = Transform( -0.00642908, 0.0032691, -0.00692675, -0.0072954, 0.000141297, 0.00683792, 0.00233326, 0.0094495, 0.0022941, 0.0630277, 0.148197, 5.96046e-08 )
-
-[node name="claws2" parent="BeastModeSelector" instance=ExtResource( 12 )]
-transform = Transform( 0.00668362, 0.00311082, 0.00675663, -0.00677895, -0.00119168, 0.00725436, -0.00306188, 0.00942882, -0.00131234, -0.105832, 0.148197, 5.96046e-08 )
-
-[node name="switch" type="CSGBox" parent="BeastModeSelector"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.25, 0, -0.0599999, -0.0384666 )
-width = 0.2
-height = 0.1
-depth = 0.0137625
-material = ExtResource( 10 )
-
-[node name="CSGBox2" type="CSGBox" parent="BeastModeSelector/switch"]
-operation = 2
-width = 0.18
-height = 0.08
-depth = 0.2
-material = ExtResource( 10 )
-
-[node name="ontext" parent="BeastModeSelector" instance=ExtResource( 18 )]
-transform = Transform( 0.08, -1.62921e-07, 5.6972e-16, 0, -4.37114e-08, -0.08, 1.30337e-08, 1, -3.49691e-09, 0, 0.0685738, -0.0392407 )
-text = "Beast mode on"
-
-[node name="offtext" parent="BeastModeSelector" instance=ExtResource( 18 )]
-transform = Transform( 0.08, -1.62921e-07, 5.6972e-16, 0, -4.37114e-08, -0.08, 1.30337e-08, 1, -3.49691e-09, 0, -0.0454426, -0.0392407 )
-text = "Beast mode off"
-
-[node name="JumpSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.608729, 1.25165, -0.923035 )
-ontext = "Jump on"
-offtext = "Jump off"
-
-[node name="StandSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.608729, 1.52348, -0.923035 )
-ontext = "Stand on"
-offtext = "Stand off"
-
-[node name="CrunchSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.366857, 1.52348, -0.923035 )
-ontext = "Crunch on"
-offtext = "Crunch off"
-
-[node name="SquatSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.367, 1.252, -0.923 )
-ontext = "Squat on"
-offtext = "Squat off"
-
-[node name="PushupSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131597, 1.252, -0.923 )
-ontext = "Pushup on"
-offtext = "Pushup off"
-
-[node name="SafePushupSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131597, 0.992445, -0.923 )
-ontext = "Safe pushups on"
-offtext = "Safe pushup off"
-
-[node name="BurpeeSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0963057, 1.252, -0.923 )
-ontext = "Burpees on"
-offtext = "Burpees off"
-
-[node name="DuckSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.096, 1.523, -0.923 )
-ontext = "Ducking on"
-offtext = "Ducking off"
-
-[node name="SprintSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324165, 1.523, -0.923 )
-ontext = "Sprint on"
-offtext = "Sprint off"
-
-[node name="KneesaverSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, 1.252, -0.923 )
-value = true
-ontext = "Knee saver on"
-offtext = "Knee saver off"
-
-[node name="YogaSwitch" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, 0.992, -0.92 )
-value = true
-ontext = "Warmup on"
-offtext = "Warmup off"
-
 [node name="TutorialVideo" parent="." instance=ExtResource( 15 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.04662, 0.781789, -1.70517e-07 )
 
 [node name="SongSelector" parent="." instance=ExtResource( 16 )]
 transform = Transform( -1.74846e-08, 0, -1, 0, 0.4, 0, 0.4, 0, -4.37114e-08, 1.09793, 1.43304, 1.78876e-07 )
-
-[node name="ControllerAdjuster" type="StaticBody" parent="."]
-transform = Transform( 0.925256, 0, 0.379343, 0, 1, 0, -0.379343, 0, 0.925256, -0.594399, 1.60599, -0.853792 )
-script = ExtResource( 17 )
-
-[node name="CollisionShape" type="CollisionShape" parent="ControllerAdjuster"]
-shape = SubResource( 8 )
-
-[node name="Sphere" type="MeshInstance" parent="ControllerAdjuster"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.19209e-07 )
-mesh = SubResource( 9 )
-material/0 = ExtResource( 14 )
-
-[node name="Text" parent="ControllerAdjuster" instance=ExtResource( 2 )]
-transform = Transform( 0.2, -1.52897e-07, 2.13313e-08, 3.05795e-08, 0.345347, -0.187695, 2.13313e-08, 0.938475, 0.0690695, 0.117676, 0.0301707, 0.100452 )
 
 [node name="MainText" parent="." instance=ExtResource( 19 )]
 transform = Transform( -1.54463e-07, -0.974043, 0.226362, -7.37582e-08, -0.226362, -0.974043, 1, -1.6715e-07, -3.68791e-08, 1.55057, 2.30847, 2.5262e-07 )
@@ -251,18 +140,163 @@ transform = Transform( 1, -8.45779e-09, -7.37582e-08, -7.37582e-08, -0.226362, -
 
 [node name="text_panel" parent="Tutorial" instance=ExtResource( 13 )]
 transform = Transform( 1.2, 0, 0, 0, 1, 9.97291e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
+
+[node name="SettingsCarousel" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.57628e-07, 0, -2.3 )
+
+[node name="BeastModeSelector" type="StaticBody" parent="SettingsCarousel"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.132, 1.523, 1.277 )
+script = ExtResource( 11 )
+
+[node name="onshape" type="CollisionShape" parent="SettingsCarousel/BeastModeSelector"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000761986, -0.0341799 )
+shape = SubResource( 5 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="SettingsCarousel/BeastModeSelector"]
+transform = Transform( 1, 0, 0, 0, 2.32633, 0, 0, 0, 1, 0, 0, -0.0505549 )
+mesh = SubResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="claws" parent="SettingsCarousel/BeastModeSelector" instance=ExtResource( 12 )]
+transform = Transform( -0.00642908, 0.0032691, -0.00692675, -0.0072954, 0.000141297, 0.00683792, 0.00233326, 0.0094495, 0.0022941, 0.0630277, 0.148197, 5.96046e-08 )
+
+[node name="claws2" parent="SettingsCarousel/BeastModeSelector" instance=ExtResource( 12 )]
+transform = Transform( 0.00668362, 0.00311082, 0.00675663, -0.00677895, -0.00119168, 0.00725436, -0.00306188, 0.00942882, -0.00131234, -0.105832, 0.148197, 5.96046e-08 )
+
+[node name="switch" type="CSGBox" parent="SettingsCarousel/BeastModeSelector"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.25, 0, -0.0599999, -0.0384666 )
+width = 0.2
+height = 0.1
+depth = 0.0137625
+material = ExtResource( 10 )
+
+[node name="CSGBox2" type="CSGBox" parent="SettingsCarousel/BeastModeSelector/switch"]
+operation = 2
+width = 0.18
+height = 0.08
+depth = 0.2
+material = ExtResource( 10 )
+
+[node name="ontext" parent="SettingsCarousel/BeastModeSelector" instance=ExtResource( 18 )]
+transform = Transform( 0.08, -1.62921e-07, 5.6972e-16, 0, -4.37114e-08, -0.08, 1.30337e-08, 1, -3.49691e-09, 0, 0.0685738, -0.0392407 )
+text = "Beast mode on"
+
+[node name="offtext" parent="SettingsCarousel/BeastModeSelector" instance=ExtResource( 18 )]
+transform = Transform( 0.08, -1.62921e-07, 5.6972e-16, 0, -4.37114e-08, -0.08, 1.30337e-08, 1, -3.49691e-09, 0, -0.0454426, -0.0392407 )
+text = "Beast mode off"
+
+[node name="JumpSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.608729, 1.25165, 1.27697 )
+ontext = "Jump on"
+offtext = "Jump off"
+
+[node name="StandSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.608729, 1.52348, 1.27697 )
+ontext = "Stand on"
+offtext = "Stand off"
+
+[node name="CrunchSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.366857, 1.52348, 1.27696 )
+ontext = "Crunch on"
+offtext = "Crunch off"
+
+[node name="SquatSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.367, 1.252, 1.277 )
+ontext = "Squat on"
+offtext = "Squat off"
+
+[node name="PushupSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131597, 1.252, 1.277 )
+ontext = "Pushup on"
+offtext = "Pushup off"
+
+[node name="SafePushupSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131597, 0.992445, 1.277 )
+ontext = "Safe pushups on"
+offtext = "Safe pushup off"
+
+[node name="BurpeeSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.096306, 1.252, 1.277 )
+ontext = "Burpees on"
+offtext = "Burpees off"
+
+[node name="DuckSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0960003, 1.523, 1.277 )
+ontext = "Ducking on"
+offtext = "Ducking off"
+
+[node name="SprintSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324165, 1.523, 1.277 )
+ontext = "Sprint on"
+offtext = "Sprint off"
+
+[node name="KneesaverSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, 1.252, 1.277 )
+value = true
+ontext = "Knee saver on"
+offtext = "Knee saver off"
+
+[node name="YogaSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, -0.992, 1.28 )
+value = true
+ontext = "Warmup on"
+offtext = "Warmup off"
+
+[node name="ControllerAdjuster" type="StaticBody" parent="SettingsCarousel"]
+transform = Transform( 0.925256, 0, 0.379343, 0, 1, 0, -0.379343, 0, 0.925256, -0.594399, 1.60599, 1.34621 )
+script = ExtResource( 17 )
+
+[node name="CollisionShape" type="CollisionShape" parent="SettingsCarousel/ControllerAdjuster"]
+shape = SubResource( 8 )
+
+[node name="Sphere" type="MeshInstance" parent="SettingsCarousel/ControllerAdjuster"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.19209e-07 )
+mesh = SubResource( 9 )
+material/0 = ExtResource( 14 )
+
+[node name="Text" parent="SettingsCarousel/ControllerAdjuster" instance=ExtResource( 2 )]
+transform = Transform( 0.2, -1.52897e-07, 2.13313e-08, 3.05795e-08, 0.345347, -0.187695, 2.13313e-08, 0.938475, 0.0690695, 0.117676, 0.0301707, 0.100452 )
+
+[node name="ExerciseCollection" parent="SettingsCarousel" instance=ExtResource( 20 )]
+transform = Transform( 0.2, 0, 0, 0, -4.37114e-08, 0.2, 0, -1, -8.74228e-09, 0.7, 1.435, -1.2496 )
+exercise_name = "Leg day"
+
+[node name="ExerciseCollection2" parent="SettingsCarousel" instance=ExtResource( 20 )]
+transform = Transform( 0.2, 0, 0, 0, -4.37114e-08, 0.2, 0, -1, -8.74228e-09, 0.200001, 1.43492, -1.2496 )
+exercise_nr = 1
+exercise_name = "Developers choice"
+
+[node name="ExerciseCollection3" parent="SettingsCarousel" instance=ExtResource( 20 )]
+transform = Transform( 0.2, 0, 0, 0, -4.37114e-08, 0.2, 0, -1, -8.74228e-09, -0.299999, 1.43492, -1.2496 )
+exercise_nr = 2
+exercise_name = "Ground work"
+
+[node name="Tween" type="Tween" parent="SettingsCarousel"]
+
+[node name="SettingsButton" parent="." instance=ExtResource( 21 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.658, 1, -1 )
+ontext = "Settings"
+
+[node name="ExerciseButton" parent="." instance=ExtResource( 21 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.435, 1, -1 )
+ontext = "Exercises"
 [connection signal="selected" from="Freeplay1" to="." method="_on_SongSelector_level_selected"]
 [connection signal="selected" from="Freeplay2" to="." method="_on_SongSelector_level_selected"]
 [connection signal="selected" from="Freeplay3" to="." method="_on_SongSelector_level_selected"]
-[connection signal="toggled" from="JumpSwitch" to="." method="_on_JumpSwitch_toggled"]
-[connection signal="toggled" from="StandSwitch" to="." method="_on_StandSwitch_toggled"]
-[connection signal="toggled" from="CrunchSwitch" to="." method="_on_CrunchSwitch_toggled"]
-[connection signal="toggled" from="SquatSwitch" to="." method="_on_SquatSwitch_toggled"]
-[connection signal="toggled" from="PushupSwitch" to="." method="_on_PushupSwitch_toggled"]
-[connection signal="toggled" from="SafePushupSwitch" to="." method="_on_SafePushupSwitch_toggled"]
-[connection signal="toggled" from="BurpeeSwitch" to="." method="_on_BurpeeSwitch_toggled"]
-[connection signal="toggled" from="DuckSwitch" to="." method="_on_DuckSwitch_toggled"]
-[connection signal="toggled" from="SprintSwitch" to="." method="_on_SprintSwitch_toggled"]
-[connection signal="toggled" from="KneesaverSwitch" to="." method="_on_KneesaverSwitch_toggled"]
-[connection signal="toggled" from="YogaSwitch" to="." method="_on_YogaSwitch_toggled"]
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
+[connection signal="toggled" from="SettingsCarousel/JumpSwitch" to="." method="_on_JumpSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/StandSwitch" to="." method="_on_StandSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/CrunchSwitch" to="." method="_on_CrunchSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/SquatSwitch" to="." method="_on_SquatSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/PushupSwitch" to="." method="_on_PushupSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/SafePushupSwitch" to="." method="_on_SafePushupSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/BurpeeSwitch" to="." method="_on_BurpeeSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/DuckSwitch" to="." method="_on_DuckSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/SprintSwitch" to="." method="_on_SprintSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/KneesaverSwitch" to="." method="_on_KneesaverSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/YogaSwitch" to="." method="_on_YogaSwitch_toggled"]
+[connection signal="selected" from="SettingsCarousel/ExerciseCollection" to="." method="_on_ExerciseCollection_selected"]
+[connection signal="selected" from="SettingsCarousel/ExerciseCollection2" to="." method="_on_ExerciseCollection_selected"]
+[connection signal="selected" from="SettingsCarousel/ExerciseCollection3" to="." method="_on_ExerciseCollection_selected"]
+[connection signal="selected" from="SettingsButton" to="." method="_on_SettingsButton_selected"]
+[connection signal="selected" from="ExerciseButton" to="." method="_on_ExerciseButton_selected"]

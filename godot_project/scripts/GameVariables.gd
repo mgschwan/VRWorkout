@@ -5,6 +5,75 @@ var trackers = null
 var difficulty = 0
 
 
+var exercise_collections = [
+	[
+		{"setting":"game/exercise/jump",
+		 "value": true,
+		 "description": "Jumping"
+		},
+		{"setting":"game/exercise/squat",
+		 "value": true,
+		 "description": "Squats"
+		},
+		{"setting":"game/exercise/stand",
+		 "value": true,
+		 "description": "Standing"
+		},
+	],
+	[
+		{"setting":"game/exercise/jump",
+		 "value": true,
+		 "description": "Jumping"
+		},
+		{"setting":"game/exercise/squat",
+		 "value": true,
+		 "description": "Squats"
+		},
+		{"setting":"game/exercise/stand",
+		 "value": true,
+		 "description": "Standing"
+		},
+		{"setting":"game/exercise/duck",
+		 "value": true,
+		 "description": "Ducking"
+		},
+		{"setting":"game/exercise/pushup",
+		 "value": true,
+		 "description": "Pushups"
+		},
+		{"setting":"game/exercise/crunch",
+		 "value": true,
+		 "description": "Crunches"
+		},
+		{"setting":"game/exercise/burpees",
+		 "value": true,
+		 "description": "Standing"
+		},
+		{"setting":"game/exercise/sprint",
+		 "value": true,
+		 "description": "Sprinting"
+		},
+	],
+	[
+		{"setting":"game/exercise/squat",
+		 "value": true,
+		 "description": "Squats"
+		},
+		{"setting":"game/exercise/pushup",
+		 "value": true,
+		 "description": "Pushups"
+		},
+		{"setting":"game/exercise/crunch",
+		 "value": true,
+		 "description": "Crunches"
+		},
+		{"setting":"game/exercise/burpees",
+		 "value": true,
+		 "description": "Standing"
+		},
+	],
+]
+	
 
 #func setup_globals():
 #	ProjectSettings.set("game/beast_mode", false)

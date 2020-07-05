@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://ToggleSwitch.gd" type="Script" id=1]
 [ext_resource path="res://TextElement.tscn" type="PackedScene" id=2]
 [ext_resource path="res://models/pale_white.material" type="Material" id=3]
+[ext_resource path="res://audio/menu_selection.wav" type="AudioStream" id=4]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.0776907, 0.091341, 0.00811744 )
@@ -47,3 +48,6 @@ text = "default on"
 [node name="offtext" parent="." instance=ExtResource( 2 )]
 transform = Transform( 0.08, 0, 0, 0, 0, -0.08, 0, 0, -3.49691e-09, -0.00220668, -0.0475992, -0.0386257 )
 text = "default of"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )

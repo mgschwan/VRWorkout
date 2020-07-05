@@ -9,18 +9,18 @@ size = 32
 use_filter = true
 font_data = ExtResource( 3 )
 
-[sub_resource type="PlaneMesh" id=1]
+[sub_resource type="PlaneMesh" id=7]
 size = Vector2( 2, 0.5 )
 
-[sub_resource type="ViewportTexture" id=2]
+[sub_resource type="ViewportTexture" id=3]
 flags = 4
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=8]
 resource_local_to_scene = true
 flags_unshaded = true
 flags_albedo_tex_force_srgb = true
-albedo_texture = SubResource( 2 )
+albedo_texture = SubResource( 3 )
 
 [node name="TextElement" type="Spatial"]
 script = ExtResource( 1 )
@@ -44,12 +44,11 @@ margin_bottom = 27.0
 theme = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="Viewport/CanvasLayer/Panel/Container"]
-margin_top = 5.0
-margin_right = 212.0
-margin_bottom = 51.0
+margin_right = 165.0
+margin_bottom = 46.0
 custom_fonts/font = SubResource( 4 )
 text = "defaulttext"
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
-mesh = SubResource( 1 )
-material/0 = SubResource( 3 )
+mesh = SubResource( 7 )
+material/0 = SubResource( 8 )

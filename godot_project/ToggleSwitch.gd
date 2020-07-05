@@ -13,6 +13,7 @@ func _ready():
 	
 func touched_by_controller(body, root):
 	value = not value
+	get_node("AudioStreamPlayer").play(0.0)
 	emit_signal("toggled", value)
 	update_switch()
 

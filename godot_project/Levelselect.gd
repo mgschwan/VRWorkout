@@ -2,6 +2,8 @@ extends Spatial
 
 signal level_selected(filename, difficulty, level_number)
 
+var gu = GameUtilities.new()
+
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -29,6 +31,45 @@ func get_song_list(path):
 	return song_dict.keys()
 	
 
+	
+func update_widget():
+	get_node("SettingsCarousel/BeastModeSelector").beast_mode = ProjectSettings.get("game/beast_mode")
+	get_node("SettingsCarousel/BeastModeSelector").update_switch()
+	
+	get_node("SettingsCarousel/JumpSwitch").value = ProjectSettings.get("game/exercise/jump")
+	get_node("SettingsCarousel/JumpSwitch").update_switch()
+	
+	get_node("SettingsCarousel/StandSwitch").value = ProjectSettings.get("game/exercise/stand")
+	get_node("SettingsCarousel/StandSwitch").update_switch()
+	
+	get_node("SettingsCarousel/SquatSwitch").value = ProjectSettings.get("game/exercise/squat")
+	get_node("SettingsCarousel/SquatSwitch").update_switch()
+	
+	get_node("SettingsCarousel/PushupSwitch").value = ProjectSettings.get("game/exercise/pushup")
+	get_node("SettingsCarousel/PushupSwitch").update_switch()
+	
+	get_node("SettingsCarousel/SafePushupSwitch").value = ProjectSettings.get("game/hud_enabled")
+	get_node("SettingsCarousel/SafePushupSwitch").update_switch()
+
+	get_node("SettingsCarousel/CrunchSwitch").value = ProjectSettings.get("game/exercise/crunch")
+	get_node("SettingsCarousel/CrunchSwitch").update_switch()
+
+	get_node("SettingsCarousel/BurpeeSwitch").value = ProjectSettings.get("game/exercise/burpees")
+	get_node("SettingsCarousel/BurpeeSwitch").update_switch()
+
+	get_node("SettingsCarousel/DuckSwitch").value = ProjectSettings.get("game/exercise/duck")
+	get_node("SettingsCarousel/DuckSwitch").update_switch()
+
+	get_node("SettingsCarousel/YogaSwitch").value = ProjectSettings.get("game/exercise/yoga")
+	get_node("SettingsCarousel/YogaSwitch").update_switch()
+
+	get_node("SettingsCarousel/SprintSwitch").value = ProjectSettings.get("game/exercise/sprint")
+	get_node("SettingsCarousel/SprintSwitch").update_switch()
+
+	get_node("SettingsCarousel/KneesaverSwitch").value = ProjectSettings.get("game/exercise/kneesaver")
+	get_node("SettingsCarousel/KneesaverSwitch").update_switch()
+
+	
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -59,42 +100,8 @@ func _ready():
 	
 	get_node("Tutorial").print_info("How to play\n- Hit the hand cues to the beat of the music\n- Head cues should only be touched no headbutts\n- Run in place to receive point multipliers!\nThe optimal time to hit the cues is when the\nrotating marker meets the static one")	
 	
-	get_node("BeastModeSelector").beast_mode = ProjectSettings.get("game/beast_mode")
-	get_node("BeastModeSelector").update_switch()
+	update_widget()
 	
-	get_node("JumpSwitch").value = ProjectSettings.get("game/exercise/jump")
-	get_node("JumpSwitch").update_switch()
-	
-	get_node("StandSwitch").value = ProjectSettings.get("game/exercise/stand")
-	get_node("StandSwitch").update_switch()
-	
-	get_node("SquatSwitch").value = ProjectSettings.get("game/exercise/squat")
-	get_node("SquatSwitch").update_switch()
-	
-	get_node("PushupSwitch").value = ProjectSettings.get("game/exercise/pushup")
-	get_node("PushupSwitch").update_switch()
-	
-	get_node("SafePushupSwitch").value = ProjectSettings.get("game/hud_enabled")
-	get_node("SafePushupSwitch").update_switch()
-
-	get_node("CrunchSwitch").value = ProjectSettings.get("game/exercise/crunch")
-	get_node("CrunchSwitch").update_switch()
-
-	get_node("BurpeeSwitch").value = ProjectSettings.get("game/exercise/burpees")
-	get_node("BurpeeSwitch").update_switch()
-
-	get_node("DuckSwitch").value = ProjectSettings.get("game/exercise/duck")
-	get_node("DuckSwitch").update_switch()
-
-	get_node("YogaSwitch").value = ProjectSettings.get("game/exercise/yoga")
-	get_node("YogaSwitch").update_switch()
-
-	get_node("SprintSwitch").value = ProjectSettings.get("game/exercise/sprint")
-	get_node("SprintSwitch").update_switch()
-
-	get_node("KneesaverSwitch").value = ProjectSettings.get("game/exercise/kneesaver")
-	get_node("KneesaverSwitch").update_switch()
-
 	get_viewport().get_camera().blackout_screen(false)
 
 
@@ -157,3 +164,21 @@ func _on_SongSelector_level_selected(filename, difficulty, level_number):
 
 func _on_YogaSwitch_toggled(value):
 	ProjectSettings.set("game/exercise/yoga", value)
+
+
+func _on_ExerciseCollection_selected(collection):
+	gu.set_exercise_collection(collection)
+	update_widget()
+
+
+func _on_SettingsButton_selected():
+	var carousel = get_node("SettingsCarousel")
+	var t = get_node("SettingsCarousel/Tween")
+	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, 0, 0.5, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	t.start()
+	
+func _on_ExerciseButton_selected():
+	var carousel = get_node("SettingsCarousel")
+	var t = get_node("SettingsCarousel/Tween")
+	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, PI, 0.5, 	Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	t.start()
