@@ -367,8 +367,9 @@ func _ready():
 			print ("Could not load audio")
 			emit_signal("level_finished")	
 	
-	#If the song has not beats use the default beats
-	if len(beats) == 0 and stream.stream:
+	#If the song has no beats use the default beats
+	if (GameVariables.override_beatmap or len(beats) == 0) and stream.stream:
+		beats = []
 		var delta = max(0.1, 60.0/float(max(1,bpm)))
 		var now = OS.get_ticks_msec()	
 		var pos = 0
@@ -387,12 +388,16 @@ func _ready():
 	update_safe_pushup()
 	
 func setup_difficulty(diff):
+
 	if diff < 0:
 		auto_difficulty = true
 	
 	if auto_difficulty:
 		diff = 1.0 + min(1.0,max(-1.0,(target_hr - avg_hr)/10.0))
-		
+	else:
+		#Keep the difficulty in the supported bounds	
+		diff = min(2,max(0,diff))
+	
 	var d = diff
 	
 	level_min_state_duration = 20 - d * 5.0 

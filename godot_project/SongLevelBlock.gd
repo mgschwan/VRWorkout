@@ -14,13 +14,28 @@ signal selected(filename, difficulty, level_number)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_text(song_name,"")
+	
+	get_node("Text/Easy").hide()
+	get_node("Text/Easy").set_process(false)
+
+	get_node("Text/Medium").hide()
+	get_node("Text/Medium").set_process(false)
+	
+	get_node("Text/Hard").hide()
+	get_node("Text/Hard").set_process(false)
+
+	get_node("Text/Auto").hide()
+	get_node("Text/Auto").set_process(false)
+
+
 
 func set_text(text, artist):
 	get_node("Text").print_info("by %s\n[b][i]%s[/i][/b]"%[artist,text])
 
 func enable_automatic():
-	get_node("Text/Auto").show()
-
+	#Disabled
+	#get_node("Text/Auto").show()
+	pass
 
 func get_level():
 	return level_number
@@ -28,6 +43,10 @@ func get_level():
 #If the whole block is touched get the lowest difficulty
 func get_difficulty_selector():
 	return 0
+
+
+func touched_by_controller(obj,root):
+	emit_signal("selected",song_filename, null, level_number)
 	
 func is_in_animation():
 	return get_node("AnimationPlayer").is_playing()

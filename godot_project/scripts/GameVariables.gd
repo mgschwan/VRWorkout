@@ -3,6 +3,7 @@ extends Node
 var detail_selection_mode = true
 var trackers = null
 var difficulty = 0
+var override_beatmap = false
 
 
 var exercise_collections = [
@@ -98,7 +99,7 @@ var exercise_collections = [
 
 func setup_globals():
 	ProjectSettings.set("game/beast_mode", false)
-	ProjectSettings.set("game/bpm", 120)
+	ProjectSettings.set("game/bpm", 140)
 	ProjectSettings.set("game/exercise/jump", true)
 	ProjectSettings.set("game/exercise/stand", true)
 	ProjectSettings.set("game/exercise/squat", true)

@@ -2,6 +2,7 @@ extends Spatial
 
 signal level_selected(filename, difficulty, level_number)
 
+var current_difficulty = 0
 
 var song_list = []
 var song_infos = {}
@@ -65,10 +66,13 @@ func set_songs(songs):
 func _ready():
 	var hrr = get_tree().current_scene.get_node("HeartRateReceiver")
 	if hrr and hrr.hr_active:
+		get_node("DifficultyButtons").enable_automatic(true)
 		var nodes = get_node("SongBlocks").get_children()
 		for n in nodes:
 			if n.has_method("enable_automatic"):
 				n.enable_automatic()
+	else:
+		get_node("DifficultyButtons").enable_automatic(false)
 
 	update_song_list()
 	pass # Replace with function body.
@@ -85,9 +89,20 @@ func next_page():
 #func _process(delta):
 #	pass
 
+func select_difficulty(d):
+	get_node("DifficultyButtons").select_difficulty(d)
+
 
 func _on_level_block_selected(filename, difficulty, level_number):
+	if difficulty == null:
+		difficulty = current_difficulty
 	emit_signal("level_selected", filename, difficulty, level_number)
 
 func _on_NextPage_touched():
 	next_page()
+
+var difficulties = {"easy":0,"medium": 1, "hard": 2, "ultra": 3, "auto": -1,}
+func _on_DifficultyButtons_difficulty_selected(difficulty):
+	if difficulty in difficulties:
+		current_difficulty = difficulties[difficulty]
+

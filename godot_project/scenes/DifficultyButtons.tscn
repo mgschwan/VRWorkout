@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/Button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/DifficultyButtons.gd" type="Script" id=2]
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="Easy" parent="." instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.335657, 0 )
+ontext = "Easy"
+
+[node name="Medium" parent="." instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.20861, 0 )
+ontext = "Medium"
+
+[node name="Hard" parent="." instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.0787834, 0 )
+ontext = "Hard"
+
+[node name="Ultra" parent="." instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -0.263317, 0 )
+ontext = "Ultra"
+
+[node name="Auto" parent="." instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -0.0492956, 0 )
+ontext = "Auto"
+[connection signal="selected" from="Easy" to="." method="_on_Button_selected" binds= [ "easy" ]]
+[connection signal="selected" from="Medium" to="." method="_on_Button_selected" binds= [ "medium" ]]
+[connection signal="selected" from="Hard" to="." method="_on_Button_selected" binds= [ "hard" ]]
+[connection signal="selected" from="Ultra" to="." method="_on_Button_selected" binds= [ "ultra" ]]
+[connection signal="selected" from="Auto" to="." method="_on_Button_selected" binds= [ "auto" ]]

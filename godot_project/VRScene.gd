@@ -399,7 +399,12 @@ func _on_Area_level_selected(filename, diff, num):
 		set_beast_mode(ProjectSettings.get("game/beast_mode"))
 		level = level_blueprint.instance()
 		
+		GameVariables.override_beatmap = false
+		if diff == 3:
+			GameVariables.override_beatmap = true
+
 		GameVariables.difficulty = diff
+		
 		level.audio_filename = filename
 		level.song_index_parameter = num
 		level.player_height = height

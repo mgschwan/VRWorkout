@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://SongLevelBlock.gd" type="Script" id=2]
 [ext_resource path="res://SongVariant.gd" type="Script" id=3]
@@ -29,6 +29,9 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Vector3( -90, 180, 0 ), Vector3( 45, 180, 0 ), Vector3( -90, 180, 0 ) ]
 }
+
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 0.444615, 0.125514, 0.017445 )
 
 [node name="StaticBody" type="StaticBody"]
 script = ExtResource( 2 )
@@ -65,7 +68,7 @@ shape = SubResource( 3 )
 [node name="Text" parent="Text/Medium" instance=ExtResource( 5 )]
 transform = Transform( 0.08, 1.90735e-08, -8.33729e-16, -1.58819e-22, -3.49691e-09, -0.08, -1.90735e-08, 0.08, -3.49691e-09, -0.410218, -0.193248, 0.240946 )
 text = "Medium"
-viewport_width = 192
+viewport_width = 128
 
 [node name="Hard" type="StaticBody" parent="Text"]
 transform = Transform( -2.22222, 7.8429e-21, 7.24092e-07, 8.14603e-07, -4.07302e-07, 2.5, 1.76954e-13, 3.33333, 5.43069e-07, -1.66148, -0.597499, 0.336433 )
@@ -96,6 +99,9 @@ viewport_width = 128
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/spin = SubResource( 4 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 5 )
 [connection signal="difficulty_selected" from="Text/Easy" to="." method="_on_difficulty_selected"]
 [connection signal="difficulty_selected" from="Text/Medium" to="." method="_on_difficulty_selected"]
 [connection signal="difficulty_selected" from="Text/Hard" to="." method="_on_difficulty_selected"]

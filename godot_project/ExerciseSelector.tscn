@@ -223,14 +223,14 @@ albedo_texture = ExtResource( 1 )
 uv1_scale = Vector3( 0.25, 0.25, 1 )
 uv1_offset = Vector3( 0.5, 0.25, 0 )
 
-[sub_resource type="SpatialMaterial" id=25]
+[sub_resource type="SpatialMaterial" id=17]
 flags_transparent = true
 flags_unshaded = true
 albedo_texture = ExtResource( 1 )
 uv1_scale = Vector3( 0.25, 0.25, 1 )
 uv1_offset = Vector3( 0.75, 0, 0 )
 
-[sub_resource type="Animation" id=26]
+[sub_resource type="Animation" id=18]
 resource_name = "sprint"
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:material/0:uv1_scale")
@@ -257,7 +257,7 @@ tracks/1/keys = {
 "values": [ Vector3( 0.75, 0, 0 ) ]
 }
 
-[sub_resource type="PlaneMesh" id=24]
+[sub_resource type="PlaneMesh" id=19]
 size = Vector2( 1.8, 1.4 )
 
 [node name="Spatial" type="Spatial"]
@@ -426,7 +426,7 @@ shape = SubResource( 11 )
 [node name="Sprintsign" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9 )
 mesh = SubResource( 1 )
-material/0 = SubResource( 25 )
+material/0 = SubResource( 17 )
 script = ExtResource( 2 )
 current_sign = "sprint"
 
@@ -443,11 +443,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.8, 0, -0.209451, 0 )
 shape = SubResource( 11 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprintsign"]
-anims/sprint = SubResource( 26 )
+anims/sprint = SubResource( 18 )
 
 [node name="highlight" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
-mesh = SubResource( 24 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0 )
+mesh = SubResource( 19 )
 material/0 = ExtResource( 4 )
 [connection signal="selected" from="Standsign/SignBody" to="." method="_on_SignBody_selected"]
 [connection signal="selected" from="Squatsign/SignBody" to="." method="_on_SignBody_selected"]

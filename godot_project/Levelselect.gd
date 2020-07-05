@@ -101,7 +101,7 @@ func _ready():
 	get_node("Tutorial").print_info("How to play\n- Hit the hand cues to the beat of the music\n- Head cues should only be touched no headbutts\n- Run in place to receive point multipliers!\nThe optimal time to hit the cues is when the\nrotating marker meets the static one")	
 	
 	update_widget()
-	
+	get_node("SongSelector").select_difficulty(GameVariables.difficulty)
 	get_viewport().get_camera().blackout_screen(false)
 
 
@@ -182,3 +182,4 @@ func _on_ExerciseButton_selected():
 	var t = get_node("SettingsCarousel/Tween")
 	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, PI, 0.5, 	Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	t.start()
+

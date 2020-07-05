@@ -4,7 +4,7 @@ var current_controller = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_node("Text").print_info("Touch and hold\nto adjust\nother controller")
+	get_node("TextElement").print_info("Touch and hold\nto adjust\nother controller")
 
 func touched_by_controller(obj, root):
 	if current_controller == null:

@@ -10,12 +10,12 @@
 [sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=10]
 size = 32
 use_filter = true
 font_data = ExtResource( 2 )
 
-[sub_resource type="PlaneMesh" id=7]
+[sub_resource type="PlaneMesh" id=11]
 size = Vector2( 2, 0.5 )
 
 [sub_resource type="ViewportTexture" id=3]
@@ -64,11 +64,11 @@ theme = ExtResource( 4 )
 [node name="Label" type="Label" parent="TextElement/Viewport/CanvasLayer/Panel/Container"]
 margin_right = 165.0
 margin_bottom = 46.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 10 )
 text = "defaulttext"
 
 [node name="MeshInstance" type="MeshInstance" parent="TextElement"]
-mesh = SubResource( 7 )
+mesh = SubResource( 11 )
 material/0 = SubResource( 8 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]

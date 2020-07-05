@@ -1,7 +1,7 @@
 extends StaticBody
 
 var beats = 0
-var bpm = 100
+var bpm = 140
 var last_beat = 0
 
 
