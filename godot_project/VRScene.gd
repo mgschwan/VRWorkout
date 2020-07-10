@@ -13,7 +13,7 @@ var levelselect
 var level = null
 var cam = null
 var difficulty = 0
-var height = 1.8
+
 var vr_mode = true
 var beast_mode = false
 export var record_tracker_data = false
@@ -28,7 +28,7 @@ var left_collision_root
 var right_collision_root
 
 var in_hand_mode = false #auto detect hand_mode, can't revert back automatically
-var player_height_stat = []
+
 
 var tracking_data = []
 
@@ -231,9 +231,6 @@ func _ready():
 	splashscreen.connect("splash_screen_finished", self,"_on_Splashscreen_finished")
 	add_child(splashscreen)
 	
-	for i in range(200):
-		player_height_stat.append(0)
-	
 	
 	if ovr_hand_tracking: 
 		ovr_hand_tracking = ovr_hand_tracking.new()
@@ -371,15 +368,7 @@ func _process(delta):
 			image.flip_y()
 			image.save_png("/tmp/vrworkout_screenshot_%d.png"%OS.get_ticks_msec())
 	
-	if level == null:
-		player_height_stat[ clamp(int(100*cam.translation.y),0,len(player_height_stat)-1) ] += 1
-		var v = 0
-		for h in range(len(player_height_stat)):
-			if player_height_stat[h] > v:
-				v = player_height_stat[h]
-				height = h/100.0
-		#height = 0.98 * height + 0.02 * cam.translation.y
-	else:
+	if level != null:
 		if beast_mode:
 			var tmp = level.beast_mode_supported()
 			for t in GameVariables.trackers:
@@ -407,7 +396,7 @@ func _on_Area_level_selected(filename, diff, num):
 		
 		level.audio_filename = filename
 		level.song_index_parameter = num
-		level.player_height = height
+		level.player_height = ProjectSettings.get("game/player_height")
 		level.bpm = ProjectSettings.get("game/bpm")
 		level.first_beat = levelselect.get_last_beat()
 		level.connect("level_finished",self,"_on_level_finished")
@@ -416,8 +405,8 @@ func _on_Area_level_selected(filename, diff, num):
 	
 
 func _on_DemoTimer_timeout():
-	#_on_Area_level_selected("res://audio/songs/vrworkout.ogg", 0, 1)
-	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
+	_on_Area_level_selected("res://audio/songs/01_VRWorkout.ogg", 0, 1)
+	#_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
 	#_on_Area_level_selected("res://home/developer/Music/Workout/mono.ogg", 2, 1)
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)

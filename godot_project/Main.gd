@@ -2,6 +2,15 @@ extends Spatial
 
 signal level_finished
 var gu = GameUtilities.new()
+var CueState = GameVariables.CueState
+var CueSelector = GameVariables.CueSelector
+var PushupState = GameVariables.PushupState
+var SquatState = GameVariables.SquatState
+
+var exercise_state_model_template
+var pushup_state_model
+var squat_state_model
+
 
 var song_index_parameter = 0
 var audio_filename = ""
@@ -42,6 +51,8 @@ var current_difficulty = 0
 var exercise_changed = true
 
 var next_exercise = CueState.STAND
+var rebalance_exercises = true
+
 
 var groove_display
 var trophy_list
@@ -58,27 +69,6 @@ var cue_emitter
 var target
 var boxman1
 var boxman2
-
-
-
-
-
-enum CueState {
-	STAND = 0,
-	SQUAT = 1,
-	PUSHUP = 2,
-	CRUNCH = 3,
-	JUMP = 4,
-	BURPEE = 5,
-	SPRINT = 6,
-	YOGA = 7,
-};
-
-enum CueSelector {
-	HEAD = 0,
-	HAND = 1,	
-};
-	
 	
 var cue_parameters = {}
 
@@ -290,8 +280,23 @@ func _ready():
 	get_tree().current_scene.set_detail_selection_mode(false)
 
 	get_tree().get_current_scene().get_node("HeartRateReceiver").connect("heart_rate_received", self,"_on_HeartRateData")	
-		
+
+	if ProjectSettings.get("game/exercise/strength_focus"):
+		exercise_state_model_template = GameVariables.exercise_model["strength"]["exercise_state_model"]
+		pushup_state_model = GameVariables.exercise_model["strength"]["pushup_state_model"]
+		squat_state_model = GameVariables.exercise_model["strength"]["squat_state_model"]
+		rebalance_exercises = GameVariables.exercise_model["strength"]["rebalance_exercises"]
+	else:
+		exercise_state_model_template = GameVariables.exercise_model["cardio"]["exercise_state_model"]
+		pushup_state_model = GameVariables.exercise_model["cardio"]["pushup_state_model"]
+		squat_state_model = GameVariables.exercise_model["cardio"]["squat_state_model"]
+		rebalance_exercises = GameVariables.exercise_model["cardio"]["rebalance_exercises"]
+
+	print ("Rebalance exercises: %s"%(str(rebalance_exercises)))
+
 	populate_state_model()
+
+
 	beast_mode = ProjectSettings.get("game/beast_mode")
 	ducking_mode = ProjectSettings.get("game/exercise/duck")
 	kneesaver_mode = ProjectSettings.get("game/exercise/kneesaver")	
@@ -303,6 +308,9 @@ func _ready():
 	
 	get_node("heart_coin").set_marker("low", low_hr)
 	get_node("heart_coin").set_marker("high", high_hr)
+	
+	
+		
 	
 	
 	cue_emitter_state = get_start_exercise()
@@ -521,16 +529,7 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time =
 	move_modifier.connect("tween_completed",self,"_on_tween_completed")
 	move_modifier.start()
 	return cue_node
-	
-var exercise_state_model_template = { CueState.STAND: { CueState.SQUAT: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.JUMP: 10, CueState.BURPEE: 10, CueState.SPRINT: 10},
-					CueState.SQUAT: { CueState.STAND: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.SPRINT: 10},
-					CueState.PUSHUP: { CueState.STAND: 10, CueState.SQUAT: 10, CueState.BURPEE: 10},
-					CueState.CRUNCH: { CueState.STAND: 10, CueState.SQUAT: 10},
-					CueState.JUMP: {CueState.STAND: 50, CueState.BURPEE: 10}, 
-					CueState.BURPEE: {CueState.STAND: 50}, 
-					CueState.SPRINT: {CueState.STAND: 50, CueState.JUMP: 10, CueState.SQUAT: 10}, 
-					CueState.YOGA: { CueState.STAND: 50 },
-					}
+
 	
 var exercise_state_model = {}
 
@@ -739,7 +738,7 @@ func handle_burpee_cues(target_time):
 	elif burpee_state == BurpeeState.PUSHUP_LOW:
 		switch_floor_sign("hands")
 		y_head = 0.3
-		temporary_cue_space_extension = 0.9
+		temporary_cue_space_extension = 1.2
 	else:
 		switch_floor_sign("feet")
 		y_head = player_height + jump_offset
@@ -750,8 +749,12 @@ func handle_burpee_cues(target_time):
 	else:
 		create_and_attach_cue("head", x_head, y_head, target_time)
 	
+var squat_state = SquatState.HEAD
+	
 func handle_squat_cues(target_time):
 	switch_floor_sign("feet")
+	
+	squat_state = state_transition (squat_state, squat_state_model)
 	
 	var node_selector = rng.randi()%100
 	
@@ -760,16 +763,10 @@ func handle_squat_cues(target_time):
 	var x = 0.3 + rng.randf() * 0.45
 	var x_head = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"] - cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]/2
 	
-	if cue_selector == CueSelector.HAND and node_selector < 30:
-		cue_selector = CueSelector.HEAD
-	elif cue_selector == CueSelector.HEAD and node_selector < 25:
-		cue_selector = CueSelector.HAND
-	
-	if cue_selector == CueSelector.HAND:
-		if node_selector < 50:	
-			var n = create_and_attach_cue("left", -x,y_hand, target_time, -hand_cue_offset)
-		else:			
-			var n = create_and_attach_cue("right", x,y_hand, target_time, -hand_cue_offset)
+	if squat_state == SquatState.LEFT_HAND:
+		var n = create_and_attach_cue("left", -x,y_hand, target_time, -hand_cue_offset)
+	elif squat_state == SquatState.RIGHT_HAND:
+		var n = create_and_attach_cue("right", x,y_hand, target_time, -hand_cue_offset)
 	else:
 		create_and_attach_cue("head", x_head, y_head, target_time)
 	
@@ -806,21 +803,8 @@ func handle_crunch_cues(target_time):
 		create_and_attach_cue("head", x_head, y_head, target_time)
 
 	
-enum PushupState {
-	REGULAR = 0,
-	LEFT_HAND = 1,
-	RIGHT_HAND = 2,
-	LEFT_SIDEPLANK = 3,
-	RIGHT_SIDEPLANK = 4,
-};	
-	
-var pushup_state_model = { PushupState.REGULAR : { PushupState.LEFT_HAND : 15, PushupState.RIGHT_HAND: 15, PushupState.LEFT_SIDEPLANK: 10, PushupState.RIGHT_SIDEPLANK: 10},
-					PushupState.LEFT_HAND : { PushupState.REGULAR: 25, PushupState.RIGHT_HAND: 5, PushupState.RIGHT_SIDEPLANK: 10},
-					PushupState.RIGHT_HAND : { PushupState.REGULAR: 25, PushupState.LEFT_HAND: 5, PushupState.LEFT_SIDEPLANK: 10},
-					PushupState.LEFT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.RIGHT_HAND: 10},
-					PushupState.RIGHT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.LEFT_HAND: 10},
-					};
-	
+
+
 var pushup_state = PushupState.REGULAR
 
 var pushup_distribution = {}
@@ -828,8 +812,12 @@ var pushup_distribution = {}
 func handle_pushup_cues(target_time):
 	switch_floor_sign("hands")
 	
-	pushup_state = state_transition (pushup_state, pushup_state_model, pushup_distribution)
 	
+	if rebalance_exercises:
+		pushup_state = state_transition (pushup_state, pushup_state_model, pushup_distribution)
+	else:
+		pushup_state = state_transition (pushup_state, pushup_state_model)
+		
 	var node_selector = rng.randi()%100
 
 	var y_head = cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"]

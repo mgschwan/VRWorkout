@@ -1,7 +1,8 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://spawn_timer.gd" type="Script" id=2]
+[ext_resource path="res://scenes/SpectrumDisplay.tscn" type="PackedScene" id=3]
 [ext_resource path="res://HudLayer.tscn" type="PackedScene" id=5]
 [ext_resource path="res://cue_emitter.gd" type="Script" id=6]
 [ext_resource path="res://TrophyList.tscn" type="PackedScene" id=7]
@@ -204,6 +205,9 @@ bpm = 60.0
 [node name="rungauge" parent="." instance=ExtResource( 25 )]
 transform = Transform( 1.5, 0, 0, 0, -4.37114e-08, -1.5, 0, 1, -6.55671e-08, 0, 1.27897, -4.07523 )
 visible = false
+
+[node name="SpectrumDisplay" parent="." instance=ExtResource( 3 )]
+transform = Transform( 0.2, 0, 0, 0, -0.168573, -0.107625, 0, 0.107625, -0.168573, -2.18058, 4, -8.99986 )
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="camera_entered" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_entered"]
 [connection signal="camera_exited" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_exited"]

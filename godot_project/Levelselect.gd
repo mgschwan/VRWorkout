@@ -69,6 +69,11 @@ func update_widget():
 	get_node("SettingsCarousel/KneesaverSwitch").value = ProjectSettings.get("game/exercise/kneesaver")
 	get_node("SettingsCarousel/KneesaverSwitch").update_switch()
 
+	get_node("SettingsCarousel/StrengthCardioSwitch").value = ProjectSettings.get("game/exercise/strength_focus")
+	get_node("SettingsCarousel/StrengthCardioSwitch").update_switch()
+
+
+
 	
 	
 # Called when the node enters the scene tree for the first time.
@@ -158,6 +163,11 @@ func _on_KneesaverSwitch_toggled(value):
 func _on_SafePushupSwitch_toggled(value):
 	ProjectSettings.set("game/hud_enabled", value)
 
+func _on_StrengthCardioSwitch_toggled(value):
+	ProjectSettings.set("game/exercise/strength_focus", value)
+
+
+
 
 func _on_SongSelector_level_selected(filename, difficulty, level_number):
 	emit_signal("level_selected", filename, difficulty, level_number)
@@ -182,4 +192,6 @@ func _on_ExerciseButton_selected():
 	var t = get_node("SettingsCarousel/Tween")
 	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, PI, 0.5, 	Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	t.start()
+
+
 

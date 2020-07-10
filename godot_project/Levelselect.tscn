@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -24,6 +24,7 @@
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=22]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=23]
 [ext_resource path="res://TextElement.gd" type="Script" id=24]
+[ext_resource path="res://scenes/PlayerHeightAdjuster.tscn" type="PackedScene" id=25]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -56,25 +57,25 @@ radius = 0.1
 radius = 0.1
 height = 0.2
 
-[sub_resource type="StyleBoxFlat" id=14]
+[sub_resource type="StyleBoxFlat" id=10]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="DynamicFont" id=10]
+[sub_resource type="DynamicFont" id=11]
 size = 32
 use_filter = true
 font_data = ExtResource( 22 )
 
-[sub_resource type="PlaneMesh" id=11]
+[sub_resource type="PlaneMesh" id=12]
 size = Vector2( 2, 0.5 )
 
-[sub_resource type="ViewportTexture" id=12]
+[sub_resource type="ViewportTexture" id=13]
 flags = 4
 viewport_path = NodePath("SettingsCarousel/ControllerAdjuster/TextElement/Viewport")
 
-[sub_resource type="SpatialMaterial" id=13]
+[sub_resource type="SpatialMaterial" id=14]
 resource_local_to_scene = true
 flags_unshaded = true
-albedo_texture = SubResource( 12 )
+albedo_texture = SubResource( 13 )
 
 [node name="Spatial" type="Spatial"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
@@ -111,7 +112,7 @@ mesh = SubResource( 1 )
 material/0 = ExtResource( 7 )
 
 [node name="BPM" type="StaticBody" parent="."]
-transform = Transform( 0.979702, -0.0796681, 0.183952, -6.47481e-08, 0.917637, 0.39742, -0.200462, -0.389353, 0.89901, 0.6299, 1.23145, 1.07161 )
+transform = Transform( 0.979702, -0.0796681, 0.183952, -6.47481e-08, 0.917637, 0.39742, -0.200462, -0.389353, 0.89901, 0.550664, 1.19237, 0.995729 )
 script = ExtResource( 8 )
 
 [node name="CollisionShape" type="CollisionShape" parent="BPM"]
@@ -134,20 +135,20 @@ bus = "Voice"
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.04662, 0.781789, -1.70517e-07 )
 
 [node name="SongSelector" parent="." instance=ExtResource( 16 )]
-transform = Transform( -1.74846e-08, 0, -1, 0, 0.4, 0, 0.4, 0, -4.37114e-08, 1.09793, 1.43304, 1.78876e-07 )
+transform = Transform( -1.74846e-08, 0, -1, 0, 0.4, 0, 0.4, 0, -4.37114e-08, 0.919011, 1.43304, 1.71055e-07 )
 
 [node name="Freeplay1" parent="SongSelector" instance=ExtResource( 6 )]
-transform = Transform( -2.03651e-07, 0, -1.25, 0, 1.25, 0, 0.5, 0, -8.14602e-08, 2.54432, 0.4174, 1.08002 )
+transform = Transform( -2.03651e-07, 0, -1.25, 0, 1.25, 0, 0.5, 0, -8.14602e-08, 2.18474, 0.4174, 1.08002 )
 song_name = "Freeplay 1 hour"
 level_number = -36
 
 [node name="Freeplay2" parent="SongSelector" instance=ExtResource( 6 )]
-transform = Transform( -2.03651e-07, 0, -1.25, 0, 1.25, 0, 0.5, 0, -8.14602e-08, 2.545, -0.0750999, 1.07993 )
+transform = Transform( -2.03651e-07, 0, -1.25, 0, 1.25, 0, 0.5, 0, -8.14602e-08, 2.18542, -0.0750997, 1.07993 )
 song_name = "Freeplay 10 minutes"
 level_number = -6
 
 [node name="Freeplay3" parent="SongSelector" instance=ExtResource( 6 )]
-transform = Transform( -2.03651e-07, 0, -1.25, 0, 1.25, 0, 0.5, 0, -8.14602e-08, 2.54242, -0.598195, 1.09084 )
+transform = Transform( -2.03651e-07, 0, -1.25, 0, 1.25, 0, 0.5, 0, -8.14602e-08, 2.18284, -0.598195, 1.09084 )
 song_name = "Freeplay 5 minutes"
 level_number = -3
 
@@ -238,6 +239,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131597, 0.992445, 1.277 )
 ontext = "Safe pushups on"
 offtext = "Safe pushup off"
 
+[node name="StrengthCardioSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.367, 0.992, 1.277 )
+ontext = "Strength focus"
+offtext = "Cardio focus"
+
 [node name="BurpeeSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.096306, 1.252, 1.277 )
 ontext = "Burpees on"
@@ -292,7 +298,7 @@ render_target_v_flip = true
 [node name="Panel" type="Panel" parent="SettingsCarousel/ControllerAdjuster/TextElement/Viewport/CanvasLayer"]
 margin_right = 256.0
 margin_bottom = 256.0
-custom_styles/panel = SubResource( 14 )
+custom_styles/panel = SubResource( 10 )
 
 [node name="Container" type="MarginContainer" parent="SettingsCarousel/ControllerAdjuster/TextElement/Viewport/CanvasLayer/Panel"]
 margin_left = 5.0
@@ -303,27 +309,32 @@ theme = ExtResource( 23 )
 
 [node name="Label" type="Label" parent="SettingsCarousel/ControllerAdjuster/TextElement/Viewport/CanvasLayer/Panel/Container"]
 margin_right = 165.0
-margin_bottom = 165.0
-custom_fonts/font = SubResource( 10 )
+margin_bottom = 46.0
+custom_fonts/font = SubResource( 11 )
 text = "defaulttext"
 
 [node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/ControllerAdjuster/TextElement"]
 transform = Transform( 1, 4.76837e-07, 0, -1.86265e-09, 1, -3.33067e-16, -5.32907e-15, 2.13163e-14, 1, 0, 0, -1.41491 )
-mesh = SubResource( 11 )
-material/0 = SubResource( 13 )
+mesh = SubResource( 12 )
+material/0 = SubResource( 14 )
 
 [node name="ExerciseCollection" parent="SettingsCarousel" instance=ExtResource( 20 )]
-transform = Transform( 0.2, 0, 0, 0, -4.37114e-08, 0.2, 0, -1, -8.74228e-09, 0.7, 1.435, -1.2496 )
+transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, 0.537583, 1.435, -1.2496 )
 exercise_name = "Leg day"
 
 [node name="ExerciseCollection2" parent="SettingsCarousel" instance=ExtResource( 20 )]
-transform = Transform( 0.2, 0, 0, 0, -4.37114e-08, 0.2, 0, -1, -8.74228e-09, 0.200001, 1.43492, -1.2496 )
+transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, 0.200001, 1.43492, -1.2496 )
 exercise_nr = 1
 exercise_name = "Developers choice"
 
 [node name="ExerciseCollection3" parent="SettingsCarousel" instance=ExtResource( 20 )]
-transform = Transform( 0.2, 0, 0, 0, -4.37114e-08, 0.2, 0, -1, -8.74228e-09, -0.299999, 1.43492, -1.2496 )
+transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, -0.140172, 1.43492, -1.2496 )
 exercise_nr = 2
+exercise_name = "Ground work"
+
+[node name="ExerciseCollection4" parent="SettingsCarousel" instance=ExtResource( 20 )]
+transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, -0.487134, 1.43492, -1.2496 )
+exercise_nr = 3
 exercise_name = "Ground work"
 
 [node name="Tween" type="Tween" parent="SettingsCarousel"]
@@ -335,6 +346,9 @@ ontext = "Settings"
 [node name="ExerciseButton" parent="." instance=ExtResource( 21 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.435, 1, -1 )
 ontext = "Exercises"
+
+[node name="PlayerHeightAdjuster" parent="." instance=ExtResource( 25 )]
+transform = Transform( 0.114018, 0, -0.097467, 0, 0.15, 0, 0.097467, 0, 0.114018, 0.927395, 0, -1.05638 )
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
 [connection signal="selected" from="SongSelector/Freeplay1" to="SongSelector" method="_on_level_block_selected"]
 [connection signal="selected" from="SongSelector/Freeplay2" to="SongSelector" method="_on_level_block_selected"]
@@ -345,6 +359,7 @@ ontext = "Exercises"
 [connection signal="toggled" from="SettingsCarousel/SquatSwitch" to="." method="_on_SquatSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/PushupSwitch" to="." method="_on_PushupSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/SafePushupSwitch" to="." method="_on_SafePushupSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/StrengthCardioSwitch" to="." method="_on_StrengthCardioSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/BurpeeSwitch" to="." method="_on_BurpeeSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/DuckSwitch" to="." method="_on_DuckSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/SprintSwitch" to="." method="_on_SprintSwitch_toggled"]
@@ -353,5 +368,6 @@ ontext = "Exercises"
 [connection signal="selected" from="SettingsCarousel/ExerciseCollection" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="selected" from="SettingsCarousel/ExerciseCollection2" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="selected" from="SettingsCarousel/ExerciseCollection3" to="." method="_on_ExerciseCollection_selected"]
+[connection signal="selected" from="SettingsCarousel/ExerciseCollection4" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="selected" from="SettingsButton" to="." method="_on_SettingsButton_selected"]
 [connection signal="selected" from="ExerciseButton" to="." method="_on_ExerciseButton_selected"]
