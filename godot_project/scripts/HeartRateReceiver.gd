@@ -1,15 +1,8 @@
 extends Node
 
-
-var vrhealthAPI_script = preload("res://scripts/3rdparty/VRHealthAPIConnect.gd")
 var vrhealthAPI = null
 
-
 signal heart_rate_received(hr)
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 
 var port = 9988
 var server = WebSocketServer.new()
@@ -18,11 +11,19 @@ var last_received = 0
 var message_interval_limit = 1000
 var hr_active = false
 
+#Check if script exists and if it does load it
+func load_VRHealthAPI():
+	var script_file = "res://scripts/3rdparty/VRHealthAPIConnect.gd"
+	if ResourceLoader.exists(script_file):
+		vrhealthAPI = Node.new()
+		vrhealthAPI.script = load(script_file)
+	else:
+		print ("VRHealth API not available")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if vrhealthAPI_script:
-		vrhealthAPI = vrhealthAPI_script.new()
+	load_VRHealthAPI()
+	if vrhealthAPI:	
 		print ("Loading Oculus Quest VRHealth settings")
 		vrhealthAPI.loadConnection(ProjectSettings.get("application/config/vrhealth_config"))
 		add_child(vrhealthAPI)

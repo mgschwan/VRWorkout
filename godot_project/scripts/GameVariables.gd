@@ -79,7 +79,7 @@ var exercise_collections = [
 		},
 		{"setting":"game/exercise/burpees",
 		 "value": true,
-		 "description": "Standing"
+		 "description": "Burpees"
 		},
 		{"setting":"game/exercise/sprint",
 		 "value": true,
@@ -126,7 +126,7 @@ var exercise_collections = [
 		},
 		{"setting":"game/exercise/burpees",
 		 "value": true,
-		 "description": "Standing"
+		 "description": "Burpees"
 		},
 		{"setting":"game/exercise/sprint",
 		 "value": true,
@@ -211,6 +211,7 @@ var exercise_model = {
 #	ProjectSettings.set("game/target_hr", 140)
 #	ProjectSettings.set("game/player_height", 1.8)
 #	ProjectSettings.set("game/external_songs", null)
+#	ProjectSettings.set("game/equalizerr", true)
 
 
 func setup_globals():
@@ -230,6 +231,7 @@ func setup_globals():
 
 	ProjectSettings.set("game/is_oculusquest", false)
 	ProjectSettings.set("game/hud_enabled", false)
+	ProjectSettings.set("game/equalizer", true)
 
 	ProjectSettings.set("game/target_hr", 140)
 	ProjectSettings.set("game/player_height", 1.8)

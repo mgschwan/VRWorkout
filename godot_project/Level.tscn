@@ -207,7 +207,7 @@ transform = Transform( 1.5, 0, 0, 0, -4.37114e-08, -1.5, 0, 1, -6.55671e-08, 0, 
 visible = false
 
 [node name="SpectrumDisplay" parent="." instance=ExtResource( 3 )]
-transform = Transform( 0.2, 0, 0, 0, -0.168573, -0.107625, 0, 0.107625, -0.168573, -2.18058, 4, -8.99986 )
+transform = Transform( 0.2, 0, 0, 0, -0.168573, -0.107625, 0, 0.107625, -0.168573, -2.18058, 3.36426, -11.4019 )
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="camera_entered" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_entered"]
 [connection signal="camera_exited" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_exited"]

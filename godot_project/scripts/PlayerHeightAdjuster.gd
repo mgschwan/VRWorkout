@@ -22,7 +22,7 @@ func _process(delta):
 				height = h/100.0
 		ProjectSettings.set("game/player_height", height)
 		self.translation.y = height
-		get_node("HeightIndicator/TextElement").print_info("Height: %.2f - Can you read this?"%height)
+		get_node("HeightIndicator/TextElement").print_info("Height: %.2f\nCan you read it?"%height)
 
 
 func touched_by_controller(obj,root):

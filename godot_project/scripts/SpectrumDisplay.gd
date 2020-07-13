@@ -13,24 +13,29 @@ var audio_bus
 
 var avg_spectrum = 0
 
+
+var elapsed = 0
+
 func _process(delta):
 	var new_avg = 0
 	var multiplier = 1.0
-	
-	#Find a multiplier to rescale the spectrum for a nice visual experience
-	if avg_spectrum > 0:
-		multiplier = 0.5/avg_spectrum
-		
-		
-	for i in range(bars):
-		var energy = spectrum.get_magnitude_for_frequency_range(i*binsize, (i+1)*binsize, 0)
-		var tmp = energy.length()
-		new_avg += tmp
-		var val = clamp(multiplier*tmp,0,1)
-		
-		nodes[i].set_energy(val)
-		
-	avg_spectrum = 0.9*avg_spectrum + 0.1*(new_avg/float(bars))
+	elapsed += delta
+	if elapsed > 0.1:
+		#Find a multiplier to rescale the spectrum for a nice visual experience
+		if avg_spectrum > 0:
+			multiplier = 0.5/avg_spectrum
+			
+			
+		for i in range(bars):
+			var energy = spectrum.get_magnitude_for_frequency_range(i*binsize, (i+1)*binsize, 0)
+			var tmp = energy.length()
+			new_avg += tmp
+			var val = clamp(multiplier*tmp,0,1)
+			
+			nodes[i].set_energy(val)
+			
+		avg_spectrum = 0.9*avg_spectrum + 0.1*(new_avg/float(bars))
+		elapsed = 0
 
 func _ready():
 	setup()

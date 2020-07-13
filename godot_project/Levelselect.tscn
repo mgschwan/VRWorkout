@@ -249,6 +249,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.096306, 1.252, 1.277 )
 ontext = "Burpees on"
 offtext = "Burpees off"
 
+[node name="EqualizerSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.096, 0.992, 1.277 )
+ontext = "Equalizer on"
+offtext = "Equalizer off"
+
 [node name="DuckSwitch" parent="SettingsCarousel" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0960003, 1.523, 1.277 )
 ontext = "Ducking on"
@@ -335,7 +340,7 @@ exercise_name = "Ground work"
 [node name="ExerciseCollection4" parent="SettingsCarousel" instance=ExtResource( 20 )]
 transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, -0.487134, 1.43492, -1.2496 )
 exercise_nr = 3
-exercise_name = "Ground work"
+exercise_name = "Strength workout"
 
 [node name="Tween" type="Tween" parent="SettingsCarousel"]
 
@@ -361,6 +366,7 @@ transform = Transform( 0.114018, 0, -0.097467, 0, 0.15, 0, 0.097467, 0, 0.114018
 [connection signal="toggled" from="SettingsCarousel/SafePushupSwitch" to="." method="_on_SafePushupSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/StrengthCardioSwitch" to="." method="_on_StrengthCardioSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/BurpeeSwitch" to="." method="_on_BurpeeSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/EqualizerSwitch" to="." method="_on_EqualizerSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/DuckSwitch" to="." method="_on_DuckSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/SprintSwitch" to="." method="_on_SprintSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/KneesaverSwitch" to="." method="_on_KneesaverSwitch_toggled"]

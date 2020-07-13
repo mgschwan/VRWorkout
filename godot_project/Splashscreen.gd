@@ -11,7 +11,7 @@ var head_node = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_node("WarmupInfo").print_info("Don't forget to\nwarm up\nbefore playing!")
+	get_node("WarmupInfo").print_info("Don't forget to warm up before playing!\n\nIf you want to show your support\nfor the development, please\nleave a review on Sidequest or Steam")
 
 	var text = "IP addresses:\n"
 	for a in IP.get_local_addresses():

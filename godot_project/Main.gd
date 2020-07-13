@@ -292,6 +292,9 @@ func _ready():
 		squat_state_model = GameVariables.exercise_model["cardio"]["squat_state_model"]
 		rebalance_exercises = GameVariables.exercise_model["cardio"]["rebalance_exercises"]
 
+	if not ProjectSettings.get("game/equalizer"):
+		self.remove_child(get_node("SpectrumDisplay"))
+
 	print ("Rebalance exercises: %s"%(str(rebalance_exercises)))
 
 	populate_state_model()
@@ -411,7 +414,7 @@ func setup_difficulty(diff):
 	level_min_state_duration = 20 - d * 5.0 
 	beast_chance = 0.1 + d/10.0
 	level_min_cue_space = 1.5 - d*0.5
-	fly_time = 3.5-(d/2)
+	fly_time = 3.5-(d/2	)
 	
 			
 	min_cue_space = level_min_cue_space

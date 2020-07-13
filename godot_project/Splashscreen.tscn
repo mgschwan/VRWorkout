@@ -105,7 +105,7 @@ __meta__ = {
 }
 
 [node name="WarmupInfo" parent="." instance=ExtResource( 5 )]
-transform = Transform( 0.978953, 0.204086, -8.92088e-09, 0, -4.37114e-08, -1, -0.204086, 0.978953, -4.27914e-08, -0.79466, 0.893581, -2.64804 )
+transform = Transform( 0.587372, 0.122452, -5.35253e-09, 0, -2.62268e-08, -0.6, -0.122452, 0.587372, -2.56748e-08, -0.79466, 1.43667, -1.88744 )
 
 [node name="Network" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.169076, 0 )

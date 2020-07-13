@@ -66,6 +66,10 @@ func update_widget():
 	get_node("SettingsCarousel/SprintSwitch").value = ProjectSettings.get("game/exercise/sprint")
 	get_node("SettingsCarousel/SprintSwitch").update_switch()
 
+	get_node("SettingsCarousel/EqualizerSwitch").value = ProjectSettings.get("game/equalizer")
+	get_node("SettingsCarousel/EqualizerSwitch").update_switch()
+
+
 	get_node("SettingsCarousel/KneesaverSwitch").value = ProjectSettings.get("game/exercise/kneesaver")
 	get_node("SettingsCarousel/KneesaverSwitch").update_switch()
 
@@ -166,7 +170,8 @@ func _on_SafePushupSwitch_toggled(value):
 func _on_StrengthCardioSwitch_toggled(value):
 	ProjectSettings.set("game/exercise/strength_focus", value)
 
-
+func _on_EqualizerSwitch_toggled(value):
+	ProjectSettings.set("game/equalizer", value)
 
 
 func _on_SongSelector_level_selected(filename, difficulty, level_number):
@@ -192,6 +197,8 @@ func _on_ExerciseButton_selected():
 	var t = get_node("SettingsCarousel/Tween")
 	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, PI, 0.5, 	Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	t.start()
+
+
 
 
 
