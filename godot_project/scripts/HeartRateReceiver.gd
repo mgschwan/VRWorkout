@@ -15,8 +15,7 @@ var hr_active = false
 func load_VRHealthAPI():
 	var script_file = "res://scripts/3rdparty/VRHealthAPIConnect.gd"
 	if ResourceLoader.exists(script_file):
-		vrhealthAPI = Node.new()
-		vrhealthAPI.script = load(script_file)
+		vrhealthAPI = load(script_file).new()
 	else:
 		print ("VRHealth API not available")
 
