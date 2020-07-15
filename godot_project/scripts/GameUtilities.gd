@@ -29,3 +29,7 @@ func set_exercise_collection(collection):
 	for e in collection:
 		ProjectSettings.set(e["setting"], e["value"])
 
+
+
+
+

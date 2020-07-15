@@ -12,7 +12,6 @@ var gu = GameUtilities.new()
 var levelselect
 var level = null
 var cam = null
-var difficulty = 0
 
 var vr_mode = true
 var beast_mode = false

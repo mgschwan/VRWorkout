@@ -36,6 +36,8 @@ var kneesaver_mode = false
 var stand_avoid_head_cue = 0.5
 var redistribution_speed = 0.025
 var song_current_bpm = 0
+var state_duration = 0
+
 
 var target_hr = 140
 var low_hr = 130
@@ -237,8 +239,9 @@ func update_info(hits, max_hits, points):
 	
 	infolayer.print_info("Hits %d/%d - Song: %s (%.1f%%) - Points: %d - Speed: %.1f"% [hits,max_hits,elapsed_string,float(100*song_pos)/total,points,running_speed])
 	if update_counter % 5 == 0:
-		infolayer.print_info("Player height: %.2f Difficulty: %.1f/%.2f/%.2f"%[player_height, current_difficulty, min_cue_space, min_state_duration], "debug")
+		infolayer.print_info("Player height: %.2f Difficulty: %.1f/%.2f/%.2f - E: %.2f"%[player_height, current_difficulty, min_cue_space, min_state_duration,state_duration], "debug")
 	update_counter += 1
+	infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
 
 func load_audio_resource(filename):
 	var resource = null
@@ -276,7 +279,8 @@ func _ready():
 		rng.randomize()
 	else:
 		rng.set_seed(0)
-		
+
+	GameVariables.level_statistics_data = {}
 	get_tree().current_scene.set_detail_selection_mode(false)
 
 	get_tree().get_current_scene().get_node("HeartRateReceiver").connect("heart_rate_received", self,"_on_HeartRateData")	
@@ -368,7 +372,7 @@ func _ready():
 		#infolayer.append_info(" / File opened %s" % str(audio_file.is_open()))
 		infolayer.print_info(state_string(cue_emitter_state).to_upper(), "main")
 		infolayer.print_info("Player height: %.2f Difficulty: %.2f/%.2f"%[player_height, min_cue_space, min_state_duration], "debug")
-
+		infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
 		var audio_resource = load_audio_resource(audio_filename)
 		stream = get_node("AudioStreamPlayer")
 
@@ -419,26 +423,36 @@ func setup_difficulty(diff):
 			
 	min_cue_space = level_min_cue_space
 	min_state_duration = level_min_state_duration
+	state_duration = min_state_duration
 	current_difficulty = d
 
 	update_cue_timing()
 
 	setup_cue_parameters(d, player_height)
+
+func update_groove_iteration():
+	if beat_index > 0:
+		var beat_delta = beats[beat_index]-beats[beat_index-1]
+		if beat_delta > 0:
+			song_current_bpm = (3*song_current_bpm + 60/beat_delta)/4
+	if beat_index % 2 == 0:
+		if beat_index < len(beats)-2:
+			groove_display.set_next_beat(beats[beat_index+2]-cue_emitter.current_playback_time, 1)
+	groove_display.set_next_beat(beats[beat_index]-cue_emitter.current_playback_time, 0)	
 	
+func update_duration_indicator(progress):
+	get_node("MeshInstance/DurationIndicator").scale.x = progress		
 		
 var last_playback_time = 0
 func _process(delta):
 	#cue_emitter.current_playback_time += delta
 	cue_emitter.current_playback_time = stream.get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
 	if beat_index < len(beats)-1 and cue_emitter.current_playback_time + emit_early > beats[beat_index]:	
-		if beat_index > 0:
-			var beat_delta = beats[beat_index]-beats[beat_index-1]
-			if beat_delta > 0:
-				song_current_bpm = (3*song_current_bpm + 60/beat_delta)/4
-		if beat_index % 2 == 0:
-			if beat_index < len(beats)-2:
-				groove_display.set_next_beat(beats[beat_index+2]-cue_emitter.current_playback_time, 1)
-		groove_display.set_next_beat(beats[beat_index]-cue_emitter.current_playback_time, 0)	
+		update_groove_iteration()
+		
+		if state_duration > 0:
+			update_duration_indicator( (cue_emitter.current_playback_time - last_state_change) / state_duration )
+		
 		
 		if last_emit + min_cue_space < cue_emitter.current_playback_time and last_state_change + state_transition_pause < cue_emitter.current_playback_time:		
 			if last_emit + temporary_cue_space_extension <  cue_emitter.current_playback_time:
@@ -449,7 +463,8 @@ func _process(delta):
 	elif beat_index == len(beats)-1:
 		beat_index += 1
 		infolayer.print_info("FINISHED", "main")
-	
+		infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
+		
 	if cue_emitter.current_playback_time < last_playback_time - 1.0:
 		stream.stop()
 	else:		
@@ -489,6 +504,7 @@ func update_cue_timing():
 func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time = 0):
 	cue_emitter.max_hits += 1
 	var cue_node
+	var statistics_element = {"exercise": cue_emitter_state, "difficuly": current_difficulty, "points": 0, "hit": false}
 
 	if cue_type == "right" or cue_type == "right_hold":
 		cue_node = cue_horiz.instance()
@@ -527,7 +543,7 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time =
 	if cue_type in ["left", "right", "left_hold", "right_hold"]:
 		var alpha = atan2(x,y-head_y_pos)
 		cue_node.set_transform(cue_node.get_transform().rotated(Vector3(0,0,1),-alpha))
-	
+	GameVariables.level_statistics_data [cue_node] = statistics_element
 	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	move_modifier.connect("tween_completed",self,"_on_tween_completed")
 	move_modifier.start()
@@ -590,14 +606,23 @@ func update_distribution(distribution, index, delta):
 	
 
 # If current_distribution is set the probabilities are normalized by the actual distribution
-func state_transition(old_state, state_model, current_distribution = null):
+func state_transition(old_state, state_model, current_distribution = null, allow_self_transition = true):
 	var probabilities = state_model[old_state]
+
 	print ("Probabilities pre: %s"%str(probabilities))
 	if len(probabilities) < len(state_model):
 		var sum = 0
 		for k in probabilities.keys():
 			sum = sum + probabilities[k]
 		probabilities[old_state] = max(0,100-sum)
+
+	#If the actual state must not be the target state remove it
+	if not allow_self_transition:
+		print ("Remove old state %d"%old_state)
+		if probabilities.has(old_state):
+			print ("Remove")
+			probabilities.erase(old_state)
+			print ("Probabilities mid: %s"%str(probabilities))
 			
 	if current_distribution != null:
 		if len(current_distribution) < len(state_model):
@@ -613,13 +638,24 @@ func state_transition(old_state, state_model, current_distribution = null):
 		print ("Probabilities: %s"%str(probabilities))
 	var state_selector = rng.randi()%100
 	var new_state = old_state
+
+	var sum = 0
+	for p in probabilities:
+		sum += p
 	
-	var cumulative_probability = 0
-	for k in probabilities.keys():
-		cumulative_probability += probabilities[k]
-		if state_selector < cumulative_probability:
-			new_state = k
-			break
+	#If the probabilities don't add up to 1 rescale them
+	var factor = 1.0
+	if sum > 0 and sum < 1.0:
+		factor = 1.0/sum	
+	
+	if len(probabilities) > 0:
+		var cumulative_probability = 0
+		new_state = probabilities.keys()[0]
+		for k in probabilities.keys():
+			cumulative_probability += factor * probabilities[k]
+			if state_selector < cumulative_probability:
+				new_state = k
+				break
 	
 	if current_distribution != null:
 		current_distribution = update_distribution(current_distribution, new_state, redistribution_speed)
@@ -858,6 +894,7 @@ func internal_state_change():
 	state_changed = true
 	last_state_change = cue_emitter.current_playback_time
 	infolayer.print_info(state_string(cue_emitter_state).to_upper(), "main")
+	infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
 	get_node("PositionSign").start_sign(cue_emitter.translation, get_node("target").translation, emit_early)
 	if not boxman1.in_beast_mode:
 		switch_boxman(cue_emitter_state,"boxman")
@@ -880,12 +917,12 @@ var state_changed = false
 func emit_cue_node(target_time):
 	print ("State: %s"%state_string(cue_emitter_state))
 
-			
-	if last_state_change + min_state_duration < cue_emitter.current_playback_time:
+	if last_state_change + state_duration < cue_emitter.current_playback_time:
 		var old_state = cue_emitter_state
-		cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model)
-		if old_state != cue_emitter_state:
-			internal_state_change()
+		cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model, null, false)
+		internal_state_change()
+		state_duration = min_state_duration * (1 + current_difficulty*current_difficulty*rng.randf()/5)
+		
 
 	if cue_emitter_state == CueState.STAND and beast_mode:
 		if not boxman1.in_beast_mode and not boxman2.in_beast_mode:

@@ -75,7 +75,7 @@ func _ready():
 		get_node("DifficultyButtons").enable_automatic(false)
 
 	update_song_list()
-	pass # Replace with function body.
+	select_difficulty(current_difficulty)
 
 
 func next_page():
@@ -90,6 +90,7 @@ func next_page():
 #	pass
 
 func select_difficulty(d):
+	current_difficulty = d
 	get_node("DifficultyButtons").select_difficulty(d)
 
 

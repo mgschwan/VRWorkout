@@ -13,8 +13,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
-#	pass
-
+#	pass		
 
 func print_info(text):
 	get_node("ViewportInfo/CanvasLayer/Container/Text").text = text
+	get_node("ViewportInfo").render_target_update_mode = Viewport.UPDATE_ONCE
