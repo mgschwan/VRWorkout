@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -25,6 +25,7 @@
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=23]
 [ext_resource path="res://TextElement.gd" type="Script" id=24]
 [ext_resource path="res://scenes/PlayerHeightAdjuster.tscn" type="PackedScene" id=25]
+[ext_resource path="res://scenes/PresetCollection.tscn" type="PackedScene" id=26]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -166,7 +167,7 @@ transform = Transform( 1, -8.45779e-09, -7.37582e-08, -7.37582e-08, -0.226362, -
 transform = Transform( 1.2, 0, 0, 0, 1, 9.97291e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
 
 [node name="SettingsCarousel" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.57628e-07, 0, -2.3 )
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 3.57628e-07, 0, -2.3 )
 
 [node name="BeastModeSelector" type="StaticBody" parent="SettingsCarousel"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.132, 1.523, 1.277 )
@@ -327,19 +328,28 @@ material/0 = SubResource( 14 )
 transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, 0.537583, 1.435, -1.2496 )
 exercise_name = "Leg day"
 
+[node name="PresetCollector" parent="SettingsCarousel" instance=ExtResource( 26 )]
+transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, 0.537583, 1.77784, -1.2496 )
+exercise_name = "High pyramid"
+
+[node name="PresetCollector2" parent="SettingsCarousel" instance=ExtResource( 26 )]
+transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, 0.2, 1.778, -1.25 )
+exercise_name = "Low pyramid"
+
+[node name="PresetCollector3" parent="SettingsCarousel" instance=ExtResource( 26 )]
+transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, -0.48, 1.778, -1.25 )
+exercise_name = "Regular workout"
+
 [node name="ExerciseCollection2" parent="SettingsCarousel" instance=ExtResource( 20 )]
-transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, 0.200001, 1.43492, -1.2496 )
-exercise_nr = 1
+transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, 0.2, 1.435, -1.25 )
 exercise_name = "Developers choice"
 
 [node name="ExerciseCollection3" parent="SettingsCarousel" instance=ExtResource( 20 )]
 transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, -0.140172, 1.43492, -1.2496 )
-exercise_nr = 2
 exercise_name = "Ground work"
 
 [node name="ExerciseCollection4" parent="SettingsCarousel" instance=ExtResource( 20 )]
 transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, -0.487134, 1.43492, -1.2496 )
-exercise_nr = 3
 exercise_name = "Strength workout"
 
 [node name="Tween" type="Tween" parent="SettingsCarousel"]
@@ -372,6 +382,9 @@ transform = Transform( 0.114018, 0, -0.097467, 0, 0.15, 0, 0.097467, 0, 0.114018
 [connection signal="toggled" from="SettingsCarousel/KneesaverSwitch" to="." method="_on_KneesaverSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/YogaSwitch" to="." method="_on_YogaSwitch_toggled"]
 [connection signal="selected" from="SettingsCarousel/ExerciseCollection" to="." method="_on_ExerciseCollection_selected"]
+[connection signal="selected" from="SettingsCarousel/PresetCollector" to="." method="_on_PresetCollector_selected"]
+[connection signal="selected" from="SettingsCarousel/PresetCollector2" to="." method="_on_PresetCollector_selected"]
+[connection signal="selected" from="SettingsCarousel/PresetCollector3" to="." method="_on_PresetCollector_selected"]
 [connection signal="selected" from="SettingsCarousel/ExerciseCollection2" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="selected" from="SettingsCarousel/ExerciseCollection3" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="selected" from="SettingsCarousel/ExerciseCollection4" to="." method="_on_ExerciseCollection_selected"]

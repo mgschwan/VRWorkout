@@ -36,7 +36,7 @@ func score_positive_hits(hits):
 	max_hits += hits
 	point_indicator.emit_text("+%d hits"%hits, "green")
 
-func score_miss():
+func score_miss(obj):
 	point_indicator.emit_text("miss", "red")
 
 func score_points(hit_points):

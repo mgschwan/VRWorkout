@@ -404,6 +404,7 @@ func _on_Area_level_selected(filename, diff, num):
 	
 
 func _on_DemoTimer_timeout():
+	GameVariables.exercise_state_list = GameVariables.predefined_exercises["Low pyramid"]
 	_on_Area_level_selected("res://audio/songs/01_VRWorkout.ogg", 0, 1)
 	#_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
 	#_on_Area_level_selected("res://home/developer/Music/Workout/mono.ogg", 2, 1)

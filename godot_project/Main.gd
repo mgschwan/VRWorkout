@@ -18,6 +18,9 @@ var audio_filename = ""
 export var random_seed = true
 
 var beats = []
+var state_list = []
+var state_list_index = 0
+
 var bpm = 60 #only used in freeplay mode
 var first_beat = 0 #only used in freeplay mode
 var beat_index = 0
@@ -273,18 +276,11 @@ func _on_HeartRateData(hr):
 		if now - last_update > 5000:
 			setup_difficulty(-1)
 
-	
-func _ready():
-	if random_seed:
-		rng.randomize()
-	else:
-		rng.set_seed(0)
-
+func setup_game_data():
 	GameVariables.level_statistics_data = {}
-	get_tree().current_scene.set_detail_selection_mode(false)
-
-	get_tree().get_current_scene().get_node("HeartRateReceiver").connect("heart_rate_received", self,"_on_HeartRateData")	
-
+	if len(GameVariables.exercise_state_list) > 0:
+		state_list = GameVariables.exercise_state_list	
+	
 	if ProjectSettings.get("game/exercise/strength_focus"):
 		exercise_state_model_template = GameVariables.exercise_model["strength"]["exercise_state_model"]
 		pushup_state_model = GameVariables.exercise_model["strength"]["pushup_state_model"]
@@ -296,13 +292,7 @@ func _ready():
 		squat_state_model = GameVariables.exercise_model["cardio"]["squat_state_model"]
 		rebalance_exercises = GameVariables.exercise_model["cardio"]["rebalance_exercises"]
 
-	if not ProjectSettings.get("game/equalizer"):
-		self.remove_child(get_node("SpectrumDisplay"))
-
-	print ("Rebalance exercises: %s"%(str(rebalance_exercises)))
-
 	populate_state_model()
-
 
 	beast_mode = ProjectSettings.get("game/beast_mode")
 	ducking_mode = ProjectSettings.get("game/exercise/duck")
@@ -312,15 +302,20 @@ func _ready():
 	
 	low_hr = target_hr - 10
 	high_hr = target_hr + 10
-	
-	get_node("heart_coin").set_marker("low", low_hr)
-	get_node("heart_coin").set_marker("high", high_hr)
-	
+
+	cue_emitter_state = get_start_exercise()
+
+	current_difficulty = GameVariables.difficulty
+	setup_difficulty(current_difficulty)
+
 	
 		
 	
-	
-	cue_emitter_state = get_start_exercise()
+func _ready():
+	if random_seed:
+		rng.randomize()
+	else:
+		rng.set_seed(0)
 		
 	infolayer = get_node("Viewport/InfoLayer")
 	cue_emitter = get_node("cue_emitter")
@@ -332,10 +327,24 @@ func _ready():
 	trophy_list = get_node("TrophyList")
 	
 	groove_display = get_node("GrooveDisplay")
+
+	setup_game_data()
+
+	get_tree().current_scene.set_detail_selection_mode(false)
+
+	get_tree().get_current_scene().get_node("HeartRateReceiver").connect("heart_rate_received", self,"_on_HeartRateData")	
+
+
+	if not ProjectSettings.get("game/equalizer"):
+		self.remove_child(get_node("SpectrumDisplay"))
+
+	print ("Rebalance exercises: %s"%(str(rebalance_exercises)))
+
+	get_node("heart_coin").set_marker("low", low_hr)
+	get_node("heart_coin").set_marker("high", high_hr)
 	
+		
 	beat_index = 0
-	current_difficulty = GameVariables.difficulty
-	setup_difficulty(current_difficulty)
 
 	beats = []
 	
@@ -402,6 +411,26 @@ func _ready():
 		
 	update_safe_pushup()
 	
+func next_state_from_list():
+	state_list_index = (state_list_index + 1) % len(state_list)
+	cue_emitter_state = string_to_state(get_current_state_from_list())
+	state_duration = get_current_duration_from_list()
+	level_min_state_duration = state_duration
+	min_state_duration = state_duration
+	print ("State duration %.2f"%float(state_duration)) 
+	
+func get_current_state_from_list():
+	var retVal = "stand"
+	if len(state_list) > 0 and state_list_index < len(state_list):
+		retVal = state_list[state_list_index][0]
+	return retVal
+
+func get_current_duration_from_list():
+	var retVal = 1.0
+	if len(state_list) > 0 and state_list_index < len(state_list):
+		retVal = state_list[state_list_index][1]
+	return retVal	
+	
 func setup_difficulty(diff):
 
 	if diff < 0:
@@ -415,7 +444,10 @@ func setup_difficulty(diff):
 	
 	var d = diff
 	
-	level_min_state_duration = 20 - d * 5.0 
+	if len(state_list) > 0:
+		level_min_state_duration = get_current_duration_from_list()
+	else:		
+		level_min_state_duration = 20 - d * 5.0 
 	beast_chance = 0.1 + d/10.0
 	level_min_cue_space = 1.5 - d*0.5
 	fly_time = 3.5-(d/2	)
@@ -480,7 +512,7 @@ func _on_tween_completed(obj,path):
 		#Maybe score for avoiding
 		pass
 	else:
-		cue_emitter.score_miss()
+		cue_emitter.score_miss(obj)
 	obj.queue_free()
 
 func switch_floor_sign(type):
@@ -554,19 +586,27 @@ var exercise_state_model = {}
 
 func get_start_exercise():
 	var retVal = CueState.STAND
-	var states = { 	CueState.STAND  : ProjectSettings.get("game/exercise/stand"),
-					CueState.SQUAT  : ProjectSettings.get("game/exercise/squat"),
-					CueState.PUSHUP  : ProjectSettings.get("game/exercise/pushup"),
-					CueState.CRUNCH  : ProjectSettings.get("game/exercise/crunch"),
-					CueState.JUMP  : ProjectSettings.get("game/exercise/jump"),
-					CueState.BURPEE  : ProjectSettings.get("game/exercise/burpees"),
-					CueState.SPRINT  : ProjectSettings.get("game/exercise/sprint"),
-					CueState.YOGA  : ProjectSettings.get("game/exercise/yoga"),
-				}
-	for key in states:
-		if states[key]:
-			retVal = key
-			break
+	
+	if len(state_list) > 0:
+		retVal = string_to_state(get_current_state_from_list())
+		state_duration = get_current_duration_from_list()
+		min_state_duration = state_duration
+		print ("Using preset workout  %s/%s"%[cue_emitter_state,state_duration])
+
+	else:
+		var states = { 	CueState.STAND  : ProjectSettings.get("game/exercise/stand"),
+						CueState.SQUAT  : ProjectSettings.get("game/exercise/squat"),
+						CueState.PUSHUP  : ProjectSettings.get("game/exercise/pushup"),
+						CueState.CRUNCH  : ProjectSettings.get("game/exercise/crunch"),
+						CueState.JUMP  : ProjectSettings.get("game/exercise/jump"),
+						CueState.BURPEE  : ProjectSettings.get("game/exercise/burpees"),
+						CueState.SPRINT  : ProjectSettings.get("game/exercise/sprint"),
+						CueState.YOGA  : ProjectSettings.get("game/exercise/yoga"),
+					}
+		for key in states:
+			if states[key]:
+				retVal = key
+				break
 	return retVal
 
 
@@ -916,13 +956,17 @@ func adjust_cue_spacing():
 var state_changed = false
 func emit_cue_node(target_time):
 	print ("State: %s"%state_string(cue_emitter_state))
-
 	if last_state_change + state_duration < cue_emitter.current_playback_time:
 		var old_state = cue_emitter_state
-		cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model, null, false)
-		internal_state_change()
-		state_duration = min_state_duration * (1 + current_difficulty*current_difficulty*rng.randf()/5)
-		
+		if len(state_list) > 0:
+			print ("Take preset state")
+			next_state_from_list()
+		else:
+			print ("Take random state")
+			cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model, null, false)
+			state_duration = min_state_duration * (1 + current_difficulty*current_difficulty*rng.randf()/5)
+
+		internal_state_change()		
 
 	if cue_emitter_state == CueState.STAND and beast_mode:
 		if not boxman1.in_beast_mode and not boxman2.in_beast_mode:
