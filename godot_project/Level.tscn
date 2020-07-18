@@ -48,20 +48,20 @@ flags_transparent = true
 vertex_color_use_as_albedo = true
 albedo_texture = SubResource( 4 )
 
-[sub_resource type="PlaneMesh" id=12]
+[sub_resource type="PlaneMesh" id=6]
 size = Vector2( 1.98, 0.2 )
 
-[sub_resource type="SpatialMaterial" id=13]
+[sub_resource type="SpatialMaterial" id=7]
 flags_unshaded = true
 albedo_color = Color( 0.0784314, 0, 0.639216, 1 )
 
-[sub_resource type="Curve3D" id=14]
+[sub_resource type="Curve3D" id=8]
 _data = {
 "points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -0.393426, 1.02695, 0.270852, 0, 0, 0, 0, 0, 0, 1.54268, 1.03279, 2.26938, 0, 0, 0, 0, 0, 0, 1.76955, 0.993884, 6.47424, 0, 0, 0, 0, 0, 0, -0.0516853, 1.12288, 8.81755 ),
 "tilts": PoolRealArray( 0, 0, 0, 0 )
 }
 
-[sub_resource type="CubeMesh" id=15]
+[sub_resource type="CubeMesh" id=9]
 
 [sub_resource type="BoxShape" id=10]
 extents = Vector3( 0.455611, 0.0926839, 0.161588 )
@@ -99,8 +99,8 @@ material/0 = SubResource( 5 )
 
 [node name="DurationIndicator" type="MeshInstance" parent="MeshInstance"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0143757, 2.262 )
-mesh = SubResource( 12 )
-material/0 = SubResource( 13 )
+mesh = SubResource( 6 )
+material/0 = SubResource( 7 )
 
 [node name="spawn_timer" type="Timer" parent="."]
 autostart = true
@@ -121,7 +121,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.959816, 0 )
 aabb = AABB( -1, -0.256859, -1, 2, 0.513717, 2 )
 
 [node name="Path" type="Path" parent="cue_emitter"]
-curve = SubResource( 14 )
+curve = SubResource( 8 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 bus = "Music"
@@ -131,24 +131,24 @@ transform = Transform( 0.118828, 0, 0, 0, 1, 0, 0, 0, 0.0898216, -0.87, 1, -0.06
 
 [node name="target_zone_l" type="MeshInstance" parent="target"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7525, 0, 0 )
-mesh = SubResource( 15 )
+mesh = SubResource( 9 )
 material/0 = ExtResource( 11 )
 
 [node name="target_zone_l2" type="MeshInstance" parent="target"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5653, 0, 0 )
-mesh = SubResource( 15 )
+mesh = SubResource( 9 )
 material/0 = ExtResource( 11 )
 
 [node name="target_zone_l3" type="MeshInstance" parent="target"]
 transform = Transform( 0.866025, 4.20776, 1.65206e-08, -0.00129093, 0.0188166, 0.0898004, 0.661311, -9.63934, 0.0217276, 12.525, -1.07, -11.5 )
 visible = false
-mesh = SubResource( 15 )
+mesh = SubResource( 9 )
 material/0 = ExtResource( 10 )
 
 [node name="target_zone_l4" type="MeshInstance" parent="target"]
 transform = Transform( 0.866025, -4.20776, -1.65206e-08, 0.00129093, 0.0188166, 0.0898004, -0.661311, -9.63934, 0.0217276, 2.276, -1.07, -11.5 )
 visible = false
-mesh = SubResource( 15 )
+mesh = SubResource( 9 )
 material/0 = ExtResource( 10 )
 
 [node name="exit_button" type="StaticBody" parent="target"]

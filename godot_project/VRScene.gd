@@ -5,6 +5,10 @@ var levelselect_blueprint = null
 var splashscreen = preload("res://Splashscreen.tscn").instance()
 var left_controller_blueprint = preload("res://Left_Controller_Tree.tscn")
 var right_controller_blueprint = preload("res://Right_Controller_Tree.tscn")
+var blue_environment = null 
+var red_environment = null 
+
+
 
 var gu = GameUtilities.new()
 
@@ -430,6 +434,11 @@ func set_beast_mode(enabled):
 
 func _on_Splashscreen_finished():
 	get_viewport().get_camera().blackout_screen(true)
+	
+	
+	red_environment = load("res://default_env_red.tres")
+	blue_environment = load("res://default_env.tres")
+
 	levelselect = levelselect_blueprint.instance()
 	levelselect.translation = Vector3(0,0,0)
 	levelselect.connect("level_selected",self,"_on_Area_level_selected")
@@ -439,6 +448,14 @@ func _on_Splashscreen_finished():
 	add_child(levelselect)
 	if not vr_mode:
 		get_node("DemoTimer").start()
+
+
+func change_environment(value):
+	if value == "angry":
+		get_viewport().get_camera().environment = red_environment
+	else:
+		get_viewport().get_camera().environment = blue_environment
+
 
 
 

@@ -106,4 +106,8 @@ var difficulties = {"easy":0,"medium": 1, "hard": 2, "ultra": 3, "auto": -1,}
 func _on_DifficultyButtons_difficulty_selected(difficulty):
 	if difficulty in difficulties:
 		current_difficulty = difficulties[difficulty]
+		if current_difficulty > 1:
+			get_tree().current_scene.change_environment("angry")
+		else:
+			get_tree().current_scene.change_environment("calm")
 
