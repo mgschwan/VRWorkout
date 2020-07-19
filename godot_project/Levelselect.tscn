@@ -1,9 +1,8 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ToggleSwitch.tscn" type="PackedScene" id=3]
-[ext_resource path="res://default_env.tres" type="Environment" id=4]
 [ext_resource path="res://models/platform.glb" type="PackedScene" id=5]
 [ext_resource path="res://SongLevelBlock.tscn" type="PackedScene" id=6]
 [ext_resource path="res://models/blue_transparent.material" type="Material" id=7]
@@ -26,6 +25,7 @@
 [ext_resource path="res://TextElement.gd" type="Script" id=24]
 [ext_resource path="res://scenes/PlayerHeightAdjuster.tscn" type="PackedScene" id=25]
 [ext_resource path="res://scenes/PresetCollection.tscn" type="PackedScene" id=26]
+[ext_resource path="res://models/super_white.material" type="Material" id=27]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -78,12 +78,12 @@ resource_local_to_scene = true
 flags_unshaded = true
 albedo_texture = SubResource( 13 )
 
+[sub_resource type="PrismMesh" id=15]
+size = Vector3( 0.03, 0.03, 0.03 )
+
 [node name="Spatial" type="Spatial"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
 script = ExtResource( 1 )
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource( 4 )
 
 [node name="platform" parent="." instance=ExtResource( 5 )]
 transform = Transform( 0.913545, 0, 0.406737, 0, 1, 0, -0.406737, 0, 0.913545, 0, -0.346909, 0 )
@@ -339,7 +339,7 @@ transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, 0
 exercise_name = "Low pyramid"
 active_marker = "WorkoutMarker"
 
-[node name="PresetCollector3" parent="SettingsCarousel" instance=ExtResource( 26 )]
+[node name="StandardWorkout" parent="SettingsCarousel" instance=ExtResource( 26 )]
 transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, -0.48, 1.778, -1.25 )
 exercise_name = "Regular workout"
 active_marker = "WorkoutMarker"
@@ -362,6 +362,11 @@ active_marker = "WorkoutMarker"
 [node name="Tween" type="Tween" parent="SettingsCarousel"]
 
 [node name="WorkoutMarker" type="Spatial" parent="SettingsCarousel"]
+
+[node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/WorkoutMarker"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0 )
+mesh = SubResource( 15 )
+material/0 = ExtResource( 27 )
 
 [node name="SettingsButton" parent="." instance=ExtResource( 21 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.658, 1, -1 )
@@ -393,7 +398,7 @@ transform = Transform( 0.114018, 0, -0.097467, 0, 0.15, 0, 0.097467, 0, 0.114018
 [connection signal="selected" from="SettingsCarousel/ExerciseCollection" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="selected" from="SettingsCarousel/PresetCollector" to="." method="_on_PresetCollector_selected"]
 [connection signal="selected" from="SettingsCarousel/PresetCollector2" to="." method="_on_PresetCollector_selected"]
-[connection signal="selected" from="SettingsCarousel/PresetCollector3" to="." method="_on_PresetCollector_selected"]
+[connection signal="selected" from="SettingsCarousel/StandardWorkout" to="." method="_on_PresetCollector_selected"]
 [connection signal="selected" from="SettingsCarousel/ExerciseCollection2" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="selected" from="SettingsCarousel/ExerciseCollection3" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="selected" from="SettingsCarousel/ExerciseCollection4" to="." method="_on_ExerciseCollection_selected"]

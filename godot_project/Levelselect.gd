@@ -77,6 +77,10 @@ func update_widget():
 	get_node("SettingsCarousel/StrengthCardioSwitch").update_switch()
 
 
+	GameVariables.exercise_state_list = []
+	get_node("SettingsCarousel/StandardWorkout").mark_active()
+
+
 
 	
 	

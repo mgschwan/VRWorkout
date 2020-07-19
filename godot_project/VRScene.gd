@@ -197,7 +197,9 @@ func initialize():
 			get_viewport().arvr = true
 			get_viewport().hdr = false
 			OS.vsync_enabled = false
-			Engine.target_fps = 72
+			#Test: Video recording on the Quest is stuttering, I read somewhere
+			#that this is because of th FPS not being a multiple of 30
+			# deactivated for now # #Engine.target_fps = 72 
 			_initialize_OVR_API()
 			vr_mode = true
 		
@@ -410,6 +412,7 @@ func _on_Area_level_selected(filename, diff, num):
 func _on_DemoTimer_timeout():
 	GameVariables.exercise_state_list = GameVariables.predefined_exercises["Low pyramid"]
 	_on_Area_level_selected("res://audio/songs/01_VRWorkout.ogg", 0, 1)
+	
 	#_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
 	#_on_Area_level_selected("res://home/developer/Music/Workout/mono.ogg", 2, 1)
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)

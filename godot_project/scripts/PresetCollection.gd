@@ -23,6 +23,7 @@ func mark_active():
 	if node:
 		node.show()
 		node.translation = self.translation
+		
 func touched_by_controller(obj,root):
 	get_node("AudioStreamPlayer").play(0.0)
 	mark_active()
