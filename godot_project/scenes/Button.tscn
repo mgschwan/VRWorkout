@@ -55,7 +55,7 @@ material/0 = SubResource( 3 )
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.00220668, 0.164553, -0.0386257 )
 script = ExtResource( 1 )
 text = "default on"
-viewport_width = 128
+viewport_width = 160
 
 [node name="Viewport" type="Viewport" parent="ontext"]
 size = Vector2( 128, 32 )

@@ -1,5 +1,7 @@
 extends Node
 
+var app_name = "VRWorkout"
+
 var detail_selection_mode = true
 var trackers = null
 var difficulty = 0

@@ -1,8 +1,9 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ToggleSwitch.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/VRHealthConnection.tscn" type="PackedScene" id=4]
 [ext_resource path="res://models/platform.glb" type="PackedScene" id=5]
 [ext_resource path="res://SongLevelBlock.tscn" type="PackedScene" id=6]
 [ext_resource path="res://models/blue_transparent.material" type="Material" id=7]
@@ -346,16 +347,19 @@ active_marker = "WorkoutMarker"
 
 [node name="ExerciseCollection2" parent="SettingsCarousel" instance=ExtResource( 20 )]
 transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, 0.2, 1.435, -1.25 )
+exercise_nr = 1
 exercise_name = "Developers choice"
 active_marker = "WorkoutMarker"
 
 [node name="ExerciseCollection3" parent="SettingsCarousel" instance=ExtResource( 20 )]
 transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, -0.140172, 1.43492, -1.2496 )
+exercise_nr = 2
 exercise_name = "Ground work"
 active_marker = "WorkoutMarker"
 
 [node name="ExerciseCollection4" parent="SettingsCarousel" instance=ExtResource( 20 )]
 transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, -0.487134, 1.43492, -1.2496 )
+exercise_nr = 3
 exercise_name = "Strength workout"
 active_marker = "WorkoutMarker"
 
@@ -368,13 +372,22 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0 )
 mesh = SubResource( 15 )
 material/0 = ExtResource( 27 )
 
+[node name="Connections" type="Spatial" parent="SettingsCarousel"]
+
+[node name="VRHealthConnection" parent="SettingsCarousel/Connections" instance=ExtResource( 4 )]
+transform = Transform( -6.51683e-08, 0.4, -1.74846e-08, 0, -1.74846e-08, -0.4, -0.4, -6.51683e-08, 2.8486e-15, 1.259, 1.791, 0.153988 )
+
 [node name="SettingsButton" parent="." instance=ExtResource( 21 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.658, 1, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 1.1178, -1 )
 ontext = "Settings"
 
 [node name="ExerciseButton" parent="." instance=ExtResource( 21 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.435, 1, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 0.9898, -1 )
 ontext = "Exercises"
+
+[node name="ConnectionsButton" parent="." instance=ExtResource( 21 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399424, 0.9898, -1 )
+ontext = "Connect"
 
 [node name="PlayerHeightAdjuster" parent="." instance=ExtResource( 25 )]
 transform = Transform( 0.114018, 0, -0.097467, 0, 0.15, 0, 0.097467, 0, 0.114018, 0.927395, 0, -1.05638 )
@@ -404,3 +417,4 @@ transform = Transform( 0.114018, 0, -0.097467, 0, 0.15, 0, 0.097467, 0, 0.114018
 [connection signal="selected" from="SettingsCarousel/ExerciseCollection4" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="selected" from="SettingsButton" to="." method="_on_SettingsButton_selected"]
 [connection signal="selected" from="ExerciseButton" to="." method="_on_ExerciseButton_selected"]
+[connection signal="selected" from="ConnectionsButton" to="." method="_on_ConnectionsButton_selected"]

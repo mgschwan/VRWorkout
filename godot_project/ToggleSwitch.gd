@@ -23,3 +23,7 @@ func update_switch():
 		switch.translation.y = 0.06
 	else:
 		switch.translation.y = -0.06
+		
+func set_state(value):
+	self.value = value
+	update_switch() 

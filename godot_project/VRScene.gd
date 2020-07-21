@@ -410,6 +410,7 @@ func _on_Area_level_selected(filename, diff, num):
 	
 
 func _on_DemoTimer_timeout():
+	#levelselect.get_node("SettingsCarousel/Connections/VRHealthConnection").connect_vrhealth()
 	GameVariables.exercise_state_list = GameVariables.predefined_exercises["Low pyramid"]
 	_on_Area_level_selected("res://audio/songs/01_VRWorkout.ogg", 0, 1)
 	

@@ -202,5 +202,13 @@ func _on_ExerciseButton_selected():
 	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, PI, 0.5, 	Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	t.start()
 
+func _on_ConnectionsButton_selected():
+	var carousel = get_node("SettingsCarousel")
+	var t = get_node("SettingsCarousel/Tween")
+	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, 3*PI/2.0, 0.5, 	Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	t.start()
+
 func _on_PresetCollector_selected(collection):
 	GameVariables.exercise_state_list = collection
+
+
