@@ -11,27 +11,27 @@
 script = ExtResource( 2 )
 
 [node name="Easy" parent="." instance=ExtResource( 1 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.335657, 0 )
+transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, 0, 0.335657, 0 )
 ontext = "Easy"
 select_sound = ExtResource( 5 )
 
 [node name="Medium" parent="." instance=ExtResource( 1 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.20861, 0 )
+transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, 0, 0.20861, 0 )
 ontext = "Medium"
 select_sound = ExtResource( 4 )
 
 [node name="Hard" parent="." instance=ExtResource( 1 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.0787834, 0 )
+transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, 0, 0.0787834, 0 )
 ontext = "Hard"
 select_sound = ExtResource( 3 )
 
 [node name="Ultra" parent="." instance=ExtResource( 1 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -0.263317, 0 )
+transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, 0, -0.263317, 0 )
 ontext = "Ultra"
 select_sound = ExtResource( 6 )
 
 [node name="Auto" parent="." instance=ExtResource( 1 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -0.0492956, 0 )
+transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, 0, -0.0492956, 0 )
 ontext = "Auto"
 [connection signal="selected" from="Easy" to="." method="_on_Button_selected" binds= [ "easy" ]]
 [connection signal="selected" from="Medium" to="." method="_on_Button_selected" binds= [ "medium" ]]

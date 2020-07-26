@@ -1,5 +1,7 @@
 extends StaticBody
 
+var ingame_id = 0
+
 var hit = false
 var target_time = 0.0
 var start_time = 0.0

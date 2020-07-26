@@ -316,6 +316,7 @@ func _ready():
 		rng.randomize()
 	else:
 		rng.set_seed(0)
+	GameVariables.reset_ingame_id()
 		
 	infolayer = get_node("Viewport/InfoLayer")
 	cue_emitter = get_node("cue_emitter")
@@ -509,8 +510,7 @@ func _on_exit_timer_timeout():
 
 func _on_tween_completed(obj,path):
 	if obj.has_method("should_be_avoided") and obj.should_be_avoided():
-		#Maybe score for avoiding
-		pass
+		cue_emitter.score_avoided(obj)
 	else:
 		cue_emitter.score_miss(obj)
 	obj.queue_free()
@@ -532,12 +532,17 @@ func update_cue_timing():
 	var time_to_target = abs(cue_emitter.translation.z-target.translation.z) / fly_distance
 	emit_early = fly_time * time_to_target
 
+func add_statistics_element(state_string, cue_type, difficulty, points, hit, starttime, targettime, hr):
+	var ingame_id = GameVariables.get_next_ingame_id()
+	var statistics_element = {"e": state_string, "t": cue_type, "d": difficulty, "p": points, "h": hit, "st": starttime,"tt": targettime, "hr": hr}	
+	GameVariables.level_statistics_data [ingame_id] = statistics_element
+	return ingame_id	
+
+
 
 func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time = 0):
 	cue_emitter.max_hits += 1
 	var cue_node
-	var statistics_element = {"exercise": cue_emitter_state, "difficuly": current_difficulty, "points": 0, "hit": false}
-
 	if cue_type == "right" or cue_type == "right_hold":
 		cue_node = cue_horiz.instance()
 	elif cue_type == "left" or cue_type == "left_hold":
@@ -575,7 +580,12 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time =
 	if cue_type in ["left", "right", "left_hold", "right_hold"]:
 		var alpha = atan2(x,y-head_y_pos)
 		cue_node.set_transform(cue_node.get_transform().rotated(Vector3(0,0,1),-alpha))
-	GameVariables.level_statistics_data [cue_node] = statistics_element
+		
+	#var statistics_element = {"exercise": cue_emitter_state, "type": cue_type, "difficuly": current_difficulty, "points": 0, "hit": false, "start_time": cue_emitter.current_playback_time,"target_time": target_time}	
+	#Heartrate is stored with the start of the cue because that's the only definitive timestamp we know
+	
+	var ingame_id = add_statistics_element(state_string(cue_emitter_state), cue_type, current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr)
+	cue_node.ingame_id = ingame_id
 	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	move_modifier.connect("tween_completed",self,"_on_tween_completed")
 	move_modifier.start()
@@ -710,6 +720,7 @@ func handle_sprint_cues(target_time):
 	var delta = now - last_sprint_update
 	var points = sprint_multiplier * running_speed * delta / 1000.0
 	last_sprint_update = now
+	var ingame_id = add_statistics_element(state_string(cue_emitter_state), "", current_difficulty, points, true, cue_emitter.current_playback_time, cue_emitter.current_playback_time, GameVariables.current_hr)
 	cue_emitter.score_points(points)
 
 

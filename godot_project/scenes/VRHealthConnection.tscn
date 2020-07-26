@@ -15,15 +15,15 @@ default_text = "VRHealth Connection\\n\\nTouch all buttons to connect"
 transform = Transform( 1.1, 0, -9.32587e-16, 0, 1, 0, 1.70974e-15, 0, 0.6, 6.68336e-11, -0.00769687, 0.00178862 )
 
 [node name="ConnectSwitch" parent="VRHealthPanel" instance=ExtResource( 4 )]
-transform = Transform( 2, -3.02923e-27, -1.32412e-34, 0, -8.74228e-08, 2, -3.02923e-27, -2, -8.74228e-08, -0.678915, 0.0510842, 0.860583 )
+transform = Transform( 2.5, -3.78653e-27, -1.65515e-34, 0, -1.09278e-07, 2.5, -3.78653e-27, -2.5, -1.09278e-07, -0.678915, 0.0510842, 0.860583 )
 ontext = "Connect"
 
 [node name="ConnectSwitch2" parent="VRHealthPanel" instance=ExtResource( 4 )]
-transform = Transform( 2, -3.02923e-27, -1.32412e-34, 0, -8.74228e-08, 2, -3.02923e-27, -2, -8.74228e-08, -0.0184464, 0.0510842, 0.860583 )
+transform = Transform( 2.5, -3.78653e-27, -1.65515e-34, 0, -1.09278e-07, 2.5, -3.78653e-27, -2.5, -1.09278e-07, -0.0184464, 0.0510842, 0.860583 )
 ontext = "Connect"
 
 [node name="ConnectSwitch3" parent="VRHealthPanel" instance=ExtResource( 4 )]
-transform = Transform( 2, -3.02923e-27, -1.32412e-34, 0, -8.74228e-08, 2, -3.02923e-27, -2, -8.74228e-08, 0.727495, 0.0510842, 0.860583 )
+transform = Transform( 2.5, -3.78653e-27, -1.65515e-34, 0, -1.09278e-07, 2.5, -3.78653e-27, -2.5, -1.09278e-07, 0.727495, 0.0510842, 0.860583 )
 ontext = "Connect"
 [connection signal="toggled" from="VRHealthPanel/ConnectSwitch" to="." method="_on_ConnectSwitch_toggled"]
 [connection signal="toggled" from="VRHealthPanel/ConnectSwitch2" to="." method="_on_ConnectSwitch2_toggled"]

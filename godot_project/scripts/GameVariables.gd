@@ -1,11 +1,24 @@
 extends Node
 
 var app_name = "VRWorkout"
+var api_version = 1
 
 var detail_selection_mode = true
 var trackers = null
 var difficulty = 0
 var override_beatmap = false
+var device_id = ""
+
+var current_hr = 0
+
+
+var current_ingame_id = 0
+func get_next_ingame_id():
+	current_ingame_id += 1
+	return current_ingame_id
+	
+func reset_ingame_id():
+	current_ingame_id = 0
 
 enum CueState {
 	STAND = 0,
@@ -219,11 +232,11 @@ var exercise_model = {
 #	ProjectSettings.set("game/exercise/jump", false)
 #	ProjectSettings.set("game/exercise/stand", false)
 #	ProjectSettings.set("game/exercise/squat", false)
-#	ProjectSettings.set("game/exercise/pushup", true)
+#	ProjectSettings.set("game/exercise/pushup", false)
 #	ProjectSettings.set("game/exercise/crunch", false)
 #	ProjectSettings.set("game/exercise/burpees", false)
 #	ProjectSettings.set("game/exercise/duck", false)
-#	ProjectSettings.set("game/exercise/sprint", false)
+#	ProjectSettings.set("game/exercise/sprint", true)
 #	ProjectSettings.set("game/exercise/kneesaver", false)
 #	ProjectSettings.set("game/exercise/yoga", false)
 #	ProjectSettings.set("game/exercise/strength_focus", false)

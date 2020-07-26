@@ -3,6 +3,9 @@ extends StaticBody
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+
+var ingame_id = 0
+
 var hit = false
 var target_time = 0.0
 var start_time = 0.0
@@ -29,7 +32,7 @@ func has_been_hit():
 		get_node("tween").stop_all()
 		var parent = self.get_parent()
 		var delta = abs(target_time - parent.current_playback_time)
-		parent.score_hit(delta)
+		parent.score_hit(delta, self)
 		hit = true
 		print ("Start sprinkling")
 		get_node("CollisionShapeExtended").hide()

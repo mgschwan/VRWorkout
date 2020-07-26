@@ -3,6 +3,8 @@ extends StaticBody
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+var ingame_id = 0
+
 var hit = false
 var is_hold_cue = false
 var hold_time = 1.0
@@ -91,7 +93,7 @@ func has_been_hit(hand = "unknown"):
 	elif not hit:
 		get_node("tween").stop_all()
 		var delta = abs(target_time - parent.current_playback_time)
-		points = parent.score_hit(delta)
+		points = parent.score_hit(delta, self)
 		hit = true
 		get_node("sprinkle").emitting = true
 		get_node("Circle/AnimationPlayer").play("explode")

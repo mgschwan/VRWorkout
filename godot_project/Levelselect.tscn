@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://Levelselect.gd" type="Script" id=1]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
@@ -27,6 +27,7 @@
 [ext_resource path="res://scenes/PlayerHeightAdjuster.tscn" type="PackedScene" id=25]
 [ext_resource path="res://scenes/PresetCollection.tscn" type="PackedScene" id=26]
 [ext_resource path="res://models/super_white.material" type="Material" id=27]
+[ext_resource path="res://scenes/VRWorkoutConnection.tscn" type="PackedScene" id=28]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -375,7 +376,10 @@ material/0 = ExtResource( 27 )
 [node name="Connections" type="Spatial" parent="SettingsCarousel"]
 
 [node name="VRHealthConnection" parent="SettingsCarousel/Connections" instance=ExtResource( 4 )]
-transform = Transform( -6.51683e-08, 0.4, -1.74846e-08, 0, -1.74846e-08, -0.4, -0.4, -6.51683e-08, 2.8486e-15, 1.259, 1.791, 0.153988 )
+transform = Transform( -4.88762e-08, 0.3, -1.31134e-08, 0, -1.31134e-08, -0.3, -0.3, -4.88762e-08, 2.13645e-15, 1.259, 1.791, 0.417099 )
+
+[node name="VRWorkoutConnection" parent="SettingsCarousel/Connections" instance=ExtResource( 28 )]
+transform = Transform( -4.88762e-08, 0.3, -1.31134e-08, 0, -1.31134e-08, -0.3, -0.3, -4.88762e-08, 2.13645e-15, 1.259, 1.791, -0.444245 )
 
 [node name="SettingsButton" parent="." instance=ExtResource( 21 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 1.1178, -1 )

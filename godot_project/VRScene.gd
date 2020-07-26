@@ -225,10 +225,10 @@ func initialize():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	GameVariables.device_id = str(gu.get_device_id())
 	
-	print ("Unique device id %s"%str(gu.get_device_id()))
+	print ("Unique device id %s"%GameVariables.device_id)
 	GameVariables.setup_globals()
-
 	initialize() #VR specific initialization
 
 	screen_tint_node = get_node("ARVROrigin/ARVRCamera/ScreenTint")
@@ -268,6 +268,9 @@ func _on_level_finished	():
 	total_points += result["points"]
 	last_played = result["time"]
 	total_played += result["time"]
+	
+	get_node("RemoteInterface").send_data(GameVariables.device_id, "workout", {"api_version": GameVariables.api_version, "score": result["points"], "duration": result["time"] , "data":GameVariables.level_statistics_data})
+
 	
 	level.queue_free()
 	level = null 
@@ -411,10 +414,13 @@ func _on_Area_level_selected(filename, diff, num):
 
 func _on_DemoTimer_timeout():
 	#levelselect.get_node("SettingsCarousel/Connections/VRHealthConnection").connect_vrhealth()
-	GameVariables.exercise_state_list = GameVariables.predefined_exercises["Low pyramid"]
-	_on_Area_level_selected("res://audio/songs/01_VRWorkout.ogg", 0, 1)
+	#get_node("RemoteInterface").send_data(GameVariables.device_id, "exercise", {"test":"12345678"})
+	#change_environment("angry")
+	#levelselect.get_node("SettingsCarousel/Connections/VRWorkoutConnection").connect_vrworkout()
+	#GameVariables.exercise_state_list = GameVariables.predefined_exercises["Low pyramid"]
+	#_on_Area_level_selected("res://audio/songs/01_VRWorkout.ogg", 0, 1)
 	
-	#_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
+	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
 	#_on_Area_level_selected("res://home/developer/Music/Workout/mono.ogg", 2, 1)
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)

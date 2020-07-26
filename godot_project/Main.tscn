@@ -165,15 +165,15 @@ light_energy = 0.2
 light_indirect_energy = 0.1
 light_specular = 0.2
 
-[node name="RemoteInterface" type="Node" parent="ARVROrigin"]
-script = ExtResource( 18 )
-
 [node name="DemoTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
 
 [node name="HeartRateReceiver" type="Node" parent="."]
 script = ExtResource( 8 )
+
+[node name="RemoteInterface" type="Node" parent="."]
+script = ExtResource( 18 )
 [connection signal="body_entered" from="ARVROrigin/ARVRCamera/AreaHead" to="ARVROrigin/ARVRCamera/AreaHead" method="_on_AreaHead_body_entered"]
 [connection signal="timeout" from="ARVROrigin/ARVRCamera/HUDHideTimer" to="ARVROrigin/ARVRCamera" method="_on_HUDHideTimer_timeout"]
 [connection signal="timeout" from="DemoTimer" to="." method="_on_DemoTimer_timeout"]

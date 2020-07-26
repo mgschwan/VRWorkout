@@ -58,6 +58,7 @@ func process_heartrate(hr):
 		print ("Heartrate received %s"%str(hr))
 		emit_signal("heart_rate_received",hr)
 		last_received = now
+		GameVariables.current_hr = hr
 	else:
 		print ("Limit heart rate interval")
 	

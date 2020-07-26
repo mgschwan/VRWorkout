@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scripts/VRWorkoutConnection.gd" type="Script" id=1]
+[ext_resource path="res://TextPanel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://InfoBoxOpaque.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ToggleSwitch.tscn" type="PackedScene" id=4]
+
+[node name="VRWorkoutConnection" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="VRWorkoutPanel" parent="." instance=ExtResource( 3 )]
+default_text = "VRHealth Connection\\n\\nTouch all buttons to connect"
+
+[node name="text_panel" parent="VRWorkoutPanel" instance=ExtResource( 2 )]
+transform = Transform( 1.1, 0, -9.32587e-16, 0, 1, 0, 1.70974e-15, 0, 0.6, 6.68336e-11, -0.00769687, 0.00178862 )
+
+[node name="ConnectSwitch" parent="VRWorkoutPanel" instance=ExtResource( 4 )]
+transform = Transform( 2.5, -3.78654e-27, -1.65515e-34, 0, -1.09278e-07, 2.5, -3.78654e-27, -2.5, -1.09278e-07, -0.678915, 0.0510842, 0.860583 )
+ontext = "Connect"
+
+[node name="ConnectSwitch2" parent="VRWorkoutPanel" instance=ExtResource( 4 )]
+transform = Transform( 2.5, -3.78654e-27, -1.65515e-34, 0, -1.09278e-07, 2.5, -3.78654e-27, -2.5, -1.09278e-07, -0.0184464, 0.0510842, 0.860583 )
+ontext = "Connect"
+
+[node name="ConnectSwitch3" parent="VRWorkoutPanel" instance=ExtResource( 4 )]
+transform = Transform( 2.5, -3.78654e-27, -1.65515e-34, 0, -1.09278e-07, 2.5, -3.78654e-27, -2.5, -1.09278e-07, 0.727495, 0.0510842, 0.860583 )
+ontext = "Connect"
+[connection signal="toggled" from="VRWorkoutPanel/ConnectSwitch" to="." method="_on_ConnectSwitch_toggled"]
+[connection signal="toggled" from="VRWorkoutPanel/ConnectSwitch2" to="." method="_on_ConnectSwitch2_toggled"]
+[connection signal="toggled" from="VRWorkoutPanel/ConnectSwitch3" to="." method="_on_ConnectSwitch3_toggled"]

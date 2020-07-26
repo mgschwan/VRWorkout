@@ -19,9 +19,12 @@ func connect_vrhealth_complete(onetime_code):
 	get_node("VRHealthPanel").print_info("VRHealth connecting\n\nPress connect in the VRHealth app\nand enter the code\n\n %s"%onetime_code)
 	if api:
 		api.connectLive()
-		
+	
+var last_connection = 0 #rate limiting for the connections
 func connect_vrhealth():
-	if api:
+	if api and (last_connection + 2000) < OS.get_ticks_msec():
+		get_node("VRHealthPanel").print_info("Initiating VRHealth connection\n\nPlease wait")
+		last_connection = OS.get_ticks_msec()
 		api.connectApp(GameVariables.app_name)
 
 func evaluate_connect_switches():
@@ -31,8 +34,6 @@ func evaluate_connect_switches():
 
 	if switch1 and switch2 and switch3:
 		connect_vrhealth()	
-		disable_all_connect_switches()
-
 
 func _on_ConnectSwitch_toggled(value):
 	evaluate_connect_switches()
