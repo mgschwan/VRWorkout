@@ -11,7 +11,7 @@ var head_node = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_node("WarmupInfo").print_info("Don't forget to warm up before playing!\n\nIf you want to show your support\nfor the development, please\nleave a review on Sidequest or Steam")
+	get_node("WarmupInfo").print_info("Don't forget to warm up before playing!\n\nIf you want to show your support\nfor the development, or become a beta tester\nleave a review on Sidequest or Steam and,\n send the link to   dev@vrworkout.at")
 
 	var text = "IP addresses:\n"
 	for a in IP.get_local_addresses():
@@ -22,6 +22,7 @@ func _ready():
 	
 	if external_dir:
 		get_node("MusicDirectory").print_info("Place custom OGG songs in:\n%s"%external_dir)
+	#get_viewport().get_camera().show_hud(true)
 
 
 var last_extreme_angle = 0

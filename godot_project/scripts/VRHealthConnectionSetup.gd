@@ -6,7 +6,7 @@ func _ready():
 	api = get_tree().current_scene.get_node("HeartRateReceiver").vrhealthAPI
 	api.connect("connect_app_initialized", self, "connect_vrhealth_complete")
 	if api and api.isSetup():
-		get_node("VRHealthPanel").print_info("VRHealth connection already setup\n\nPush all buttons to reconnect")
+		get_node("VRHealthPanel").print_info("ONLY AVAILBE IN BETA!\nVRHealth connection already setup\n\nPush all buttons to reconnect")
 	else:
 		get_node("VRHealthPanel").print_info("VRHealth not setup\n\nPush all buttons to connect")
 

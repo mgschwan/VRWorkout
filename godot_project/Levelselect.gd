@@ -33,55 +33,53 @@ func get_song_list(path):
 
 	
 func update_widget():
-	get_node("SettingsCarousel/BeastModeSelector").beast_mode = ProjectSettings.get("game/beast_mode")
-	get_node("SettingsCarousel/BeastModeSelector").update_switch()
+	get_node("SettingsCarousel/Switchboard/BeastModeSelector").beast_mode = ProjectSettings.get("game/beast_mode")
+	get_node("SettingsCarousel/Switchboard/BeastModeSelector").update_switch()
 	
-	get_node("SettingsCarousel/JumpSwitch").value = ProjectSettings.get("game/exercise/jump")
-	get_node("SettingsCarousel/JumpSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/JumpSwitch").value = ProjectSettings.get("game/exercise/jump")
+	get_node("SettingsCarousel/Switchboard/JumpSwitch").update_switch()
 	
-	get_node("SettingsCarousel/StandSwitch").value = ProjectSettings.get("game/exercise/stand")
-	get_node("SettingsCarousel/StandSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/StandSwitch").value = ProjectSettings.get("game/exercise/stand")
+	get_node("SettingsCarousel/Switchboard/StandSwitch").update_switch()
 	
-	get_node("SettingsCarousel/SquatSwitch").value = ProjectSettings.get("game/exercise/squat")
-	get_node("SettingsCarousel/SquatSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/SquatSwitch").value = ProjectSettings.get("game/exercise/squat")
+	get_node("SettingsCarousel/Switchboard/SquatSwitch").update_switch()
 	
-	get_node("SettingsCarousel/PushupSwitch").value = ProjectSettings.get("game/exercise/pushup")
-	get_node("SettingsCarousel/PushupSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/PushupSwitch").value = ProjectSettings.get("game/exercise/pushup")
+	get_node("SettingsCarousel/Switchboard/PushupSwitch").update_switch()
 	
-	get_node("SettingsCarousel/SafePushupSwitch").value = ProjectSettings.get("game/hud_enabled")
-	get_node("SettingsCarousel/SafePushupSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/SafePushupSwitch").value = ProjectSettings.get("game/hud_enabled")
+	get_node("SettingsCarousel/Switchboard/SafePushupSwitch").update_switch()
 
-	get_node("SettingsCarousel/CrunchSwitch").value = ProjectSettings.get("game/exercise/crunch")
-	get_node("SettingsCarousel/CrunchSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/CrunchSwitch").value = ProjectSettings.get("game/exercise/crunch")
+	get_node("SettingsCarousel/Switchboard/CrunchSwitch").update_switch()
 
-	get_node("SettingsCarousel/BurpeeSwitch").value = ProjectSettings.get("game/exercise/burpees")
-	get_node("SettingsCarousel/BurpeeSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/BurpeeSwitch").value = ProjectSettings.get("game/exercise/burpees")
+	get_node("SettingsCarousel/Switchboard/BurpeeSwitch").update_switch()
 
-	get_node("SettingsCarousel/DuckSwitch").value = ProjectSettings.get("game/exercise/duck")
-	get_node("SettingsCarousel/DuckSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/DuckSwitch").value = ProjectSettings.get("game/exercise/duck")
+	get_node("SettingsCarousel/Switchboard/DuckSwitch").update_switch()
 
-	get_node("SettingsCarousel/YogaSwitch").value = ProjectSettings.get("game/exercise/yoga")
-	get_node("SettingsCarousel/YogaSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/YogaSwitch").value = ProjectSettings.get("game/exercise/yoga")
+	get_node("SettingsCarousel/Switchboard/YogaSwitch").update_switch()
 
-	get_node("SettingsCarousel/SprintSwitch").value = ProjectSettings.get("game/exercise/sprint")
-	get_node("SettingsCarousel/SprintSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/SprintSwitch").value = ProjectSettings.get("game/exercise/sprint")
+	get_node("SettingsCarousel/Switchboard/SprintSwitch").update_switch()
 
-	get_node("SettingsCarousel/EqualizerSwitch").value = ProjectSettings.get("game/equalizer")
-	get_node("SettingsCarousel/EqualizerSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/EqualizerSwitch").value = ProjectSettings.get("game/equalizer")
+	get_node("SettingsCarousel/Switchboard/EqualizerSwitch").update_switch()
 
 
-	get_node("SettingsCarousel/KneesaverSwitch").value = ProjectSettings.get("game/exercise/kneesaver")
-	get_node("SettingsCarousel/KneesaverSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/KneesaverSwitch").value = ProjectSettings.get("game/exercise/kneesaver")
+	get_node("SettingsCarousel/Switchboard/KneesaverSwitch").update_switch()
 
-	get_node("SettingsCarousel/StrengthCardioSwitch").value = ProjectSettings.get("game/exercise/strength_focus")
-	get_node("SettingsCarousel/StrengthCardioSwitch").update_switch()
+	get_node("SettingsCarousel/Switchboard/StrengthCardioSwitch").value = ProjectSettings.get("game/exercise/strength_focus")
+	get_node("SettingsCarousel/Switchboard/StrengthCardioSwitch").update_switch()
 
 
 	GameVariables.exercise_state_list = []
-	get_node("SettingsCarousel/StandardWorkout").mark_active()
-
-
-
+	get_node("SettingsCarousel/Exercises/StandardWorkout").mark_active()
+	show_settings("exercises")
 	
 	
 # Called when the node enters the scene tree for the first time.
@@ -190,23 +188,47 @@ func _on_ExerciseCollection_selected(collection):
 	update_widget()
 
 
-func _on_SettingsButton_selected():
+func show_settings(panel):
+	var switchboard_node = get_node("SettingsCarousel/Switchboard")
+	var connections_node = get_node("SettingsCarousel/Connections")
+	var exercises_node = get_node("SettingsCarousel/Exercises")
 	var carousel = get_node("SettingsCarousel")
 	var t = get_node("SettingsCarousel/Tween")
-	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, 0, 0.5, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+
+	var angle = 0
+
+	if panel == "switchboard":
+		gu.activate_node(switchboard_node)
+		gu.deactivate_node(connections_node)
+		gu.deactivate_node(exercises_node)
+		angle = 0
+	elif panel == "connections":
+		gu.deactivate_node(switchboard_node)
+		gu.activate_node(connections_node)
+		gu.deactivate_node(exercises_node)
+		angle = 3*PI/2.0
+	elif panel == "exercises":
+		gu.deactivate_node(switchboard_node)
+		gu.deactivate_node(connections_node)
+		gu.activate_node(exercises_node)
+		angle = PI
+	elif panel == "empty":
+		gu.deactivate_node(switchboard_node)
+		gu.deactivate_node(connections_node)
+		gu.deactivate_node(exercises_node)
+		angle = PI/2.0
+
+	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, angle, 0.5, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	t.start()
+		
+func _on_SettingsButton_selected():
+	show_settings("switchboard")	
 	
 func _on_ExerciseButton_selected():
-	var carousel = get_node("SettingsCarousel")
-	var t = get_node("SettingsCarousel/Tween")
-	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, PI, 0.5, 	Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
-	t.start()
+	show_settings("exercises")	
 
 func _on_ConnectionsButton_selected():
-	var carousel = get_node("SettingsCarousel")
-	var t = get_node("SettingsCarousel/Tween")
-	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, 3*PI/2.0, 0.5, 	Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
-	t.start()
+	show_settings("connections")	
 
 func _on_PresetCollector_selected(collection):
 	GameVariables.exercise_state_list = collection

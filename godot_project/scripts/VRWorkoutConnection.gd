@@ -5,7 +5,7 @@ var api
 func _ready():
 	api = get_tree().current_scene.get_node("RemoteInterface")
 	api.connect("registration_initialized", self, "connect_vrworkout_complete")
-	get_node("VRWorkoutPanel").print_info("To register device with portal\n\npush all buttons and enter the\n\n onetime key in the VRWorkout portal")
+	get_node("VRWorkoutPanel").print_info("ONLY AVAILABLE IN BETA!\nTo register device with portal\n\npush all buttons and enter the\n\n onetime key in the VRWorkout portal")
 
 func disable_all_connect_switches():
 		get_node("VRWorkoutPanel/ConnectSwitch").set_state(false)

@@ -88,8 +88,8 @@ func setup_cue_parameters(difficulty, player_height):
 			CueSelector.HAND : {
 				"xoffset" : 0.2,
 				"xrange" : 0.45,
-				"yoffset" : -0.2,
-				"yrange" : 0.3			
+				"yoffset" : -0.2 - difficulty * 0.1,
+				"yrange" : 0.3 + difficulty * player_height/8.0
 			}
 		},	
 		CueState.SQUAT : {
@@ -126,8 +126,12 @@ func setup_cue_parameters(difficulty, player_height):
 		},	
 		CueState.JUMP : {
 			CueSelector.HEAD : {
+				"yoffset" : jump_offset,
 			},
 			CueSelector.HAND : {
+				"has_hand" : difficulty > 0.9,
+				"yoffset" : jump_offset,
+				"xspread" : player_height / 5.0,
 			}
 		},
 		CueState.BURPEE : {
@@ -539,8 +543,8 @@ func add_statistics_element(state_string, cue_type, difficulty, points, hit, sta
 	return ingame_id	
 
 
-
-func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time = 0):
+# Create the actual cue node add it to the scene and the statistics
+func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype=""):
 	cue_emitter.max_hits += 1
 	var cue_node
 	if cue_type == "right" or cue_type == "right_hold":
@@ -584,7 +588,7 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time =
 	#var statistics_element = {"exercise": cue_emitter_state, "type": cue_type, "difficuly": current_difficulty, "points": 0, "hit": false, "start_time": cue_emitter.current_playback_time,"target_time": target_time}	
 	#Heartrate is stored with the start of the cue because that's the only definitive timestamp we know
 	
-	var ingame_id = add_statistics_element(state_string(cue_emitter_state), cue_type, current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr)
+	var ingame_id = add_statistics_element(state_string(cue_emitter_state)+"/%s"%cue_subtype, cue_type, current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr)
 	cue_node.ingame_id = ingame_id
 	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	move_modifier.connect("tween_completed",self,"_on_tween_completed")
@@ -792,12 +796,18 @@ func handle_stand_cues(target_time):
 	
 func handle_jump_cues(target_time):
 	switch_floor_sign("feet")
-	var y_hand = player_height
-	var y_head = player_height + jump_offset
+	var y_hand = player_height + cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"]
+	var y_head = player_height + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
 	var x = 0
 	var x_head = 0
 	
+	var hand_delay = 0.15
+	var dd_df = fly_distance/fly_time				
+	
 	create_and_attach_cue("head", x_head, y_head, target_time)
+	if cue_parameters[cue_emitter_state][CueSelector.HAND]["has_hand"]:
+		create_and_attach_cue("left", x-cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+hand_delay, -hand_delay * dd_df)
+		create_and_attach_cue("right", x+cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+hand_delay, -hand_delay * dd_df)
 
 	
 enum BurpeeState {
@@ -896,7 +906,6 @@ func handle_crunch_cues(target_time):
 
 
 var pushup_state = PushupState.REGULAR
-
 var pushup_distribution = {}
 
 func handle_pushup_cues(target_time):
@@ -918,9 +927,9 @@ func handle_pushup_cues(target_time):
 	if pushup_state == PushupState.REGULAR:
 		create_and_attach_cue("head", x_head, y_head, target_time)
 	elif pushup_state == PushupState.LEFT_HAND:
-			var n = create_and_attach_cue("left", -x,y_hand, target_time, -hand_cue_offset)
+			var n = create_and_attach_cue("left", -x,y_hand, target_time, -hand_cue_offset,0,"onehanded")
 	elif pushup_state == PushupState.RIGHT_HAND:
-			var n = create_and_attach_cue("right", x,y_hand, target_time, -hand_cue_offset)
+			var n = create_and_attach_cue("right", x,y_hand, target_time, -hand_cue_offset,0,"onehanded")
 	elif pushup_state == PushupState.LEFT_SIDEPLANK or pushup_state == PushupState.RIGHT_SIDEPLANK:
 		#side plank
 		x_head = 0
@@ -932,11 +941,11 @@ func handle_pushup_cues(target_time):
 		var dd_df = fly_distance/fly_time				
 				
 		if pushup_state == PushupState.LEFT_SIDEPLANK:
-			create_and_attach_cue("head_left", x_head-0.3, y_head, target_time)
-			create_and_attach_cue("right", x, y_hand, target_time+hand_delay, -hand_delay * dd_df)
+			create_and_attach_cue("head_left", x_head-0.3, y_head, target_time,0,0,"sideplank")
+			create_and_attach_cue("right", x, y_hand, target_time+hand_delay, -hand_delay * dd_df,0,"sideplank")
 		else:
-			create_and_attach_cue("head_right", x_head+0.3, y_head, target_time)
-			create_and_attach_cue("left", x, y_hand, target_time + hand_delay, -hand_delay * dd_df)
+			create_and_attach_cue("head_right", x_head+0.3, y_head, target_time,0,0,"sideplank")
+			create_and_attach_cue("left", x, y_hand, target_time + hand_delay, -hand_delay * dd_df,0,"sideplank")
 		temporary_cue_space_extension = 2.5
 
 

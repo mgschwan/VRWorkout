@@ -120,6 +120,10 @@ var exercise_collections = [
 		 "value": true,
 		 "description": "Sprinting"
 		},
+		{"setting":"game/exercise/strength_focus",
+		 "value": false,
+		 "description": "Cardio Focus"
+		},
 	],
 	[
 		{"setting":"game/exercise/squat",
@@ -229,14 +233,14 @@ var exercise_model = {
 #func setup_globals():
 #	ProjectSettings.set("game/beast_mode", false)
 #	ProjectSettings.set("game/bpm", 120)
-#	ProjectSettings.set("game/exercise/jump", false)
+#	ProjectSettings.set("game/exercise/jump", true)
 #	ProjectSettings.set("game/exercise/stand", false)
 #	ProjectSettings.set("game/exercise/squat", false)
 #	ProjectSettings.set("game/exercise/pushup", false)
 #	ProjectSettings.set("game/exercise/crunch", false)
 #	ProjectSettings.set("game/exercise/burpees", false)
-#	ProjectSettings.set("game/exercise/duck", false)
-#	ProjectSettings.set("game/exercise/sprint", true)
+#	ProjectSettings.set("game/exercise/duck", true)
+#	ProjectSettings.set("game/exercise/sprint", false)
 #	ProjectSettings.set("game/exercise/kneesaver", false)
 #	ProjectSettings.set("game/exercise/yoga", false)
 #	ProjectSettings.set("game/exercise/strength_focus", false)

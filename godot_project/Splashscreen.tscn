@@ -109,6 +109,7 @@ transform = Transform( 0.587372, 0.122452, -5.35253e-09, 0, -2.62268e-08, -0.6, 
 
 [node name="Network" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.169076, 0 )
+visible = false
 
 [node name="MusicDirectory" parent="." instance=ExtResource( 6 )]
 transform = Transform( 0.433013, -0.489114, -0.051884, 0, 0.207536, -0.489114, 0.25, 0.84717, 0.0898657, 1.56892, 0.67917, -1.67693 )
