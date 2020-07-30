@@ -8,6 +8,9 @@ var song_list = []
 var song_infos = {}
 var page = 0
 
+var gu = GameUtilities.new()
+
+
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -62,18 +65,20 @@ func set_songs(songs):
 	song_infos = get_song_infos(songs)
 	update_song_list()
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	var hrr = get_tree().current_scene.get_node("HeartRateReceiver")
+
+var hrr #Heart rate receiver
+
+func update_automatic():
 	if hrr and hrr.hr_active:
 		get_node("DifficultyButtons").enable_automatic(true)
-		var nodes = get_node("SongBlocks").get_children()
-		for n in nodes:
-			if n.has_method("enable_automatic"):
-				n.enable_automatic()
 	else:
 		get_node("DifficultyButtons").enable_automatic(false)
 
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	hrr = get_tree().current_scene.get_node("HeartRateReceiver")
+	update_automatic()
 	update_song_list()
 	select_difficulty(current_difficulty)
 
@@ -85,9 +90,14 @@ func next_page():
 	print ("Next page: %d"%page)
 	update_song_list()
 
+
+var frame_idx = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	frame_idx += 1
+	if frame_idx > 20:
+		update_automatic()
+		frame_idx = 0
 
 func select_difficulty(d):
 	current_difficulty = d

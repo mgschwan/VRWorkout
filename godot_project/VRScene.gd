@@ -420,8 +420,8 @@ func _on_DemoTimer_timeout():
 	#GameVariables.exercise_state_list = GameVariables.predefined_exercises["Low pyramid"]
 	#_on_Area_level_selected("res://audio/songs/01_VRWorkout.ogg", 0, 1)
 	
-	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
-	#_on_Area_level_selected("res://home/developer/Music/Workout/mono.ogg", 2, 1)
+	#_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
+	_on_Area_level_selected("res://audio/songs/02_VRWorkout_Beater.ogg", 2, 1)
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)
 	print(get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").stream.get_length())

@@ -67,7 +67,13 @@ var predefined_exercises = {
 		["crunch",10],["pushup",10],["squat",10],["burpee",10],
 		],	
 	"Regular workout": [],
-	}
+	"VRWorkout challenge": [
+		["stand",30],["sprint",20],["crunch",20],["squat",20],
+		["pushup",25],["jump",30],["squat",20],["burpee",25],
+		["sprint",30],["pushup",30],["stand",30],["sprint",25],
+		["crunch",30],["stand",15],["burpee",30],["crunch",25],
+	],	
+}
 
 
 
@@ -85,6 +91,10 @@ var exercise_collections = [
 		{"setting":"game/exercise/stand",
 		 "value": true,
 		 "description": "Standing"
+		},
+		{"setting":"game/exercise/strength_focus",
+		 "value": false,
+		 "description": "Cardio Focus"
 		},
 	],
 	[
@@ -141,6 +151,10 @@ var exercise_collections = [
 		{"setting":"game/exercise/burpees",
 		 "value": true,
 		 "description": "Standing"
+		},
+		{"setting":"game/exercise/strength_focus",
+		 "value": false,
+		 "description": "Cardio Focus"
 		},
 	], [
 		{"setting":"game/exercise/squat",

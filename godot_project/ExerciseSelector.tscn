@@ -186,7 +186,7 @@ flags_transparent = true
 albedo_color = Color( 0.568627, 0.568627, 0.568627, 0.576471 )
 
 [sub_resource type="BoxShape" id=11]
-extents = Vector3( 0.898739, 0.150319, 0.663572 )
+extents = Vector3( 0.898739, 0.150319, 0.236895 )
 
 [sub_resource type="SpatialMaterial" id=12]
 flags_transparent = true

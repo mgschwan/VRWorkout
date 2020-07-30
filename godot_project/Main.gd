@@ -501,11 +501,15 @@ func _process(delta):
 		beat_index += 1
 		infolayer.print_info("FINISHED", "main")
 		infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
+
 		
 	if cue_emitter.current_playback_time < last_playback_time - 1.0:
 		stream.stop()
-	else:		
-		last_playback_time = cue_emitter.current_playback_time
+	
+	#Current playback time could become negative which causes issues in other parts
+	var tmp = max(0, cue_emitter.current_playback_time)	
+	if tmp < 999999:
+		last_playback_time = max(tmp, last_playback_time)
 	
 func _on_exit_timer_timeout():
 	print ("End of level going back to main")
