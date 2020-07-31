@@ -7,8 +7,8 @@ export var offtext = "Off"
 signal toggled(value)
 
 func _ready():
-	get_node("ontext").print_info(ontext)
-	get_node("offtext").print_info(offtext)
+	get_node("ontext").print_info(ontext.replace("\\n","\n"))
+	get_node("offtext").print_info(offtext.replace("\\n","\n"))
 	update_switch()
 	
 func touched_by_controller(body, root):

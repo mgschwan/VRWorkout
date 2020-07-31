@@ -229,6 +229,10 @@ func _ready():
 	
 	print ("Unique device id %s"%GameVariables.device_id)
 	GameVariables.setup_globals()
+	var config = gu.load_persistent_config(GameVariables.config_file_location)
+	gu.apply_config_parameters(config)
+
+
 	initialize() #VR specific initialization
 
 	screen_tint_node = get_node("ARVROrigin/ARVRCamera/ScreenTint")
@@ -390,9 +394,20 @@ func _process(delta):
 	#if record_tracker_data and left_controller and right_controller:
 	#	tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
 
-
+#Return the config parameters that should be stored in the config file
+func get_persisting_parameters():
+	return {"game/portal_connection": ProjectSettings.get("game/portal_connection"),
+			"game/hud_enabled":ProjectSettings.get("game/hud_enabled"),
+			"game/equalizer": ProjectSettings.get("game/equalizer"),
+			"game/exercise/kneesaver": ProjectSettings.get("game/exercise/kneesaver")
+	}
+	
 func _on_Area_level_selected(filename, diff, num):
 	if level == null:
+		
+		#Store the parameters that should survive a restart
+		gu.store_persistent_config(GameVariables.config_file_location, get_persisting_parameters())
+		
 		set_beast_mode(ProjectSettings.get("game/beast_mode"))
 		level = level_blueprint.instance()
 		
@@ -420,8 +435,8 @@ func _on_DemoTimer_timeout():
 	#GameVariables.exercise_state_list = GameVariables.predefined_exercises["Low pyramid"]
 	#_on_Area_level_selected("res://audio/songs/01_VRWorkout.ogg", 0, 1)
 	
-	#_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
-	_on_Area_level_selected("res://audio/songs/02_VRWorkout_Beater.ogg", 2, 1)
+	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
+	#_on_Area_level_selected("res://audio/songs/02_VRWorkout_Beater.ogg", 2, 1)
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)
 	print(get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").stream.get_length())

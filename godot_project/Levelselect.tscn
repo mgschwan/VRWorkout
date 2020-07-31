@@ -169,18 +169,22 @@ transform = Transform( 1, -8.45779e-09, -7.37582e-08, -7.37582e-08, -0.226362, -
 transform = Transform( 1.2, 0, 0, 0, 1, 9.97291e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
 
 [node name="SettingsCarousel" type="Spatial" parent="."]
-transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 3.57628e-07, 0, -2.3 )
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 3.57628e-07, 0, -2.3 )
 
 [node name="Tween" type="Tween" parent="SettingsCarousel"]
 
 [node name="Connections" type="Spatial" parent="SettingsCarousel"]
-visible = false
 
 [node name="VRHealthConnection" parent="SettingsCarousel/Connections" instance=ExtResource( 4 )]
 transform = Transform( -4.88762e-08, 0.3, -1.31134e-08, 0, -1.31134e-08, -0.3, -0.3, -4.88762e-08, 2.13645e-15, 1.259, 1.791, 0.417099 )
 
 [node name="VRWorkoutConnection" parent="SettingsCarousel/Connections" instance=ExtResource( 28 )]
 transform = Transform( -4.88762e-08, 0.3, -1.31134e-08, 0, -1.31134e-08, -0.3, -0.3, -4.88762e-08, 2.13645e-15, 1.259, 1.791, -0.444245 )
+
+[node name="PortalSwitch" parent="SettingsCarousel/Connections/VRWorkoutConnection" instance=ExtResource( 3 )]
+transform = Transform( 3.33333, -7.70957e-20, -3.97365e-07, 3.97365e-07, -1.45704e-07, 3.33333, -1.73693e-14, -3.33333, -1.45704e-07, 0.0119298, 0.225308, 1.72995 )
+ontext = "Online: yes"
+offtext = "Online: no"
 
 [node name="Switchboard" type="Spatial" parent="SettingsCarousel"]
 visible = false
@@ -412,6 +416,7 @@ transform = Transform( 0.114018, 0, -0.097467, 0, 0.15, 0, 0.097467, 0, 0.114018
 [connection signal="selected" from="SongSelector/Freeplay1" to="SongSelector" method="_on_level_block_selected"]
 [connection signal="selected" from="SongSelector/Freeplay2" to="SongSelector" method="_on_level_block_selected"]
 [connection signal="selected" from="SongSelector/Freeplay3" to="SongSelector" method="_on_level_block_selected"]
+[connection signal="toggled" from="SettingsCarousel/Connections/VRWorkoutConnection/PortalSwitch" to="." method="_on_PortalSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/JumpSwitch" to="." method="_on_JumpSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/StandSwitch" to="." method="_on_StandSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/CrunchSwitch" to="." method="_on_CrunchSwitch_toggled"]

@@ -76,6 +76,9 @@ func update_widget():
 	get_node("SettingsCarousel/Switchboard/StrengthCardioSwitch").value = ProjectSettings.get("game/exercise/strength_focus")
 	get_node("SettingsCarousel/Switchboard/StrengthCardioSwitch").update_switch()
 
+	get_node("SettingsCarousel/Connections/VRWorkoutConnection/PortalSwitch").value = ProjectSettings.get("game/portal_connection")
+	get_node("SettingsCarousel/Connections/VRWorkoutConnection/PortalSwitch").update_switch()
+
 
 	GameVariables.exercise_state_list = []
 	get_node("SettingsCarousel/Exercises/StandardWorkout").mark_active()
@@ -94,8 +97,6 @@ func _ready():
 #			"res://audio/songs/vrworkout_beater.ogg",
 #			"res://audio/nonfree_songs/Slayers_of_the_Ice_Dragon.ogg",
 #			"res://audio/nonfree_songs/Duty_to_Humanity.ogg"]
-	
-	
 	
 	songs += get_song_list("res://audio/songs")
 	songs += get_song_list("res://audio/nonfree_songs")
@@ -233,4 +234,5 @@ func _on_ConnectionsButton_selected():
 func _on_PresetCollector_selected(collection):
 	GameVariables.exercise_state_list = collection
 
-
+func _on_PortalSwitch_toggled(value):
+	ProjectSettings.set("game/portal_connection", value)

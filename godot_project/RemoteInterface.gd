@@ -20,13 +20,15 @@ func _ready():
 	request.connect("request_completed", self,"_http_connect_request_completed")
 
 func send_data(reference, type, data):
-	var query = JSON.print({
-		"type": type,
-		"reference": reference,
-		"value": data		
-		})
-	var headers = ["Content-Type: application/json"]
-	var error = request.request(api_url + "/dataobject/", headers, false, HTTPClient.METHOD_POST, query)
+	var error = ERR_UNAVAILABLE
+	if ProjectSettings.get("game/portal_connection"):
+		var query = JSON.print({
+			"type": type,
+			"reference": reference,
+			"value": data		
+			})
+		var headers = ["Content-Type: application/json"]
+		error = request.request(api_url + "/dataobject/", headers, false, HTTPClient.METHOD_POST, query)
 	return error
 
 func _http_connect_request_completed(result, response_code, headers, body):

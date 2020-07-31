@@ -11,6 +11,8 @@ var device_id = ""
 
 var current_hr = 0
 
+var config_file_location = "user://settings.json"
+
 
 var current_ingame_id = 0
 func get_next_ingame_id():
@@ -265,6 +267,8 @@ var exercise_model = {
 #	ProjectSettings.set("game/player_height", 1.8)
 #	ProjectSettings.set("game/external_songs", null)
 #	ProjectSettings.set("game/equalizerr", true)
+#	ProjectSettings.set("game/portal_connection", false)
+
 
 var level_statistics_data = {}
 
@@ -290,6 +294,7 @@ func setup_globals():
 	ProjectSettings.set("game/target_hr", 140)
 	ProjectSettings.set("game/player_height", 1.8)
 	ProjectSettings.set("game/external_songs", null)
+	ProjectSettings.set("game/portal_connection", false)
 
 
 var exercise_state_list

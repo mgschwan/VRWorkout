@@ -43,9 +43,39 @@ func activate_node(node):
 	node.set_process_unhandled_input(true)
 	node.set_process_unhandled_key_input(true)
 	node.show()
+	
+	
+#Stores a config dict to disk
+func store_persistent_config(location, parameters):
+	var config_file = File.new()
+	var error = config_file.open(location, File.WRITE)	
+	if error == OK:
+		var tmp = JSON.print(parameters)
+		config_file.store_string(tmp)
+		config_file.close()
+		print ("Config saved")
+	else: 
+		print ("Could not save config")
 
+	
+func load_persistent_config(location):
+	var config_file = File.new()
+	var error = config_file.open(location, File.READ)
+	var parameters = {}
+	
+	if error == OK:
+		var tmp = JSON.parse(config_file.get_as_text()).result
+		config_file.close()
+		parameters = tmp
+		print ("Config loaded")
+	else: 
+		print ("Could not open config")
 
+	return parameters
 
+func apply_config_parameters(parameters):
+	for parameter in parameters:
+		ProjectSettings.set(parameter, parameters[parameter])
 
 
 
