@@ -77,7 +77,10 @@ func apply_config_parameters(parameters):
 	for parameter in parameters:
 		ProjectSettings.set(parameter, parameters[parameter])
 
-
+#Get song name from path
+func get_song_name(filename):
+	var tmp = filename.rsplit(".")[0].rsplit("/")[-1]
+	return tmp.replace("_"," ")
 
 
 

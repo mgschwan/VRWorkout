@@ -49,7 +49,8 @@ enum PushupState {
 enum SquatState {
 	HEAD = 0,
 	LEFT_HAND = 1,
-	RIGHT_HAND = 2
+	RIGHT_HAND = 2,
+	DOUBLE_SWING = 3,
 };	
 
 
@@ -213,9 +214,10 @@ var exercise_model = {
 						PushupState.LEFT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.RIGHT_HAND: 10},
 						PushupState.RIGHT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.LEFT_HAND: 10},
 						},
-		"squat_state_model": { SquatState.HEAD : { SquatState.LEFT_HAND : 13, SquatState.RIGHT_HAND : 13},
-								SquatState.LEFT_HAND  : { SquatState.HEAD: 30,  SquatState.RIGHT_HAND: 40},
-								SquatState.RIGHT_HAND  : { SquatState.HEAD: 30,  SquatState.LEFT_HAND: 40},
+		"squat_state_model": { SquatState.HEAD : { SquatState.LEFT_HAND : 13, SquatState.RIGHT_HAND : 13, SquatState.DOUBLE_SWING : 20},
+								SquatState.LEFT_HAND  : { SquatState.HEAD: 30,  SquatState.RIGHT_HAND: 30, SquatState.DOUBLE_SWING : 20},
+								SquatState.RIGHT_HAND  : { SquatState.HEAD: 30,  SquatState.LEFT_HAND: 30, SquatState.DOUBLE_SWING : 20},
+								SquatState.DOUBLE_SWING  : { SquatState.HEAD: 20},
 						},
 		"rebalance_exercises": true
 		},
@@ -244,35 +246,37 @@ var exercise_model = {
 	}
 	
 	
+var level_statistics_data = {}
+	
+func setup_globals():
+	#setup_globals_demo()
+	setup_globals_regular()	
 	
 
-#func setup_globals():
-#	ProjectSettings.set("game/beast_mode", false)
-#	ProjectSettings.set("game/bpm", 120)
-#	ProjectSettings.set("game/exercise/jump", true)
-#	ProjectSettings.set("game/exercise/stand", false)
-#	ProjectSettings.set("game/exercise/squat", false)
-#	ProjectSettings.set("game/exercise/pushup", false)
-#	ProjectSettings.set("game/exercise/crunch", false)
-#	ProjectSettings.set("game/exercise/burpees", false)
-#	ProjectSettings.set("game/exercise/duck", true)
-#	ProjectSettings.set("game/exercise/sprint", false)
-#	ProjectSettings.set("game/exercise/kneesaver", false)
-#	ProjectSettings.set("game/exercise/yoga", false)
-#	ProjectSettings.set("game/exercise/strength_focus", false)
-#	ProjectSettings.set("game/is_oculusquest", false)
-#	ProjectSettings.set("game/hud_enabled", true)
-#
-#	ProjectSettings.set("game/target_hr", 140)
-#	ProjectSettings.set("game/player_height", 1.8)
-#	ProjectSettings.set("game/external_songs", null)
-#	ProjectSettings.set("game/equalizerr", true)
-#	ProjectSettings.set("game/portal_connection", false)
+func setup_globals_demo():
+	ProjectSettings.set("game/beast_mode", false)
+	ProjectSettings.set("game/bpm", 120)
+	ProjectSettings.set("game/exercise/jump", false)
+	ProjectSettings.set("game/exercise/stand", false)
+	ProjectSettings.set("game/exercise/squat", true)
+	ProjectSettings.set("game/exercise/pushup", false)
+	ProjectSettings.set("game/exercise/crunch", false)
+	ProjectSettings.set("game/exercise/burpees", false)
+	ProjectSettings.set("game/exercise/duck", false)
+	ProjectSettings.set("game/exercise/sprint", false)
+	ProjectSettings.set("game/exercise/kneesaver", false)
+	ProjectSettings.set("game/exercise/yoga", false)
+	ProjectSettings.set("game/exercise/strength_focus", false)
+	ProjectSettings.set("game/is_oculusquest", false)
+	ProjectSettings.set("game/hud_enabled", true)
 
+	ProjectSettings.set("game/target_hr", 140)
+	ProjectSettings.set("game/player_height", 1.8)
+	ProjectSettings.set("game/external_songs", null)
+	ProjectSettings.set("game/equalizerr", true)
+	ProjectSettings.set("game/portal_connection", false)
 
-var level_statistics_data = {}
-
-func setup_globals():
+func setup_globals_regular():
 	ProjectSettings.set("game/beast_mode", false)
 	ProjectSettings.set("game/bpm", 140)
 	ProjectSettings.set("game/exercise/jump", true)

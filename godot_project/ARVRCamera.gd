@@ -135,7 +135,6 @@ func show_hud(show):
 		if not t.is_stopped():
 			t.stop()
 		get_node("HUDView").show()
-		get_node("../Mirrorview").show()
 	else:
 		if t.is_stopped():
 			t.wait_time = 0.2
@@ -143,4 +142,3 @@ func show_hud(show):
 
 func _on_HUDHideTimer_timeout():
 	get_node("HUDView").hide()
-	get_node("../Mirrorview").hide()

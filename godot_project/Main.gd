@@ -98,7 +98,8 @@ func setup_cue_parameters(difficulty, player_height):
 				"yrange" : player_height * 0.3,
 			},
 			CueSelector.HAND :  {
-				"xspread" : 0.6
+				"xspread" : 0.6,
+				"yrange" : 0.4
 			}		
 		},	
 		CueState.PUSHUP : {
@@ -139,6 +140,9 @@ func setup_cue_parameters(difficulty, player_height):
 				"yoffset" : 0.6
 			},
 			CueSelector.HAND : {
+				"has_hand" : difficulty > 0.9,
+				"yoffset" : jump_offset,
+				"xspread" : player_height / 5.0,
 			}
 		},	
 		CueState.YOGA : {
@@ -321,7 +325,7 @@ func _ready():
 	else:
 		rng.set_seed(0)
 	GameVariables.reset_ingame_id()
-		
+	
 	infolayer = get_node("Viewport/InfoLayer")
 	cue_emitter = get_node("cue_emitter")
 	target = get_node("target")
@@ -339,6 +343,12 @@ func _ready():
 
 	get_tree().get_current_scene().get_node("HeartRateReceiver").connect("heart_rate_received", self,"_on_HeartRateData")	
 
+	#Set up the safe pushup view
+	var mat = SpatialMaterial.new()
+	mat.albedo_texture = get_tree().get_current_scene().get_node("PushupViewport").get_texture()
+	mat.albedo_texture.flags = Texture.FLAG_FILTER
+	mat.flags_unshaded = true
+	get_node("PushupView").set_surface_material(0,mat)
 
 	if not ProjectSettings.get("game/equalizer"):
 		self.remove_child(get_node("SpectrumDisplay"))
@@ -589,9 +599,7 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time =
 		var alpha = atan2(x,y-head_y_pos)
 		cue_node.set_transform(cue_node.get_transform().rotated(Vector3(0,0,1),-alpha))
 		
-	#var statistics_element = {"exercise": cue_emitter_state, "type": cue_type, "difficuly": current_difficulty, "points": 0, "hit": false, "start_time": cue_emitter.current_playback_time,"target_time": target_time}	
 	#Heartrate is stored with the start of the cue because that's the only definitive timestamp we know
-	
 	var ingame_id = add_statistics_element(state_string(cue_emitter_state)+"/%s"%cue_subtype, cue_type, current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr)
 	cue_node.ingame_id = ingame_id
 	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
@@ -665,8 +673,7 @@ func update_distribution(distribution, index, delta):
 
 # If current_distribution is set the probabilities are normalized by the actual distribution
 func state_transition(old_state, state_model, current_distribution = null, allow_self_transition = true):
-	var probabilities = state_model[old_state]
-
+	var probabilities = state_model[old_state].duplicate(true)
 	print ("Probabilities pre: %s"%str(probabilities))
 	if len(probabilities) < len(state_model):
 		var sum = 0
@@ -718,6 +725,7 @@ func state_transition(old_state, state_model, current_distribution = null, allow
 	if current_distribution != null:
 		current_distribution = update_distribution(current_distribution, new_state, redistribution_speed)
 		print ("Distribution: %s"%str(current_distribution))
+
 	return new_state
 	
 var sprint_multiplier = 10.0
@@ -750,10 +758,49 @@ func handle_yoga_cues(target_time):
 		create_and_attach_cue("left_hold", -0.3*player_height, 0.85 * player_height, target_time, 0, target_time+0.5)
 	else:
 		create_and_attach_cue("right_hold", 0.3*player_height, 0.85 * player_height, target_time, 0, target_time+0.5)
+
+enum StandState {
+	REGULAR = 0,
+	DOUBLE_SWING = 1,
+};	
+
+var stand_state_model = { StandState.REGULAR : { StandState.DOUBLE_SWING: 10},
+						StandState.DOUBLE_SWING : { StandState.REGULAR: 25},
+					};
+var stand_state = StandState.REGULAR
+
+
 	
 func handle_stand_cues(target_time):
 	switch_floor_sign("feet")
-	
+	stand_state = state_transition(stand_state, stand_state_model)
+	if stand_state == StandState.DOUBLE_SWING:
+		handle_double_swing_cues(target_time, player_height*0.8)
+	else:
+		handle_stand_cues_regular(target_time)
+
+var last_double_swing_left = true	
+func handle_double_swing_cues(target_time, y_hand_base):
+	var x_hand = player_height/3.0
+	if not last_double_swing_left:
+		x_hand = -x_hand
+
+	var y_hand = y_hand_base - cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]/2.0 + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
+		
+	create_and_attach_cue("left", x_hand-0.1, y_hand, target_time, -hand_cue_offset, 0, "double_swing")
+	create_and_attach_cue("right", x_hand+0.1, y_hand, target_time, -hand_cue_offset, 0, "double_swing")
+
+	if min_cue_space >= 0.5:	
+		var double_punch_delay = 0.4
+		var dd_df = fly_distance/fly_time
+		create_and_attach_cue("left", -x_hand+0.1, y_hand, target_time, -hand_cue_offset-double_punch_delay*dd_df, 0, "double_swing")
+		create_and_attach_cue("right", -x_hand-0.1, y_hand, target_time, -hand_cue_offset-double_punch_delay*dd_df, 0, "double_swing")
+	else:
+		last_double_swing_left = not last_double_swing_left
+		
+
+
+func handle_stand_cues_regular(target_time):
 	var node_selector = rng.randi()%100
 	
 	var y_hand = player_height + cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
@@ -842,14 +889,20 @@ func handle_burpee_cues(target_time):
 	elif burpee_state == BurpeeState.PUSHUP_LOW:
 		switch_floor_sign("hands")
 		y_head = 0.3
-		temporary_cue_space_extension = 1.2
+		temporary_cue_space_extension = 1.0
 	else:
 		switch_floor_sign("feet")
 		y_head = player_height + jump_offset
-		temporary_cue_space_extension = 1.2
+		temporary_cue_space_extension = 1.0
 	
 	if burpee_state == BurpeeState.JUMP:
 		create_and_attach_cue("head_extended", x_head, y_head, target_time)
+		var hand_delay = 0.15
+		var dd_df = fly_distance/fly_time	
+		var y_hand = y_head			
+		if cue_parameters[cue_emitter_state][CueSelector.HAND]["has_hand"]:
+			create_and_attach_cue("left", x_head-cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+hand_delay, -hand_delay * dd_df, 0, "burpee_hand")
+			create_and_attach_cue("right", x_head+cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+hand_delay, -hand_delay * dd_df, 0, "burpee_hand")		
 	else:
 		create_and_attach_cue("head", x_head, y_head, target_time)
 	
@@ -860,6 +913,12 @@ func handle_squat_cues(target_time):
 	
 	squat_state = state_transition (squat_state, squat_state_model)
 	
+	if squat_state == SquatState.DOUBLE_SWING:
+		handle_double_swing_cues(target_time, player_height/2.0)
+	else:
+		handle_squat_cues_regular(target_time)
+	
+func handle_squat_cues_regular(target_time):
 	var node_selector = rng.randi()%100
 	
 	var y_head = player_height/2 + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"]

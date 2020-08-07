@@ -272,8 +272,12 @@ func _on_level_finished	():
 	total_points += result["points"]
 	last_played = result["time"]
 	total_played += result["time"]
-	
-	get_node("RemoteInterface").send_data(GameVariables.device_id, "workout", {"api_version": GameVariables.api_version, "score": result["points"], "duration": result["time"] , "data":GameVariables.level_statistics_data})
+
+	game_statistics["api_version"] = GameVariables.api_version
+	game_statistics["score"] = result["points"]
+	game_statistics["duration"] =  result["time"]
+	game_statistics["data"] = GameVariables.level_statistics_data
+	get_node("RemoteInterface").send_data(GameVariables.device_id, "workout", game_statistics)
 
 	
 	level.queue_free()
@@ -402,6 +406,7 @@ func get_persisting_parameters():
 			"game/exercise/kneesaver": ProjectSettings.get("game/exercise/kneesaver")
 	}
 	
+var game_statistics = {}
 func _on_Area_level_selected(filename, diff, num):
 	if level == null:
 		
@@ -414,6 +419,7 @@ func _on_Area_level_selected(filename, diff, num):
 		GameVariables.override_beatmap = false
 		if diff == 3:
 			GameVariables.override_beatmap = true
+		game_statistics = {"difficuly": diff, "song": gu.get_song_name(filename)}
 
 		GameVariables.difficulty = diff
 		

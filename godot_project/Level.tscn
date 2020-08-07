@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://spawn_timer.gd" type="Script" id=2]
@@ -69,6 +69,9 @@ extents = Vector3( 0.455611, 0.0926839, 0.161588 )
 [sub_resource type="SpatialMaterial" id=11]
 albedo_color = Color( 0.94902, 0.937255, 0.937255, 1 )
 albedo_texture = ExtResource( 23 )
+
+[sub_resource type="PlaneMesh" id=12]
+size = Vector2( 0.22, 0.13 )
 
 [node name="Main" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0225873, -0.0546217, 0.0125537 )
@@ -220,6 +223,11 @@ visible = false
 
 [node name="SpectrumDisplay" parent="." instance=ExtResource( 3 )]
 transform = Transform( 0.2, 0, 0, 0, -0.168573, -0.107625, 0, 0.107625, -0.168573, -2.18058, 3.36426, -11.4019 )
+
+[node name="PushupView" type="MeshInstance" parent="."]
+transform = Transform( 10, 0, 0, 0, 8.50029, -5.53584, 0, 5.07871, 8.45678, -0.019583, -0.28405, -0.772499 )
+mesh = SubResource( 12 )
+material/0 = null
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="camera_entered" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_entered"]
 [connection signal="camera_exited" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_exited"]

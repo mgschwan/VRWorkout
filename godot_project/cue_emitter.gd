@@ -27,8 +27,8 @@ func _ready():
 
 func update_statistics_element(obj, hit, points):
 	if GameVariables.level_statistics_data.has(obj.ingame_id):
-		GameVariables.level_statistics_data[obj.ingame_id]["hit"] = hit
-		GameVariables.level_statistics_data[obj.ingame_id]["points"] = points
+		GameVariables.level_statistics_data[obj.ingame_id]["h"] = hit
+		GameVariables.level_statistics_data[obj.ingame_id]["p"] = points
 
 func score_negative_hits(hits):
 	get_viewport().get_camera().tint_screen(0.2)
