@@ -7,6 +7,7 @@
 [ext_resource path="res://models/transparent_gray.material" type="Material" id=5]
 [ext_resource path="res://models/black.material" type="Material" id=6]
 [ext_resource path="res://Hold_Ring.tscn" type="PackedScene" id=7]
+[ext_resource path="res://models/super_white.material" type="Material" id=8]
 
 [sub_resource type="Animation" id=1]
 resource_name = "explode"
@@ -191,29 +192,21 @@ albedo_color = Color( 0.454902, 0.321569, 1, 1 )
 radius = 0.12
 height = 0.0897926
 
-[sub_resource type="SpatialMaterial" id=8]
-flags_unshaded = true
-params_blend_mode = 1
-albedo_color = Color( 1, 0.984314, 0.603922, 0.380392 )
+[sub_resource type="CubeMesh" id=8]
+material = ExtResource( 8 )
+size = Vector3( 0.02, 0.02, 0.02 )
 
-[sub_resource type="SphereMesh" id=9]
-material = SubResource( 8 )
-radius = 0.02
-height = 0.04
-radial_segments = 16
-rings = 8
-
-[sub_resource type="CylinderMesh" id=10]
+[sub_resource type="CylinderMesh" id=9]
 top_radius = 0.01
 bottom_radius = 0.01
 height = 1.0
 
-[sub_resource type="CylinderMesh" id=11]
+[sub_resource type="CylinderMesh" id=10]
 top_radius = 0.001
 bottom_radius = 0.001
 height = 1.0
 
-[sub_resource type="SphereMesh" id=12]
+[sub_resource type="SphereMesh" id=11]
 radius = 0.01
 height = 0.02
 radial_segments = 6
@@ -266,11 +259,11 @@ shape = SubResource( 7 )
 cast_shadow = 0
 emitting = false
 amount = 16
-mesh = SubResource( 9 )
+mesh = SubResource( 8 )
 direction = Vector3( 0, 1, 0 )
-spread = 34.21
+spread = 180.0
 flatness = 0.5
-gravity = Vector3( 0, 0, 0 )
+gravity = Vector3( 0, -1, 0 )
 initial_velocity = 0.25
 initial_velocity_random = 0.59
 linear_accel = 2.0
@@ -283,16 +276,16 @@ visible = false
 
 [node name="cone" type="MeshInstance" parent="path"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.5 )
-mesh = SubResource( 10 )
+mesh = SubResource( 9 )
 material/0 = ExtResource( 5 )
 
 [node name="cone2" type="MeshInstance" parent="path"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.5 )
-mesh = SubResource( 11 )
+mesh = SubResource( 10 )
 material/0 = ExtResource( 2 )
 
 [node name="dot" type="MeshInstance" parent="."]
 visible = false
-mesh = SubResource( 12 )
+mesh = SubResource( 11 )
 material/0 = ExtResource( 2 )
 [connection signal="animation_finished" from="Circle/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

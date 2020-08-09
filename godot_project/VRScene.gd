@@ -247,8 +247,8 @@ func _ready():
 	get_node("ARVROrigin/ARVRCamera").vr_mode = vr_mode
 	
 	
-	level_blueprint = preload("res://Level.tscn")
-	levelselect_blueprint = preload("res://Levelselect.tscn")
+	level_blueprint = preload("res://scenes/Level.tscn")
+	levelselect_blueprint = preload("res://scenes/Levelselect.tscn")
 	if not vr_mode:
 		_on_Tracker_added("right", ARVRServer.TRACKER_CONTROLLER, 1)
 		GameVariables.trackers[0].translation.y = 1.5
@@ -441,7 +441,7 @@ func _on_DemoTimer_timeout():
 	#GameVariables.exercise_state_list = GameVariables.predefined_exercises["Low pyramid"]
 	#_on_Area_level_selected("res://audio/songs/01_VRWorkout.ogg", 0, 1)
 	
-	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
+	_on_Area_level_selected("res://audio/nonfree_songs/04_VR_Raw.ogg", 0, 1)
 	#_on_Area_level_selected("res://audio/songs/02_VRWorkout_Beater.ogg", 2, 1)
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)

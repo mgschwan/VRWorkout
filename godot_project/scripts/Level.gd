@@ -6,11 +6,14 @@ var CueState = GameVariables.CueState
 var CueSelector = GameVariables.CueSelector
 var PushupState = GameVariables.PushupState
 var SquatState = GameVariables.SquatState
+var StandState = GameVariables.StandState
 
 var exercise_state_model_template
 var pushup_state_model
 var squat_state_model
-
+var stand_state_model_template
+var stand_state_model
+var stand_state 
 
 var song_index_parameter = 0
 var audio_filename = ""
@@ -89,7 +92,8 @@ func setup_cue_parameters(difficulty, player_height):
 				"xoffset" : 0.2,
 				"xrange" : 0.45,
 				"yoffset" : -0.2 - difficulty * 0.1,
-				"yrange" : 0.3 + difficulty * player_height/8.0
+				"yrange" : 0.3 + difficulty * player_height/8.0,
+				"double_swing_spread": player_height/ ( 3.0 + (2.0-difficulty)/1.5 ) 
 			}
 		},	
 		CueState.SQUAT : {
@@ -99,7 +103,8 @@ func setup_cue_parameters(difficulty, player_height):
 			},
 			CueSelector.HAND :  {
 				"xspread" : 0.6,
-				"yrange" : 0.4
+				"yrange" : 0.4,
+				"double_swing_spread": player_height/ ( 3.0 + (2.0-difficulty)/1.5 ) 
 			}		
 		},	
 		CueState.PUSHUP : {
@@ -154,6 +159,13 @@ func setup_cue_parameters(difficulty, player_height):
 	}
 	if kneesaver_mode:
 		cue_parameters[CueState.SQUAT][CueSelector.HEAD]["yoffset"] = player_height * 0.18
+	
+	#Easy difficulties don't have double swings
+	if difficulty < 1.0:
+		stand_state_model = model_without_state(stand_state_model_template, StandState.DOUBLE_SWING)
+	else:
+		stand_state_model = stand_state_model_template.duplicate(true)
+	stand_state = StandState.REGULAR
 
 
 var cue_emitter_state = CueState.STAND
@@ -293,11 +305,13 @@ func setup_game_data():
 		exercise_state_model_template = GameVariables.exercise_model["strength"]["exercise_state_model"]
 		pushup_state_model = GameVariables.exercise_model["strength"]["pushup_state_model"]
 		squat_state_model = GameVariables.exercise_model["strength"]["squat_state_model"]
+		stand_state_model_template = GameVariables.exercise_model["strength"]["stand_state_model"]
 		rebalance_exercises = GameVariables.exercise_model["strength"]["rebalance_exercises"]
 	else:
 		exercise_state_model_template = GameVariables.exercise_model["cardio"]["exercise_state_model"]
 		pushup_state_model = GameVariables.exercise_model["cardio"]["pushup_state_model"]
 		squat_state_model = GameVariables.exercise_model["cardio"]["squat_state_model"]
+		stand_state_model_template = GameVariables.exercise_model["cardio"]["stand_state_model"]
 		rebalance_exercises = GameVariables.exercise_model["cardio"]["rebalance_exercises"]
 
 	populate_state_model()
@@ -656,6 +670,18 @@ func populate_state_model():
 				if key != key_2 and states[key_2]:
 					exercise_state_model[key][key_2] = val
 	print (str(exercise_state_model))
+	
+	stand_state_model = stand_state_model_template.duplicate(true)
+	
+
+#Returns a copy of the model without the state as a target
+func model_without_state(model, state):
+	var new_model = {}
+	for s in model:
+		var tmp = model[s].duplicate(true)
+		tmp.erase(state)
+		new_model[s] = tmp
+	return new_model
 
 func update_distribution(distribution, index, delta):
 	var tmp = delta / len(distribution)
@@ -759,18 +785,7 @@ func handle_yoga_cues(target_time):
 	else:
 		create_and_attach_cue("right_hold", 0.3*player_height, 0.85 * player_height, target_time, 0, target_time+0.5)
 
-enum StandState {
-	REGULAR = 0,
-	DOUBLE_SWING = 1,
-};	
 
-var stand_state_model = { StandState.REGULAR : { StandState.DOUBLE_SWING: 10},
-						StandState.DOUBLE_SWING : { StandState.REGULAR: 25},
-					};
-var stand_state = StandState.REGULAR
-
-
-	
 func handle_stand_cues(target_time):
 	switch_floor_sign("feet")
 	stand_state = state_transition(stand_state, stand_state_model)
@@ -780,8 +795,9 @@ func handle_stand_cues(target_time):
 		handle_stand_cues_regular(target_time)
 
 var last_double_swing_left = true	
-func handle_double_swing_cues(target_time, y_hand_base):
-	var x_hand = player_height/3.0
+func handle_double_swing_cues(target_time, y_hand_base):	
+	var x_hand = cue_parameters[cue_emitter_state][CueSelector.HAND]["double_swing_spread"]
+
 	if not last_double_swing_left:
 		x_hand = -x_hand
 

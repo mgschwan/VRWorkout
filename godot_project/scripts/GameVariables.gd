@@ -54,6 +54,12 @@ enum SquatState {
 };	
 
 
+enum StandState {
+	REGULAR = 0,
+	DOUBLE_SWING = 1,
+};	
+
+
 var predefined_exercises = {
 	"High pyramid": [
 		["stand",10],["squat",10],["jump",10],["sprint",10],
@@ -219,6 +225,10 @@ var exercise_model = {
 								SquatState.RIGHT_HAND  : { SquatState.HEAD: 30,  SquatState.LEFT_HAND: 30, SquatState.DOUBLE_SWING : 20},
 								SquatState.DOUBLE_SWING  : { SquatState.HEAD: 20},
 						},
+		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 10},
+						StandState.DOUBLE_SWING : { StandState.REGULAR: 25},
+		},
+			
 		"rebalance_exercises": true
 		},
 	"strength": {
@@ -241,6 +251,8 @@ var exercise_model = {
 								SquatState.LEFT_HAND  : { SquatState.HEAD: 90,  SquatState.RIGHT_HAND: 5},
 								SquatState.RIGHT_HAND  : { SquatState.HEAD: 90,  SquatState.LEFT_HAND: 5},
 						},
+		"stand_state_model" : { StandState.REGULAR : { },
+					},
 		"rebalance_exercises": false
 		},
 	}
@@ -249,8 +261,8 @@ var exercise_model = {
 var level_statistics_data = {}
 	
 func setup_globals():
-	#setup_globals_demo()
-	setup_globals_regular()	
+	setup_globals_demo()
+	#setup_globals_regular()	
 	
 
 func setup_globals_demo():

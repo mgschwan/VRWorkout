@@ -1,33 +1,34 @@
 [gd_scene load_steps=44 format=2]
 
-[ext_resource path="res://Levelselect.gd" type="Script" id=1]
-[ext_resource path="res://InfoBox.tscn" type="PackedScene" id=2]
-[ext_resource path="res://ToggleSwitch.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/VRHealthConnection.tscn" type="PackedScene" id=4]
-[ext_resource path="res://models/platform.glb" type="PackedScene" id=5]
-[ext_resource path="res://SongLevelBlock.tscn" type="PackedScene" id=6]
-[ext_resource path="res://models/blue_transparent.material" type="Material" id=7]
-[ext_resource path="res://BPM.gd" type="Script" id=8]
-[ext_resource path="res://audio/snare_hit.wav" type="AudioStream" id=9]
-[ext_resource path="res://models/pale_white.material" type="Material" id=10]
-[ext_resource path="res://beastmode.gd" type="Script" id=11]
+[ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
+[ext_resource path="res://beastmode.gd" type="Script" id=3]
+[ext_resource path="res://BPM.gd" type="Script" id=4]
+[ext_resource path="res://ControllerAdjuster.gd" type="Script" id=5]
+[ext_resource path="res://scripts/Levelselect.gd" type="Script" id=6]
+[ext_resource path="res://models/super_white.material" type="Material" id=7]
+[ext_resource path="res://models/blue_transparent.material" type="Material" id=8]
+[ext_resource path="res://InfoBox.tscn" type="PackedScene" id=9]
+[ext_resource path="res://TextElement.gd" type="Script" id=10]
+[ext_resource path="res://TextElement.tscn" type="PackedScene" id=11]
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
-[ext_resource path="res://TextPanel.tscn" type="PackedScene" id=13]
+[ext_resource path="res://models/pale_white.material" type="Material" id=13]
 [ext_resource path="res://models/gold.material" type="Material" id=14]
-[ext_resource path="res://Tutorial.tscn" type="PackedScene" id=15]
-[ext_resource path="res://SongSelector.tscn" type="PackedScene" id=16]
-[ext_resource path="res://ControllerAdjuster.gd" type="Script" id=17]
-[ext_resource path="res://TextElement.tscn" type="PackedScene" id=18]
-[ext_resource path="res://InfoBoxOpaque.tscn" type="PackedScene" id=19]
-[ext_resource path="res://ExerciseCollection.tscn" type="PackedScene" id=20]
-[ext_resource path="res://scenes/Button.tscn" type="PackedScene" id=21]
-[ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=22]
-[ext_resource path="res://BlackTheme.theme" type="Theme" id=23]
-[ext_resource path="res://TextElement.gd" type="Script" id=24]
-[ext_resource path="res://scenes/PlayerHeightAdjuster.tscn" type="PackedScene" id=25]
-[ext_resource path="res://scenes/PresetCollection.tscn" type="PackedScene" id=26]
-[ext_resource path="res://models/super_white.material" type="Material" id=27]
+[ext_resource path="res://ToggleSwitch.tscn" type="PackedScene" id=15]
+[ext_resource path="res://scenes/VRHealthConnection.tscn" type="PackedScene" id=16]
+[ext_resource path="res://InfoBoxOpaque.tscn" type="PackedScene" id=17]
+[ext_resource path="res://TextPanel.tscn" type="PackedScene" id=18]
+[ext_resource path="res://models/platform.glb" type="PackedScene" id=19]
+[ext_resource path="res://audio/snare_hit.wav" type="AudioStream" id=20]
+[ext_resource path="res://SongLevelBlock.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Tutorial.tscn" type="PackedScene" id=22]
+[ext_resource path="res://SongSelector.tscn" type="PackedScene" id=23]
+[ext_resource path="res://scenes/Button.tscn" type="PackedScene" id=24]
+[ext_resource path="res://ExerciseCollection.tscn" type="PackedScene" id=25]
+[ext_resource path="res://scenes/PlayerHeightAdjuster.tscn" type="PackedScene" id=26]
+[ext_resource path="res://scenes/PresetCollection.tscn" type="PackedScene" id=27]
 [ext_resource path="res://scenes/VRWorkoutConnection.tscn" type="PackedScene" id=28]
+
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -66,7 +67,7 @@ bg_color = Color( 0, 0, 0, 1 )
 [sub_resource type="DynamicFont" id=11]
 size = 32
 use_filter = true
-font_data = ExtResource( 22 )
+font_data = ExtResource( 1 )
 
 [sub_resource type="PlaneMesh" id=12]
 size = Vector2( 2, 0.5 )
@@ -85,38 +86,38 @@ size = Vector3( 0.03, 0.03, 0.03 )
 
 [node name="Spatial" type="Spatial"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
-script = ExtResource( 1 )
+script = ExtResource( 6 )
 
-[node name="platform" parent="." instance=ExtResource( 5 )]
+[node name="platform" parent="." instance=ExtResource( 19 )]
 transform = Transform( 0.913545, 0, 0.406737, 0, 1, 0, -0.406737, 0, 0.913545, 0, -0.346909, 0 )
 
 [node name="Exhaust2" type="MeshInstance" parent="platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.03367, -1.06538, 0.00227052 )
 visible = false
 mesh = SubResource( 1 )
-material/0 = ExtResource( 7 )
+material/0 = ExtResource( 8 )
 
 [node name="Exhaust" type="MeshInstance" parent="platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0152076, -1.06538, 6.08919 )
 visible = false
 mesh = SubResource( 1 )
-material/0 = ExtResource( 7 )
+material/0 = ExtResource( 8 )
 
 [node name="Exhaust3" type="MeshInstance" parent="platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.07026, -1.06538, -0.00397336 )
 visible = false
 mesh = SubResource( 1 )
-material/0 = ExtResource( 7 )
+material/0 = ExtResource( 8 )
 
 [node name="Exhaust4" type="MeshInstance" parent="platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0262713, -1.06538, -6.08258 )
 visible = false
 mesh = SubResource( 1 )
-material/0 = ExtResource( 7 )
+material/0 = ExtResource( 8 )
 
 [node name="BPM" type="StaticBody" parent="."]
 transform = Transform( 0.979702, -0.0796681, 0.183952, -6.47481e-08, 0.917637, 0.39742, -0.200462, -0.389353, 0.89901, 0.550664, 1.19237, 0.995729 )
-script = ExtResource( 8 )
+script = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="BPM"]
 transform = Transform( 1, 7.45058e-08, -1.19209e-07, 1.49012e-08, 1, -1.49012e-08, -1.49012e-07, 0, 1, 0, -0.050589, 0 )
@@ -126,46 +127,46 @@ shape = SubResource( 2 )
 mesh = SubResource( 3 )
 material/0 = SubResource( 4 )
 
-[node name="bpm_text" parent="BPM" instance=ExtResource( 2 )]
+[node name="bpm_text" parent="BPM" instance=ExtResource( 9 )]
 transform = Transform( -0.198599, -0.00948017, -0.0216437, -0.00939057, 0.199775, -0.0013372, 0.0216827, -0.000311606, -0.198821, -0.0667288, 0.0478439, -0.0206856 )
 default_text = "Hit to set bpm\\nfor Freeplay mode"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="BPM"]
-stream = ExtResource( 9 )
+stream = ExtResource( 20 )
 bus = "Voice"
 
-[node name="TutorialVideo" parent="." instance=ExtResource( 15 )]
+[node name="TutorialVideo" parent="." instance=ExtResource( 22 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.04662, 0.781789, -1.70517e-07 )
 
-[node name="SongSelector" parent="." instance=ExtResource( 16 )]
+[node name="SongSelector" parent="." instance=ExtResource( 23 )]
 transform = Transform( -1.74846e-08, 0, -1, 0, 0.4, 0, 0.4, 0, -4.37114e-08, 0.919011, 1.43304, 1.71055e-07 )
 
-[node name="Freeplay1" parent="SongSelector" instance=ExtResource( 6 )]
+[node name="Freeplay1" parent="SongSelector" instance=ExtResource( 21 )]
 transform = Transform( -2.03651e-07, 0, -1.25, 0, 1.25, 0, 0.5, 0, -8.14602e-08, 2.18474, 0.4174, 1.08002 )
 song_name = "Freeplay 1 hour"
 level_number = -36
 
-[node name="Freeplay2" parent="SongSelector" instance=ExtResource( 6 )]
+[node name="Freeplay2" parent="SongSelector" instance=ExtResource( 21 )]
 transform = Transform( -2.03651e-07, 0, -1.25, 0, 1.25, 0, 0.5, 0, -8.14602e-08, 2.18542, -0.0750997, 1.07993 )
 song_name = "Freeplay 10 minutes"
 level_number = -6
 
-[node name="Freeplay3" parent="SongSelector" instance=ExtResource( 6 )]
+[node name="Freeplay3" parent="SongSelector" instance=ExtResource( 21 )]
 transform = Transform( -2.03651e-07, 0, -1.25, 0, 1.25, 0, 0.5, 0, -8.14602e-08, 2.18284, -0.598195, 1.09084 )
 song_name = "Freeplay 5 minutes"
 level_number = -3
 
-[node name="MainText" parent="." instance=ExtResource( 19 )]
+[node name="MainText" parent="." instance=ExtResource( 17 )]
 transform = Transform( -1.54463e-07, -0.974043, 0.226362, -7.37582e-08, -0.226362, -0.974043, 1, -1.6715e-07, -3.68791e-08, 1.55057, 2.30847, 2.5262e-07 )
 default_text = "VRWorkout"
 
-[node name="text_panel" parent="MainText" instance=ExtResource( 13 )]
+[node name="text_panel" parent="MainText" instance=ExtResource( 18 )]
 transform = Transform( 1.1, 0, -9.32587e-16, 0, 1, 0, 1.70974e-15, 0, 0.6, 6.68336e-11, -0.00769687, 0.00178862 )
 
-[node name="Tutorial" parent="." instance=ExtResource( 19 )]
+[node name="Tutorial" parent="." instance=ExtResource( 17 )]
 transform = Transform( 1, -8.45779e-09, -7.37582e-08, -7.37582e-08, -0.226362, -0.974043, -8.45779e-09, 0.974043, -0.226362, -0.20336, 2.31827, -1.34073 )
 
-[node name="text_panel" parent="Tutorial" instance=ExtResource( 13 )]
+[node name="text_panel" parent="Tutorial" instance=ExtResource( 18 )]
 transform = Transform( 1.2, 0, 0, 0, 1, 9.97291e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
 
 [node name="SettingsCarousel" type="Spatial" parent="."]
@@ -175,13 +176,13 @@ transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 3.57628
 
 [node name="Connections" type="Spatial" parent="SettingsCarousel"]
 
-[node name="VRHealthConnection" parent="SettingsCarousel/Connections" instance=ExtResource( 4 )]
+[node name="VRHealthConnection" parent="SettingsCarousel/Connections" instance=ExtResource( 16 )]
 transform = Transform( -4.88762e-08, 0.3, -1.31134e-08, 0, -1.31134e-08, -0.3, -0.3, -4.88762e-08, 2.13645e-15, 1.259, 1.791, 0.417099 )
 
 [node name="VRWorkoutConnection" parent="SettingsCarousel/Connections" instance=ExtResource( 28 )]
 transform = Transform( -4.88762e-08, 0.3, -1.31134e-08, 0, -1.31134e-08, -0.3, -0.3, -4.88762e-08, 2.13645e-15, 1.259, 1.791, -0.444245 )
 
-[node name="PortalSwitch" parent="SettingsCarousel/Connections/VRWorkoutConnection" instance=ExtResource( 3 )]
+[node name="PortalSwitch" parent="SettingsCarousel/Connections/VRWorkoutConnection" instance=ExtResource( 15 )]
 transform = Transform( 3.33333, -7.70957e-20, -3.97365e-07, 3.97365e-07, -1.45704e-07, 3.33333, -1.73693e-14, -3.33333, -1.45704e-07, 0.0119298, 0.225308, 1.72995 )
 ontext = "Online: yes"
 offtext = "Online: no"
@@ -191,7 +192,7 @@ visible = false
 
 [node name="BeastModeSelector" type="StaticBody" parent="SettingsCarousel/Switchboard"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.132, 1.523, 1.277 )
-script = ExtResource( 11 )
+script = ExtResource( 3 )
 
 [node name="onshape" type="CollisionShape" parent="SettingsCarousel/Switchboard/BeastModeSelector"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000761986, -0.0341799 )
@@ -213,85 +214,85 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.25, 0, -0.0599999, -0.0384666 )
 width = 0.2
 height = 0.1
 depth = 0.0137625
-material = ExtResource( 10 )
+material = ExtResource( 13 )
 
 [node name="CSGBox2" type="CSGBox" parent="SettingsCarousel/Switchboard/BeastModeSelector/switch"]
 operation = 2
 width = 0.18
 height = 0.08
 depth = 0.2
-material = ExtResource( 10 )
+material = ExtResource( 13 )
 
-[node name="ontext" parent="SettingsCarousel/Switchboard/BeastModeSelector" instance=ExtResource( 18 )]
+[node name="ontext" parent="SettingsCarousel/Switchboard/BeastModeSelector" instance=ExtResource( 11 )]
 transform = Transform( 0.08, -1.62921e-07, 5.6972e-16, 0, -4.37114e-08, -0.08, 1.30337e-08, 1, -3.49691e-09, 0, 0.0685738, -0.0392407 )
 text = "Beast mode on"
 
-[node name="offtext" parent="SettingsCarousel/Switchboard/BeastModeSelector" instance=ExtResource( 18 )]
+[node name="offtext" parent="SettingsCarousel/Switchboard/BeastModeSelector" instance=ExtResource( 11 )]
 transform = Transform( 0.08, -1.62921e-07, 5.6972e-16, 0, -4.37114e-08, -0.08, 1.30337e-08, 1, -3.49691e-09, 0, -0.0454426, -0.0392407 )
 text = "Beast mode off"
 
-[node name="JumpSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="JumpSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.608729, 1.25165, 1.27697 )
 ontext = "Jump on"
 offtext = "Jump off"
 
-[node name="StandSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="StandSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.608729, 1.52348, 1.27697 )
 ontext = "Stand on"
 offtext = "Stand off"
 
-[node name="CrunchSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="CrunchSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.366857, 1.52348, 1.27696 )
 ontext = "Crunch on"
 offtext = "Crunch off"
 
-[node name="SquatSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="SquatSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.367, 1.252, 1.277 )
 ontext = "Squat on"
 offtext = "Squat off"
 
-[node name="PushupSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="PushupSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131597, 1.252, 1.277 )
 ontext = "Pushup on"
 offtext = "Pushup off"
 
-[node name="SafePushupSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="SafePushupSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131597, 0.992445, 1.277 )
 ontext = "Safe pushups on"
 offtext = "Safe pushup off"
 
-[node name="StrengthCardioSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="StrengthCardioSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.367, 0.992, 1.277 )
 ontext = "Strength focus"
 offtext = "Cardio focus"
 
-[node name="BurpeeSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="BurpeeSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0963061, 1.252, 1.277 )
 ontext = "Burpees on"
 offtext = "Burpees off"
 
-[node name="EqualizerSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="EqualizerSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0960001, 0.992, 1.277 )
 ontext = "Equalizer on"
 offtext = "Equalizer off"
 
-[node name="DuckSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="DuckSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0960004, 1.523, 1.277 )
 ontext = "Ducking on"
 offtext = "Ducking off"
 
-[node name="SprintSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="SprintSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324165, 1.523, 1.277 )
 ontext = "Sprint on"
 offtext = "Sprint off"
 
-[node name="KneesaverSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="KneesaverSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, 1.252, 1.277 )
 value = true
 ontext = "Knee saver on"
 offtext = "Knee saver off"
 
-[node name="YogaSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 3 )]
+[node name="YogaSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, -0.992, 1.28 )
 value = true
 ontext = "Warmup on"
@@ -299,7 +300,7 @@ offtext = "Warmup off"
 
 [node name="ControllerAdjuster" type="StaticBody" parent="SettingsCarousel/Switchboard"]
 transform = Transform( 0.925256, 0, 0.379343, 0, 1, 0, -0.379343, 0, 0.925256, -0.594399, 1.60599, 1.34621 )
-script = ExtResource( 17 )
+script = ExtResource( 5 )
 
 [node name="CollisionShape" type="CollisionShape" parent="SettingsCarousel/Switchboard/ControllerAdjuster"]
 shape = SubResource( 8 )
@@ -311,7 +312,7 @@ material/0 = ExtResource( 14 )
 
 [node name="TextElement" type="Spatial" parent="SettingsCarousel/Switchboard/ControllerAdjuster"]
 transform = Transform( 0.0864364, 2.98023e-08, -1.11022e-16, 0, -4.37114e-08, -0.0864362, -5.58794e-09, 1, -3.77825e-09, 1.19209e-07, 0, 0.110089 )
-script = ExtResource( 24 )
+script = ExtResource( 10 )
 viewport_height = 128
 
 [node name="Viewport" type="Viewport" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement"]
@@ -331,7 +332,7 @@ margin_left = 5.0
 margin_top = 5.0
 margin_right = 82.0
 margin_bottom = 27.0
-theme = ExtResource( 23 )
+theme = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement/Viewport/CanvasLayer/Panel/Container"]
 margin_right = 165.0
@@ -347,44 +348,44 @@ material/0 = SubResource( 14 )
 [node name="Exercises" type="Spatial" parent="SettingsCarousel"]
 transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, -1.19209e-07, 0, -0.225055 )
 
-[node name="ExerciseCollection" parent="SettingsCarousel/Exercises" instance=ExtResource( 20 )]
+[node name="ExerciseCollection" parent="SettingsCarousel/Exercises" instance=ExtResource( 25 )]
 transform = Transform( -8.64277e-08, -1, -6.55671e-09, 0, -4.37114e-08, 0.15, -0.15, 5.76185e-07, 3.77788e-15, -1.05, 1.435, -0.598759 )
 exercise_name = "Leg day"
 active_marker = "WorkoutMarker"
 
-[node name="PresetCollector" parent="SettingsCarousel/Exercises" instance=ExtResource( 26 )]
+[node name="PresetCollector" parent="SettingsCarousel/Exercises" instance=ExtResource( 27 )]
 transform = Transform( -8.64277e-08, -1, -6.55671e-09, 0, -4.37114e-08, 0.15, -0.15, 5.76185e-07, 3.77788e-15, -1.05, 1.77784, -0.598759 )
 exercise_name = "High pyramid"
 active_marker = "WorkoutMarker"
 
-[node name="PresetCollector2" parent="SettingsCarousel/Exercises" instance=ExtResource( 26 )]
+[node name="PresetCollector2" parent="SettingsCarousel/Exercises" instance=ExtResource( 27 )]
 transform = Transform( -8.64277e-08, -1, -6.55671e-09, 0, -4.37114e-08, 0.15, -0.15, 5.76185e-07, 3.77788e-15, -1.0504, 1.778, -0.261176 )
 exercise_name = "Low pyramid"
 active_marker = "WorkoutMarker"
 
-[node name="PresetCollector3" parent="SettingsCarousel/Exercises" instance=ExtResource( 26 )]
+[node name="PresetCollector3" parent="SettingsCarousel/Exercises" instance=ExtResource( 27 )]
 transform = Transform( -8.64277e-08, -1, -6.55671e-09, 0, -4.37114e-08, 0.15, -0.15, 5.76185e-07, 3.77788e-15, -1.05, 1.778, 0.079 )
 exercise_name = "VRWorkout challenge"
 active_marker = "WorkoutMarker"
 
-[node name="StandardWorkout" parent="SettingsCarousel/Exercises" instance=ExtResource( 26 )]
+[node name="StandardWorkout" parent="SettingsCarousel/Exercises" instance=ExtResource( 27 )]
 transform = Transform( -8.64277e-08, -1, -6.55671e-09, 0, -4.37114e-08, 0.15, -0.15, 5.76185e-07, 3.77788e-15, -1.0504, 1.778, 0.418824 )
 exercise_name = "Regular workout"
 active_marker = "WorkoutMarker"
 
-[node name="ExerciseCollection2" parent="SettingsCarousel/Exercises" instance=ExtResource( 20 )]
+[node name="ExerciseCollection2" parent="SettingsCarousel/Exercises" instance=ExtResource( 25 )]
 transform = Transform( -8.64277e-08, -1, -6.55671e-09, 0, -4.37114e-08, 0.15, -0.15, 5.76185e-07, 3.77788e-15, -1.0504, 1.435, -0.261176 )
 exercise_nr = 1
 exercise_name = "Developers choice"
 active_marker = "WorkoutMarker"
 
-[node name="ExerciseCollection3" parent="SettingsCarousel/Exercises" instance=ExtResource( 20 )]
+[node name="ExerciseCollection3" parent="SettingsCarousel/Exercises" instance=ExtResource( 25 )]
 transform = Transform( -8.64277e-08, -1, -6.55671e-09, 0, -4.37114e-08, 0.15, -0.15, 5.76185e-07, 3.77788e-15, -1.05, 1.43492, 0.0789956 )
 exercise_nr = 2
 exercise_name = "Ground work"
 active_marker = "WorkoutMarker"
 
-[node name="ExerciseCollection4" parent="SettingsCarousel/Exercises" instance=ExtResource( 20 )]
+[node name="ExerciseCollection4" parent="SettingsCarousel/Exercises" instance=ExtResource( 25 )]
 transform = Transform( -8.64277e-08, -1, -6.55671e-09, 0, -4.37114e-08, 0.15, -0.15, 5.76185e-07, 3.77788e-15, -1.05, 1.43492, 0.425958 )
 exercise_nr = 3
 exercise_name = "Strength workout"
@@ -396,21 +397,21 @@ transform = Transform( 1.19249e-08, 0, 1, 0, 1, 0, -1, 0, 1.19249e-08, 0, 0, 0 )
 [node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Exercises/WorkoutMarker"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0 )
 mesh = SubResource( 15 )
-material/0 = ExtResource( 27 )
+material/0 = ExtResource( 7 )
 
-[node name="SettingsButton" parent="." instance=ExtResource( 21 )]
+[node name="SettingsButton" parent="." instance=ExtResource( 24 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 1.1178, -1 )
 ontext = "Settings"
 
-[node name="ExerciseButton" parent="." instance=ExtResource( 21 )]
+[node name="ExerciseButton" parent="." instance=ExtResource( 24 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 0.9898, -1 )
 ontext = "Exercises"
 
-[node name="ConnectionsButton" parent="." instance=ExtResource( 21 )]
+[node name="ConnectionsButton" parent="." instance=ExtResource( 24 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399424, 0.9898, -1 )
 ontext = "Connect"
 
-[node name="PlayerHeightAdjuster" parent="." instance=ExtResource( 25 )]
+[node name="PlayerHeightAdjuster" parent="." instance=ExtResource( 26 )]
 transform = Transform( 0.114018, 0, -0.097467, 0, 0.15, 0, 0.097467, 0, 0.114018, 0.927395, 0, -1.05638 )
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
 [connection signal="selected" from="SongSelector/Freeplay1" to="SongSelector" method="_on_level_block_selected"]
