@@ -508,6 +508,7 @@ var last_playback_time = 0
 func _process(delta):
 	#cue_emitter.current_playback_time += delta
 	cue_emitter.current_playback_time = stream.get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
+	
 	if beat_index < len(beats)-1 and cue_emitter.current_playback_time + emit_early > beats[beat_index]:	
 		update_groove_iteration()
 		
@@ -526,6 +527,7 @@ func _process(delta):
 		infolayer.print_info("FINISHED", "main")
 		infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
 
+	create_all_current_cues( cue_emitter.current_playback_time )
 		
 	if cue_emitter.current_playback_time < last_playback_time - 1.0:
 		stream.stop()
@@ -564,15 +566,53 @@ func update_cue_timing():
 	var time_to_target = abs(cue_emitter.translation.z-target.translation.z) / fly_distance
 	emit_early = fly_time * time_to_target
 
-func add_statistics_element(state_string, cue_type, difficulty, points, hit, starttime, targettime, hr):
-	var ingame_id = GameVariables.get_next_ingame_id()
-	var statistics_element = {"e": state_string, "t": cue_type, "d": difficulty, "p": points, "h": hit, "st": starttime,"tt": targettime, "hr": hr}	
+func add_statistics_element(ingame_id, state_string, cue_type, difficulty, points, hit, starttime, targettime, hr):
+	var statistics_element = {"e": state_string, "t": cue_type, "d": difficulty, "p": points, "h": hit, "st": starttime,"tt": targettime, "hr": hr}
 	GameVariables.level_statistics_data [ingame_id] = statistics_element
 	return ingame_id	
 
+var cue_emitter_list = []
 
+func insert_cue_sorted(ts, cue_data):
+	var selected_idx = 0
+	for cidx in range(len(cue_emitter_list)):
+		if ts < cue_emitter_list[cidx][0]:
+			break
+		selected_idx = cidx + 1
+	cue_emitter_list.insert(selected_idx, [ts, cue_data])
+
+
+func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", target_cue = null):
+	#Cue IDs have to be generated when they are added to the list so others can reference it
+	var ingame_id = GameVariables.get_next_ingame_id()
+	var cue_data = [ cue_type, x, y, target_time, fly_offset , fly_time , cue_subtype , ingame_id, target_cue]
+	insert_cue_sorted(cue_emitter.current_playback_time, cue_data)
+	return ingame_id  #true #create_and_attach_cue_actual(cue_type, x, y, target_time, fly_offset, fly_time , cue_subtype)
+
+func create_all_current_cues(ts):
+	while len(cue_emitter_list) > 0 and ts > cue_emitter_list[0][0]:
+		var tmp = cue_emitter_list.pop_front()
+		var cue_data = tmp[1]
+		if (cue_data[0] == "state_change"):
+			if cue_data[1] == CueState.STAND and beast_mode:
+				if not boxman1.in_beast_mode and not boxman2.in_beast_mode:
+					var beast_tmp = rng.randf()
+					if beast_tmp < beast_chance:
+						var boxman = boxman1 
+						if rng.randf() < 0.5:
+							 boxman = boxman2
+						boxman.activate_beast(Vector3(0,0,1),1.8)
+		else:
+			var cue = create_and_attach_cue_actual(cue_data[0], cue_data[1], cue_data[2], cue_data[3], cue_data[4], cue_data[5], cue_data[6], cue_data[7])		
+			if cue_data[8]:
+				var target_cue = cue_emitter.get_cue_by_id(cue_data[8])
+				print ("Path cue to: %d %s"%[cue_data[8], target_cue])
+				if target_cue:
+					cue.activate_path_cue(target_cue)
+					pass
+					
 # Create the actual cue node add it to the scene and the statistics
-func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype=""):
+func create_and_attach_cue_actual(cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", ingame_id=0):
 	cue_emitter.max_hits += 1
 	var cue_node
 	if cue_type == "right" or cue_type == "right_hold":
@@ -614,7 +654,7 @@ func create_and_attach_cue(cue_type, x, y, target_time, fly_offset=0, fly_time =
 		cue_node.set_transform(cue_node.get_transform().rotated(Vector3(0,0,1),-alpha))
 		
 	#Heartrate is stored with the start of the cue because that's the only definitive timestamp we know
-	var ingame_id = add_statistics_element(state_string(cue_emitter_state)+"/%s"%cue_subtype, cue_type, current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr)
+	add_statistics_element(ingame_id, state_string(cue_emitter_state)+"/%s"%cue_subtype, cue_type, current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr)
 	cue_node.ingame_id = ingame_id
 	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	move_modifier.connect("tween_completed",self,"_on_tween_completed")
@@ -762,7 +802,7 @@ func handle_sprint_cues(target_time):
 	var delta = now - last_sprint_update
 	var points = sprint_multiplier * running_speed * delta / 1000.0
 	last_sprint_update = now
-	var ingame_id = add_statistics_element(state_string(cue_emitter_state), "", current_difficulty, points, true, cue_emitter.current_playback_time, cue_emitter.current_playback_time, GameVariables.current_hr)
+	var ingame_id = add_statistics_element(GameVariables.get_next_ingame_id(), state_string(cue_emitter_state), "", current_difficulty, points, true, cue_emitter.current_playback_time, cue_emitter.current_playback_time, GameVariables.current_hr)
 	cue_emitter.score_points(points)
 
 
@@ -835,15 +875,13 @@ func handle_stand_cues_regular(target_time):
 	
 	if cue_selector == CueSelector.HAND:
 		if node_selector < 50:	
-			var n = create_and_attach_cue("left", -x,y_hand, target_time, -hand_cue_offset)
+			var n_id = create_and_attach_cue("left", -x,y_hand, target_time, -hand_cue_offset)
 			if double_punch:
-				var n2 = create_and_attach_cue("left", -x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time , -hand_cue_offset-double_punch_delay*dd_df)
-				n2.activate_path_cue(n)
+				var n2 = create_and_attach_cue("left", -x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time , -hand_cue_offset-double_punch_delay*dd_df,0,"",n_id)
 		else:			
-			var n = create_and_attach_cue("right", x,y_hand, target_time, -hand_cue_offset)
+			var n_id = create_and_attach_cue("right", x,y_hand, target_time, -hand_cue_offset)
 			if double_punch:
-				var n2 = create_and_attach_cue("right", x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time , -hand_cue_offset-double_punch_delay*dd_df)
-				n2.activate_path_cue(n)
+				var n2 = create_and_attach_cue("right", x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time , -hand_cue_offset-double_punch_delay*dd_df,0,"",n_id)
 	else:
 		if ducking_mode and rng.randf() < stand_avoid_head_cue:
 			temporary_cue_space_extension = 1.0
@@ -1063,18 +1101,13 @@ func emit_cue_node(target_time):
 		else:
 			print ("Take random state")
 			cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model, null, false)
+			
 			state_duration = min_state_duration * (1 + current_difficulty*current_difficulty*rng.randf()/5)
 
-		internal_state_change()		
+		var cue_data = [ "state_change", cue_emitter_state, 0, target_time, 0 , 0 , "" ]
+		insert_cue_sorted(cue_emitter.current_playback_time, cue_data)
 
-	if cue_emitter_state == CueState.STAND and beast_mode:
-		if not boxman1.in_beast_mode and not boxman2.in_beast_mode:
-			var beast_tmp = rng.randf()
-			if beast_tmp < beast_chance:
-				var boxman = boxman1 
-				if rng.randf() < 0.5:
-					 boxman = boxman2
-				boxman.activate_beast(Vector3(0,0,1),1.8)
+		internal_state_change()		
 
 	reset_cue_spacing()
 	if not state_changed:

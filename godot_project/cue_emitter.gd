@@ -25,6 +25,14 @@ func _ready():
 #func _process(delta):
 #	pass
 
+func get_cue_by_id(ingame_id):
+	var retVal = null
+	for c in self.get_children():
+		if "ingame_id" in c and c.ingame_id == ingame_id:
+			retVal = c
+			break
+	return retVal
+
 func update_statistics_element(obj, hit, points):
 	if GameVariables.level_statistics_data.has(obj.ingame_id):
 		GameVariables.level_statistics_data[obj.ingame_id]["h"] = hit
