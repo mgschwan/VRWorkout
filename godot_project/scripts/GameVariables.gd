@@ -266,7 +266,7 @@ func setup_globals():
 	
 
 func setup_globals_demo():
-	ProjectSettings.set("game/beast_mode", true)
+	ProjectSettings.set("game/beast_mode", false)
 	ProjectSettings.set("game/bpm", 120)
 	ProjectSettings.set("game/exercise/jump", false)
 	ProjectSettings.set("game/exercise/stand", true)
