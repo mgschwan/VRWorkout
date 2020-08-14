@@ -67,10 +67,11 @@ func insert_cue_sorted(ts, cue_data):
 		selected_idx = cidx + 1
 	cue_emitter_list.insert(selected_idx, [ts, cue_data])
 
-func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", target_cue = null):
+func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", target_cue = null, hit_velocity = null):
 	#Cue IDs have to be generated when they are added to the list so others can reference it
 	var ingame_id = GameVariables.get_next_ingame_id()
-	var cue_data = [ cue_type, x, y, target_time, fly_offset , fly_time , cue_subtype , ingame_id, target_cue]
+	var cue_data = [ cue_type, x, y, target_time, fly_offset , fly_time , cue_subtype , ingame_id, target_cue, hit_velocity]
+	print (str(cue_data))
 	insert_cue_sorted(ts, cue_data)
 	return ingame_id  #true #create_and_attach_cue_actual(cue_type, x, y, target_time, fly_offset, fly_time , cue_subtype)
 
@@ -104,7 +105,7 @@ func update_distribution(distribution, index, delta):
 # If current_distribution is set the probabilities are normalized by the actual distribution
 func state_transition(old_state, state_model, current_distribution = null, allow_self_transition = true):
 	var probabilities = state_model[old_state].duplicate(true)
-	print ("Probabilities pre: %s"%str(probabilities))
+	print ("Probabilities pre: %s (%d)"%[str(probabilities),old_state])
 	if len(probabilities) < len(state_model):
 		var sum = 0
 		for k in probabilities.keys():
@@ -133,7 +134,6 @@ func state_transition(old_state, state_model, current_distribution = null, allow
 		print ("Probabilities: %s"%str(probabilities))
 	var state_selector = rng.randi()%100
 	var new_state = old_state
-
 	var sum = 0
 	for p in probabilities:
 		sum += p
@@ -146,7 +146,10 @@ func state_transition(old_state, state_model, current_distribution = null, allow
 	if len(probabilities) > 0:
 		var cumulative_probability = 0
 		new_state = probabilities.keys()[0]
-		for k in probabilities.keys():
+		var keys = probabilities.keys()
+		print (str(keys))
+		keys.sort()
+		for k in keys:
 			cumulative_probability += factor * probabilities[k]
 			if state_selector < cumulative_probability:
 				new_state = k
@@ -155,7 +158,6 @@ func state_transition(old_state, state_model, current_distribution = null, allow
 	if current_distribution != null:
 		current_distribution = update_distribution(current_distribution, new_state, redistribution_speed)
 		print ("Distribution: %s"%str(current_distribution))
-
 	return new_state
 
 #Populate the cue parameters according to difficulty and player height
@@ -221,6 +223,7 @@ func setup_cue_parameters(difficulty, ph):
 			}
 		},
 		CueState.BURPEE : {
+			"burpee_length": 4.0 - difficulty/2.0,
 			CueSelector.HEAD : {
 				"yoffset" : 0.6
 			},
@@ -264,10 +267,8 @@ func handle_jump_cues(current_time, target_time, cue_emitter_state):
 	
 	create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 	if cue_parameters[cue_emitter_state][CueSelector.HAND]["has_hand"]:
-		create_and_attach_cue(current_time,"left", x-cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+hand_delay, -hand_delay * dd_df)
-		create_and_attach_cue(current_time, "right", x+cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+hand_delay, -hand_delay * dd_df)
-
-
+		create_and_attach_cue(current_time,"left", x-cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time, -hand_delay * dd_df)
+		create_and_attach_cue(current_time, "right", x+cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time, -hand_delay * dd_df)
 
 
 ############################# CRUNCH ######################################
@@ -368,35 +369,61 @@ var burpee_state_model = { BurpeeState.PUSHUP_LOW : { BurpeeState.JUMP: 100},
 var burpee_state = BurpeeState.JUMP
 
 func handle_burpee_cues(current_time, target_time, cue_emitter_state):
-	if exercise_changed:
-		burpee_state = BurpeeState.JUMP
-		
-	burpee_state = state_transition (burpee_state, burpee_state_model)
-	var y_head = 0
+	var length = cue_parameters[CueState.BURPEE]["burpee_length"]
+	var time_offset = 0
 	var x_head = 0
+	switch_floor_sign(current_time,"hands")
+	var y_head = cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
+	create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 
-	if burpee_state == BurpeeState.PUSHUP_HIGH:
-		switch_floor_sign(current_time,"hands")
-		y_head = cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
-	elif burpee_state == BurpeeState.PUSHUP_LOW:
-		switch_floor_sign(current_time,"hands")
-		y_head = 0.3
-		temporary_cue_space_extension = 1.0
-	else:
-		switch_floor_sign(current_time,"feet")
-		y_head = player_height + jump_offset
-		temporary_cue_space_extension = 1.0
+	time_offset += length/3.5
+
+	y_head = 0.3
+	create_and_attach_cue(current_time+time_offset,"head", x_head, y_head, target_time+time_offset)
+
+	time_offset += 1.5*length/3.5
+
+	switch_floor_sign(current_time+time_offset,"feet")
+	y_head = player_height + jump_offset
+	temporary_cue_space_extension = length
+
+	create_and_attach_cue(current_time+time_offset,"head_extended", x_head, y_head, target_time+time_offset)
+	var hand_delay = 0.15
+	var dd_df = fly_distance/fly_time	
+	var y_hand = y_head			
+	if cue_parameters[cue_emitter_state][CueSelector.HAND]["has_hand"]:
+		create_and_attach_cue(current_time+time_offset,"left", x_head-cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+time_offset, -hand_delay * dd_df, 0, "burpee_hand")
+		create_and_attach_cue(current_time+time_offset,"right", x_head+cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+time_offset, -hand_delay * dd_df, 0, "burpee_hand")		
 	
-	if burpee_state == BurpeeState.JUMP:
-		create_and_attach_cue(current_time,"head_extended", x_head, y_head, target_time)
-		var hand_delay = 0.15
-		var dd_df = fly_distance/fly_time	
-		var y_hand = y_head			
-		if cue_parameters[cue_emitter_state][CueSelector.HAND]["has_hand"]:
-			create_and_attach_cue(current_time,"left", x_head-cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+hand_delay, -hand_delay * dd_df, 0, "burpee_hand")
-			create_and_attach_cue(current_time,"right", x_head+cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+hand_delay, -hand_delay * dd_df, 0, "burpee_hand")		
-	else:
-		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
+#	if exercise_changed:
+#		burpee_state = BurpeeState.JUMP
+#
+#	burpee_state = state_transition (burpee_state, burpee_state_model)
+#	var y_head = 0
+#	var x_head = 0
+#
+#	if burpee_state == BurpeeState.PUSHUP_HIGH:
+#		switch_floor_sign(current_time,"hands")
+#		y_head = cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
+#	elif burpee_state == BurpeeState.PUSHUP_LOW:
+#		switch_floor_sign(current_time,"hands")
+#		y_head = 0.3
+#		temporary_cue_space_extension = 1.0
+#	else:
+#		switch_floor_sign(current_time,"feet")
+#		y_head = player_height + jump_offset
+#		temporary_cue_space_extension = 1.0
+#
+#	if burpee_state == BurpeeState.JUMP:
+#		create_and_attach_cue(current_time,"head_extended", x_head, y_head, target_time)
+#		var hand_delay = 0.15
+#		var dd_df = fly_distance/fly_time	
+#		var y_hand = y_head			
+#		if cue_parameters[cue_emitter_state][CueSelector.HAND]["has_hand"]:
+#			create_and_attach_cue(current_time,"left", x_head-cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+hand_delay, -hand_delay * dd_df, 0, "burpee_hand")
+#			create_and_attach_cue(current_time,"right", x_head+cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+hand_delay, -hand_delay * dd_df, 0, "burpee_hand")		
+#	else:
+#		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 	
 
 ############################# YOGA ######################################
@@ -444,13 +471,13 @@ func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitte
 
 	var y_hand = y_hand_base - cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]/2.0 + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
 
-	create_and_attach_cue(current_time,"left", x_hand-0.1, y_hand, target_time, -hand_cue_offset, 0, "double_swing")
-	create_and_attach_cue(current_time,"right", x_hand+0.1, y_hand, target_time, -hand_cue_offset, 0, "double_swing")
+	create_and_attach_cue(current_time,"left", x_hand-0.1, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0)
+	create_and_attach_cue(current_time,"right", x_hand+0.1, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0)
 
 	if min_cue_space >= 0.5:	
 		var double_punch_delay = 0.4
-		create_and_attach_cue(current_time+double_punch_delay,"left", -x_hand+0.1, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing")
-		create_and_attach_cue(current_time+double_punch_delay,"right", -x_hand-0.1, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing")
+		create_and_attach_cue(current_time+double_punch_delay,"left", -x_hand-0.1, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0)
+		create_and_attach_cue(current_time+double_punch_delay,"right", -x_hand+0.1, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0)
 	else:
 		last_double_swing_left = not last_double_swing_left
 		

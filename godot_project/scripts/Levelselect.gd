@@ -79,6 +79,10 @@ func update_widget():
 	get_node("SettingsCarousel/Connections/VRWorkoutConnection/PortalSwitch").value = ProjectSettings.get("game/portal_connection")
 	get_node("SettingsCarousel/Connections/VRWorkoutConnection/PortalSwitch").update_switch()
 
+	get_node("SettingsCarousel/Switchboard/InstructorSwitch").value = ProjectSettings.get("game/instructor")
+	get_node("SettingsCarousel/Switchboard/InstructorSwitch").update_switch()
+
+
 
 	GameVariables.exercise_state_list = []
 	get_node("SettingsCarousel/Exercises/StandardWorkout").mark_active()
@@ -236,3 +240,6 @@ func _on_PresetCollector_selected(collection):
 
 func _on_PortalSwitch_toggled(value):
 	ProjectSettings.set("game/portal_connection", value)
+
+func _on_InstructorSwitch_toggled(value):
+	ProjectSettings.set("game/instructor", value)

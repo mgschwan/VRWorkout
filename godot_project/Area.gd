@@ -22,8 +22,8 @@ func _on_Area_body_entered(body):
 		if body.cue_type == "hand":
 			var controller = get_parent()
 			var velocity = controller.get_hit_velocity()
-			print ("Velocity %.4f"%velocity)
-			if velocity > 1.25:
+			print ("Velocity %.4f/%.2f"%[velocity,body.velocity_required])
+			if velocity > body.velocity_required:
 				var hand = "right"
 				if controller.is_left:
 					hand = "left"

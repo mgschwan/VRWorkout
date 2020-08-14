@@ -13,7 +13,7 @@ var hud_enabled = false
 
 signal show_hud()
 signal hide_hud()
-
+signal streak_changed(count)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -33,10 +33,43 @@ func get_cue_by_id(ingame_id):
 			break
 	return retVal
 
+var current_points = 0
+var current_hits = 0
+var current_max_hits = 0
+var streak_length = 0
+
+func reset_current_points():
+	current_points = 0
+	current_hits = 0
+	current_max_hits = 0
+	streak_length = 0
+
+func get_current_streak():
+	return streak_length
+
+func get_hit_score():
+	return current_points
+	
+func get_success_rate():
+	var retVal = 100.0
+	if current_max_hits > 0:
+		retVal = 100.0 * float(current_hits)/float(current_max_hits)
+
 func update_statistics_element(obj, hit, points):
-	if GameVariables.level_statistics_data.has(obj.ingame_id):
-		GameVariables.level_statistics_data[obj.ingame_id]["h"] = hit
-		GameVariables.level_statistics_data[obj.ingame_id]["p"] = points
+	current_points += points
+	if hit:
+		current_hits += 1
+		streak_length += 1
+	else:
+		streak_length = 0
+	current_max_hits +=1
+
+	emit_signal("streak_changed", get_current_streak())
+
+	if obj:
+		if GameVariables.level_statistics_data.has(obj.ingame_id):
+			GameVariables.level_statistics_data[obj.ingame_id]["h"] = hit
+			GameVariables.level_statistics_data[obj.ingame_id]["p"] = points
 
 func score_negative_hits(hits):
 	get_viewport().get_camera().tint_screen(0.2)
@@ -58,6 +91,8 @@ func score_avoided(obj):
 	update_statistics_element(obj, false, 0)
 
 func score_points(hit_points):
+	update_statistics_element(null, hit_points > 0, hit_points)
+
 	if hit_points > 0:
 		points += hit_points
 		hits += 1

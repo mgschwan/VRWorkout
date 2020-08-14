@@ -20,7 +20,7 @@ func _ready():
 
 
 func print_info(text, color = "white"):
-	var text_node = get_node("Viewport/CanvasLayer/Container/Text")
+	var text_node = get_node("Viewport/CanvasLayer/Panel/Container/Text")
 	text_node.text = text
 	
 	var font_color = Color.white
@@ -31,4 +31,5 @@ func print_info(text, color = "white"):
 	elif color == "blue":
 		font_color = Color.blue
 	text_node.add_color_override("font_color", font_color)
+	get_node("Viewport").set_update_mode(Viewport.UPDATE_ONCE)
 	

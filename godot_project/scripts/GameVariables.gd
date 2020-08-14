@@ -261,8 +261,8 @@ var exercise_model = {
 var level_statistics_data = {}
 	
 func setup_globals():
-	setup_globals_demo()
-	#setup_globals_regular()	
+	#setup_globals_demo()
+	setup_globals_regular()	
 	
 
 func setup_globals_demo():
@@ -287,6 +287,10 @@ func setup_globals_demo():
 	ProjectSettings.set("game/external_songs", null)
 	ProjectSettings.set("game/equalizerr", true)
 	ProjectSettings.set("game/portal_connection", false)
+	
+	ProjectSettings.set("game/instructor", true)
+	
+	
 
 func setup_globals_regular():
 	ProjectSettings.set("game/beast_mode", false)
@@ -311,6 +315,7 @@ func setup_globals_regular():
 	ProjectSettings.set("game/player_height", 1.8)
 	ProjectSettings.set("game/external_songs", null)
 	ProjectSettings.set("game/portal_connection", false)
+	ProjectSettings.set("game/instructor", true)
 
 
 var exercise_state_list

@@ -251,7 +251,8 @@ func _ready():
 	levelselect_blueprint = preload("res://scenes/Levelselect.tscn")
 	if not vr_mode:
 		_on_Tracker_added("right", ARVRServer.TRACKER_CONTROLLER, 1)
-		GameVariables.trackers[0].translation.y = 1.5
+		GameVariables.trackers[0].translation.y = 1.3
+		GameVariables.trackers[0].translation.x = 0.55
 		
 func _on_level_finished	():
 	get_viewport().get_camera().blackout_screen(true)
@@ -403,7 +404,8 @@ func get_persisting_parameters():
 	return {"game/portal_connection": ProjectSettings.get("game/portal_connection"),
 			"game/hud_enabled":ProjectSettings.get("game/hud_enabled"),
 			"game/equalizer": ProjectSettings.get("game/equalizer"),
-			"game/exercise/kneesaver": ProjectSettings.get("game/exercise/kneesaver")
+			"game/exercise/kneesaver": ProjectSettings.get("game/exercise/kneesaver"),
+			"game/instructor": ProjectSettings.get("game/instructor")
 	}
 	
 var game_statistics = {}

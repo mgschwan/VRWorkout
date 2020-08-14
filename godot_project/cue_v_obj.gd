@@ -5,6 +5,8 @@ extends StaticBody
 # var b = "text"
 var ingame_id = 0
 
+var velocity_required = 1.25
+
 var hit = false
 var is_hold_cue = false
 var hold_time = 1.0

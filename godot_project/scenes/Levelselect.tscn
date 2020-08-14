@@ -29,7 +29,6 @@
 [ext_resource path="res://scenes/PresetCollection.tscn" type="PackedScene" id=27]
 [ext_resource path="res://scenes/VRWorkoutConnection.tscn" type="PackedScene" id=28]
 
-
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
 
@@ -188,7 +187,6 @@ ontext = "Online: yes"
 offtext = "Online: no"
 
 [node name="Switchboard" type="Spatial" parent="SettingsCarousel"]
-visible = false
 
 [node name="BeastModeSelector" type="StaticBody" parent="SettingsCarousel/Switchboard"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.132, 1.523, 1.277 )
@@ -265,6 +263,12 @@ offtext = "Safe pushup off"
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.367, 0.992, 1.277 )
 ontext = "Strength focus"
 offtext = "Cardio focus"
+
+[node name="InstructorSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.609, 0.992, 1.277 )
+value = true
+ontext = "Instructor on"
+offtext = "Instructor off"
 
 [node name="BurpeeSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0963061, 1.252, 1.277 )
@@ -425,6 +429,7 @@ transform = Transform( 0.114018, 0, -0.097467, 0, 0.15, 0, 0.097467, 0, 0.114018
 [connection signal="toggled" from="SettingsCarousel/Switchboard/PushupSwitch" to="." method="_on_PushupSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/SafePushupSwitch" to="." method="_on_SafePushupSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/StrengthCardioSwitch" to="." method="_on_StrengthCardioSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/Switchboard/InstructorSwitch" to="." method="_on_InstructorSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/BurpeeSwitch" to="." method="_on_BurpeeSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/EqualizerSwitch" to="." method="_on_EqualizerSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/DuckSwitch" to="." method="_on_DuckSwitch_toggled"]

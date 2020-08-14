@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://blue_outdoor_stage.tscn" type="PackedScene" id=2]
@@ -24,6 +24,7 @@
 [ext_resource path="res://GrooveDisplay.tscn" type="PackedScene" id=22]
 [ext_resource path="res://floor_sign.tscn" type="PackedScene" id=23]
 [ext_resource path="res://RunIndicator.tscn" type="PackedScene" id=24]
+[ext_resource path="res://scenes/VoiceInstructor.tscn" type="PackedScene" id=25]
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 2, 5 )
@@ -76,6 +77,8 @@ size = Vector2( 0.22, 0.13 )
 [node name="Main" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0225873, -0.0546217, 0.0125537 )
 script = ExtResource( 20 )
+
+[node name="VoiceInstructor" parent="." instance=ExtResource( 25 )]
 
 [node name="Viewport" type="Viewport" parent="."]
 size = Vector2( 1024, 256 )
@@ -229,6 +232,7 @@ transform = Transform( 10, 0, 0, 0, 8.50029, -5.53584, 0, 5.07871, 8.45678, -0.0
 mesh = SubResource( 12 )
 material/0 = null
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
+[connection signal="streak_changed" from="cue_emitter" to="." method="_on_cue_emitter_streak_changed"]
 [connection signal="camera_entered" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_entered"]
 [connection signal="camera_exited" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_exited"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]

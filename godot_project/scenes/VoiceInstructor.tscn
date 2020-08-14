@@ -1,0 +1,36 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scripts/VoiceInstructor.gd" type="Script" id=1]
+[ext_resource path="res://audio/instruction_keep_it_up.wav" type="AudioStream" id=2]
+[ext_resource path="res://audio/instruction_gogogo.wav" type="AudioStream" id=3]
+[ext_resource path="res://audio/instruction_go_for_it.wav" type="AudioStream" id=4]
+[ext_resource path="res://audio/instruction_faster.wav" type="AudioStream" id=5]
+[ext_resource path="res://audio/instruction_thats_the_spirit.wav" type="AudioStream" id=6]
+[ext_resource path="res://audio/instruction_you_are_on_a_roll.wav" type="AudioStream" id=7]
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="keep_it_up" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+bus = "Voice"
+
+[node name="go_for_it" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+bus = "Voice"
+
+[node name="go_go_go" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+bus = "Voice"
+
+[node name="thats_the_spirit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+bus = "Voice"
+
+[node name="you_are_on_a_roll" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+bus = "Voice"
+
+[node name="faster" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+bus = "Voice"

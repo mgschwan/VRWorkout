@@ -247,6 +247,7 @@ func setup_game_data():
 func _ready():
 	if random_seed:
 		rng.randomize()
+		exercise_builder.rng.randomize()
 	else:
 		rng.set_seed(0)
 	GameVariables.reset_ingame_id()
@@ -351,6 +352,7 @@ func _ready():
 		
 	update_safe_pushup()
 	
+
 func next_state_from_list():
 	state_list_index = (state_list_index + 1) % len(state_list)
 	cue_emitter_state = string_to_state(get_current_state_from_list())
@@ -492,6 +494,8 @@ func update_cue_timing():
 	fly_distance = abs(cue_emitter.translation.z-target.translation.z) + 2	
 	var time_to_target = abs(cue_emitter.translation.z-target.translation.z) / fly_distance
 	emit_early = fly_time * time_to_target
+	exercise_builder.fly_distance = fly_distance
+	
 
 func add_statistics_element(ingame_id, state_string, cue_type, difficulty, points, hit, starttime, targettime, hr):
 	var statistics_element = {"e": state_string, "t": cue_type, "d": difficulty, "p": points, "h": hit, "st": starttime,"tt": targettime, "hr": hr}
@@ -505,20 +509,20 @@ func create_all_current_cues(ts):
 		var cue_data = tmp[1]
 		if cue_data[0] == "state_change":
 			print ("State change")
+			update_sequence_results()
 			internal_state_change()
 		elif cue_data[0] == "floor_sign":
 			switch_floor_sign_actual(cue_data[1])
 		else:
-			var cue = create_and_attach_cue_actual(cue_data[0], cue_data[1], cue_data[2], cue_data[3], cue_data[4], cue_data[5], cue_data[6], cue_data[7])		
+			var cue = create_and_attach_cue_actual(cue_data[0], cue_data[1], cue_data[2], cue_data[3], cue_data[4], cue_data[5], cue_data[6], cue_data[7], cue_data[9])		
 			if cue_data[8]:
 				var target_cue = cue_emitter.get_cue_by_id(cue_data[8])
-				print ("Path cue to: %d %s"%[cue_data[8], target_cue])
 				if target_cue:
 					cue.activate_path_cue(target_cue)
 					pass
 					
 # Create the actual cue node add it to the scene and the statistics
-func create_and_attach_cue_actual(cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", ingame_id=0):
+func create_and_attach_cue_actual(cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", ingame_id=0, hit_velocity = null):
 	cue_emitter.max_hits += 1
 	var cue_node
 	if cue_type == "right" or cue_type == "right_hold":
@@ -548,6 +552,7 @@ func create_and_attach_cue_actual(cue_type, x, y, target_time, fly_offset=0, fly
 	cue_node.add_child(move_modifier)
 	main_node.add_child(cue_node)
 	cue_node.translation = Vector3(x,y,0+fly_offset)
+	
 	if cue_type == "head_inverted":
 		cue_node.set_transform( cue_node.get_transform().rotated(Vector3(0,0,1), 3.1415926))
 	elif cue_type == "head_left":
@@ -559,9 +564,13 @@ func create_and_attach_cue_actual(cue_type, x, y, target_time, fly_offset=0, fly
 		var alpha = atan2(x,y-head_y_pos)
 		cue_node.set_transform(cue_node.get_transform().rotated(Vector3(0,0,1),-alpha))
 		
+	if hit_velocity != null:
+		cue_node.velocity_required = hit_velocity
+
 	#Heartrate is stored with the start of the cue because that's the only definitive timestamp we know
 	add_statistics_element(ingame_id, state_string(cue_emitter_state)+"/%s"%cue_subtype, cue_type, current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr)
 	cue_node.ingame_id = ingame_id
+	
 	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	move_modifier.connect("tween_completed",self,"_on_tween_completed")
 	move_modifier.start()
@@ -804,6 +813,12 @@ func _on_ExerciseSelector_selected(type):
 	last_state_change = cue_emitter.current_playback_time
 	internal_state_change()
 
+func update_sequence_results():
+	var last_score = cue_emitter.get_hit_score()
+	var last_success_rate = cue_emitter.get_success_rate()
+		
+	cue_emitter.reset_current_points()
+
 
 func _on_PositionSign_state_change_completed():
 	update_safe_pushup()
@@ -836,3 +851,28 @@ func controller_tracking_regained(controller):
 				
 			node.has_been_hit(type)
 		
+
+
+func play_encouragement():
+	var selector = rng.randi()%5
+	if selector == 0:
+		get_node("VoiceInstructor").say("keep it up")
+	elif selector == 1:
+		get_node("VoiceInstructor").say("go go go")
+	elif selector == 2:
+		get_node("VoiceInstructor").say("go for it")
+	elif selector == 3:
+		get_node("VoiceInstructor").say("thats the spirit")
+	elif selector == 4:
+		get_node("VoiceInstructor").say("you are on a roll")
+	
+
+func _on_cue_emitter_streak_changed(count):
+	if count == 15:
+		if cue_emitter_state == CueState.SPRINT:
+			if run_point_multiplier >= 2:
+				play_encouragement()
+			else:
+				get_node("VoiceInstructor").say("faster")
+		else:					
+			play_encouragement()
