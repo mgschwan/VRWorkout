@@ -190,6 +190,8 @@ func setup_cue_parameters(difficulty, ph):
 			}		
 		},	
 		CueState.PUSHUP : {
+			"sideplank_cue_space": 2.5 - difficulty/2.0,
+			"sideplank_has_pushup": difficulty > 0.9,
 			CueSelector.HEAD : {
 				"xrange" : 0.4,
 				"yoffset" : 0.25,
@@ -223,7 +225,7 @@ func setup_cue_parameters(difficulty, ph):
 			}
 		},
 		CueState.BURPEE : {
-			"burpee_length": 4.0 - difficulty/2.0,
+			"burpee_length": 4.5 - difficulty/2.0,
 			CueSelector.HEAD : {
 				"yoffset" : 0.6
 			},
@@ -343,6 +345,8 @@ func handle_pushup_cues(current_time, target_time, cue_emitter_state):
 
 		var hand_delay = 0.15
 		var dd_df = fly_distance/fly_time				
+
+		temporary_cue_space_extension = cue_parameters[cue_emitter_state]["sideplank_cue_space"]
 				
 		if pushup_state == PushupState.LEFT_SIDEPLANK:
 			create_and_attach_cue(current_time,"head_left", x_head-0.3, y_head, target_time,0,0,"sideplank")
@@ -350,7 +354,9 @@ func handle_pushup_cues(current_time, target_time, cue_emitter_state):
 		else:
 			create_and_attach_cue(current_time,"head_right", x_head+0.3, y_head, target_time,0,0,"sideplank")
 			create_and_attach_cue(current_time,"left", x, y_hand, target_time + hand_delay, -hand_delay * dd_df,0,"sideplank")
-		temporary_cue_space_extension = 2.5
+		if cue_parameters[cue_emitter_state]["sideplank_has_pushup"]:
+			var tmp = 3*temporary_cue_space_extension / 4.0
+			create_and_attach_cue(current_time + tmp,"head", 0, cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"], target_time+tmp,0,0,"sideplank")
 
 
 ############################# BURPEE ######################################
@@ -376,12 +382,12 @@ func handle_burpee_cues(current_time, target_time, cue_emitter_state):
 	var y_head = cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
 	create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 
-	time_offset += length/3.5
+	time_offset = 0.3*length
 
-	y_head = 0.3
+	y_head = 0.25
 	create_and_attach_cue(current_time+time_offset,"head", x_head, y_head, target_time+time_offset)
 
-	time_offset += 1.5*length/3.5
+	time_offset = 0.6*length
 
 	switch_floor_sign(current_time+time_offset,"feet")
 	y_head = player_height + jump_offset

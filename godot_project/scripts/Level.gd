@@ -76,11 +76,7 @@ var target
 var boxman1
 var boxman2
 	
-
-	
 var cue_emitter_state = CueState.STAND
-
-
 
 var beast_chance = 0.1
 var last_emit = 0.0
@@ -870,7 +866,7 @@ func play_encouragement():
 func _on_cue_emitter_streak_changed(count):
 	if count == 15:
 		if cue_emitter_state == CueState.SPRINT:
-			if run_point_multiplier >= 2:
+			if run_point_multiplier >= 3:
 				play_encouragement()
 			else:
 				get_node("VoiceInstructor").say("faster")
