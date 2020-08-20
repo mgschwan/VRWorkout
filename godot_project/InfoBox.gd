@@ -1,6 +1,7 @@
 extends Spatial
 export var default_text = "demotext"
 
+export(bool) var bbtext = false 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -16,5 +17,13 @@ func _ready():
 #	pass		
 
 func print_info(text):
-	get_node("ViewportInfo/CanvasLayer/Container/Text").text = text
+	var n = get_node("ViewportInfo/CanvasLayer/Container/Text")
+	if bbtext:
+		if "bbcode_enabled" in n:
+			n.bbcode_enabled = true 
+		n.bbcode_text = text
+	else:
+		if "bbcode_enabled" in n:
+			n.bbcode_enabled = false 
+		n.text = text
 	get_node("ViewportInfo").render_target_update_mode = Viewport.UPDATE_ONCE

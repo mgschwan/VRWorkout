@@ -71,19 +71,25 @@ func update_statistics_element(obj, hit, points):
 			GameVariables.level_statistics_data[obj.ingame_id]["h"] = hit
 			GameVariables.level_statistics_data[obj.ingame_id]["p"] = points
 
+func update_hits(hit_score, is_hit):
+	self.max_hits += hit_score
+	if is_hit:
+		self.hits += hit_score
+		self.hits = max(self.hits, 0)
+
 func score_negative_hits(hits):
 	get_viewport().get_camera().tint_screen(0.2)
-	self.hits = max(self.hits-hits, 0)
-	max_hits += hits
+	update_hits(-hits, true)
 	point_indicator.emit_text("-%d hits"%hits, "red")
 
 func score_positive_hits(hits):
-	self.hits += hits 
-	max_hits += hits
+	update_hits(hits, true)
+
 	point_indicator.emit_text("+%d hits"%hits, "green")
 
 func score_miss(obj):
 	point_indicator.emit_text("miss", "red")
+	update_hits(obj.hit_score, false)
 	update_statistics_element(obj, false, 0)
 
 #If a cue that should not have been hit has been avoided
@@ -95,8 +101,7 @@ func score_points(hit_points):
 
 	if hit_points > 0:
 		points += hit_points
-		hits += 1
-		max_hits += 1
+		update_hits(1,true)
 		point_indicator.emit_text("+%d"%hit_points,"green")
 		get_parent().update_info(hits,max_hits,points) 
 	return hit_points
@@ -107,7 +112,7 @@ func score_hit(delta, obj = null):
 	
 	var hit_points = p * multiplier
 	points += hit_points
-	hits += 1
+	update_hits(obj.hit_score, true)
 	point_indicator.emit_text("+%d"%hit_points,"green")
 
 	update_statistics_element(obj, true, hit_points)

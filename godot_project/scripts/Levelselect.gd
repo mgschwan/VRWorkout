@@ -124,6 +124,10 @@ func _ready():
 func set_main_text(text):
 	get_node("MainText").print_info(text)
 
+func set_stat_text(text):
+	get_node("Stats").print_info(text)
+
+
 func get_last_beat():
 	return get_node("BPM").last_beat
 
@@ -243,3 +247,7 @@ func _on_PortalSwitch_toggled(value):
 
 func _on_InstructorSwitch_toggled(value):
 	ProjectSettings.set("game/instructor", value)
+
+
+func _on_Recenter_selected():
+	get_tree().current_scene.start_countdown(5,"recenter_screen")

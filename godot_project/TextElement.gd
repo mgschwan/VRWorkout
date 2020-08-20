@@ -22,8 +22,8 @@ func _ready():
 	print_info(text)
 
 func print_info(t):
-	text = t
-	textnode.text = t
+	text = t.replace("\\n","\n")
+	textnode.text = text
 	get_node("Viewport").render_target_update_mode = Viewport.UPDATE_ONCE
 
 

@@ -87,6 +87,10 @@ size = Vector3( 0.03, 0.03, 0.03 )
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
 script = ExtResource( 6 )
 
+[node name="Recenter" parent="." instance=ExtResource( 24 )]
+transform = Transform( -1.62921e-07, 1, 4.37114e-08, -1.1921e-07, -4.37114e-08, 1, 1, 1.62921e-07, 1.1921e-07, 0, 0.0653074, 0 )
+ontext = "Recenter"
+
 [node name="platform" parent="." instance=ExtResource( 19 )]
 transform = Transform( 0.913545, 0, 0.406737, 0, 1, 0, -0.406737, 0, 0.913545, 0, -0.346909, 0 )
 
@@ -156,17 +160,24 @@ song_name = "Freeplay 5 minutes"
 level_number = -3
 
 [node name="MainText" parent="." instance=ExtResource( 17 )]
-transform = Transform( -1.54463e-07, -0.974043, 0.226362, -7.37582e-08, -0.226362, -0.974043, 1, -1.6715e-07, -3.68791e-08, 1.55057, 2.30847, 2.5262e-07 )
+transform = Transform( -1.54463e-07, -0.974043, 0.226362, -7.37582e-08, -0.226362, -0.974043, 1, -1.6715e-07, -3.68791e-08, 2.17868, 2.30847, 3.54952e-07 )
 default_text = "VRWorkout"
 
 [node name="text_panel" parent="MainText" instance=ExtResource( 18 )]
 transform = Transform( 1.1, 0, -9.32587e-16, 0, 1, 0, 1.70974e-15, 0, 0.6, 6.68336e-11, -0.00769687, 0.00178862 )
 
 [node name="Tutorial" parent="." instance=ExtResource( 17 )]
-transform = Transform( 1, -8.45779e-09, -7.37582e-08, -7.37582e-08, -0.226362, -0.974043, -8.45779e-09, 0.974043, -0.226362, -0.20336, 2.31827, -1.34073 )
+transform = Transform( 0.384669, -0.854052, 0.158781, -7.05189e-08, -0.226362, -0.779235, 0.701449, 0.468355, -0.0870744, 1.57591, 2.58036, -2.13026 )
 
 [node name="text_panel" parent="Tutorial" instance=ExtResource( 18 )]
-transform = Transform( 1.2, 0, 0, 0, 1, 9.97291e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
+transform = Transform( 1.2, 0, 0, 0, 1, 9.9729e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
+
+[node name="Stats" parent="." instance=ExtResource( 17 )]
+transform = Transform( -0.415138, -0.832633, 0.154799, 5.90065e-08, -0.226362, -0.779235, 0.683857, -0.505452, 0.0939715, 1.44823, 2.58036, 2.17733 )
+default_text = "Workout Statistics"
+
+[node name="text_panel" parent="Stats" instance=ExtResource( 18 )]
+transform = Transform( 1.2, 0, 0, 0, 1, 9.9729e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
 
 [node name="SettingsCarousel" type="Spatial" parent="."]
 transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 3.57628e-07, 0, -2.3 )
@@ -417,6 +428,7 @@ ontext = "Connect"
 
 [node name="PlayerHeightAdjuster" parent="." instance=ExtResource( 26 )]
 transform = Transform( 0.114018, 0, -0.097467, 0, 0.15, 0, 0.097467, 0, 0.114018, 0.927395, 0, -1.05638 )
+[connection signal="selected" from="Recenter" to="." method="_on_Recenter_selected"]
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
 [connection signal="selected" from="SongSelector/Freeplay1" to="SongSelector" method="_on_level_block_selected"]
 [connection signal="selected" from="SongSelector/Freeplay2" to="SongSelector" method="_on_level_block_selected"]

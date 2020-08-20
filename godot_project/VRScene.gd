@@ -1,5 +1,7 @@
 extends Spatial
 
+signal recenter_scene()
+
 var level_blueprint = null 
 var levelselect_blueprint = null  
 var splashscreen = preload("res://Splashscreen.tscn").instance()
@@ -40,6 +42,7 @@ var total_points = 0
 var last_points = 0
 var total_played = 0
 var last_played = 0
+var vrw_score = 0
 
 
 var ovr_init_config = null;
@@ -154,8 +157,11 @@ func _on_Tracker_added(tracker_name, type, id):
 		new_controller.set_detail_select(GameVariables.detail_selection_mode)
 		GameVariables.trackers.append(new_controller)
 
-
-
+func set_controller_visible(value):
+	for t in GameVariables.trackers:
+		if t:
+			print ("Change controller visibility: %s"%str(value))
+			t.set_visible(value)
 			
 func set_detail_selection_mode(value):
 	GameVariables.detail_selection_mode = value
@@ -232,6 +238,7 @@ func _ready():
 	var config = gu.load_persistent_config(GameVariables.config_file_location)
 	gu.apply_config_parameters(config)
 
+	connect("recenter_scene",self,"on_recenter_scene")
 
 	initialize() #VR specific initialization
 
@@ -273,6 +280,9 @@ func _on_level_finished	():
 	total_points += result["points"]
 	last_played = result["time"]
 	total_played += result["time"]
+	vrw_score = result["vrw_score"]
+	
+	
 
 	game_statistics["api_version"] = GameVariables.api_version
 	game_statistics["score"] = result["points"]
@@ -293,7 +303,7 @@ func _on_level_finished	():
 	var last_played_str = gu.seconds_to_timestring(last_played)
 	var total_played_str = gu.seconds_to_timestring(total_played)
 	
-	levelselect.set_main_text("Player results\n\nLast round\nPoints: %d"%last_points+" Duration: %s"%last_played_str+"\nTotal\nPoints: %d"%total_points+" Duration: %s"%total_played_str) 
+	levelselect.set_stat_text("Player results\n\nLast round\nScore: %.2f (%d/%d)\nPoints: %d"%[vrw_score,result["hits"],result["max_hits"],last_points]+" Duration: %s"%last_played_str+"\n\nTotal\nPoints: %d"%total_points+" Duration: %s"%total_played_str) 
 
 	yield(get_tree().create_timer(1), "timeout")
 	get_viewport().get_camera().blackout_screen(false)
@@ -373,8 +383,35 @@ func _update_hand_model(hand: ARVRController, model : Spatial, offset_model: Spa
 	else:
 		return false;
 
+var recenter_countdown_active = false
+func start_countdown(secs, callback_signal):
+	if not recenter_countdown_active:
+		recenter_countdown_active = true
+		var display = get_node("ARVROrigin/ARVRCamera/Countdown")
+		display.scale = Vector3(1.0,1.0,1.0)
+		display.show()
+		for counter in range(secs):
+			display.print_info("%d"%int(secs-counter))
+			yield(get_tree().create_timer(1),"timeout")
+		display.hide()
+		emit_signal("recenter_scene")
+		recenter_countdown_active = false
 
+func on_recenter_scene():
+	var player = get_node("ARVROrigin/ARVRCamera")
+	var origin = get_node("ARVROrigin")
+	var rot = player.global_transform.basis.get_euler()
+	var origin_rot = origin.rotation
+	var delta_rot = Vector3(origin_rot[0], origin_rot[1]-rot[1], origin_rot[2])
+	print("P: %s   O: %s   D:%s"%[str(rot), str(origin_rot),str(delta_rot)])
+	origin.set_rotation(delta_rot)
 
+	var pos = player.global_transform.origin
+	var origin_pos = origin.translation
+	var delta = Vector3(origin_pos[0]-pos[0], origin_pos[1], origin_pos[2]-pos[2])
+	print("P: %s   O: %s   D:%s"%[str(pos), str(origin_pos),str(delta)])
+	origin.set_translation(delta)
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 
@@ -384,7 +421,8 @@ func _process(delta):
 			var image = get_viewport().get_texture().get_data()
 			image.flip_y()
 			image.save_png("/tmp/vrworkout_screenshot_%d.png"%OS.get_ticks_msec())
-	
+		elif Input.is_key_pressed(KEY_R):
+			start_countdown(5, "recenter_scene")
 	if level != null:
 		if beast_mode:
 			var tmp = level.beast_mode_supported()
@@ -443,9 +481,12 @@ func _on_DemoTimer_timeout():
 	#GameVariables.exercise_state_list = GameVariables.predefined_exercises["Low pyramid"]
 	#_on_Area_level_selected("res://audio/songs/01_VRWorkout.ogg", 0, 1)
 	
-	_on_Area_level_selected("res://audio/nonfree_songs/04_VR_Raw.ogg", 2, 1)
+	#_on_Area_level_selected("res://audio/nonfree_songs/04_VR_Raw.ogg", 2, 1)
 		
+	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
 	#_on_Area_level_selected("res://audio/songs/02_VRWorkout_Beater.ogg", 2, 1)
+
+
 	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)
 	print(get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").stream.get_length())

@@ -12,15 +12,12 @@ func _ready():
 	print_info(default_text, default_color_name)
 	#set_texture(get_node("Viewport").get_texture())
 	
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 
-
 func print_info(text, color = "white"):
-	var text_node = get_node("Viewport/CanvasLayer/Panel/Container/Text")
+	var text_node = get_node("Viewport/CanvasLayer/BGPanel/Panel/Container/Text")
 	text_node.text = text
 	
 	var font_color = Color.white

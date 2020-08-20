@@ -1,24 +1,19 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://fonts/bebas.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://fonts/Droid_Sans_Regular.tres" type="DynamicFont" id=1]
 [ext_resource path="res://InfoBox.gd" type="Script" id=2]
+[ext_resource path="res://fonts/Droid_Sans_Bold.tres" type="DynamicFont" id=3]
 
-[sub_resource type="DynamicFont" id=1]
-size = 52
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 1 )
-
-[sub_resource type="PlaneMesh" id=2]
+[sub_resource type="PlaneMesh" id=1]
 size = Vector2( 2, 1 )
 
-[sub_resource type="ViewportTexture" id=3]
+[sub_resource type="ViewportTexture" id=2]
 viewport_path = NodePath("ViewportInfo")
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="SpatialMaterial" id=3]
 resource_local_to_scene = true
 flags_unshaded = true
-albedo_texture = SubResource( 3 )
+albedo_texture = SubResource( 2 )
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 2 )
@@ -37,17 +32,19 @@ render_target_update_mode = 0
 [node name="Container" type="MarginContainer" parent="ViewportInfo/CanvasLayer"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 1029.0
+margin_bottom = 517.0
 
-[node name="Text" type="Label" parent="ViewportInfo/CanvasLayer/Container"]
-margin_right = 167.0
-margin_bottom = 63.0
+[node name="Text" type="RichTextLabel" parent="ViewportInfo/CanvasLayer/Container"]
+margin_right = 1024.0
+margin_bottom = 512.0
 size_flags_horizontal = 5
 size_flags_vertical = 5
-custom_fonts/font = SubResource( 1 )
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 1 )
 text = "DemoText"
+fit_content_height = true
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
-mesh = SubResource( 2 )
-material/0 = SubResource( 4 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 3 )

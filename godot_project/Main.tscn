@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://hud_left_arrow.tscn" type="PackedScene" id=4]
 [ext_resource path="res://hud_too_low.tscn" type="PackedScene" id=5]
 [ext_resource path="res://HUDView.gd" type="Script" id=6]
+[ext_resource path="res://PointIndicatorSprite.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scripts/HeartRateReceiver.gd" type="Script" id=8]
 [ext_resource path="res://AreaHead.gd" type="Script" id=9]
 [ext_resource path="res://audio/head_hit.wav" type="AudioStream" id=16]
@@ -79,6 +80,11 @@ material/0 = SubResource( 3 )
 visible = false
 mesh = SubResource( 4 )
 material/0 = SubResource( 5 )
+
+[node name="Countdown" parent="ARVROrigin/ARVRCamera" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.108, -0.878 )
+visible = false
+default_text = "5"
 
 [node name="HUDView" type="Spatial" parent="ARVROrigin/ARVRCamera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.108, -0.878 )

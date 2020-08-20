@@ -15,6 +15,8 @@ var start_time = 0.0
 var cue_type = "hand"
 var hold_time_offset = 0.0
 
+var hit_score = 1.0
+
 export(bool) var cue_left = true
 var coupled_node = null 
 var parent

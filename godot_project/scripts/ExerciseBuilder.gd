@@ -67,16 +67,33 @@ func insert_cue_sorted(ts, cue_data):
 		selected_idx = cidx + 1
 	cue_emitter_list.insert(selected_idx, [ts, cue_data])
 
-func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", target_cue = null, hit_velocity = null):
+func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", target_cue = null, hit_velocity = null, hit_score = 1.0):
 	#Cue IDs have to be generated when they are added to the list so others can reference it
 	var ingame_id = GameVariables.get_next_ingame_id()
-	var cue_data = [ cue_type, x, y, target_time, fly_offset , fly_time , cue_subtype , ingame_id, target_cue, hit_velocity]
+	var cue_data = {
+		"cue_type": cue_type, 
+		"x": x, 
+		"y": y,
+		"target_time": target_time, 
+		"fly_offset": fly_offset, 
+		"fly_time": fly_time, 
+		"cue_subtype": cue_subtype, 
+		"ingame_id": ingame_id,
+		"target_cue": target_cue,
+		"hit_velocity": hit_velocity,
+		"hit_score": hit_score
+		}
 	print (str(cue_data))
 	insert_cue_sorted(ts, cue_data)
 	return ingame_id  #true #create_and_attach_cue_actual(cue_type, x, y, target_time, fly_offset, fly_time , cue_subtype)
 
+
 func switch_floor_sign(ts, floorsign):
-	var cue_data = [ "floor_sign", floorsign, 0, ts, 0 , 0 , "", 0, null ]
+	var cue_data = 	{
+		"cue_type": "floor_sign", 
+		"state": floorsign, 
+		"target_time": ts, 
+		}
 	insert_cue_sorted(ts, cue_data)
 
 #Returns a copy of the model without the state as a target
@@ -301,9 +318,9 @@ func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 		var spread = cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]/2.0+rng.randf()*cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]
 		var t = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), Vector3(0,0,0)).rotated(Vector3(0,0,1), rot)
 		var tmp = t.xform(Vector3(x+spread,y_hand,0))		
-		create_and_attach_cue(current_time,"right", tmp.x, tmp.y, target_time)
+		create_and_attach_cue(current_time,"right", tmp.x, tmp.y, target_time,0,0,"",null,null,0.5)
 		tmp = t.xform(Vector3(x-spread,y_hand,0))		
-		create_and_attach_cue(current_time,"left", tmp.x,tmp.y, target_time)
+		create_and_attach_cue(current_time,"left", tmp.x,tmp.y, target_time,0,0,"",null,null,0.5)
 	else:
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 
@@ -357,6 +374,7 @@ func handle_pushup_cues(current_time, target_time, cue_emitter_state):
 		if cue_parameters[cue_emitter_state]["sideplank_has_pushup"]:
 			var tmp = 3*temporary_cue_space_extension / 4.0
 			create_and_attach_cue(current_time + tmp,"head", 0, cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"], target_time+tmp,0,0,"sideplank")
+			temporary_cue_space_extension += 0.5
 
 
 ############################# BURPEE ######################################
@@ -477,13 +495,14 @@ func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitte
 
 	var y_hand = y_hand_base - cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]/2.0 + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
 
-	create_and_attach_cue(current_time,"left", x_hand-0.1, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0)
-	create_and_attach_cue(current_time,"right", x_hand+0.1, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0)
+	create_and_attach_cue(current_time,"left", x_hand-0.1, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
+	create_and_attach_cue(current_time,"right", x_hand+0.1, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
 
 	if min_cue_space >= 0.5:	
 		var double_punch_delay = 0.4
-		create_and_attach_cue(current_time+double_punch_delay,"left", -x_hand-0.1, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0)
-		create_and_attach_cue(current_time+double_punch_delay,"right", -x_hand+0.1, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0)
+		create_and_attach_cue(current_time+double_punch_delay,"left", -x_hand-0.1, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
+		create_and_attach_cue(current_time+double_punch_delay,"right", -x_hand+0.1, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
+		temporary_cue_space_extension = double_punch_delay
 	else:
 		last_double_swing_left = not last_double_swing_left
 		

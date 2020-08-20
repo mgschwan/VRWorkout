@@ -503,23 +503,36 @@ func create_all_current_cues(ts):
 	while len(exercise_builder.cue_emitter_list) > 0 and ts > exercise_builder.cue_emitter_list[0][0]:
 		var tmp = exercise_builder.cue_emitter_list.pop_front()
 		var cue_data = tmp[1]
-		if cue_data[0] == "state_change":
+		if cue_data["cue_type"] == "state_change":
 			print ("State change")
 			update_sequence_results()
 			internal_state_change()
-		elif cue_data[0] == "floor_sign":
-			switch_floor_sign_actual(cue_data[1])
+			
+			#Todo hide controler on sprint 
+		elif cue_data["cue_type"] == "floor_sign":
+			switch_floor_sign_actual(cue_data["state"])
 		else:
-			var cue = create_and_attach_cue_actual(cue_data[0], cue_data[1], cue_data[2], cue_data[3], cue_data[4], cue_data[5], cue_data[6], cue_data[7], cue_data[9])		
-			if cue_data[8]:
-				var target_cue = cue_emitter.get_cue_by_id(cue_data[8])
+			var cue = create_and_attach_cue_actual(cue_data)
+			if cue_data["target_cue"]:
+				var target_cue = cue_emitter.get_cue_by_id(cue_data["target_cue"])
 				if target_cue:
 					cue.activate_path_cue(target_cue)
 					pass
 					
 # Create the actual cue node add it to the scene and the statistics
-func create_and_attach_cue_actual(cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", ingame_id=0, hit_velocity = null):
-	cue_emitter.max_hits += 1
+func create_and_attach_cue_actual(cue_data):
+	var cue_type = cue_data["cue_type"]
+	var x = cue_data["x"]
+	var y = cue_data["y"]
+	var target_time = cue_data["target_time"]
+	var fly_offset = cue_data["fly_offset"]
+	var fly_time = cue_data["fly_time"]
+	var cue_subtype = cue_data["cue_subtype"]
+	var ingame_id = cue_data["ingame_id"]
+	var hit_velocity = cue_data["hit_velocity"]
+	var hit_score = cue_data["hit_score"]
+	
+	#cue_emitter.max_hits += hit_score
 	var cue_node
 	if cue_type == "right" or cue_type == "right_hold":
 		cue_node = cue_horiz.instance()
@@ -541,6 +554,9 @@ func create_and_attach_cue_actual(cue_type, x, y, target_time, fly_offset=0, fly
 	var actual_flytime = fly_time
 	if fly_time == 0:
 		actual_flytime = self.fly_time
+	
+	cue_node.hit_score = hit_score
+	
 	
 	var main_node = get_node("cue_emitter")
 	var move_modifier = Tween.new()
@@ -639,6 +655,9 @@ func handle_sprint_cues_actual(target_time):
 
 func internal_state_change():
 	last_state_change = cue_emitter.current_playback_time
+	if cue_emitter_state != CueState.SPRINT:
+		get_tree().current_scene.set_controller_visible(true)
+		
 	infolayer.print_info(state_string(cue_emitter_state).to_upper(), "main")
 	infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
 	get_node("PositionSign").start_sign(cue_emitter.translation, get_node("target").translation, emit_early)
@@ -663,7 +682,12 @@ func emit_cue_node(target_time):
 			
 			state_duration = exercise_builder.min_state_duration * (1 + current_difficulty*current_difficulty*rng.randf()/5)
 
-		var cue_data = [ "state_change", cue_emitter_state, 0, target_time, 0 , 0 , "", 0, null ]
+		var cue_data = {
+		"cue_type": "state_change",
+		"state": cue_emitter_state, 
+		"target_time": target_time, 
+		}
+		
 		exercise_builder.insert_cue_sorted(cue_emitter.current_playback_time, cue_data)
 		emitter_state_changed = true
 
@@ -754,7 +778,10 @@ func setup_multiplier(running_speed):
 
 
 func get_points():
-	return {"points": cue_emitter.points, "hits": cue_emitter.hits, "max_hits": cue_emitter.max_hits,"time": last_playback_time}
+	var vrw_score = 0
+	if cue_emitter.max_hits > 0:
+		vrw_score = 100.0 *cue_emitter.hits/cue_emitter.max_hits
+	return {"points": cue_emitter.points, "vrw_score": vrw_score, "hits": cue_emitter.hits, "max_hits": cue_emitter.max_hits,"time": last_playback_time}
 
 var last_grooove_update = 0
 func update_groove(groove_bpm):
@@ -821,6 +848,8 @@ func _on_PositionSign_state_change_completed():
 	var gauge = get_node("rungauge")
 	if cue_emitter_state == CueState.SPRINT and not gauge.visible:
 		gauge.show()
+		get_tree().current_scene.set_controller_visible(false)
+
 
 		
 var auto_hit_distance = 0.3

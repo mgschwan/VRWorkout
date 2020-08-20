@@ -13,6 +13,7 @@ var cue_type = "head"
 var extended = false
 export var avoid = false
 
+var hit_score = 1.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
