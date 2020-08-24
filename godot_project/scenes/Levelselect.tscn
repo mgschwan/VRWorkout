@@ -88,7 +88,7 @@ transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1
 script = ExtResource( 6 )
 
 [node name="Recenter" parent="." instance=ExtResource( 24 )]
-transform = Transform( -1.62921e-07, 1, 4.37114e-08, -1.1921e-07, -4.37114e-08, 1, 1, 1.62921e-07, 1.1921e-07, 0, 0.0653074, 0 )
+transform = Transform( -1.62921e-07, 1, 4.37114e-08, -1.1921e-07, -4.37114e-08, 1, 1, 1.62921e-07, 1.1921e-07, 0, 0.135846, 0 )
 ontext = "Recenter"
 
 [node name="platform" parent="." instance=ExtResource( 19 )]

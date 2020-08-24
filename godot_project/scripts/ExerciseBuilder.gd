@@ -4,22 +4,30 @@ var CueState = GameVariables.CueState
 var CueSelector = GameVariables.CueSelector
 var SquatState = GameVariables.SquatState
 var StandState = GameVariables.StandState
+var CrunchState = GameVariables.CrunchState
+
 
 
 var PushupState = GameVariables.PushupState
 
 var stand_state_model_template
 
+var cue_emitter_state = -1
+var last_state_change = 0.0
+
 var cue_emitter_list = []
 var cue_parameters = {}
 var player_height = 0
-var fly_time = 0
+var fly_time = 3.0
 var fly_distance = 0
+var target_distance = 0
 var hand_delay = 0
 var jump_offset = 0.42
 var ducking_mode = false
 var stand_avoid_head_cue = 0.5
 var kneesaver_mode = false
+var beast_chance = 0.1
+var emit_early
 
 
 var rng = RandomNumberGenerator.new()
@@ -42,6 +50,15 @@ var min_state_duration = 10.0 #Hard 5 Medium 15 Easy 30
 
 var level_min_state_duration = 10.0
 var level_min_cue_space = 1.0
+
+var state_list = []
+var state_list_index = 0
+var state_duration = 0
+var exercise_state_model = {}
+var current_difficulty = 0
+
+
+
 
 func _ready():
 	pass
@@ -177,6 +194,43 @@ func state_transition(old_state, state_model, current_distribution = null, allow
 		print ("Distribution: %s"%str(current_distribution))
 	return new_state
 
+func set_fly_distance(fly_distance, target_distance):
+	self.fly_distance = fly_distance
+	self.target_distance = target_distance
+	print ("Fly distance: %s / %s"%[str(self.fly_distance), str(self.target_distance)])
+	
+func update_cue_timing():
+	var time_to_target = target_distance / fly_distance
+	emit_early = fly_time * time_to_target
+	
+func setup_difficulty(diff, auto_difficulty = false, avg_hr=0, target_hr=0):
+	if auto_difficulty:
+		diff = 1.0 + min(1.0,max(-1.0,(target_hr - avg_hr)/10.0))
+	else:
+		#Keep the difficulty in the supported bounds	
+		diff = min(2,max(0,diff))
+	
+	var d = diff
+	
+	if len(state_list) > 0:
+		level_min_state_duration = get_current_duration_from_list()
+	else:		
+		level_min_state_duration = 20 - d * 5.0 
+	
+	beast_chance = 0.1 + d/10.0
+	level_min_cue_space = 1.5 - d*0.5
+	fly_time = 3.5-(d/2	)
+	
+			
+	min_cue_space = level_min_cue_space
+	min_state_duration = level_min_state_duration
+	state_duration = min_state_duration
+	current_difficulty = d
+
+	update_cue_timing()
+
+	setup_cue_parameters(d, player_height)
+
 #Populate the cue parameters according to difficulty and player height
 func setup_cue_parameters(difficulty, ph):
 	player_height = ph
@@ -270,6 +324,127 @@ func setup_cue_parameters(difficulty, ph):
 	stand_state = StandState.REGULAR
 	
 
+func state_string(state):
+	if state == CueState.STAND:
+		return "stand"
+	elif state == CueState.JUMP:
+		return "jump"
+	elif state == CueState.SQUAT:
+		return "squat"
+	elif state == CueState.PUSHUP:
+		return "pushup"
+	elif state == CueState.CRUNCH:
+		return "crunch"
+	elif state == CueState.BURPEE:
+		return "burpee"
+	elif state == CueState.SPRINT:
+		return "sprint"
+	elif state == CueState.YOGA:
+		return "yoga"
+	
+	return "unknown"
+
+func string_to_state(s):
+	var  retVal = CueState.STAND
+	if s == "stand":
+		retVal = CueState.STAND
+	elif s == "jump":
+		retVal = CueState.JUMP
+	elif s == "squat":
+		retVal = CueState.SQUAT
+	elif s == "pushup":
+		retVal = CueState.PUSHUP
+	elif s == "crunch":
+		retVal = CueState.CRUNCH
+	elif s == "burpee":
+		retVal = CueState.BURPEE
+	elif s == "sprint":
+		retVal = CueState.SPRINT
+	elif s == "yoga":
+		retVal = CueState.YOGA
+	return retVal
+
+
+func next_state_from_list():
+	state_list_index = (state_list_index + 1) % len(state_list)
+	cue_emitter_state = string_to_state(get_current_state_from_list())
+	state_duration = get_current_duration_from_list()
+	level_min_state_duration = state_duration
+	min_state_duration = state_duration
+	print ("State duration %.2f"%float(state_duration)) 
+	
+func get_current_state_from_list():
+	var retVal = "stand"
+	if len(state_list) > 0 and state_list_index < len(state_list):
+		retVal = state_list[state_list_index][0]
+	return retVal
+
+func get_current_duration_from_list():
+	var retVal = 1.0
+	if len(state_list) > 0 and state_list_index < len(state_list):
+		retVal = state_list[state_list_index][1]
+	return retVal	
+
+func builder_state_changed(current_time):
+	last_state_change = current_time
+
+
+var emitter_state_changed = false
+func emit_cue_node(current_time, target_time):
+	if last_state_change + state_duration < current_time or cue_emitter_state < 0:
+		var old_state = cue_emitter_state
+		if len(state_list) > 0:
+			print ("Take preset state")
+			next_state_from_list()
+		else:
+			print ("Take random state")
+			cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model, null, false)
+			
+			state_duration = min_state_duration * (1 + current_difficulty*current_difficulty*rng.randf()/5)
+
+		var cue_data = {
+		"cue_type": "state_change",
+		"state": cue_emitter_state, 
+		"target_time": target_time, 
+		"state_duration": state_duration
+		}
+		
+		
+		
+		insert_cue_sorted(current_time, cue_data)
+		emitter_state_changed = true
+		builder_state_changed(current_time)
+	
+	
+	reset_cue_spacing()
+	if not emitter_state_changed:
+		if cue_emitter_state == CueState.STAND:
+			adjust_cue_spacing()
+			handle_stand_cues(current_time, target_time, cue_emitter_state)
+		elif cue_emitter_state == CueState.JUMP:
+			handle_jump_cues(current_time, target_time, cue_emitter_state)
+		elif cue_emitter_state == CueState.SQUAT:
+			adjust_cue_spacing()
+			handle_squat_cues(current_time, target_time, cue_emitter_state)
+		elif cue_emitter_state == CueState.CRUNCH:
+			adjust_cue_spacing()
+			handle_crunch_cues(current_time, target_time, cue_emitter_state)
+		elif cue_emitter_state == CueState.BURPEE:
+			handle_burpee_cues(current_time, target_time, cue_emitter_state)
+		elif cue_emitter_state == CueState.SPRINT:
+			pass #handle_sprint_cues(target_time)
+		elif cue_emitter_state == CueState.YOGA:
+			handle_yoga_cues(current_time, target_time, cue_emitter_state)
+		else: #CueState.PUSHUP
+			handle_pushup_cues(current_time, target_time, cue_emitter_state)
+		exercise_changed = false
+	else:			
+		exercise_changed = true
+		emitter_state_changed = false
+
+
+
+
 
 
 ############################# JUMP ######################################
@@ -292,10 +467,14 @@ func handle_jump_cues(current_time, target_time, cue_emitter_state):
 
 ############################# CRUNCH ######################################
 
+var crunch_state_model
+var crunch_state = CrunchState.HEAD
 
 func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 	switch_floor_sign(current_time,"none")
 	
+	
+	crunch_state = state_transition (crunch_state, crunch_state_model)	
 	var node_selector = rng.randi()%100
 	
 	var rot = (rng.randf()-0.5) * deg2rad(cue_parameters[cue_emitter_state][CueSelector.HAND]["rotation_range"])
@@ -308,23 +487,23 @@ func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 	var x = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"]/2
 	
 	print ("Crunch Spread %.2f"%(cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]))
+
+	var spread = cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]/2.0+rng.randf()*cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]
+	var t = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), Vector3(0,0,0)).rotated(Vector3(0,0,1), rot)
+	var tmp = t.xform(Vector3(x+spread,y_hand,0))		
 	
-	if cue_selector == CueSelector.HAND and node_selector < 80:
-		cue_selector = CueSelector.HEAD
-	elif cue_selector == CueSelector.HEAD and node_selector < 80:
-		cue_selector = CueSelector.HAND
-	
-	if cue_selector == CueSelector.HAND:
-		var spread = cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]/2.0+rng.randf()*cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]
-		var t = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), Vector3(0,0,0)).rotated(Vector3(0,0,1), rot)
-		var tmp = t.xform(Vector3(x+spread,y_hand,0))		
+	if crunch_state == CrunchState.HAND:
 		create_and_attach_cue(current_time,"right", tmp.x, tmp.y, target_time,0,0,"",null,null,0.5)
 		tmp = t.xform(Vector3(x-spread,y_hand,0))		
 		create_and_attach_cue(current_time,"left", tmp.x,tmp.y, target_time,0,0,"",null,null,0.5)
-	else:
+	elif crunch_state == CrunchState.HEAD:
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
-
-	
+	elif crunch_state == CrunchState.MEDIUM_HOLD:
+		x_head = 0
+		y_head = player_height / 3.0
+		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
+		create_and_attach_cue(current_time + 0.1,"right", x_head + player_height/5.0, y_head, target_time+0.1,0,0,"",null,null,0.5)
+		create_and_attach_cue(current_time + 0.1,"left", x_head - player_height/5.0, y_head, target_time+0.1,0,0,"",null,null,0.5)	
 
 ############################# PUSHUP ######################################
 

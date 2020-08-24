@@ -45,6 +45,14 @@ enum PushupState {
 	LEFT_SIDEPLANK = 3,
 	RIGHT_SIDEPLANK = 4,
 };	
+
+enum CrunchState {
+	HEAD = 0,
+	HAND = 1,
+	MEDIUM_HOLD = 2,
+};	
+
+
 	
 enum SquatState {
 	HEAD = 0,
@@ -228,7 +236,10 @@ var exercise_model = {
 		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 10},
 						StandState.DOUBLE_SWING : { StandState.REGULAR: 25},
 		},
-			
+		"crunch_state_model" : { CrunchState.HEAD : { CrunchState.HAND: 70, CrunchState.MEDIUM_HOLD: 10},
+						CrunchState.HAND : { CrunchState.HEAD: 70, CrunchState.MEDIUM_HOLD: 10},
+						CrunchState.MEDIUM_HOLD : { CrunchState.HEAD: 20, CrunchState.HAND: 20 },
+		},			
 		"rebalance_exercises": true
 		},
 	"strength": {
@@ -253,6 +264,11 @@ var exercise_model = {
 						},
 		"stand_state_model" : { StandState.REGULAR : { },
 					},
+		"crunch_state_model" : { CrunchState.HEAD : { CrunchState.HAND: 10, CrunchState.MEDIUM_HOLD: 70},
+						CrunchState.HAND : { CrunchState.HEAD: 70, CrunchState.MEDIUM_HOLD: 10},
+						CrunchState.MEDIUM_HOLD : { CrunchState.HEAD: 20, CrunchState.HAND: 20 },
+		},
+
 		"rebalance_exercises": false
 		},
 	}
@@ -270,9 +286,9 @@ func setup_globals_demo():
 	ProjectSettings.set("game/bpm", 120)
 	ProjectSettings.set("game/exercise/jump", false)
 	ProjectSettings.set("game/exercise/stand", false)
-	ProjectSettings.set("game/exercise/squat", true)
+	ProjectSettings.set("game/exercise/squat", false)
 	ProjectSettings.set("game/exercise/pushup", false)
-	ProjectSettings.set("game/exercise/crunch", false)
+	ProjectSettings.set("game/exercise/crunch", true)
 	ProjectSettings.set("game/exercise/burpees", false)
 	ProjectSettings.set("game/exercise/duck", false)
 	ProjectSettings.set("game/exercise/sprint", false)
