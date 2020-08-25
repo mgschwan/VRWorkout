@@ -238,8 +238,8 @@ var exercise_model = {
 		},
 		"crunch_state_model" : { CrunchState.HEAD : { CrunchState.HAND: 70, CrunchState.MEDIUM_HOLD: 10},
 						CrunchState.HAND : { CrunchState.HEAD: 70, CrunchState.MEDIUM_HOLD: 10},
-						CrunchState.MEDIUM_HOLD : { CrunchState.HEAD: 20, CrunchState.HAND: 20 },
-		},			
+						CrunchState.MEDIUM_HOLD : { CrunchState.HEAD: 30 },
+		},
 		"rebalance_exercises": true
 		},
 	"strength": {
@@ -264,9 +264,9 @@ var exercise_model = {
 						},
 		"stand_state_model" : { StandState.REGULAR : { },
 					},
-		"crunch_state_model" : { CrunchState.HEAD : { CrunchState.HAND: 10, CrunchState.MEDIUM_HOLD: 70},
+		"crunch_state_model" : { CrunchState.HEAD : { CrunchState.HAND: 70, CrunchState.MEDIUM_HOLD: 10},
 						CrunchState.HAND : { CrunchState.HEAD: 70, CrunchState.MEDIUM_HOLD: 10},
-						CrunchState.MEDIUM_HOLD : { CrunchState.HEAD: 20, CrunchState.HAND: 20 },
+						CrunchState.MEDIUM_HOLD : { CrunchState.HEAD: 30 },
 		},
 
 		"rebalance_exercises": false

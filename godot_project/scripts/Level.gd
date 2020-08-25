@@ -66,10 +66,7 @@ var target
 var boxman1
 var boxman2
 	
-
-var last_emit = 0.0
 var head_y_pos = 0
-
 
 var rng = RandomNumberGenerator.new()
 
@@ -178,6 +175,8 @@ func setup_game_data():
 
 	exercise_builder.player_height = player_height
 	exercise_builder.setup_difficulty(exercise_builder.current_difficulty)
+	actual_game_state = exercise_builder.cue_emitter_state
+	internal_state_change()
 	
 	
 	
@@ -324,16 +323,19 @@ var last_playback_time = 0
 var last_game_update = 0
 func _process(delta):
 	#cue_emitter.current_playback_time += delta
-	cue_emitter.current_playback_time = stream.get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
+	var sp = stream.get_playback_position()
+	var gl = AudioServer.get_output_latency()
+	var lm = AudioServer.get_time_since_last_mix()
+	#That's a hack because get_time_since_last_mix() sometimes produces incorrect results (Godot 3.2.2)
+	if lm > 0.1:
+		lm = 0.0
+	cue_emitter.current_playback_time = sp + lm - gl
 	
 	if beat_index < len(beats)-1 and cue_emitter.current_playback_time + exercise_builder.emit_early > beats[beat_index]:	
 		update_groove_iteration()
+		
+		exercise_builder.evaluate_beat(cue_emitter.current_playback_time, beats[beat_index])
 
-		if last_emit + exercise_builder.min_cue_space < cue_emitter.current_playback_time and exercise_builder.last_state_change + exercise_builder.state_transition_pause < cue_emitter.current_playback_time:		
-			if last_emit + exercise_builder.temporary_cue_space_extension <  cue_emitter.current_playback_time:
-				exercise_builder.temporary_cue_space_extension = 0
-				exercise_builder.emit_cue_node(cue_emitter.current_playback_time, beats[beat_index])
-				last_emit = cue_emitter.current_playback_time
 		beat_index += 1
 	elif beat_index == len(beats)-1:
 		beat_index += 1
@@ -346,7 +348,7 @@ func _process(delta):
 			handle_sprint_cues_actual(cue_emitter.current_playback_time)
 		
 		if actual_state_duration > 0:
-			print ("%s - %s / %s"%[str(cue_emitter.current_playback_time), str( actual_last_state_change), str( actual_state_duration ) ])
+			#print ("%s - %s / %s"%[str(cue_emitter.current_playback_time), str( actual_last_state_change), str( actual_state_duration ) ])
 			update_duration_indicator( (cue_emitter.current_playback_time - actual_last_state_change) / actual_state_duration )
 		else:
 			#If no duration is set yet, setup the initial duration

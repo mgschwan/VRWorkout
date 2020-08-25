@@ -57,6 +57,7 @@ var state_duration = 0
 var exercise_state_model = {}
 var current_difficulty = 0
 
+var last_emit = 0
 
 
 
@@ -500,7 +501,7 @@ func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 	elif crunch_state == CrunchState.MEDIUM_HOLD:
 		x_head = 0
-		y_head = player_height / 3.0
+		y_head = player_height / 2.5
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 		create_and_attach_cue(current_time + 0.1,"right", x_head + player_height/5.0, y_head, target_time+0.1,0,0,"",null,null,0.5)
 		create_and_attach_cue(current_time + 0.1,"left", x_head - player_height/5.0, y_head, target_time+0.1,0,0,"",null,null,0.5)	
@@ -758,6 +759,15 @@ func handle_squat_cues_regular(current_time, target_time, cue_emitter_state):
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 	
 	
+
+
+#####################
+func evaluate_beat(current_time, target_time):
+	if last_emit + min_cue_space < current_time and last_state_change + state_transition_pause < current_time:		
+		if last_emit + temporary_cue_space_extension <  current_time:
+			temporary_cue_space_extension = 0
+			emit_cue_node(current_time, target_time)
+			last_emit = current_time
 
 
 
