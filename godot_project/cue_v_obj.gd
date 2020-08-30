@@ -8,6 +8,7 @@ var ingame_id = 0
 var velocity_required = 1.25
 
 var hit = false
+var emit_sound = true
 var is_hold_cue = false
 var hold_time = 1.0
 var target_time = 0.0

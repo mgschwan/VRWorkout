@@ -69,8 +69,10 @@ var hrr #Heart rate receiver
 func update_automatic():
 	if hrr and hrr.hr_active:
 		get_node("DifficultyButtons").enable_automatic(true)
+		gu.activate_node(get_node("Heartrate"))
 	else:
 		get_node("DifficultyButtons").enable_automatic(false)
+		gu.deactivate_node(get_node("Heartrate"))
 
 
 # Called when the node enters the scene tree for the first time.
@@ -78,6 +80,7 @@ func _ready():
 	hrr = get_tree().current_scene.get_node("HeartRateReceiver")
 	update_automatic()
 	update_song_list()
+	update_hr_selectors()
 	select_difficulty(current_difficulty)
 
 
@@ -119,3 +122,13 @@ func _on_DifficultyButtons_difficulty_selected(difficulty):
 		else:
 			get_tree().current_scene.change_environment("calm")
 
+func update_hr_selectors():
+	var hr = ProjectSettings.get("game/target_hr")
+	get_node("Heartrate/Button_140").show_selector( hr == 140)
+	get_node("Heartrate/Button_150").show_selector( hr == 150)
+	get_node("Heartrate/Button_160").show_selector( hr == 160)
+	get_node("Heartrate/Button_170").show_selector( hr == 170)
+	
+func _on_Heartrate_selected(extra_arg_0):
+	ProjectSettings.set("game/target_hr",extra_arg_0)
+	update_hr_selectors()

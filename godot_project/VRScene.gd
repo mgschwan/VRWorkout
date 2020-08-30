@@ -294,6 +294,7 @@ func _on_level_finished	():
 	level.queue_free()
 	level = null 
 	levelselect = levelselect_blueprint.instance()
+	
 	levelselect.translation = Vector3(0,0,0)
 	levelselect.connect("level_selected",self,"_on_Area_level_selected")
 
@@ -303,7 +304,7 @@ func _on_level_finished	():
 	var last_played_str = gu.seconds_to_timestring(last_played)
 	var total_played_str = gu.seconds_to_timestring(total_played)
 	
-	levelselect.set_stat_text("Player results\n\nLast round\nScore: %.2f (%d/%d)\nPoints: %d"%[vrw_score,result["hits"],result["max_hits"],last_points]+" Duration: %s"%last_played_str+"\n\nTotal\nPoints: %d"%total_points+" Duration: %s"%total_played_str) 
+	levelselect.set_stat_text("Player results\n\nLast round\nScore: %.2f (%d/%d)\nPoints: %d"%[vrw_score,result["hits"],result["max_hits"],last_points]+" Duration: %s"%last_played_str+"\n\nTotal\nPoints: %d"%total_points+" Duration: %s"%total_played_str, vrw_score) 
 
 	yield(get_tree().create_timer(1), "timeout")
 	get_viewport().get_camera().blackout_screen(false)
@@ -459,9 +460,15 @@ func _on_Area_level_selected(filename, diff, num):
 		GameVariables.override_beatmap = false
 		if diff == 3:
 			GameVariables.override_beatmap = true
+		
+		if diff < 0:
+			GameVariables.auto_difficulty = true
+		else:
+			GameVariables.auto_difficulty = false
 		game_statistics = {"difficuly": diff, "song": gu.get_song_name(filename)}
 
 		GameVariables.difficulty = diff
+		
 		
 		level.audio_filename = filename
 		level.song_index_parameter = num
@@ -487,7 +494,7 @@ func _on_DemoTimer_timeout():
 	#_on_Area_level_selected("res://audio/songs/02_VRWorkout_Beater.ogg", 2, 1)
 
 
-	get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
+	#get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
 	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)
 	print(get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").stream.get_length())
 

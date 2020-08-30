@@ -28,7 +28,8 @@ func _on_Area_body_entered(body):
 				if controller.is_left:
 					hand = "left"
 				var p = body.has_been_hit(hand)
-				if p >= 0:
+				if body.emit_sound:
+					body.emit_sound = false
 					hit_player.play(0)
 					controller.do_rumble( p > 0)
 		else:

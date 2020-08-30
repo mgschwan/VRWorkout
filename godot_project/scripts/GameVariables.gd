@@ -8,6 +8,7 @@ var trackers = null
 var difficulty = 0
 var override_beatmap = false
 var device_id = ""
+var auto_difficulty = false
 
 var current_hr = 0
 
@@ -208,8 +209,6 @@ var exercise_collections = [
 		},
 	],
 ]
-	
-	
 
 var exercise_model = {
 	"cardio": {
@@ -231,14 +230,14 @@ var exercise_model = {
 		"squat_state_model": { SquatState.HEAD : { SquatState.LEFT_HAND : 13, SquatState.RIGHT_HAND : 13, SquatState.DOUBLE_SWING : 20},
 								SquatState.LEFT_HAND  : { SquatState.HEAD: 30,  SquatState.RIGHT_HAND: 30, SquatState.DOUBLE_SWING : 20},
 								SquatState.RIGHT_HAND  : { SquatState.HEAD: 30,  SquatState.LEFT_HAND: 30, SquatState.DOUBLE_SWING : 20},
-								SquatState.DOUBLE_SWING  : { SquatState.HEAD: 20},
+								SquatState.DOUBLE_SWING  : { SquatState.HEAD: 40},
 						},
 		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 10},
-						StandState.DOUBLE_SWING : { StandState.REGULAR: 25},
+						StandState.DOUBLE_SWING : { StandState.REGULAR: 35},
 		},
 		"crunch_state_model" : { CrunchState.HEAD : { CrunchState.HAND: 70, CrunchState.MEDIUM_HOLD: 10},
 						CrunchState.HAND : { CrunchState.HEAD: 70, CrunchState.MEDIUM_HOLD: 10},
-						CrunchState.MEDIUM_HOLD : { CrunchState.HEAD: 30 },
+						CrunchState.MEDIUM_HOLD : { CrunchState.HEAD: 20 },
 		},
 		"rebalance_exercises": true
 		},
@@ -266,32 +265,66 @@ var exercise_model = {
 					},
 		"crunch_state_model" : { CrunchState.HEAD : { CrunchState.HAND: 70, CrunchState.MEDIUM_HOLD: 10},
 						CrunchState.HAND : { CrunchState.HEAD: 70, CrunchState.MEDIUM_HOLD: 10},
-						CrunchState.MEDIUM_HOLD : { CrunchState.HEAD: 30 },
+						CrunchState.MEDIUM_HOLD : { CrunchState.HEAD: 20 },
 		},
 
 		"rebalance_exercises": false
 		},
 	}
 	
+var difficulty_weight_adjustments = {
+	"easy" : {
+		CueState.STAND: 1.0,
+		CueState.SQUAT: 1.0,
+		CueState.PUSHUP: 0.5,
+		CueState.CRUNCH: 0.7,
+		CueState.JUMP: 0.8,
+		CueState.BURPEE: 0.5,
+		CueState.SPRINT: 0.5,
+		CueState.YOGA: 1.0
+		},
+	"medium" : {
+		CueState.STAND: 1.0,
+		CueState.SQUAT: 1.0,
+		CueState.PUSHUP: 1.0,
+		CueState.CRUNCH: 1.0,
+		CueState.JUMP: 1.0,
+		CueState.BURPEE: 0.8,
+		CueState.SPRINT: 1.0,
+		CueState.YOGA: 1.0
+		},
+	"hard" : {
+		CueState.STAND: 0.7,
+		CueState.SQUAT: 0.8,
+		CueState.PUSHUP: 1.4,
+		CueState.CRUNCH: 1.0,
+		CueState.JUMP: 1.2,
+		CueState.BURPEE: 1.2,
+		CueState.SPRINT: 1.3,
+		CueState.YOGA: 1.0
+	},
+}	
+	
+	
 	
 var level_statistics_data = {}
 	
 func setup_globals():
-	#setup_globals_demo()
-	setup_globals_regular()	
+	setup_globals_demo()
+	#setup_globals_regular()	
 	
 
 func setup_globals_demo():
 	ProjectSettings.set("game/beast_mode", false)
 	ProjectSettings.set("game/bpm", 120)
 	ProjectSettings.set("game/exercise/jump", false)
-	ProjectSettings.set("game/exercise/stand", false)
+	ProjectSettings.set("game/exercise/stand", true)
 	ProjectSettings.set("game/exercise/squat", false)
 	ProjectSettings.set("game/exercise/pushup", false)
-	ProjectSettings.set("game/exercise/crunch", true)
+	ProjectSettings.set("game/exercise/crunch", false)
 	ProjectSettings.set("game/exercise/burpees", false)
 	ProjectSettings.set("game/exercise/duck", false)
-	ProjectSettings.set("game/exercise/sprint", false)
+	ProjectSettings.set("game/exercise/sprint", true)
 	ProjectSettings.set("game/exercise/kneesaver", false)
 	ProjectSettings.set("game/exercise/yoga", false)
 	ProjectSettings.set("game/exercise/strength_focus", false)

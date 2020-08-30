@@ -11,6 +11,7 @@ var CrunchState = GameVariables.CrunchState
 var PushupState = GameVariables.PushupState
 
 var stand_state_model_template
+var squat_state_model_template
 
 var cue_emitter_state = -1
 var last_state_change = 0.0
@@ -28,6 +29,7 @@ var stand_avoid_head_cue = 0.5
 var kneesaver_mode = false
 var beast_chance = 0.1
 var emit_early
+var auto_difficulty = false
 
 
 var rng = RandomNumberGenerator.new()
@@ -101,7 +103,7 @@ func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_ti
 		"hit_velocity": hit_velocity,
 		"hit_score": hit_score
 		}
-	print (str(cue_data))
+	#print (str(cue_data))
 	insert_cue_sorted(ts, cue_data)
 	return ingame_id  #true #create_and_attach_cue_actual(cue_type, x, y, target_time, fly_offset, fly_time , cue_subtype)
 
@@ -205,8 +207,9 @@ func update_cue_timing():
 	emit_early = fly_time * time_to_target
 	
 func setup_difficulty(diff, auto_difficulty = false, avg_hr=0, target_hr=0):
+	self.auto_difficulty = auto_difficulty
 	if auto_difficulty:
-		diff = 1.0 + min(1.0,max(-1.0,(target_hr - avg_hr)/10.0))
+		diff = 1.0 + min(1.0,max(-1.0,(target_hr - avg_hr + 10)/20.0))
 	else:
 		#Keep the difficulty in the supported bounds	
 		diff = min(2,max(0,diff))
@@ -216,7 +219,7 @@ func setup_difficulty(diff, auto_difficulty = false, avg_hr=0, target_hr=0):
 	if len(state_list) > 0:
 		level_min_state_duration = get_current_duration_from_list()
 	else:		
-		level_min_state_duration = 20 - d * 5.0 
+		level_min_state_duration = 20 - d * 2.5 
 	
 	beast_chance = 0.1 + d/10.0
 	level_min_cue_space = 1.5 - d*0.5
@@ -320,8 +323,10 @@ func setup_cue_parameters(difficulty, ph):
 	#Easy difficulties don't have double swings
 	if difficulty < 1.0:
 		stand_state_model = model_without_state(stand_state_model_template, StandState.DOUBLE_SWING)
+		squat_state_model = model_without_state(squat_state_model_template, SquatState.DOUBLE_SWING)
 	else:
 		stand_state_model = stand_state_model_template.duplicate(true)
+		squat_state_model = squat_state_model_template.duplicate(true)
 	stand_state = StandState.REGULAR
 	
 
@@ -389,6 +394,39 @@ func get_current_duration_from_list():
 func builder_state_changed(current_time):
 	last_state_change = current_time
 
+func get_weights(diff):
+	var w_low
+	var w_high
+	var delta = diff
+	if diff < 1.0:
+		w_low = GameVariables.difficulty_weight_adjustments["easy"]
+		w_high = GameVariables.difficulty_weight_adjustments["medium"]
+	else:
+		w_low = GameVariables.difficulty_weight_adjustments["medium"]
+		w_high = GameVariables.difficulty_weight_adjustments["hard"]
+		delta = diff-1.0
+		
+	var combined_weights = {}
+	for k in w_low:
+		combined_weights[k] = (1.0-delta)*w_low[k] + delta*w_high[k]				
+
+	return combined_weights
+	
+func adjust_state_model(diff, model):
+	var weights = get_weights(diff)
+	print ("Weights: %s"%str(weights))
+	var retVal = model.duplicate(true)
+	for k in retVal:
+		var sum = 0
+		var total = 0
+		for k2 in retVal[k]:
+			sum += retVal[k][k2]*weights[k2]
+			total += retVal[k][k2] 
+		if sum > 0:
+			for k2 in retVal[k]:
+				retVal[k][k2] = total*( retVal[k][k2]*weights[k2] )/sum
+
+	return retVal
 
 var emitter_state_changed = false
 func emit_cue_node(current_time, target_time):
@@ -398,10 +436,16 @@ func emit_cue_node(current_time, target_time):
 			print ("Take preset state")
 			next_state_from_list()
 		else:
-			print ("Take random state")
-			cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model, null, false)
-			
-			state_duration = min_state_duration * (1 + current_difficulty*current_difficulty*rng.randf()/5)
+			print ("Take random state")		
+			if auto_difficulty:
+				print ("Model prejadjust: %s"%str(exercise_state_model))
+				var adjusted_model = adjust_state_model(current_difficulty, exercise_state_model)
+				print ("Model postadjust: %s"%str(adjusted_model))
+				
+				cue_emitter_state = state_transition(cue_emitter_state, adjusted_model, null, false)
+			else:
+				cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model, null, false)
+			state_duration = min_state_duration + 5*current_difficulty*rng.randf()
 
 		var cue_data = {
 		"cue_type": "state_change",
@@ -471,6 +515,8 @@ func handle_jump_cues(current_time, target_time, cue_emitter_state):
 var crunch_state_model
 var crunch_state = CrunchState.HEAD
 
+var medium_hold_high = true #Medium hold alternates between high and low
+
 func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 	switch_floor_sign(current_time,"none")
 	
@@ -501,10 +547,15 @@ func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 	elif crunch_state == CrunchState.MEDIUM_HOLD:
 		x_head = 0
-		y_head = player_height / 2.5
-		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
-		create_and_attach_cue(current_time + 0.1,"right", x_head + player_height/5.0, y_head, target_time+0.1,0,0,"",null,null,0.5)
-		create_and_attach_cue(current_time + 0.1,"left", x_head - player_height/5.0, y_head, target_time+0.1,0,0,"",null,null,0.5)	
+		if medium_hold_high:
+			y_head = player_height/1.8
+		else:
+			y_head = player_height/2.4
+		medium_hold_high = not medium_hold_high
+			
+		create_and_attach_cue(current_time,"head", x_head, y_head, target_time, 0,0,"", null,null, 0.4)
+		create_and_attach_cue(current_time + 0.1,"right", x_head + player_height/5.0, y_head, target_time+0.1,0,0,"",null,null,0.3)
+		create_and_attach_cue(current_time + 0.1,"left", x_head - player_height/5.0, y_head, target_time+0.1,0,0,"",null,null,0.3)	
 
 ############################# PUSHUP ######################################
 
@@ -659,8 +710,14 @@ var stand_state
 var stand_state_model
 
 func handle_stand_cues(current_time,target_time,cue_emitter_state):
+	var last_stand_state = stand_state
 	switch_floor_sign(current_time,"feet")
 	stand_state = state_transition(stand_state, stand_state_model)
+	
+	#Skip one cue after a double swing stretch
+	if last_stand_state == StandState.DOUBLE_SWING and last_stand_state != stand_state:
+		return
+		
 	if stand_state == StandState.DOUBLE_SWING:
 		handle_double_swing_cues(current_time, target_time, player_height*0.8, cue_emitter_state)
 	else:
@@ -682,7 +739,6 @@ func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitte
 		var double_punch_delay = 0.4
 		create_and_attach_cue(current_time+double_punch_delay,"left", -x_hand-0.1, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
 		create_and_attach_cue(current_time+double_punch_delay,"right", -x_hand+0.1, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
-		temporary_cue_space_extension = double_punch_delay
 	else:
 		last_double_swing_left = not last_double_swing_left
 		
@@ -735,18 +791,31 @@ var squat_state_model
 	
 func handle_squat_cues(current_time, target_time, cue_emitter_state):
 	switch_floor_sign(current_time,"feet")
-	
+	var last_squat_state = squat_state
 	squat_state = state_transition (squat_state, squat_state_model)
 	
+	#Skip one cue after a double swing stretch
+	if last_squat_state == SquatState.DOUBLE_SWING and last_squat_state != squat_state:
+		return
+
 	if squat_state == SquatState.DOUBLE_SWING:
 		handle_double_swing_cues(current_time, target_time, player_height/2.0, cue_emitter_state)
 	else:
 		handle_squat_cues_regular(current_time, target_time, cue_emitter_state)
-	
+
+var is_high_squat = false	
 func handle_squat_cues_regular(current_time, target_time, cue_emitter_state):
 	var node_selector = rng.randi()%100
-	
-	var y_head = player_height/2 + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"]
+	var y_head
+
+	if is_high_squat:
+		#Put it in the uper 25% range
+		y_head = player_height/2 + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + (cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"] - rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"] * 0.25 )
+	else:
+		#Put it in the lower 25% range
+		y_head = player_height/2 + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"] * 0.25
+	is_high_squat = not is_high_squat
+
 	var y_hand = y_head + (rng.randf() * 0.4 - 0.2)
 	var x = 0.3 + rng.randf() * 0.45
 	var x_head = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"] - cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]/2

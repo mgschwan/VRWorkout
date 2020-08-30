@@ -111,8 +111,8 @@ func _process(delta):
 		height_warning_level = new_warning_level
 	
 	uinterval += 1
-	if uinterval % 50 == 0:
-		print ("Average groove time: %.f"%average_groove_time)
+	#if uinterval % 50 == 0:
+	#	print ("Average groove time: %.f"%average_groove_time)
 	#	print ("%.2f "%avg_y + " %.2f"%average_interval + " Steps: %d"%steps +" Speed %.2f"%self.get_running_speed())
 	
 func tint_screen(duration):

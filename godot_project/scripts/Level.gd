@@ -139,20 +139,21 @@ func _on_HeartRateData(hr):
 
 func setup_game_data():
 	GameVariables.level_statistics_data = {}
+	auto_difficulty = GameVariables.auto_difficulty
 	if len(GameVariables.exercise_state_list) > 0:
 		exercise_builder.state_list = GameVariables.exercise_state_list	
 	
 	if ProjectSettings.get("game/exercise/strength_focus"):
 		exercise_state_model_template = GameVariables.exercise_model["strength"]["exercise_state_model"]
 		exercise_builder.pushup_state_model = GameVariables.exercise_model["strength"]["pushup_state_model"]
-		exercise_builder.squat_state_model = GameVariables.exercise_model["strength"]["squat_state_model"]
+		exercise_builder.squat_state_model_template = GameVariables.exercise_model["strength"]["squat_state_model"]
 		exercise_builder.stand_state_model_template = GameVariables.exercise_model["strength"]["stand_state_model"]
 		exercise_builder.crunch_state_model  = GameVariables.exercise_model["strength"]["crunch_state_model"]
 		exercise_builder.rebalance_exercises = GameVariables.exercise_model["strength"]["rebalance_exercises"]
 	else:
 		exercise_state_model_template = GameVariables.exercise_model["cardio"]["exercise_state_model"]
 		exercise_builder.pushup_state_model = GameVariables.exercise_model["cardio"]["pushup_state_model"]
-		exercise_builder.squat_state_model = GameVariables.exercise_model["cardio"]["squat_state_model"]
+		exercise_builder.squat_state_model_template = GameVariables.exercise_model["cardio"]["squat_state_model"]
 		exercise_builder.stand_state_model_template = GameVariables.exercise_model["cardio"]["stand_state_model"]
 		exercise_builder.crunch_state_model  = GameVariables.exercise_model["cardio"]["crunch_state_model"]
 		exercise_builder.rebalance_exercises = GameVariables.exercise_model["cardio"]["rebalance_exercises"]
@@ -698,7 +699,7 @@ func update_sequence_results():
 func _on_PositionSign_state_change_completed():
 	update_safe_pushup()
 	var gauge = get_node("rungauge")
-	if exercise_builder.cue_emitter_state == CueState.SPRINT and not gauge.visible:
+	if actual_game_state == CueState.SPRINT and not gauge.visible:
 		gauge.show()
 		get_tree().current_scene.set_controller_visible(false)
 

@@ -124,9 +124,10 @@ func _ready():
 func set_main_text(text):
 	get_node("MainText").print_info(text)
 
-func set_stat_text(text):
+func set_stat_text(text, score):
 	get_node("Stats").print_info(text)
-
+	get_node("Stats/gauge").set_value(score)
+	get_node("Stats/gauge").show()
 
 func get_last_beat():
 	return get_node("BPM").last_beat

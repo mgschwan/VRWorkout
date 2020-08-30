@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -28,6 +28,7 @@
 [ext_resource path="res://scenes/PlayerHeightAdjuster.tscn" type="PackedScene" id=26]
 [ext_resource path="res://scenes/PresetCollection.tscn" type="PackedScene" id=27]
 [ext_resource path="res://scenes/VRWorkoutConnection.tscn" type="PackedScene" id=28]
+[ext_resource path="res://CircularGauge.tscn" type="PackedScene" id=29]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -175,6 +176,10 @@ transform = Transform( 1.2, 0, 0, 0, 1, 9.9729e-15, 0, -1.66215e-14, 0.6, 0, -0.
 [node name="Stats" parent="." instance=ExtResource( 17 )]
 transform = Transform( -0.415138, -0.832633, 0.154799, 5.90065e-08, -0.226362, -0.779235, 0.683857, -0.505452, 0.0939715, 1.44823, 2.58036, 2.17733 )
 default_text = "Workout Statistics"
+
+[node name="gauge" parent="Stats" instance=ExtResource( 29 )]
+transform = Transform( 0.4, -2.98023e-08, -7.45058e-09, 0, 0.4, -7.45058e-09, 1.49012e-08, 2.98023e-08, 0.4, 0.887917, 0.0666485, -0.311573 )
+visible = false
 
 [node name="text_panel" parent="Stats" instance=ExtResource( 18 )]
 transform = Transform( 1.2, 0, 0, 0, 1, 9.9729e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
@@ -427,7 +432,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399424, 0.9898, -1 )
 ontext = "Connect"
 
 [node name="PlayerHeightAdjuster" parent="." instance=ExtResource( 26 )]
-transform = Transform( 0.114018, 0, -0.097467, 0, 0.15, 0, 0.097467, 0, 0.114018, 0.927395, 0, -1.05638 )
+transform = Transform( 0.0669504, 0, -0.0338031, 0, 0.075, 0, 0.0338031, 0, 0.0669504, 0.749935, 0, -1.10919 )
 [connection signal="selected" from="Recenter" to="." method="_on_Recenter_selected"]
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
 [connection signal="selected" from="SongSelector/Freeplay1" to="SongSelector" method="_on_level_block_selected"]
