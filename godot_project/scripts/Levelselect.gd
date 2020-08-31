@@ -82,11 +82,12 @@ func update_widget():
 	get_node("SettingsCarousel/Switchboard/InstructorSwitch").value = ProjectSettings.get("game/instructor")
 	get_node("SettingsCarousel/Switchboard/InstructorSwitch").update_switch()
 
+	get_node("SettingsCarousel/Switchboard/ExtendedSwitch").value = ProjectSettings.get("game/easy_transition")
+	get_node("SettingsCarousel/Switchboard/ExtendedSwitch").update_switch()
 
 
 	GameVariables.exercise_state_list = []
 	get_node("SettingsCarousel/Exercises/StandardWorkout").mark_active()
-	show_settings("switchboard")
 	
 	
 # Called when the node enters the scene tree for the first time.
@@ -119,6 +120,8 @@ func _ready():
 	update_widget()
 	get_node("SongSelector").select_difficulty(GameVariables.difficulty)
 	get_viewport().get_camera().blackout_screen(false)
+	show_settings("switchboard")
+	
 
 
 func set_main_text(text):
@@ -197,7 +200,6 @@ func _on_ExerciseCollection_selected(collection):
 	gu.set_exercise_collection(collection)
 	update_widget()
 
-
 func show_settings(panel):
 	var switchboard_node = get_node("SettingsCarousel/Switchboard")
 	var connections_node = get_node("SettingsCarousel/Connections")
@@ -252,3 +254,7 @@ func _on_InstructorSwitch_toggled(value):
 
 func _on_Recenter_selected():
 	get_tree().current_scene.start_countdown(5,"recenter_screen")
+
+
+func _on_ExtendedSwitch_toggled(value):
+	ProjectSettings.set("game/easy_transition", value)

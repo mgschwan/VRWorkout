@@ -296,6 +296,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0960001, 0.992, 1.277 )
 ontext = "Equalizer on"
 offtext = "Equalizer off"
 
+[node name="ExtendedSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.557797, 1.33513, 1.277 )
+value = true
+ontext = "Easy transition"
+offtext = "Regular transition"
+
 [node name="DuckSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0960004, 1.523, 1.277 )
 ontext = "Ducking on"
@@ -449,6 +455,7 @@ transform = Transform( 0.0669504, 0, -0.0338031, 0, 0.075, 0, 0.0338031, 0, 0.06
 [connection signal="toggled" from="SettingsCarousel/Switchboard/InstructorSwitch" to="." method="_on_InstructorSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/BurpeeSwitch" to="." method="_on_BurpeeSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/EqualizerSwitch" to="." method="_on_EqualizerSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/Switchboard/ExtendedSwitch" to="." method="_on_ExtendedSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/DuckSwitch" to="." method="_on_DuckSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/SprintSwitch" to="." method="_on_SprintSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/KneesaverSwitch" to="." method="_on_KneesaverSwitch_toggled"]

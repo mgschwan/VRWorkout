@@ -138,7 +138,7 @@ light_indirect_energy = 0.1
 light_specular = 0.2
 
 [node name="DemoTimer" type="Timer" parent="."]
-wait_time = 16.34
+wait_time = 5.0
 one_shot = true
 
 [node name="HeartRateReceiver" type="Node" parent="."]

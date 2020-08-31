@@ -227,9 +227,9 @@ var exercise_model = {
 						PushupState.LEFT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.RIGHT_HAND: 10},
 						PushupState.RIGHT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.LEFT_HAND: 10},
 						},
-		"squat_state_model": { SquatState.HEAD : { SquatState.LEFT_HAND : 13, SquatState.RIGHT_HAND : 13, SquatState.DOUBLE_SWING : 20},
-								SquatState.LEFT_HAND  : { SquatState.HEAD: 30,  SquatState.RIGHT_HAND: 30, SquatState.DOUBLE_SWING : 20},
-								SquatState.RIGHT_HAND  : { SquatState.HEAD: 30,  SquatState.LEFT_HAND: 30, SquatState.DOUBLE_SWING : 20},
+		"squat_state_model": { SquatState.HEAD : { SquatState.LEFT_HAND : 13, SquatState.RIGHT_HAND : 13, SquatState.DOUBLE_SWING : 25},
+								SquatState.LEFT_HAND  : { SquatState.HEAD: 30,  SquatState.RIGHT_HAND: 30, SquatState.DOUBLE_SWING : 25},
+								SquatState.RIGHT_HAND  : { SquatState.HEAD: 30,  SquatState.LEFT_HAND: 30, SquatState.DOUBLE_SWING : 25},
 								SquatState.DOUBLE_SWING  : { SquatState.HEAD: 40},
 						},
 		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 10},
@@ -289,7 +289,7 @@ var difficulty_weight_adjustments = {
 		CueState.PUSHUP: 1.0,
 		CueState.CRUNCH: 1.0,
 		CueState.JUMP: 1.0,
-		CueState.BURPEE: 0.8,
+		CueState.BURPEE: 1.0,
 		CueState.SPRINT: 1.0,
 		CueState.YOGA: 1.0
 		},
@@ -298,20 +298,39 @@ var difficulty_weight_adjustments = {
 		CueState.SQUAT: 0.8,
 		CueState.PUSHUP: 1.4,
 		CueState.CRUNCH: 1.0,
-		CueState.JUMP: 1.2,
-		CueState.BURPEE: 1.2,
+		CueState.JUMP: 1.3,
+		CueState.BURPEE: 1.3,
 		CueState.SPRINT: 1.3,
 		CueState.YOGA: 1.0
 	},
 }	
 	
+var default_state_transition_pause = 1.5
+
+var state_transition_time = {
+	"%d-%d"%[CueState.PUSHUP, CueState.CRUNCH]: 3.0,
+	"%d-%d"%[CueState.CRUNCH, CueState.PUSHUP]: 3.0,
+	"%d-%d"%[CueState.PUSHUP, CueState.STAND]: 3.0,
+	"%d-%d"%[CueState.PUSHUP, CueState.SPRINT]: 3.0,
+	"%d-%d"%[CueState.PUSHUP, CueState.JUMP]: 3.0,
+	"%d-%d"%[CueState.PUSHUP, CueState.SQUAT]: 3.0,
+	"%d-%d"%[CueState.CRUNCH, CueState.STAND]: 3.0,
+	"%d-%d"%[CueState.CRUNCH, CueState.SPRINT]: 3.0,
+	"%d-%d"%[CueState.CRUNCH, CueState.JUMP]: 3.0,
+	"%d-%d"%[CueState.CRUNCH, CueState.SQUAT]: 3.0,
+	"%d-%d"%[CueState.STAND, CueState.CRUNCH]: 3.0,
+	"%d-%d"%[CueState.SPRINT, CueState.CRUNCH]: 3.0,
+	"%d-%d"%[CueState.JUMP, CueState.CRUNCH]: 3.0,
+	"%d-%d"%[CueState.SQUAT, CueState.CRUNCH]: 3.0,
+}
+
 	
 	
 var level_statistics_data = {}
 	
 func setup_globals():
-	setup_globals_demo()
-	#setup_globals_regular()	
+	#setup_globals_demo()
+	setup_globals_regular()	
 	
 
 func setup_globals_demo():
@@ -338,6 +357,7 @@ func setup_globals_demo():
 	ProjectSettings.set("game/portal_connection", false)
 	
 	ProjectSettings.set("game/instructor", true)
+	ProjectSettings.set("game/easy_transition", true)
 	
 	
 
@@ -365,6 +385,8 @@ func setup_globals_regular():
 	ProjectSettings.set("game/external_songs", null)
 	ProjectSettings.set("game/portal_connection", false)
 	ProjectSettings.set("game/instructor", true)
+	ProjectSettings.set("game/easy_transition", true)
+
 
 
 var exercise_state_list

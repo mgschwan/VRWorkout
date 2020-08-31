@@ -32,12 +32,14 @@ var emit_early
 var auto_difficulty = false
 
 
+
 var rng = RandomNumberGenerator.new()
 
 var cue_selector = CueSelector.HEAD
 
 var temporary_cue_space_extension = 0.0
 var state_transition_pause = 1.5
+var adjust_state_transition_pause = ProjectSettings.get("game/easy_transition")
 
 var rebalance_exercises = true
 var redistribution_speed = 0.025
@@ -446,7 +448,8 @@ func emit_cue_node(current_time, target_time):
 			else:
 				cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model, null, false)
 			state_duration = min_state_duration + 5*current_difficulty*rng.randf()
-
+		state_transition_pause = get_state_transition_pause(old_state, cue_emitter_state)
+		print ("State transition pause %.2f"%state_transition_pause)
 		var cue_data = {
 		"cue_type": "state_change",
 		"state": cue_emitter_state, 
@@ -827,7 +830,12 @@ func handle_squat_cues_regular(current_time, target_time, cue_emitter_state):
 	else:
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 	
-	
+func get_state_transition_pause(old_state, new_state):
+	var retVal = GameVariables.default_state_transition_pause
+	var transition = "%d-%d"%[old_state, new_state]
+	if adjust_state_transition_pause and transition in GameVariables.state_transition_time:
+		retVal = GameVariables.state_transition_time[transition]
+	return retVal
 
 
 #####################

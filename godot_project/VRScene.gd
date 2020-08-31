@@ -444,6 +444,7 @@ func get_persisting_parameters():
 			"game/hud_enabled":ProjectSettings.get("game/hud_enabled"),
 			"game/equalizer": ProjectSettings.get("game/equalizer"),
 			"game/exercise/kneesaver": ProjectSettings.get("game/exercise/kneesaver"),
+			"game/easy_transition": ProjectSettings.get("game/easy_transition"),
 			"game/instructor": ProjectSettings.get("game/instructor")
 	}
 	
