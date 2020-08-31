@@ -86,7 +86,7 @@ func update_widget():
 
 	GameVariables.exercise_state_list = []
 	get_node("SettingsCarousel/Exercises/StandardWorkout").mark_active()
-	show_settings("exercises")
+	show_settings("switchboard")
 	
 	
 # Called when the node enters the scene tree for the first time.
