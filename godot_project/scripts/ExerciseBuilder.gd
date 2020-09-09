@@ -553,7 +553,7 @@ func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 		if medium_hold_high:
 			y_head = player_height/1.8
 		else:
-			y_head = player_height/2.4
+			y_head = player_height/2.9
 		medium_hold_high = not medium_hold_high
 			
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time, 0,0,"", null,null, 0.4)

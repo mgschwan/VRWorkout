@@ -22,6 +22,7 @@ func _ready():
 func send_data(reference, type, data):
 	var error = ERR_UNAVAILABLE
 	if ProjectSettings.get("game/portal_connection"):
+		print ("Sending data to portal")
 		var query = JSON.print({
 			"type": type,
 			"reference": reference,
@@ -29,18 +30,33 @@ func send_data(reference, type, data):
 			})
 		var headers = ["Content-Type: application/json"]
 		error = request.request(api_url + "/dataobject/", headers, false, HTTPClient.METHOD_POST, query)
+	else:
+		print ("Data not sent. Connection not active")
 	return error
+
+func get_request(path):
+	var error = ERR_UNAVAILABLE
+	if ProjectSettings.get("game/portal_connection"):
+		print ("Send GET request portal")
+		error = request.request(api_url + path)
+	else:
+		print ("Data not sent. Connection not active")
+	return error
+
 
 func _http_connect_request_completed(result, response_code, headers, body):
 	print ("Request finished")
 	var text = body.get_string_from_utf8()
 	print ("Response: %s"%text)
 	var response = parse_json(text)
-	if response.has("onetime_code"):
-		registration_response(response)
-	else:
-		#Handle other messages
-		pass
+	if response:
+		if response.has("onetime_code"):
+			registration_response(response)
+		elif response.has("message_type") and response["message_type"] == "profile":
+			profile_response(response)
+		else:
+			#Handle other messages
+			pass
 func registration_response(response):
 	emit_signal("registration_initialized",response["onetime_code"])
 
@@ -52,9 +68,13 @@ func register_device(device_id):
 	var error = request.request(api_url + "/registration/", headers, false, HTTPClient.METHOD_POST, query)
 	return error
 	
-
-
-
+func request_profile(device_id):
+	print ("Request profile for: %s"%device_id)
+	get_request("/profile/%s/"%device_id)
+	
+func profile_response(response):
+	if "name" in response:
+		GameVariables.player_name = response["name"]
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

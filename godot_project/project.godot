@@ -42,6 +42,10 @@ GameVariables="*res://scenes/GameVariables.tscn"
 
 singletons=[ "res://addons/godot_ovrmobile/godot_ovrmobile.gdnlib" ]
 
+[logging]
+
+file_logging/log_path="user://vrworkout_log.txt"
+
 [rendering]
 
 quality/driver/driver_name="GLES2"

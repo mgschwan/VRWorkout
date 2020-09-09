@@ -120,7 +120,7 @@ func _ready():
 	update_widget()
 	get_node("SongSelector").select_difficulty(GameVariables.difficulty)
 	get_viewport().get_camera().blackout_screen(false)
-	show_settings("switchboard")
+	show_settings("exercises")
 	
 
 
@@ -204,6 +204,7 @@ func show_settings(panel):
 	var switchboard_node = get_node("SettingsCarousel/Switchboard")
 	var connections_node = get_node("SettingsCarousel/Connections")
 	var exercises_node = get_node("SettingsCarousel/Exercises")
+	var battle_node = get_node("SettingsCarousel/Battle")
 	var carousel = get_node("SettingsCarousel")
 	var t = get_node("SettingsCarousel/Tween")
 
@@ -213,21 +214,31 @@ func show_settings(panel):
 		gu.activate_node(switchboard_node)
 		gu.deactivate_node(connections_node)
 		gu.deactivate_node(exercises_node)
+		gu.deactivate_node(battle_node)
 		angle = 0
 	elif panel == "connections":
 		gu.deactivate_node(switchboard_node)
 		gu.activate_node(connections_node)
 		gu.deactivate_node(exercises_node)
+		gu.deactivate_node(battle_node)
 		angle = 3*PI/2.0
 	elif panel == "exercises":
 		gu.deactivate_node(switchboard_node)
 		gu.deactivate_node(connections_node)
 		gu.activate_node(exercises_node)
+		gu.deactivate_node(battle_node)
 		angle = PI
+	elif panel == "battle":
+		gu.deactivate_node(switchboard_node)
+		gu.deactivate_node(connections_node)
+		gu.deactivate_node(exercises_node)
+		gu.activate_node(battle_node)
+		angle = PI/2.0
 	elif panel == "empty":
 		gu.deactivate_node(switchboard_node)
 		gu.deactivate_node(connections_node)
 		gu.deactivate_node(exercises_node)
+		gu.deactivate_node(battle_node)
 		angle = PI/2.0
 
 	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, angle, 0.5, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
@@ -241,6 +252,10 @@ func _on_ExerciseButton_selected():
 
 func _on_ConnectionsButton_selected():
 	show_settings("connections")	
+
+func _on_BattleButton_selected():
+	show_settings("battle")	
+
 
 func _on_PresetCollector_selected(collection):
 	GameVariables.exercise_state_list = collection
@@ -258,3 +273,5 @@ func _on_Recenter_selected():
 
 func _on_ExtendedSwitch_toggled(value):
 	ProjectSettings.set("game/easy_transition", value)
+
+

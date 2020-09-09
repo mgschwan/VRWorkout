@@ -223,6 +223,7 @@ func initialize():
 			Engine.target_fps = 90 # TODO: this is headset dependent => figure out how to get this info at runtime
 			OS.vsync_enabled = false;
 			vr_mode = true;	
+			get_viewport().keep_3d_linear = true
 	else:
 		#Not running in VR / Demo mode
 		cam.translation.y = 1.5
@@ -235,8 +236,15 @@ func _ready():
 	
 	print ("Unique device id %s"%GameVariables.device_id)
 	GameVariables.setup_globals()
+	
+	# !! Beware that any functions that rely on config parameters don't
+	# !! work properly before those two lines
 	var config = gu.load_persistent_config(GameVariables.config_file_location)
 	gu.apply_config_parameters(config)
+	# -- Now it's safe to access the config parameters
+	
+
+	get_node("RemoteInterface").request_profile(GameVariables.device_id)
 
 	connect("recenter_scene",self,"on_recenter_scene")
 
@@ -283,14 +291,17 @@ func _on_level_finished	():
 	vrw_score = result["vrw_score"]
 	
 	
-
+	print ("Preparing satistics upload")
 	game_statistics["api_version"] = GameVariables.api_version
 	game_statistics["score"] = result["points"]
 	game_statistics["duration"] =  result["time"]
 	game_statistics["data"] = GameVariables.level_statistics_data
-	get_node("RemoteInterface").send_data(GameVariables.device_id, "workout", game_statistics)
-
-	
+	var error = get_node("RemoteInterface").send_data(GameVariables.device_id, "workout", game_statistics)
+	if error != OK:
+		print ("Statistics not sent to portal. Error code %d"%error)
+	else:
+		print ("Statistics sent")
+		
 	level.queue_free()
 	level = null 
 	levelselect = levelselect_blueprint.instance()
@@ -304,7 +315,7 @@ func _on_level_finished	():
 	var last_played_str = gu.seconds_to_timestring(last_played)
 	var total_played_str = gu.seconds_to_timestring(total_played)
 	
-	levelselect.set_stat_text("Player results\n\nLast round\nScore: %.2f (%d/%d)\nPoints: %d"%[vrw_score,result["hits"],result["max_hits"],last_points]+" Duration: %s"%last_played_str+"\n\nTotal\nPoints: %d"%total_points+" Duration: %s"%total_played_str, vrw_score) 
+	levelselect.set_stat_text("Results for %s\n\nLast round\nScore: %.2f (%d/%d)\nPoints: %d"%[GameVariables.player_name, vrw_score,result["hits"],result["max_hits"],last_points]+" Duration: %s"%last_played_str+"\n\nTotal\nPoints: %d"%total_points+" Duration: %s"%total_played_str, vrw_score) 
 
 	yield(get_tree().create_timer(1), "timeout")
 	get_viewport().get_camera().blackout_screen(false)
@@ -466,7 +477,7 @@ func _on_Area_level_selected(filename, diff, num):
 			GameVariables.auto_difficulty = true
 		else:
 			GameVariables.auto_difficulty = false
-		game_statistics = {"difficuly": diff, "song": gu.get_song_name(filename)}
+		game_statistics = {"difficulty": diff, "song": gu.get_song_name(filename)}
 
 		GameVariables.difficulty = diff
 		
@@ -489,7 +500,7 @@ func _on_DemoTimer_timeout():
 	#GameVariables.exercise_state_list = GameVariables.predefined_exercises["Low pyramid"]
 	#_on_Area_level_selected("res://audio/songs/01_VRWorkout.ogg", 0, 1)
 	
-	#_on_Area_level_selected("res://audio/nonfree_songs/04_VR_Raw.ogg", 2, 1)
+	#_on_Area_level_selected("res://audio/nonfree_songs/03_Rule_The_World.ogg", 2, 1)
 		
 	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
 	#_on_Area_level_selected("res://audio/songs/02_VRWorkout_Beater.ogg", 2, 1)

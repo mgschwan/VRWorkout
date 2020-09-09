@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -29,6 +29,8 @@
 [ext_resource path="res://scenes/PresetCollection.tscn" type="PackedScene" id=27]
 [ext_resource path="res://scenes/VRWorkoutConnection.tscn" type="PackedScene" id=28]
 [ext_resource path="res://CircularGauge.tscn" type="PackedScene" id=29]
+[ext_resource path="res://fonts/Droid_Sans_Regular.tres" type="DynamicFont" id=30]
+[ext_resource path="res://scenes/StoredSlot.tscn" type="PackedScene" id=31]
 
 [sub_resource type="CylinderMesh" id=1]
 bottom_radius = 0.2
@@ -83,6 +85,80 @@ albedo_texture = SubResource( 13 )
 
 [sub_resource type="PrismMesh" id=15]
 size = Vector3( 0.03, 0.03, 0.03 )
+
+[sub_resource type="GDScript" id=16]
+script/source = "extends Spatial
+
+export(String) var text = \"default\"
+
+var textnode
+export(int) var font_size = 32
+export(int) var viewport_width = 256
+export(int) var viewport_height = 64
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+var viewport
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	viewport = get_node(\"Viewport\")	
+
+	textnode = viewport.get_node(\"CanvasLayer/Panel/Container/Label\")
+	viewport.get_node(\"CanvasLayer/Panel\").rect_size = Vector2(viewport_width/0.8,viewport_height/0.8)
+	
+	var textmesh = get_node(\"MeshInstance\")
+
+	var font = textnode.get(\"custom_fonts/font\")
+
+
+	if font.size != font_size:
+		#Make a local copy of the texture
+		print (\"Font needs copying\")
+		#Custom size needs a local copy of the font
+		var font_copy = font.duplicate(true)
+		textnode.set(\"custom_fonts/font\", font_copy)
+		font_copy.size = font_size
+		
+	textmesh.set_surface_material(0,textmesh.get_surface_material(0).duplicate())
+		
+	textmesh.mesh.size = Vector2(2, 2*float(viewport_height)/float(viewport_width))
+	
+	print_info(text)
+
+func print_info(t):
+	text = t.replace(\"\\\\n\",\"\\n\")
+	textnode.text = text
+	viewport.render_target_update_mode = Viewport.UPDATE_ONCE
+
+
+"
+
+[sub_resource type="Theme" id=21]
+default_font = ExtResource( 30 )
+
+[sub_resource type="StyleBoxFlat" id=22]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="DynamicFont" id=17]
+size = 32
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="PlaneMesh" id=18]
+size = Vector2( 2, 0.5 )
+
+[sub_resource type="ViewportTexture" id=19]
+flags = 4
+viewport_path = NodePath("SettingsCarousel/Exercises/Header/Viewport")
+
+[sub_resource type="SpatialMaterial" id=20]
+resource_local_to_scene = true
+flags_unshaded = true
+albedo_texture = SubResource( 19 )
 
 [node name="Spatial" type="Spatial"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
@@ -185,7 +261,7 @@ visible = false
 transform = Transform( 1.2, 0, 0, 0, 1, 9.9729e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
 
 [node name="SettingsCarousel" type="Spatial" parent="."]
-transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 3.57628e-07, 0, -2.3 )
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 3.57628e-07, 0, -2.3 )
 
 [node name="Tween" type="Tween" parent="SettingsCarousel"]
 
@@ -425,20 +501,85 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0 )
 mesh = SubResource( 15 )
 material/0 = ExtResource( 7 )
 
+[node name="Header" type="Spatial" parent="SettingsCarousel/Exercises"]
+transform = Transform( 2.93257e-07, -1, 3.18518e-14, 9.77524e-08, 2.65431e-14, -0.6, 0.6, 4.88762e-07, 9.77524e-08, -1.06915, 2.11855, -0.111982 )
+script = SubResource( 16 )
+text = "Step 1: Select workout or exercises\\nStep 2: Select song to your right"
+font_size = 28
+viewport_width = 512
+viewport_height = 96
+
+[node name="Viewport" type="Viewport" parent="SettingsCarousel/Exercises/Header"]
+size = Vector2( 512, 96 )
+msaa = 6
+disable_3d = true
+usage = 0
+render_target_v_flip = true
+render_target_update_mode = 0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="SettingsCarousel/Exercises/Header/Viewport"]
+
+[node name="Panel" type="Panel" parent="SettingsCarousel/Exercises/Header/Viewport/CanvasLayer"]
+margin_right = 256.0
+margin_bottom = 48.0
+theme = SubResource( 21 )
+custom_styles/panel = SubResource( 22 )
+
+[node name="Container" type="MarginContainer" parent="SettingsCarousel/Exercises/Header/Viewport/CanvasLayer/Panel"]
+margin_right = 256.0
+margin_bottom = 48.0
+theme = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="SettingsCarousel/Exercises/Header/Viewport/CanvasLayer/Panel/Container"]
+margin_top = 1.0
+margin_right = 256.0
+margin_bottom = 47.0
+custom_fonts/font = SubResource( 17 )
+text = "defaulttext"
+
+[node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Exercises/Header"]
+mesh = SubResource( 18 )
+material/0 = SubResource( 20 )
+
+[node name="text_panel" parent="SettingsCarousel/Exercises/Header" instance=ExtResource( 18 )]
+transform = Transform( 1.1, -1.13687e-13, 6.88809e-21, -5.68434e-14, 1, 0, 1.42109e-14, -6.77626e-21, 0.25, 0, -0.00774515, 0 )
+
+[node name="Battle" type="Spatial" parent="SettingsCarousel"]
+
+[node name="StoredSlot1" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
+transform = Transform( -2.44381e-08, -1, -2.44381e-08, 0, -1.62921e-07, 0.15, -0.15, 1.62921e-07, 3.98147e-15, -1.22181, 1.435, -0.748508 )
+slot_number = 1
+
+[node name="StoredSlot2" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
+transform = Transform( -2.44381e-08, -1, -2.44381e-08, 0, -1.62921e-07, 0.15, -0.15, 1.62921e-07, 3.98147e-15, -1.22181, 1.435, -0.377992 )
+slot_number = 2
+
+[node name="StoredSlot3" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
+transform = Transform( -2.44381e-08, -1, -2.44381e-08, 0, -1.62921e-07, 0.15, -0.15, 1.62921e-07, 3.98147e-15, -1.22181, 1.435, 0.00243878 )
+slot_number = 3
+
+[node name="StoredSlot4" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
+transform = Transform( -2.44381e-08, -1, -2.44381e-08, 0, -1.62921e-07, 0.15, -0.15, 1.62921e-07, 3.98147e-15, -1.22181, 1.435, 0.374507 )
+slot_number = 4
+
 [node name="SettingsButton" parent="." instance=ExtResource( 24 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 1.1178, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 1.05393, -1 )
 ontext = "Settings"
 
 [node name="ExerciseButton" parent="." instance=ExtResource( 24 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 0.9898, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 0.925931, -1 )
 ontext = "Exercises"
 
 [node name="ConnectionsButton" parent="." instance=ExtResource( 24 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399424, 0.9898, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399424, 0.925931, -1 )
 ontext = "Connect"
 
+[node name="BattleButton" parent="." instance=ExtResource( 24 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399, 1.05413, -1 )
+ontext = "Battle"
+
 [node name="PlayerHeightAdjuster" parent="." instance=ExtResource( 26 )]
-transform = Transform( 0.0669504, 0, -0.0338031, 0, 0.075, 0, 0.0338031, 0, 0.0669504, 0.749935, 0, -1.10919 )
+transform = Transform( 0.0521398, 0, -0.0539115, 0, 0.075, 0, 0.0539115, 0, 0.0521398, 0.901743, 0, -0.952223 )
 [connection signal="selected" from="Recenter" to="." method="_on_Recenter_selected"]
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
 [connection signal="selected" from="SongSelector/Freeplay1" to="SongSelector" method="_on_level_block_selected"]
@@ -471,3 +612,4 @@ transform = Transform( 0.0669504, 0, -0.0338031, 0, 0.075, 0, 0.0338031, 0, 0.06
 [connection signal="selected" from="SettingsButton" to="." method="_on_SettingsButton_selected"]
 [connection signal="selected" from="ExerciseButton" to="." method="_on_ExerciseButton_selected"]
 [connection signal="selected" from="ConnectionsButton" to="." method="_on_ConnectionsButton_selected"]
+[connection signal="selected" from="BattleButton" to="." method="_on_BattleButton_selected"]

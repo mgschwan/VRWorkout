@@ -2,6 +2,7 @@ extends Node
 
 var app_name = "VRWorkout"
 var api_version = 1
+var player_name = "Player"
 
 var detail_selection_mode = true
 var trackers = null
@@ -285,7 +286,7 @@ var difficulty_weight_adjustments = {
 		},
 	"medium" : {
 		CueState.STAND: 1.0,
-		CueState.SQUAT: 1.0,
+		CueState.SQUAT: 0.8,
 		CueState.PUSHUP: 1.0,
 		CueState.CRUNCH: 1.0,
 		CueState.JUMP: 1.0,
@@ -294,8 +295,8 @@ var difficulty_weight_adjustments = {
 		CueState.YOGA: 1.0
 		},
 	"hard" : {
-		CueState.STAND: 0.7,
-		CueState.SQUAT: 0.8,
+		CueState.STAND: 0.6,
+		CueState.SQUAT: 0.6,
 		CueState.PUSHUP: 1.4,
 		CueState.CRUNCH: 1.0,
 		CueState.JUMP: 1.3,
@@ -330,20 +331,20 @@ var level_statistics_data = {}
 	
 func setup_globals():
 	#setup_globals_demo()
-	setup_globals_regular()	
+	setup_globals_regular()
 	
 
 func setup_globals_demo():
 	ProjectSettings.set("game/beast_mode", false)
 	ProjectSettings.set("game/bpm", 120)
 	ProjectSettings.set("game/exercise/jump", false)
-	ProjectSettings.set("game/exercise/stand", true)
+	ProjectSettings.set("game/exercise/stand", false)
 	ProjectSettings.set("game/exercise/squat", false)
 	ProjectSettings.set("game/exercise/pushup", false)
-	ProjectSettings.set("game/exercise/crunch", false)
+	ProjectSettings.set("game/exercise/crunch", true)
 	ProjectSettings.set("game/exercise/burpees", false)
 	ProjectSettings.set("game/exercise/duck", false)
-	ProjectSettings.set("game/exercise/sprint", true)
+	ProjectSettings.set("game/exercise/sprint", false)
 	ProjectSettings.set("game/exercise/kneesaver", false)
 	ProjectSettings.set("game/exercise/yoga", false)
 	ProjectSettings.set("game/exercise/strength_focus", false)
@@ -354,7 +355,7 @@ func setup_globals_demo():
 	ProjectSettings.set("game/player_height", 1.8)
 	ProjectSettings.set("game/external_songs", null)
 	ProjectSettings.set("game/equalizerr", true)
-	ProjectSettings.set("game/portal_connection", false)
+	ProjectSettings.set("game/portal_connection", true)
 	
 	ProjectSettings.set("game/instructor", true)
 	ProjectSettings.set("game/easy_transition", true)
