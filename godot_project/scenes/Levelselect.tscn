@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -137,28 +137,36 @@ func print_info(t):
 
 "
 
-[sub_resource type="Theme" id=21]
+[sub_resource type="Theme" id=17]
 default_font = ExtResource( 30 )
 
-[sub_resource type="StyleBoxFlat" id=22]
+[sub_resource type="StyleBoxFlat" id=18]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="DynamicFont" id=17]
+[sub_resource type="DynamicFont" id=19]
 size = 32
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="PlaneMesh" id=18]
+[sub_resource type="PlaneMesh" id=20]
 size = Vector2( 2, 0.5 )
 
-[sub_resource type="ViewportTexture" id=19]
+[sub_resource type="ViewportTexture" id=21]
 flags = 4
 viewport_path = NodePath("SettingsCarousel/Exercises/Header/Viewport")
 
-[sub_resource type="SpatialMaterial" id=20]
+[sub_resource type="SpatialMaterial" id=22]
 resource_local_to_scene = true
 flags_unshaded = true
-albedo_texture = SubResource( 19 )
+albedo_texture = SubResource( 21 )
+
+[sub_resource type="ViewportTexture" id=23]
+viewport_path = NodePath("SettingsCarousel/Battle/Header/Viewport")
+
+[sub_resource type="SpatialMaterial" id=24]
+resource_local_to_scene = true
+flags_unshaded = true
+albedo_texture = SubResource( 23 )
 
 [node name="Spatial" type="Spatial"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
@@ -522,8 +530,8 @@ render_target_update_mode = 0
 [node name="Panel" type="Panel" parent="SettingsCarousel/Exercises/Header/Viewport/CanvasLayer"]
 margin_right = 256.0
 margin_bottom = 48.0
-theme = SubResource( 21 )
-custom_styles/panel = SubResource( 22 )
+theme = SubResource( 17 )
+custom_styles/panel = SubResource( 18 )
 
 [node name="Container" type="MarginContainer" parent="SettingsCarousel/Exercises/Header/Viewport/CanvasLayer/Panel"]
 margin_right = 256.0
@@ -534,33 +542,104 @@ theme = ExtResource( 2 )
 margin_top = 1.0
 margin_right = 256.0
 margin_bottom = 47.0
-custom_fonts/font = SubResource( 17 )
+custom_fonts/font = SubResource( 19 )
 text = "defaulttext"
 
 [node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Exercises/Header"]
-mesh = SubResource( 18 )
-material/0 = SubResource( 20 )
+mesh = SubResource( 20 )
+material/0 = SubResource( 22 )
 
 [node name="text_panel" parent="SettingsCarousel/Exercises/Header" instance=ExtResource( 18 )]
 transform = Transform( 1.1, -1.13687e-13, 6.88809e-21, -5.68434e-14, 1, 0, 1.42109e-14, -6.77626e-21, 0.25, 0, -0.00774515, 0 )
 
 [node name="Battle" type="Spatial" parent="SettingsCarousel"]
 
+[node name="Header" type="Spatial" parent="SettingsCarousel/Battle"]
+transform = Transform( 3.26639e-07, -1, 3.72904e-14, 9.77524e-08, 2.65431e-14, -0.6, 0.6, 5.44398e-07, 9.77524e-08, -1.18034, 2.33154, -0.250625 )
+script = SubResource( 16 )
+text = "Load: Select slot and then song\\nSave: Play then press save"
+font_size = 28
+viewport_width = 512
+viewport_height = 96
+
+[node name="Viewport" type="Viewport" parent="SettingsCarousel/Battle/Header"]
+size = Vector2( 512, 96 )
+msaa = 6
+disable_3d = true
+usage = 0
+render_target_v_flip = true
+render_target_update_mode = 0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="SettingsCarousel/Battle/Header/Viewport"]
+
+[node name="Panel" type="Panel" parent="SettingsCarousel/Battle/Header/Viewport/CanvasLayer"]
+margin_right = 256.0
+margin_bottom = 48.0
+theme = SubResource( 17 )
+custom_styles/panel = SubResource( 18 )
+
+[node name="Container" type="MarginContainer" parent="SettingsCarousel/Battle/Header/Viewport/CanvasLayer/Panel"]
+margin_right = 256.0
+margin_bottom = 48.0
+theme = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="SettingsCarousel/Battle/Header/Viewport/CanvasLayer/Panel/Container"]
+margin_top = 1.0
+margin_right = 256.0
+margin_bottom = 47.0
+custom_fonts/font = SubResource( 19 )
+text = "defaulttext"
+
+[node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Battle/Header"]
+mesh = SubResource( 20 )
+material/0 = SubResource( 24 )
+
+[node name="text_panel" parent="SettingsCarousel/Battle/Header" instance=ExtResource( 18 )]
+transform = Transform( 1.1, -1.13687e-13, 6.88809e-21, -5.68434e-14, 1, 0, 1.42109e-14, -6.77626e-21, 0.25, 0, -0.00774515, 0 )
+
+[node name="WorkoutMarker" type="Spatial" parent="SettingsCarousel/Battle"]
+visible = false
+
+[node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Battle/WorkoutMarker"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0 )
+mesh = SubResource( 15 )
+material/0 = ExtResource( 7 )
+
 [node name="StoredSlot1" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -2.44381e-08, -1, -2.44381e-08, 0, -1.62921e-07, 0.15, -0.15, 1.62921e-07, 3.98147e-15, -1.22181, 1.435, -0.748508 )
+transform = Transform( -2.44381e-08, -1, -2.44381e-08, 0, -1.62921e-07, 0.15, -0.15, 1.62921e-07, 3.98147e-15, -1.22181, 1.73148, -0.748508 )
 slot_number = 1
+active_marker = "WorkoutMaker"
+
+[node name="SaveButton" parent="SettingsCarousel/Battle/StoredSlot1" instance=ExtResource( 24 )]
+transform = Transform( -6, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 9.05975e-07, 4, 6.55671e-09, 9.53674e-07, 0, -1.38554 )
+ontext = "Save"
 
 [node name="StoredSlot2" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -2.44381e-08, -1, -2.44381e-08, 0, -1.62921e-07, 0.15, -0.15, 1.62921e-07, 3.98147e-15, -1.22181, 1.435, -0.377992 )
+transform = Transform( -2.44381e-08, -1, -2.44381e-08, 0, -1.62921e-07, 0.15, -0.15, 1.62921e-07, 3.98147e-15, -1.22181, 1.73148, -0.377992 )
 slot_number = 2
+active_marker = "WorkoutMaker"
+
+[node name="SaveButton" parent="SettingsCarousel/Battle/StoredSlot2" instance=ExtResource( 24 )]
+transform = Transform( -6, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 9.05975e-07, 4, 6.55671e-09, 0, 0, -1.386 )
+ontext = "Save"
 
 [node name="StoredSlot3" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -2.44381e-08, -1, -2.44381e-08, 0, -1.62921e-07, 0.15, -0.15, 1.62921e-07, 3.98147e-15, -1.22181, 1.435, 0.00243878 )
+transform = Transform( -2.44381e-08, -1, -2.44381e-08, 0, -1.62921e-07, 0.15, -0.15, 1.62921e-07, 3.98147e-15, -1.22181, 1.73148, 0.00243878 )
 slot_number = 3
+active_marker = "WorkoutMaker"
+
+[node name="SaveButton" parent="SettingsCarousel/Battle/StoredSlot3" instance=ExtResource( 24 )]
+transform = Transform( -6, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 9.05975e-07, 4, 6.55671e-09, 0, 0, -1.386 )
+ontext = "Save"
 
 [node name="StoredSlot4" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -2.44381e-08, -1, -2.44381e-08, 0, -1.62921e-07, 0.15, -0.15, 1.62921e-07, 3.98147e-15, -1.22181, 1.435, 0.374507 )
+transform = Transform( -2.44381e-08, -1, -2.44381e-08, 0, -1.62921e-07, 0.15, -0.15, 1.62921e-07, 3.98147e-15, -1.22181, 1.73148, 0.374507 )
 slot_number = 4
+active_marker = "WorkoutMaker"
+
+[node name="SaveButton" parent="SettingsCarousel/Battle/StoredSlot4" instance=ExtResource( 24 )]
+transform = Transform( -6, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 9.05975e-07, 4, 6.55671e-09, 0, 0, -1.386 )
+ontext = "Save"
 
 [node name="SettingsButton" parent="." instance=ExtResource( 24 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 1.05393, -1 )
@@ -609,6 +688,14 @@ transform = Transform( 0.0521398, 0, -0.0539115, 0, 0.075, 0, 0.0539115, 0, 0.05
 [connection signal="selected" from="SettingsCarousel/Exercises/ExerciseCollection2" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="selected" from="SettingsCarousel/Exercises/ExerciseCollection3" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="selected" from="SettingsCarousel/Exercises/ExerciseCollection4" to="." method="_on_ExerciseCollection_selected"]
+[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot1" to="." method="_on_StoredSlot_selected"]
+[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot1/SaveButton" to="SettingsCarousel/Battle/StoredSlot1" method="_on_SaveButton_selected"]
+[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot2" to="." method="_on_StoredSlot_selected"]
+[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot2/SaveButton" to="SettingsCarousel/Battle/StoredSlot2" method="_on_SaveButton_selected"]
+[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot3" to="." method="_on_StoredSlot_selected"]
+[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot3/SaveButton" to="SettingsCarousel/Battle/StoredSlot3" method="_on_SaveButton_selected"]
+[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot4" to="." method="_on_StoredSlot_selected"]
+[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot4/SaveButton" to="SettingsCarousel/Battle/StoredSlot4" method="_on_SaveButton_selected"]
 [connection signal="selected" from="SettingsButton" to="." method="_on_SettingsButton_selected"]
 [connection signal="selected" from="ExerciseButton" to="." method="_on_ExerciseButton_selected"]
 [connection signal="selected" from="ConnectionsButton" to="." method="_on_ConnectionsButton_selected"]

@@ -24,6 +24,16 @@ func get_next_ingame_id():
 func reset_ingame_id():
 	current_ingame_id = 0
 
+
+enum GameMode {
+	STANDARD = 0,
+	EXERCISE_SET = 1,
+	STORED = 2,	
+};
+
+var game_mode = GameMode.STANDARD
+var cue_list = Array()
+
 enum CueState {
 	STAND = 0,
 	SQUAT = 1,
@@ -338,13 +348,13 @@ func setup_globals_demo():
 	ProjectSettings.set("game/beast_mode", false)
 	ProjectSettings.set("game/bpm", 120)
 	ProjectSettings.set("game/exercise/jump", false)
-	ProjectSettings.set("game/exercise/stand", false)
+	ProjectSettings.set("game/exercise/stand", true)
 	ProjectSettings.set("game/exercise/squat", false)
 	ProjectSettings.set("game/exercise/pushup", false)
-	ProjectSettings.set("game/exercise/crunch", true)
+	ProjectSettings.set("game/exercise/crunch", false)
 	ProjectSettings.set("game/exercise/burpees", false)
 	ProjectSettings.set("game/exercise/duck", false)
-	ProjectSettings.set("game/exercise/sprint", false)
+	ProjectSettings.set("game/exercise/sprint", true)
 	ProjectSettings.set("game/exercise/kneesaver", false)
 	ProjectSettings.set("game/exercise/yoga", false)
 	ProjectSettings.set("game/exercise/strength_focus", false)

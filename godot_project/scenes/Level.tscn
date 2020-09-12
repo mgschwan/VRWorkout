@@ -1,14 +1,13 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://blue_outdoor_stage.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/SpectrumDisplay.tscn" type="PackedScene" id=3]
 [ext_resource path="res://cue_emitter.gd" type="Script" id=4]
-[ext_resource path="res://models/blue_transparent.material" type="Material" id=5]
+[ext_resource path="res://materials/blue_noninvasive.tres" type="Material" id=5]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=6]
 [ext_resource path="res://exit_button.gd" type="Script" id=7]
 [ext_resource path="res://spawn_timer.gd" type="Script" id=8]
-[ext_resource path="res://dark_green.tres" type="Material" id=9]
 [ext_resource path="res://ExerciseSelector.tscn" type="PackedScene" id=10]
 [ext_resource path="res://assets/vrworkout_logo_cracked_noise.jpg" type="Texture" id=11]
 [ext_resource path="res://boxman_character.tscn" type="PackedScene" id=12]
@@ -30,11 +29,10 @@
 size = Vector2( 2, 5 )
 
 [sub_resource type="SpatialMaterial" id=2]
-flags_transparent = true
 flags_unshaded = true
 flags_do_not_receive_shadows = true
 flags_disable_ambient_light = true
-albedo_color = Color( 1, 1, 1, 0.752941 )
+albedo_color = Color( 0, 0.054902, 0.65098, 1 )
 
 [sub_resource type="PlaneMesh" id=3]
 size = Vector2( 2, 1 )
@@ -45,8 +43,9 @@ viewport_path = NodePath("Viewport")
 
 [sub_resource type="SpatialMaterial" id=5]
 resource_local_to_scene = true
-flags_transparent = true
+flags_unshaded = true
 vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
 albedo_texture = SubResource( 4 )
 
 [sub_resource type="PlaneMesh" id=6]
@@ -54,7 +53,7 @@ size = Vector2( 1.98, 0.2 )
 
 [sub_resource type="SpatialMaterial" id=7]
 flags_unshaded = true
-albedo_color = Color( 0.0784314, 0, 0.639216, 1 )
+albedo_color = Color( 0.980392, 0.976471, 0.992157, 1 )
 
 [sub_resource type="Curve3D" id=8]
 _data = {
@@ -136,33 +135,21 @@ bus = "Music"
 transform = Transform( 0.118828, 0, 0, 0, 1, 0, 0, 0, 0.0898216, -0.87, 1, -0.0667922 )
 
 [node name="target_zone_l" type="MeshInstance" parent="target"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7525, 0, 0 )
+transform = Transform( 0.2, 0, 0, 0, 1, 0, 0, 0, 0.2, -2.7525, 0, 0 )
 mesh = SubResource( 9 )
 material/0 = ExtResource( 5 )
 
 [node name="target_zone_l2" type="MeshInstance" parent="target"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5653, 0, 0 )
+transform = Transform( 0.2, 0, 0, 0, 1, 0, 0, 0, 0.2, 17.5653, 0, 0 )
 mesh = SubResource( 9 )
 material/0 = ExtResource( 5 )
 
-[node name="target_zone_l3" type="MeshInstance" parent="target"]
-transform = Transform( 0.866025, 4.20776, 1.65206e-08, -0.00129093, 0.0188166, 0.0898004, 0.661311, -9.63934, 0.0217276, 12.525, -1.07, -11.5 )
-visible = false
-mesh = SubResource( 9 )
-material/0 = ExtResource( 9 )
-
-[node name="target_zone_l4" type="MeshInstance" parent="target"]
-transform = Transform( 0.866025, -4.20776, -1.65206e-08, 0.00129093, 0.0188166, 0.0898004, -0.661311, -9.63934, 0.0217276, 2.276, -1.07, -11.5 )
-visible = false
-mesh = SubResource( 9 )
-material/0 = ExtResource( 9 )
-
 [node name="exit_button" type="StaticBody" parent="target"]
-transform = Transform( -8.74228e-08, 1, -8.74228e-09, 0, -4.37114e-08, -0.2, -2, -4.37114e-08, 3.82137e-16, -1.57509, 0.750559, -1.12659 )
+transform = Transform( -8.74228e-08, 1, -8.74228e-09, 0, -4.37114e-08, -0.2, -2, -4.37114e-08, 3.82137e-16, -2.16194, 0.750559, -1.45188 )
 script = ExtResource( 7 )
 
 [node name="exit_text" parent="target/exit_button" instance=ExtResource( 6 )]
-transform = Transform( 1, -1.77636e-15, 1.32349e-23, 0, 1, -8.88178e-16, 1.69407e-21, -1.42109e-14, 1, 0, 0, 0 )
+transform = Transform( 1, -3.55271e-15, 1.19114e-22, 0, 1, -6.21725e-15, 1.18585e-20, -4.26326e-14, 1, 0, 0, 0 )
 default_text = "EXIT STAGE"
 
 [node name="CollisionShape" type="CollisionShape" parent="target/exit_button"]
@@ -193,7 +180,7 @@ transform = Transform( 0.763243, 0, -0.476927, 0, 0.9, 0, 0.476927, 0, 0.763243,
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0908899, -0.0706311 )
 
 [node name="ExerciseSelector" parent="." instance=ExtResource( 10 )]
-transform = Transform( -6.55671e-09, -0.15, 6.55671e-09, 0, -6.55671e-09, -0.15, 0.15, -6.55671e-09, 2.86603e-16, 1.11235, 0.55107, -0.350501 )
+transform = Transform( -6.55671e-09, -0.15, 6.55671e-09, 0, -6.55671e-09, -0.15, 0.15, -6.55671e-09, 2.86603e-16, 1.1995, 0.55107, -0.230677 )
 
 [node name="GrooveDisplay" parent="." instance=ExtResource( 22 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 2.36304, -4.23735 )

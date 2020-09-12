@@ -87,6 +87,7 @@ func update_widget():
 
 
 	GameVariables.exercise_state_list = []
+	
 	get_node("SettingsCarousel/Exercises/StandardWorkout").mark_active()
 	
 	
@@ -120,6 +121,7 @@ func _ready():
 	update_widget()
 	get_node("SongSelector").select_difficulty(GameVariables.difficulty)
 	get_viewport().get_camera().blackout_screen(false)
+	#show_settings("battle")
 	show_settings("exercises")
 	
 
@@ -197,6 +199,7 @@ func _on_YogaSwitch_toggled(value):
 
 
 func _on_ExerciseCollection_selected(collection):
+	GameVariables.game_mode = GameVariables.GameMode.EXERCISE_SET
 	gu.set_exercise_collection(collection)
 	update_widget()
 
@@ -258,6 +261,7 @@ func _on_BattleButton_selected():
 
 
 func _on_PresetCollector_selected(collection):
+	GameVariables.game_mode = GameVariables.GameMode.STANDARD
 	GameVariables.exercise_state_list = collection
 
 func _on_PortalSwitch_toggled(value):
@@ -275,3 +279,9 @@ func _on_ExtendedSwitch_toggled(value):
 	ProjectSettings.set("game/easy_transition", value)
 
 
+func _on_StoredSlot_selected(exercise_list):
+	if len(exercise_list) > 0:
+		GameVariables.game_mode = GameVariables.GameMode.STORED
+		GameVariables.cue_list = exercise_list.duplicate()
+	else:
+		GameVariables.game_mode = GameVariables.GameMode.STANDARD

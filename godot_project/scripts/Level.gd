@@ -4,7 +4,7 @@ signal level_finished
 var gu = GameUtilities.new()
 
 var exercise_builder = preload("res://scripts/ExerciseBuilder.gd").new()
-
+var stored
 var CueState = GameVariables.CueState
 var CueSelector = GameVariables.CueSelector
 
@@ -170,13 +170,19 @@ func setup_game_data():
 	high_hr = target_hr + 10
 
 	exercise_builder.cue_emitter_state = get_start_exercise()
-
 	exercise_builder.current_difficulty = GameVariables.difficulty
 	exercise_builder.set_fly_distance( abs(cue_emitter.translation.z-target.translation.z) + 2, abs(cue_emitter.translation.z-target.translation.z) )
+
 
 	exercise_builder.player_height = player_height
 	exercise_builder.setup_difficulty(exercise_builder.current_difficulty)
 	actual_game_state = exercise_builder.cue_emitter_state
+
+	if GameVariables.game_mode == GameVariables.GameMode.STORED:
+		exercise_builder.cue_emitter_list = GameVariables.cue_list.duplicate()
+	GameVariables.cue_list.clear()
+
+
 	internal_state_change()
 	
 	
@@ -335,7 +341,8 @@ func _process(delta):
 	if beat_index < len(beats)-1 and cue_emitter.current_playback_time + exercise_builder.emit_early > beats[beat_index]:	
 		update_groove_iteration()
 		
-		exercise_builder.evaluate_beat(cue_emitter.current_playback_time, beats[beat_index])
+		if GameVariables.game_mode == GameVariables.GameMode.STANDARD or GameVariables.game_mode == GameVariables.GameMode.EXERCISE_SET:
+			exercise_builder.evaluate_beat(cue_emitter.current_playback_time, beats[beat_index])
 
 		beat_index += 1
 	elif beat_index == len(beats)-1:
@@ -345,7 +352,7 @@ func _process(delta):
 
 	if cue_emitter.current_playback_time > last_game_update + 0.5:
 		last_game_update = cue_emitter.current_playback_time
-		if exercise_builder.cue_emitter_state == CueState.SPRINT:
+		if actual_game_state == CueState.SPRINT:
 			handle_sprint_cues_actual(cue_emitter.current_playback_time)
 		
 		if actual_state_duration > 0:
@@ -400,6 +407,10 @@ func add_statistics_element(ingame_id, state_string, cue_type, difficulty, point
 func create_all_current_cues(ts):
 	while len(exercise_builder.cue_emitter_list) > 0 and ts > exercise_builder.cue_emitter_list[0][0]:
 		var tmp = exercise_builder.cue_emitter_list.pop_front()
+		
+		#Store cue list for later replay
+		GameVariables.cue_list.append(tmp) 
+		
 		var cue_data = tmp[1]
 		if cue_data["cue_type"] == "state_change":
 			print ("State change")
