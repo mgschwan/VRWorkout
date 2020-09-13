@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://models/pale_white.material" type="Material" id=1]
+[ext_resource path="res://models/select_box.gltf" type="PackedScene" id=2]
+
+[node name="select_box" instance=ExtResource( 2 )]
+
+[node name="Cube" parent="." index="0"]
+material/0 = ExtResource( 1 )
+
+[node name="Cube001" parent="." index="1"]
+material/0 = ExtResource( 1 )
+
+[node name="Cube002" parent="." index="2"]
+material/0 = ExtResource( 1 )
+
+[node name="Cube003" parent="." index="3"]
+material/0 = ExtResource( 1 )

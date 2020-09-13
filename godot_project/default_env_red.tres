@@ -3,16 +3,16 @@
 [ext_resource path="res://assets/vrworkout_nebula_bg_red.jpg" type="Texture" id=1]
 
 [sub_resource type="PanoramaSky" id=1]
+radiance_size = 0
 panorama = ExtResource( 1 )
 
 [resource]
 background_mode = 2
 background_sky = SubResource( 1 )
 background_sky_orientation = Basis( 1.19249e-08, -0.970296, -0.241922, 0, 0.241922, -0.970296, 1, 1.15707e-08, 2.88489e-09 )
+background_energy = 1.2
 ambient_light_color = Color( 0.721569, 0.698039, 1, 1 )
-ambient_light_energy = 2.2
-ambient_light_sky_contribution = 0.5
-fog_enabled = true
+ambient_light_sky_contribution = 0.0
 fog_color = Color( 0, 0, 0, 1 )
 fog_sun_color = Color( 0.12549, 0, 1, 1 )
 fog_depth_begin = 8.0
@@ -21,6 +21,8 @@ fog_depth_curve = 2.07053
 fog_height_enabled = true
 fog_height_min = 5.0
 fog_height_max = 20.0
-dof_blur_far_transition = 355.33
-adjustment_enabled = true
+dof_blur_far_transition = 4.22
+glow_intensity = 1.45
+glow_strength = 0.93
+glow_bloom = 0.29
 adjustment_brightness = 0.8

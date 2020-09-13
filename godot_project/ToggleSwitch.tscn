@@ -2,7 +2,7 @@
 
 [ext_resource path="res://ToggleSwitch.gd" type="Script" id=1]
 [ext_resource path="res://TextElement.tscn" type="PackedScene" id=2]
-[ext_resource path="res://models/pale_white.material" type="Material" id=3]
+[ext_resource path="res://scenes/select_box.tscn" type="PackedScene" id=3]
 [ext_resource path="res://audio/menu_selection.wav" type="AudioStream" id=4]
 
 [sub_resource type="BoxShape" id=1]
@@ -27,19 +27,11 @@ transform = Transform( 1, 0, 0, 0, 2.32633, 0, 0, 0, 1, 0, 0, -0.0486761 )
 mesh = SubResource( 2 )
 material/0 = SubResource( 3 )
 
-[node name="switch" type="CSGBox" parent="."]
+[node name="switch" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.25, 0, -0.0599999, -0.0383017 )
-width = 0.2
-height = 0.1
-depth = 0.0147652
-material = ExtResource( 3 )
 
-[node name="CSGBox2" type="CSGBox" parent="switch"]
-operation = 2
-width = 0.18
-height = 0.08
-depth = 0.2
-material = ExtResource( 3 )
+[node name="select_box" parent="switch" instance=ExtResource( 3 )]
+transform = Transform( 0.019, 0, 0, 0, 0.01, 0, 0, 0, 0.1, -0.085, 0.025, 0 )
 
 [node name="ontext" parent="." instance=ExtResource( 2 )]
 transform = Transform( 0.08, 0, 0, 0, 0, -0.08, 0, 0, -3.49691e-09, -0.00220668, 0.0662912, -0.0386257 )

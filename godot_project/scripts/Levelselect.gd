@@ -122,6 +122,7 @@ func _ready():
 	get_node("SongSelector").select_difficulty(GameVariables.difficulty)
 	get_viewport().get_camera().blackout_screen(false)
 	#show_settings("battle")
+	#show_settings("switchboard")
 	show_settings("exercises")
 	
 

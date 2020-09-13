@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -7,18 +7,17 @@
 [ext_resource path="res://ControllerAdjuster.gd" type="Script" id=5]
 [ext_resource path="res://scripts/Levelselect.gd" type="Script" id=6]
 [ext_resource path="res://models/super_white.material" type="Material" id=7]
-[ext_resource path="res://models/blue_transparent.material" type="Material" id=8]
+[ext_resource path="res://scenes/level_platform.tscn" type="PackedScene" id=8]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=9]
 [ext_resource path="res://TextElement.gd" type="Script" id=10]
 [ext_resource path="res://TextElement.tscn" type="PackedScene" id=11]
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=12]
-[ext_resource path="res://models/pale_white.material" type="Material" id=13]
+[ext_resource path="res://scenes/select_box.tscn" type="PackedScene" id=13]
 [ext_resource path="res://models/gold.material" type="Material" id=14]
 [ext_resource path="res://ToggleSwitch.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scenes/VRHealthConnection.tscn" type="PackedScene" id=16]
 [ext_resource path="res://InfoBoxOpaque.tscn" type="PackedScene" id=17]
 [ext_resource path="res://TextPanel.tscn" type="PackedScene" id=18]
-[ext_resource path="res://models/platform.glb" type="PackedScene" id=19]
 [ext_resource path="res://audio/snare_hit.wav" type="AudioStream" id=20]
 [ext_resource path="res://SongLevelBlock.tscn" type="PackedScene" id=21]
 [ext_resource path="res://Tutorial.tscn" type="PackedScene" id=22]
@@ -31,9 +30,6 @@
 [ext_resource path="res://CircularGauge.tscn" type="PackedScene" id=29]
 [ext_resource path="res://fonts/Droid_Sans_Regular.tres" type="DynamicFont" id=30]
 [ext_resource path="res://scenes/StoredSlot.tscn" type="PackedScene" id=31]
-
-[sub_resource type="CylinderMesh" id=1]
-bottom_radius = 0.2
 
 [sub_resource type="CylinderShape" id=2]
 radius = 0.2
@@ -176,32 +172,8 @@ script = ExtResource( 6 )
 transform = Transform( -1.62921e-07, 1, 4.37114e-08, -1.1921e-07, -4.37114e-08, 1, 1, 1.62921e-07, 1.1921e-07, 0, 0.135846, 0 )
 ontext = "Recenter"
 
-[node name="platform" parent="." instance=ExtResource( 19 )]
-transform = Transform( 0.913545, 0, 0.406737, 0, 1, 0, -0.406737, 0, 0.913545, 0, -0.346909, 0 )
-
-[node name="Exhaust2" type="MeshInstance" parent="platform"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.03367, -1.06538, 0.00227052 )
-visible = false
-mesh = SubResource( 1 )
-material/0 = ExtResource( 8 )
-
-[node name="Exhaust" type="MeshInstance" parent="platform"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0152076, -1.06538, 6.08919 )
-visible = false
-mesh = SubResource( 1 )
-material/0 = ExtResource( 8 )
-
-[node name="Exhaust3" type="MeshInstance" parent="platform"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.07026, -1.06538, -0.00397336 )
-visible = false
-mesh = SubResource( 1 )
-material/0 = ExtResource( 8 )
-
-[node name="Exhaust4" type="MeshInstance" parent="platform"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0262713, -1.06538, -6.08258 )
-visible = false
-mesh = SubResource( 1 )
-material/0 = ExtResource( 8 )
+[node name="platform" parent="." instance=ExtResource( 8 )]
+transform = Transform( 0.913545, 0, 0.406737, 0, 1, 0, -0.406737, 0, 0.913545, 0, -0.34, 0 )
 
 [node name="BPM" type="StaticBody" parent="."]
 transform = Transform( 0.979702, -0.0796681, 0.183952, -6.47481e-08, 0.917637, 0.39742, -0.200462, -0.389353, 0.89901, 0.550664, 1.19237, 0.995729 )
@@ -307,19 +279,11 @@ transform = Transform( -0.00642908, 0.0032691, -0.00692675, -0.0072954, 0.000141
 [node name="claws2" parent="SettingsCarousel/Switchboard/BeastModeSelector" instance=ExtResource( 12 )]
 transform = Transform( 0.00668362, 0.00311082, 0.00675663, -0.00677895, -0.00119168, 0.00725436, -0.00306188, 0.00942882, -0.00131234, -0.105832, 0.148197, 5.96046e-08 )
 
-[node name="switch" type="CSGBox" parent="SettingsCarousel/Switchboard/BeastModeSelector"]
+[node name="switch" type="Spatial" parent="SettingsCarousel/Switchboard/BeastModeSelector"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.25, 0, -0.0599999, -0.0384666 )
-width = 0.2
-height = 0.1
-depth = 0.0137625
-material = ExtResource( 13 )
 
-[node name="CSGBox2" type="CSGBox" parent="SettingsCarousel/Switchboard/BeastModeSelector/switch"]
-operation = 2
-width = 0.18
-height = 0.08
-depth = 0.2
-material = ExtResource( 13 )
+[node name="select_box" parent="SettingsCarousel/Switchboard/BeastModeSelector/switch" instance=ExtResource( 13 )]
+transform = Transform( 0.019, 0, 0, 0, 0.01, 0, 0, 0, 0.02, -0.085, 0.025, 0 )
 
 [node name="ontext" parent="SettingsCarousel/Switchboard/BeastModeSelector" instance=ExtResource( 11 )]
 transform = Transform( 0.08, -1.62921e-07, 5.6972e-16, 0, -4.37114e-08, -0.08, 1.30337e-08, 1, -3.49691e-09, 0, 0.0685738, -0.0392407 )

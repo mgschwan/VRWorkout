@@ -1,16 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://materials/blue_stage_grid.tres" type="Material" id=1]
 [ext_resource path="res://retro_sun.tscn" type="PackedScene" id=2]
 [ext_resource path="res://models/blue_stage_long.gltf" type="PackedScene" id=3]
 [ext_resource path="res://scripts/blue_outdoor_stage.gd" type="Script" id=4]
 [ext_resource path="res://materials/blue_outdoor_stage_shiny.tres" type="Material" id=5]
+[ext_resource path="res://models/black.material" type="Material" id=6]
 
 [node name="blue_stage_long" instance=ExtResource( 3 )]
 script = ExtResource( 4 )
 
 [node name="Grid" parent="." index="0"]
-material/0 = ExtResource( 5 )
+material/0 = ExtResource( 6 )
 
 [node name="Grid001" parent="." index="1"]
 material/0 = ExtResource( 1 )
@@ -20,3 +21,6 @@ transform = Transform( 7.96294e-14, -4.88762e-07, 3, -3, -4.88762e-07, 0, 4.8876
 
 [node name="Grid002" parent="." index="3"]
 material/0 = ExtResource( 5 )
+
+[node name="Grid003" parent="." index="4"]
+material/0 = ExtResource( 6 )
