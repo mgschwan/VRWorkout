@@ -79,7 +79,6 @@ func _initialize_OVR_API():
 	if (ovr_utilities): ovr_utilities = ovr_utilities.new()
 
 func handle_mobile_permissions():
-	#TODO Request permissions for external storage
 	print ("Checking permissions")
 	var perm = OS.get_granted_permissions()
 	var read_storage_perm = false
@@ -282,19 +281,21 @@ func _on_level_finished	():
 		tracking_data.clear()	
 	
 	print ("Level is finished ... remove from scene")
-	var result = level.get_points()
+	GameVariables.game_result = level.get_points()
 	
-	last_points = result["points"]
-	total_points += result["points"]
-	last_played = result["time"]
-	total_played += result["time"]
-	vrw_score = result["vrw_score"]
+	last_points = GameVariables.game_result["points"]
+	total_points += GameVariables.game_result["points"]
+	last_played = GameVariables.game_result["time"]
+	total_played += GameVariables.game_result["time"]
+	vrw_score = GameVariables.game_result["vrw_score"]
 	
+	var game_statistics = Dictionary()
 	
 	print ("Preparing satistics upload")
 	game_statistics["api_version"] = GameVariables.api_version
-	game_statistics["score"] = result["points"]
-	game_statistics["duration"] =  result["time"]
+	game_statistics["score"] = GameVariables.game_result["points"]
+	game_statistics["vrw_score"] = GameVariables.game_result["vrw_score"]
+	game_statistics["duration"] =  GameVariables.game_result["time"]
 	game_statistics["data"] = GameVariables.level_statistics_data
 	var error = get_node("RemoteInterface").send_data(GameVariables.device_id, "workout", game_statistics)
 	if error != OK:
@@ -315,11 +316,12 @@ func _on_level_finished	():
 	var last_played_str = gu.seconds_to_timestring(last_played)
 	var total_played_str = gu.seconds_to_timestring(total_played)
 	
-	levelselect.set_stat_text("Results for %s\n\nLast round\nScore: %.2f (%d/%d)\nPoints: %d"%[GameVariables.player_name, vrw_score,result["hits"],result["max_hits"],last_points]+" Duration: %s"%last_played_str+"\n\nTotal\nPoints: %d"%total_points+" Duration: %s"%total_played_str, vrw_score) 
+	levelselect.set_stat_text("Results for %s\n\nLast round\nScore: %.2f (%d/%d)\nPoints: %d"%[GameVariables.player_name, vrw_score,GameVariables.game_result["hits"],GameVariables.game_result["max_hits"],last_points]+" Duration: %s"%last_played_str+"\n\nTotal\nPoints: %d"%total_points+" Duration: %s"%total_played_str, vrw_score) 
 
 	yield(get_tree().create_timer(1), "timeout")
 	get_viewport().get_camera().blackout_screen(false)
-
+	if not vr_mode:
+		get_node("DemoTimer").start()
 
 var prediction_limit_ms = 200
 var prediction_history_size = 10
@@ -491,6 +493,9 @@ func _on_Area_level_selected(filename, diff, num):
 		levelselect.queue_free()
 		add_child(level)	
 	
+		if not vr_mode:
+			level._on_HeartRateData(113)
+
 
 func _on_DemoTimer_timeout():
 	#levelselect.get_node("SettingsCarousel/Connections/VRHealthConnection").connect_vrhealth()
@@ -500,15 +505,15 @@ func _on_DemoTimer_timeout():
 	#GameVariables.exercise_state_list = GameVariables.predefined_exercises["Low pyramid"]
 	#_on_Area_level_selected("res://audio/songs/01_VRWorkout.ogg", 0, 1)
 	
-	#_on_Area_level_selected("res://audio/nonfree_songs/03_Rule_The_World.ogg", 2, 1)
-		
-	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", 2, 1)
+	#_on_Area_level_selected("res://audio/nonfree_songs/03_Rule_The_World.ogg", -1, 1)
+	#levelselect.show_settings("switchboard")	
+	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", -1, 1)
 	#_on_Area_level_selected("res://audio/songs/02_VRWorkout_Beater.ogg", 2, 1)
 
 
 	#get_node("ARVROrigin/ARVRCamera").translation = Vector3(0,2,0.8)
-	get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)
-	print(get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").stream.get_length())
+	#get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").play(0)
+	#print(get_node("ARVROrigin/ARVRCamera/AreaHead/hit_player").stream.get_length())
 
 func get_running_speed():
 	var s = get_node("ARVROrigin/ARVRCamera").get_running_speed()

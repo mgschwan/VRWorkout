@@ -246,7 +246,10 @@ func show_settings(panel):
 		angle = PI/2.0
 
 	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, angle, 0.5, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	var old_scale = carousel.scale
+	t.interpolate_property(carousel, "scale", Vector3(0,0,0), old_scale , 0.5, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	t.start()
+
 		
 func _on_SettingsButton_selected():
 	show_settings("switchboard")	
@@ -280,9 +283,10 @@ func _on_ExtendedSwitch_toggled(value):
 	ProjectSettings.set("game/easy_transition", value)
 
 
-func _on_StoredSlot_selected(exercise_list):
+func _on_StoredSlot_selected(exercise_list, slot_number):
 	if len(exercise_list) > 0:
 		GameVariables.game_mode = GameVariables.GameMode.STORED
+		GameVariables.selected_game_slot = slot_number
 		GameVariables.cue_list = exercise_list.duplicate()
 	else:
 		GameVariables.game_mode = GameVariables.GameMode.STANDARD

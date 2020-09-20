@@ -15,6 +15,7 @@ var current_hr = 0
 
 var config_file_location = "user://settings.json"
 
+var game_result = Dictionary()
 
 var current_ingame_id = 0
 func get_next_ingame_id():
@@ -32,6 +33,7 @@ enum GameMode {
 };
 
 var game_mode = GameMode.STANDARD
+var selected_game_slot = -1
 var cue_list = Array()
 
 enum CueState {
@@ -77,6 +79,7 @@ enum SquatState {
 enum StandState {
 	REGULAR = 0,
 	DOUBLE_SWING = 1,
+	WINDMILL_TOE = 2,
 };	
 
 
@@ -243,8 +246,9 @@ var exercise_model = {
 								SquatState.RIGHT_HAND  : { SquatState.HEAD: 30,  SquatState.LEFT_HAND: 30, SquatState.DOUBLE_SWING : 25},
 								SquatState.DOUBLE_SWING  : { SquatState.HEAD: 40},
 						},
-		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 10},
-						StandState.DOUBLE_SWING : { StandState.REGULAR: 35},
+		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 15, StandState.WINDMILL_TOE: 15},
+						StandState.DOUBLE_SWING : { StandState.REGULAR: 27, StandState.WINDMILL_TOE: 15},
+						StandState.WINDMILL_TOE : { StandState.REGULAR: 27, StandState.DOUBLE_SWING: 15},
 		},
 		"crunch_state_model" : { CrunchState.HEAD : { CrunchState.HAND: 70, CrunchState.MEDIUM_HOLD: 10},
 						CrunchState.HAND : { CrunchState.HEAD: 70, CrunchState.MEDIUM_HOLD: 10},
@@ -285,33 +289,33 @@ var exercise_model = {
 	
 var difficulty_weight_adjustments = {
 	"easy" : {
-		CueState.STAND: 1.0,
-		CueState.SQUAT: 1.0,
+		CueState.STAND: 1.2,
+		CueState.SQUAT: 1.2,
 		CueState.PUSHUP: 0.5,
 		CueState.CRUNCH: 0.7,
 		CueState.JUMP: 0.8,
-		CueState.BURPEE: 0.5,
+		CueState.BURPEE: 0.3,
 		CueState.SPRINT: 0.5,
 		CueState.YOGA: 1.0
 		},
 	"medium" : {
 		CueState.STAND: 1.0,
-		CueState.SQUAT: 0.8,
-		CueState.PUSHUP: 1.0,
-		CueState.CRUNCH: 1.0,
-		CueState.JUMP: 1.0,
-		CueState.BURPEE: 1.0,
-		CueState.SPRINT: 1.0,
+		CueState.SQUAT: 1.0,
+		CueState.PUSHUP: 1.2,
+		CueState.CRUNCH: 1.2,
+		CueState.JUMP: 1.3,
+		CueState.BURPEE: 0.8,
+		CueState.SPRINT: 1.2,
 		CueState.YOGA: 1.0
 		},
 	"hard" : {
-		CueState.STAND: 0.6,
-		CueState.SQUAT: 0.6,
-		CueState.PUSHUP: 1.4,
-		CueState.CRUNCH: 1.0,
-		CueState.JUMP: 1.3,
-		CueState.BURPEE: 1.3,
-		CueState.SPRINT: 1.3,
+		CueState.STAND: 0.5,
+		CueState.SQUAT: 0.5,
+		CueState.PUSHUP: 1.2,
+		CueState.CRUNCH: 1.2,
+		CueState.JUMP: 1.0,
+		CueState.BURPEE: 2.0,
+		CueState.SPRINT: 1.0,
 		CueState.YOGA: 1.0
 	},
 }	
@@ -340,20 +344,20 @@ var state_transition_time = {
 var level_statistics_data = {}
 	
 func setup_globals():
-	#setup_globals_demo()
-	setup_globals_regular()
+	setup_globals_demo()
+	#setup_globals_regular()
 	
 
 func setup_globals_demo():
 	ProjectSettings.set("game/beast_mode", false)
 	ProjectSettings.set("game/bpm", 120)
-	ProjectSettings.set("game/exercise/jump", false)
+	ProjectSettings.set("game/exercise/jump", true)
 	ProjectSettings.set("game/exercise/stand", true)
-	ProjectSettings.set("game/exercise/squat", false)
-	ProjectSettings.set("game/exercise/pushup", false)
-	ProjectSettings.set("game/exercise/crunch", false)
-	ProjectSettings.set("game/exercise/burpees", false)
-	ProjectSettings.set("game/exercise/duck", false)
+	ProjectSettings.set("game/exercise/squat", true)
+	ProjectSettings.set("game/exercise/pushup", true)
+	ProjectSettings.set("game/exercise/crunch", true)
+	ProjectSettings.set("game/exercise/burpees", true)
+	ProjectSettings.set("game/exercise/duck", true)
 	ProjectSettings.set("game/exercise/sprint", true)
 	ProjectSettings.set("game/exercise/kneesaver", false)
 	ProjectSettings.set("game/exercise/yoga", false)

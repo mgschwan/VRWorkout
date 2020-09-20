@@ -86,11 +86,10 @@ func _on_RumbleTimer_timeout():
 
 
 func set_visible(value):
-	var n = get_node("Area")
 	if value:
-		n.show()
+		self.show()
 	else:
-		n.hide()
+		self.hide()
 		
 #Resize the collision area to make menu selection easier
 func set_detail_select(value):

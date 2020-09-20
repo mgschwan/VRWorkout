@@ -23,6 +23,10 @@ func set_hr(hr_bpm):
 		self.show()
 	bpm = hr_bpm
 	hr_text.text = str(bpm)
+	last_hr_update = current_time
+
+func hide_coin():
+	self.hide()
 
 func update_markers():
 	var delta = max(1.0,max_hr-min_hr)
@@ -41,10 +45,12 @@ func set_marker(type, value):
 		high = value
 	update_markers()
 
-
+var last_hr_update = 0
 func _process(delta):
 	current_time += delta
 	if bpm > 0 and (last_beat + 60.0/bpm) < current_time:
 		if not anim.is_playing():
 			anim.play("beat",-1.0,3.0)
 		last_beat = current_time	
+	if current_time > last_hr_update + 5.0:
+		hide_coin()

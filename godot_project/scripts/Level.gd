@@ -128,7 +128,7 @@ func load_audio_resource(filename):
 
 var last_update = 0
 func _on_HeartRateData(hr):
-	avg_hr = 0.1 * hr + 0.9  * avg_hr
+	avg_hr = 0.33 * hr + 0.66  * avg_hr
 	get_node("heart_coin").set_hr(hr)
 	get_node("heart_coin").set_marker("actual", avg_hr)
 	
@@ -365,7 +365,7 @@ func _process(delta):
 	create_all_current_cues( cue_emitter.current_playback_time )
 	check_beast_status()
 		
-	if cue_emitter.current_playback_time < last_playback_time - 1.0:
+	if cue_emitter.current_playback_time < last_playback_time - 1.0 and stream.playing: 
 		print ("Stop stream")
 		stream.stop()
 	
@@ -442,6 +442,7 @@ func create_and_attach_cue_actual(cue_data):
 	var ingame_id = cue_data["ingame_id"]
 	var hit_velocity = cue_data["hit_velocity"]
 	var hit_score = cue_data["hit_score"]
+	var fly_distance = cue_data.get("fly_distance", exercise_builder.fly_distance)
 	
 	#cue_emitter.max_hits += hit_score
 	var cue_node
@@ -462,8 +463,8 @@ func create_and_attach_cue_actual(cue_data):
 		cue_node.hold_time = 0.5
 	cue_node.target_time = target_time
 	cue_node.start_time = cue_emitter.current_playback_time
-	var actual_flytime = exercise_builder.fly_time
-	if exercise_builder.fly_time == 0:
+	var actual_flytime = fly_time
+	if actual_flytime == 0:
 		actual_flytime = exercise_builder.fly_time
 	
 	cue_node.hit_score = hit_score
@@ -491,10 +492,10 @@ func create_and_attach_cue_actual(cue_data):
 		cue_node.velocity_required = hit_velocity
 
 	#Heartrate is stored with the start of the cue because that's the only definitive timestamp we know
-	add_statistics_element(ingame_id, exercise_builder.state_string(exercise_builder.cue_emitter_state)+"/%s"%cue_subtype, cue_type, exercise_builder.current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr)
+	add_statistics_element(ingame_id, exercise_builder.state_string(actual_game_state)+"/%s"%cue_subtype, cue_type, exercise_builder.current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr)
 	cue_node.ingame_id = ingame_id
 	
-	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,exercise_builder.fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	move_modifier.connect("tween_completed",self,"_on_tween_completed")
 	move_modifier.start()
 	return cue_node
