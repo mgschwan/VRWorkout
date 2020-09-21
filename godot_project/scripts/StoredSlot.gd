@@ -23,7 +23,7 @@ func load_exerise_slot(id):
 			score = tmp.get("score_best", {})
 	return retVal
 	
-func save_exercise_slot(id):
+func save_exercise_slot(id, cue_list):
 	var f = File.new()
 	var err = f.open("user://stored_slot_%d.json"%id, File.WRITE)
 	if err == OK:
@@ -31,7 +31,7 @@ func save_exercise_slot(id):
 		print ("Saving exercise")
 			
 		var tmp = {"timestamp": "%02d.%02d.%04d %02d:%02d:%02d"%[t["day"],t["month"],t["year"],t["hour"],t["minute"],t["second"]],
-				   "cue_list": GameVariables.cue_list,
+				   "cue_list": cue_list,
 				   "score_best": {"points": score.get("points",0), "score": score.get("score",0)}}
 		var data = JSON.print(tmp)
 		f.store_string(data)
@@ -47,10 +47,11 @@ func _ready():
 	var exercises = ""
 	exercise_list = load_exerise_slot(slot_number)
 	if GameVariables.game_mode == GameVariables.GameMode.STORED and GameVariables.selected_game_slot == slot_number:
+		print ("Saving game slot")
 		if score["points"] < GameVariables.game_result.get("points",0):
 			score["points"] = GameVariables.game_result.get("points",0)
 			score["score"] = GameVariables.game_result.get("vrw_score",0)
-			save_exercise_slot(slot_number)
+			save_exercise_slot(slot_number, exercise_list)
 			GameVariables.game_mode = GameVariables.GameMode.STANDARD
 
 	update_widget()
@@ -62,6 +63,7 @@ func mark_active():
 		node.translation = self.translation
 		
 func touched_by_controller(obj,root):
+	print ("Slot selected")
 	get_node("AudioStreamPlayer").play(0.0)
 	mark_active()
 	emit_signal("selected", exercise_list, slot_number)
@@ -71,6 +73,6 @@ func _on_SaveButton_selected():
 	score["points"] = GameVariables.game_result.get("points",0)
 	score["score"] = GameVariables.game_result.get("vrw_score",0)
 	GameVariables.selected_game_slot = slot_number
-	save_exercise_slot(slot_number)
+	save_exercise_slot(slot_number, GameVariables.cue_list)
 	load_exerise_slot(slot_number)
 	update_widget()

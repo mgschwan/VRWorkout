@@ -11,6 +11,7 @@ var target_time = 0.0
 var start_time = 0.0
 var cue_type = "head"
 var extended = false
+var point_multiplier = 1.0
 export var avoid = false
 
 var hit_score = 1.0

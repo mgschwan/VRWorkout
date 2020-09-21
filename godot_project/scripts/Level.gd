@@ -43,6 +43,7 @@ var high_hr = 150
 var auto_difficulty = false
 var avg_hr = 60	
 	
+var cue_streak = false
 var hud_enabled = false	
 	
 var running_speed = 0
@@ -58,6 +59,7 @@ var cue_horiz = preload("res://cue_h_obj.tscn")
 var cue_vert = preload("res://cue_v_obj.tscn")
 var cue_head = preload("res://cue_head_obj.tscn")
 var cue_head_avoid = preload("res://cue_head_obj_avoid.tscn")
+var cue_highlight = preload("res://scenes/highlight_ring.tscn")
 var environment = preload("res://outdoor_env.tres")
 var infolayer
 
@@ -179,6 +181,7 @@ func setup_game_data():
 	actual_game_state = exercise_builder.cue_emitter_state
 
 	if GameVariables.game_mode == GameVariables.GameMode.STORED:
+		print ("Load stored cues")
 		exercise_builder.cue_emitter_list = GameVariables.cue_list.duplicate()
 	GameVariables.cue_list.clear()
 
@@ -444,7 +447,7 @@ func create_and_attach_cue_actual(cue_data):
 	var hit_score = cue_data["hit_score"]
 	var fly_distance = cue_data.get("fly_distance", exercise_builder.fly_distance)
 	
-	#cue_emitter.max_hits += hit_score
+	var is_head = false
 	var cue_node
 	if cue_type == "right" or cue_type == "right_hold":
 		cue_node = cue_horiz.instance()
@@ -453,8 +456,10 @@ func create_and_attach_cue_actual(cue_data):
 	else:
 		head_y_pos = y
 		if cue_type == "head_avoid":
+			is_head = true
 			cue_node = cue_head_avoid.instance()
 		else:
+			is_head = true
 			cue_node = cue_head.instance()
 			if cue_type == "head_extended":
 				cue_node.extended = true
@@ -473,6 +478,16 @@ func create_and_attach_cue_actual(cue_data):
 	var main_node = get_node("cue_emitter")
 	var move_modifier = Tween.new()
 	move_modifier.set_name("tween")
+	
+	#If the player hits a streak of cues the next one will be special
+	if cue_streak:
+		cue_streak = false
+		var highlight = cue_highlight.instance()
+		highlight.get_node("AnimationPlayer").play("rotation")
+		if is_head:
+			highlight.scale = highlight.scale * 6
+		cue_node.add_child(highlight)
+		cue_node.point_multiplier = 3.0
 	cue_node.add_child(move_modifier)
 	main_node.add_child(cue_node)
 	cue_node.translation = Vector3(x,y,0+fly_offset)
@@ -758,6 +773,8 @@ func play_encouragement():
 	
 
 func _on_cue_emitter_streak_changed(count):
+	if count > 0 and count % 15 == 0:
+		cue_streak = true
 	if count == 15:
 		if actual_game_state == CueState.SPRINT:
 			if run_point_multiplier >= 3:

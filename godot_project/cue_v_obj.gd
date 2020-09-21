@@ -15,6 +15,7 @@ var target_time = 0.0
 var start_time = 0.0
 var cue_type = "hand"
 var hold_time_offset = 0.0
+var point_multiplier = 1.0
 
 var hit_score = 1.0
 

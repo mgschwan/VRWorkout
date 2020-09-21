@@ -108,12 +108,17 @@ func score_points(hit_points):
 
 func score_hit(delta, obj = null):
 	var multiplier = get_parent().run_point_multiplier
+	if obj and "point_multiplier" in obj:
+		multiplier = multiplier * obj.point_multiplier
 	var p = int(200 - min(delta*1000, 200))
 	
 	var hit_points = p * multiplier
 	points += hit_points
 	update_hits(obj.hit_score, true)
-	point_indicator.emit_text("+%d"%hit_points,"green")
+	var pts_color = "green"
+	if multiplier > 1.0:
+		pts_color = "white"
+	point_indicator.emit_text("+%d"%hit_points,pts_color)
 
 	update_statistics_element(obj, true, hit_points)
 

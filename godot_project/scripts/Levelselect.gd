@@ -93,6 +93,9 @@ func update_widget():
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	show_settings("empty")
+
+	
 	var songs = []
 #			 ["res://audio/songs/vrworkout.ogg",
 #			"res://audio/songs/cdk_deeper_in_yourself.ogg",
@@ -123,6 +126,7 @@ func _ready():
 	get_viewport().get_camera().blackout_screen(false)
 	#show_settings("battle")
 	#show_settings("switchboard")
+	yield(get_tree().create_timer(1.0),"timeout")
 	show_settings("exercises")
 	
 
@@ -214,6 +218,8 @@ func show_settings(panel):
 
 	var angle = 0
 
+	carousel.translation.y = -3
+
 	if panel == "switchboard":
 		gu.activate_node(switchboard_node)
 		gu.deactivate_node(connections_node)
@@ -244,10 +250,12 @@ func show_settings(panel):
 		gu.deactivate_node(exercises_node)
 		gu.deactivate_node(battle_node)
 		angle = PI/2.0
+		return
 
 	t.interpolate_property(carousel, "rotation:y", carousel.rotation.y, angle, 0.5, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
-	var old_scale = carousel.scale
-	t.interpolate_property(carousel, "scale", Vector3(0,0,0), old_scale , 0.5, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	t.interpolate_property(carousel, "translation:y", -3, 0, 0.5, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	t.interpolate_property(carousel, "scale", Vector3(0,0,0), Vector3(1,1,1) , 0.5, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+
 	t.start()
 
 		

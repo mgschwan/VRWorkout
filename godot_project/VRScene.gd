@@ -353,7 +353,7 @@ func _update_hand_model(hand: ARVRController, model : Spatial, offset_model: Spa
 				
 		var delta_t = now - last["ts"]
 		var confidence = ovr_hand_tracking.get_hand_pose(hand.controller_id, _vrapi_bone_orientations);
-		if confidence > 0:
+		if confidence and confidence > 0:
 			
 			if hand.tracking_lost:
 				_on_Controller_Tracking_Regained(hand)
@@ -387,12 +387,6 @@ func _update_hand_model(hand: ARVRController, model : Spatial, offset_model: Spa
 				model.translation = history[0]["pos"] + predict_v 
 			else:
 				model.hide()
-		#print ("Confidence %.2f"%confidence)
-#		model.rotation = offset_model.rotation
-#		model.translation.x = -offset_model.translation.x
-#		model.translation.y = -offset_model.translation.y
-#		model.translation.z = -offset_model.translation.z
-#
 		return true;
 	else:
 		return false;

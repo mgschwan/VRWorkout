@@ -241,7 +241,7 @@ visible = false
 transform = Transform( 1.2, 0, 0, 0, 1, 9.9729e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
 
 [node name="SettingsCarousel" type="Spatial" parent="."]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 3.57628e-07, 0, -2.3 )
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, -3, -2.3 )
 
 [node name="Tween" type="Tween" parent="SettingsCarousel"]
 
