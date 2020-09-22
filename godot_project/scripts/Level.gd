@@ -448,6 +448,7 @@ func create_and_attach_cue_actual(cue_data):
 	var fly_distance = cue_data.get("fly_distance", exercise_builder.fly_distance)
 	
 	var is_head = false
+	var is_avoid = false
 	var cue_node
 	if cue_type == "right" or cue_type == "right_hold":
 		cue_node = cue_horiz.instance()
@@ -457,6 +458,7 @@ func create_and_attach_cue_actual(cue_data):
 		head_y_pos = y
 		if cue_type == "head_avoid":
 			is_head = true
+			is_avoid = true
 			cue_node = cue_head_avoid.instance()
 		else:
 			is_head = true
@@ -480,7 +482,7 @@ func create_and_attach_cue_actual(cue_data):
 	move_modifier.set_name("tween")
 	
 	#If the player hits a streak of cues the next one will be special
-	if cue_streak:
+	if cue_streak and not is_avoid:
 		cue_streak = false
 		var highlight = cue_highlight.instance()
 		highlight.get_node("AnimationPlayer").play("rotation")

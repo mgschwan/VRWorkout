@@ -27,7 +27,8 @@ func update_song_list():
 			var song_name = gu.get_song_name(filename)
 			var song_info = song_infos.get(filename,{})
 			var artist = song_info.get("artist","")
-			get_node("SongBlocks/Element%d"%(idx+1)).set_song_info(song_name,filename,artist)
+			var length = song_info.get("length",0)
+			get_node("SongBlocks/Element%d"%(idx+1)).set_song_info(song_name,filename,artist,length)
 		else:
 			get_node("SongBlocks/Element%d"%(idx+1)).set_song_info("empty",null)
 	get_node("NextPage").print_info("[b]\n  Page %d/%d[b]"%[page+1,pages])
@@ -42,7 +43,8 @@ func get_song_infos(songs):
 			beat_file.close()
 			if tmp:
 				var artist = tmp.get("artist", "")
-				infos[song] = {"artist": artist}
+				var length = tmp.get("length", 0)
+				infos[song] = {"artist": artist, "length": length}
 	return infos
 
 func sort_song_list(songs):
