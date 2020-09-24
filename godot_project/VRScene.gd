@@ -289,8 +289,6 @@ func _on_level_finished	():
 	total_played += GameVariables.game_result["time"]
 	vrw_score = GameVariables.game_result["vrw_score"]
 	
-	var game_statistics = Dictionary()
-	
 	print ("Preparing satistics upload")
 	game_statistics["api_version"] = GameVariables.api_version
 	game_statistics["score"] = GameVariables.game_result["points"]

@@ -165,7 +165,7 @@ wait_time = 0.1
 autostart = true
 
 [node name="RunIndicator" parent="." instance=ExtResource( 24 )]
-transform = Transform( 0.986972, 0, 0.160897, 0, 1, 0, -0.160897, 0, 0.986972, 0.15379, 2.56887, -10.2223 )
+transform = Transform( 0.117853, 0, 0.161588, 0, 0.2, 0, -0.161588, 0, 0.117853, -1.93559, 1.80551, -1.36809 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 1 )

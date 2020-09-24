@@ -9,7 +9,7 @@ transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 script = ExtResource( 2 )
 
 [node name="trophy" parent="." instance=ExtResource( 1 )]
-transform = Transform( 0.8, -1.86265e-10, 2.38418e-08, 1.86265e-10, 0.8, 9.3132e-11, -2.38418e-08, -9.3132e-11, 0.8, 0, 0, 0 )
+transform = Transform( 0.8, -1.86265e-10, 2.38418e-08, 1.86265e-10, 0.8, 9.3132e-11, -2.38418e-08, -9.3132e-11, 0.8, 0, 0.12596, 0 )
 
 [node name="Runtime" parent="." instance=ExtResource( 3 )]
 transform = Transform( -3.25841e-07, 2, 3.25841e-07, 0, -3.25841e-07, 2, 2, 3.25841e-07, 5.30863e-14, 0, -2.54141, 0 )

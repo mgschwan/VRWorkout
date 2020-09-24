@@ -1,10 +1,9 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://cue_v_obj.gd" type="Script" id=1]
 [ext_resource path="res://models/Berzerker.material" type="Material" id=2]
 [ext_resource path="res://models/fist_left.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://TargetTimer.tscn" type="PackedScene" id=4]
-[ext_resource path="res://models/transparent_gray.material" type="Material" id=5]
 [ext_resource path="res://models/black.material" type="Material" id=6]
 [ext_resource path="res://Hold_Ring.tscn" type="PackedScene" id=7]
 [ext_resource path="res://models/super_white.material" type="Material" id=8]
@@ -196,17 +195,7 @@ height = 0.0897926
 material = ExtResource( 8 )
 size = Vector3( 0.02, 0.02, 0.02 )
 
-[sub_resource type="CylinderMesh" id=9]
-top_radius = 0.01
-bottom_radius = 0.01
-height = 1.0
-
-[sub_resource type="CylinderMesh" id=10]
-top_radius = 0.001
-bottom_radius = 0.001
-height = 1.0
-
-[sub_resource type="SphereMesh" id=11]
+[sub_resource type="SphereMesh" id=9]
 radius = 0.01
 height = 0.02
 radial_segments = 6
@@ -225,7 +214,7 @@ anims/idle = SubResource( 2 )
 [node name="MeshInstance" type="MeshInstance" parent="Circle"]
 transform = Transform( 0.6, 0, 0, 0, -9.77524e-08, 0.5, 0, -0.6, -8.14603e-08, 0, 0, 0 )
 mesh = ExtResource( 3 )
-material/0 = ExtResource( 2 )
+material/0 = ExtResource( 6 )
 
 [node name="TargetTimer" parent="Circle" instance=ExtResource( 4 )]
 transform = Transform( 20, 0, 0, 0, -8.74228e-07, 20, 0, -20, -8.74228e-07, 0, 0, 0 )
@@ -233,12 +222,12 @@ transform = Transform( 20, 0, 0, 0, -8.74228e-07, 20, 0, -20, -8.74228e-07, 0, 0
 [node name="Backdrop" type="MeshInstance" parent="Circle"]
 transform = Transform( 1, 0, 0, 0, 1, -7.10543e-15, 0, 7.10543e-15, 1, 0, -0.166, -4.44089e-16 )
 mesh = SubResource( 3 )
-material/0 = ExtResource( 6 )
+material/0 = ExtResource( 2 )
 
 [node name="Backdrop2" type="MeshInstance" parent="Circle"]
 transform = Transform( 1, 0, 0, 0, 1, -2.4869e-14, 0, 2.13163e-14, 1, 0, -0.299948, 5.85506e-09 )
 mesh = SubResource( 4 )
-material/0 = ExtResource( 2 )
+material/0 = ExtResource( 6 )
 
 [node name="hold" type="Spatial" parent="Circle"]
 transform = Transform( 26.256, 0, 0, 0, -1.14769e-06, 19.7285, 0, -26.256, -8.62358e-07, 0, 0, 0 )
@@ -271,21 +260,8 @@ linear_accel = 2.0
 [node name="left" type="Spatial" parent="."]
 transform = Transform( 0.03, -8.08722e-16, 4.37114e-09, 0, 0.006, -2.78182e-10, -5.24537e-09, -4.62535e-09, 0.025, 0, 0, 0 )
 
-[node name="path" type="Spatial" parent="."]
-visible = false
-
-[node name="cone" type="MeshInstance" parent="path"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.5 )
-mesh = SubResource( 9 )
-material/0 = ExtResource( 5 )
-
-[node name="cone2" type="MeshInstance" parent="path"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.5 )
-mesh = SubResource( 10 )
-material/0 = ExtResource( 2 )
-
 [node name="dot" type="MeshInstance" parent="."]
 visible = false
-mesh = SubResource( 11 )
-material/0 = ExtResource( 2 )
+mesh = SubResource( 9 )
+material/0 = ExtResource( 8 )
 [connection signal="animation_finished" from="Circle/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

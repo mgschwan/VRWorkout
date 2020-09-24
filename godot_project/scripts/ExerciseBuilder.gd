@@ -815,13 +815,15 @@ func handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, st
 	windmill_left = not windmill_left
 	windmill_high = not windmill_high
 	temporary_cue_space_extension = double_punch_delay + 0.25
+
+
 		
 func handle_stand_cues_regular(current_time, target_time, cue_emitter_state):
 	var node_selector = rng.randi()%100
 	
 	var y_hand = player_height + cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
 	var y_head = player_height + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
-	var x = cue_parameters[cue_emitter_state][CueSelector.HAND]["xoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"]
+	var x = sign(randf()-0.5) * (cue_parameters[cue_emitter_state][CueSelector.HAND]["xoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"])
 	var x_head = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2.0
 	
 	if cue_selector == CueSelector.HAND and node_selector < 20:

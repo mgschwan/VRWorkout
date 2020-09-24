@@ -103,7 +103,6 @@ func has_been_hit(hand = "unknown"):
 		hit = true
 		get_node("sprinkle").emitting = true
 		get_node("Circle/AnimationPlayer").play("explode")
-		get_node("path").hide()
 	return points
 
 func begin_hold(hand = "unknown"):

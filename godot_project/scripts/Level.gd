@@ -649,6 +649,10 @@ func setup_multiplier(running_speed):
 		xx.play("runx2")
 		run_point_multiplier = 2
 	else:
+		if actual_game_state == CueState.STAND:
+			xx.show()
+		else:
+			xx.hide()
 		xx.stop()
 		run_point_multiplier = 1
 
