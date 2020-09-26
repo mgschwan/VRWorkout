@@ -10,22 +10,34 @@ var last_pos = Vector3(0,0,0)
 var distance_avg = 0
 var vr_mode = true
 
+
+var keys = {
+		KEY_UP: false,
+		KEY_DOWN: false,
+		KEY_LEFT: false,
+		KEY_RIGHT: false,
+		KEY_PAGEUP: false,
+		KEY_PAGEDOWN: false
+}
+func manual_position_update(delta):
+			if keys[KEY_UP]:
+				translation -= transform.basis.z * delta
+			elif keys[KEY_DOWN]:
+				translation += transform.basis.z * delta
+			elif keys[KEY_LEFT]:
+				translation.x -= delta
+			elif keys[KEY_RIGHT]:
+				translation.x += delta
+			elif keys[KEY_PAGEUP]:
+				translation.y += delta
+			elif keys[KEY_PAGEDOWN]:
+				translation.y -= delta
+
 func _input(ev):
 	if not vr_mode:
 		if ev is InputEventKey:
-			if ev.scancode == KEY_UP:
-				translation -= transform.basis.z * 0.1
-			elif ev.scancode == KEY_DOWN:
-				translation += transform.basis.z * 0.1
-			elif ev.scancode == KEY_LEFT:
-				rotation.y += 0.1
-			elif ev.scancode == KEY_RIGHT:
-				rotation.y += -0.1
-			elif ev.scancode == KEY_PAGEUP:
-				rotation.x += 0.1
-			elif ev.scancode == KEY_PAGEDOWN:
-				rotation.x -= 0.1
-
+			if ev.scancode in keys:
+				keys[ev.scancode] = ev.pressed
 
 #Calculate a running mean of the head height and subtract it from
 #the signal (removes the DC component).
@@ -114,6 +126,11 @@ func _process(delta):
 	#if uinterval % 50 == 0:
 	#	print ("Average groove time: %.f"%average_groove_time)
 	#	print ("%.2f "%avg_y + " %.2f"%average_interval + " Steps: %d"%steps +" Speed %.2f"%self.get_running_speed())
+	
+	if not vr_mode:
+		manual_position_update(delta)
+
+	
 	
 func tint_screen(duration):
 	get_node("ScreenTint").show()

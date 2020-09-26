@@ -14,6 +14,7 @@ var red_environment = null
 
 var gu = GameUtilities.new()
 
+var demo_mode_player_height = 1.7
 
 var levelselect
 var level = null
@@ -225,7 +226,7 @@ func initialize():
 			get_viewport().keep_3d_linear = true
 	else:
 		#Not running in VR / Demo mode
-		cam.translation.y = 1.5
+		cam.translation.y = demo_mode_player_height
 		cam.rotation.x = -0.4
 		
 
@@ -265,9 +266,42 @@ func _ready():
 	levelselect_blueprint = preload("res://scenes/Levelselect.tscn")
 	if not vr_mode:
 		_on_Tracker_added("right", ARVRServer.TRACKER_CONTROLLER, 1)
-		GameVariables.trackers[0].translation.y = 1.3
-		GameVariables.trackers[0].translation.x = 0.55
-		
+		_on_Tracker_added("left", ARVRServer.TRACKER_CONTROLLER, 2)
+
+var xrot = 0.0
+var yrot = 0.0
+func _input(event):
+	var update_controllers = false
+	if not vr_mode:
+		if event is InputEventMouseButton and event.pressed:
+			if event.button_index == BUTTON_LEFT:
+				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)				
+			elif event.button_index == BUTTON_RIGHT:								
+				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		elif event is InputEventMouseMotion:
+			print("Relative motion %s"%str(event.relative))
+			#cam.rotate_y(-event.relative[0]/500.0)
+			#cam.rotate_x(-event.relative[1]/500.0)
+			#cam.rotation.z = 0
+			xrot -= event.relative[1]/500.0
+			yrot -= event.relative[0]/500.0
+			cam.rotation = Vector3(xrot,0,0)
+			cam.rotate(Vector3(0,1,0), yrot)
+			#cam.rotate(Vector3(1,0,0), -event.relative[1]/500.0)
+			#cam.rotate_object_local(Vector3(0,0,1), 0)
+			
+			update_controllers = true
+		elif event is InputEventKey:
+			update_controllers = true	
+	
+		if update_controllers:			
+			var arm_length = demo_mode_player_height/2.0
+			var tmp = cam.transform.xform(Vector3(0.1,0,-arm_length))
+			GameVariables.trackers[0].translation = tmp
+			tmp = cam.transform.xform(Vector3(-0.1,0,-arm_length))	
+			GameVariables.trackers[1].translation = tmp
+	
+			
 func _on_level_finished	():
 	get_viewport().get_camera().blackout_screen(true)
 	get_viewport().get_camera().show_hud(false)
@@ -319,7 +353,8 @@ func _on_level_finished	():
 	yield(get_tree().create_timer(1), "timeout")
 	get_viewport().get_camera().blackout_screen(false)
 	if not vr_mode:
-		get_node("DemoTimer").start()
+		pass
+		#get_node("DemoTimer").start()
 
 var prediction_limit_ms = 200
 var prediction_history_size = 10
@@ -486,6 +521,7 @@ func _on_Area_level_selected(filename, diff, num):
 		add_child(level)	
 	
 		if not vr_mode:
+			demo_mode_player_height = level.player_height
 			level._on_HeartRateData(113)
 
 
@@ -538,7 +574,8 @@ func _on_Splashscreen_finished():
 	splashscreen.queue_free()
 	add_child(levelselect)
 	if not vr_mode:
-		get_node("DemoTimer").start()
+		pass
+		#get_node("DemoTimer").start()
 
 
 func change_environment(value):
