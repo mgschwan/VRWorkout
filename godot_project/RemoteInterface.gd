@@ -15,6 +15,8 @@ var api_url = null
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	api_url = ProjectSettings.get("application/config/backend_server")
+
+	print ("API url: %s"%api_url)
 	request = HTTPRequest.new()
 	add_child(request)
 	request.connect("request_completed", self,"_http_connect_request_completed")
@@ -54,6 +56,8 @@ func _http_connect_request_completed(result, response_code, headers, body):
 			registration_response(response)
 		elif response.has("message_type") and response["message_type"] == "profile":
 			profile_response(response)
+		elif response.has("public_handle"):
+			dataobject_response(response)
 		else:
 			#Handle other messages
 			pass
@@ -67,6 +71,36 @@ func register_device(device_id):
 	var headers = ["Content-Type: application/json"]
 	var error = request.request(api_url + "/registration/", headers, false, HTTPClient.METHOD_POST, query)
 	return error
+
+var data_object_query_active = false
+var data_object_query_result = null
+
+
+func get_public_dataobject(handle, result):
+	var retVal = null
+	#Why this yield? Because it seems if the response is already there or error
+	#the function never yields and the parent can't yield on completion?
+	yield(get_tree().create_timer(0.01),"timeout")
+	while data_object_query_active:
+		yield(get_tree().create_timer(0.01),"timeout")
+
+	data_object_query_active = true	
+	print ("Get public data object: %s"%handle)
+	var error = get_request("/public_dataobject/%s/"%handle)
+
+	if error == OK:
+		print ("Waiting for response")
+		while data_object_query_result == null:
+			yield(get_tree().create_timer(0.01),"timeout")				
+		print ("Response received")
+	else:
+		print ("Request failed")
+	retVal = data_object_query_result
+	data_object_query_result = null
+	data_object_query_active = false
+	result["dataobject"] = retVal
+	
+	
 	
 func request_profile(device_id):
 	print ("Request profile for: %s"%device_id)
@@ -75,6 +109,11 @@ func request_profile(device_id):
 func profile_response(response):
 	if "name" in response:
 		GameVariables.player_name = response["name"]
+		GameVariables.challenge_slots = JSON.parse(response.get("challenges","{}")).result
+
+func dataobject_response(response):
+	data_object_query_result = JSON.parse(response.get("value","{}")).result
+	print ("Dataobject result: %s"%str(data_object_query_result))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

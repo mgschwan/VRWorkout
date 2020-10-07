@@ -5,7 +5,7 @@ var height = 1.8
 var cam
 
 func _ready():
-	cam = get_viewport().get_camera()
+	cam = GameVariables.vr_camera
 	for i in range(200):
 		player_height_stat.append(0)
 

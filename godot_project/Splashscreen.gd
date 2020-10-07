@@ -5,7 +5,7 @@ signal splash_screen_finished
 var head_node = null
 
 # Declare member variables here. Examples:
-# var a = 2
+# var a = 2f
 # var b = "text"
 
 
@@ -50,7 +50,7 @@ func _process(delta):
 			nod_count = nod_count +1
 		if nod_count >= nod_target and not nod_complete:
 			nod_complete = true
-			get_viewport().get_camera().blackout_screen(true)
+			GameVariables.vr_camera.blackout_screen(true)
 			yield(get_tree().create_timer(0.2),"timeout")
 			emit_signal("splash_screen_finished")
 		last_extreme_angle = last_angle

@@ -1,8 +1,18 @@
 extends Node
 
+
+################## Warning, this has to be set to false in production builds
+#############################################################################
+
+var demo_mode = true 
+
+#############################################################################
+
 var app_name = "VRWorkout"
 var api_version = 1
 var player_name = "Player"
+var vr_mode = true
+var vr_camera
 
 var detail_selection_mode = true
 var trackers = null
@@ -10,12 +20,14 @@ var difficulty = 0
 var override_beatmap = false
 var device_id = ""
 var auto_difficulty = false
-
+var current_song = ""
+var current_challenge = null
 var current_hr = 0
 
 var config_file_location = "user://settings.json"
 
 var game_result = Dictionary()
+var challenge_slots = Dictionary()
 
 var current_ingame_id = 0
 func get_next_ingame_id():
@@ -344,8 +356,10 @@ var state_transition_time = {
 var level_statistics_data = {}
 	
 func setup_globals():
-	setup_globals_demo()
-	#setup_globals_regular()
+	if demo_mode:
+		setup_globals_demo()
+	else:
+		setup_globals_regular()
 	
 
 func setup_globals_demo():

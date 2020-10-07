@@ -78,7 +78,7 @@ func update_hits(hit_score, is_hit):
 		self.hits = max(self.hits, 0)
 
 func score_negative_hits(hits):
-	get_viewport().get_camera().tint_screen(0.2)
+	GameVariables.vr_camera.tint_screen(0.2)
 	update_hits(-hits, true)
 	point_indicator.emit_text("-%d hits"%hits, "red")
 

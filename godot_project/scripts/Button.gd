@@ -1,10 +1,14 @@
 extends StaticBody
 
+export(int) var font_size = 32
 export var ontext = "On"
 var is_active = false
 export(AudioStream) var select_sound = null
 
 signal selected()
+
+func _enter_tree():
+	get_node("ontext").font_size = font_size
 
 func _ready():
 	show_selector(is_active)

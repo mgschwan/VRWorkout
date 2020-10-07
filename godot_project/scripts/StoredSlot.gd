@@ -1,5 +1,14 @@
 extends StaticBody
 
+enum SlotType {
+	STORED_SLOT = 0,
+	ONLINE_CHALLENGE = 1	
+}
+
+var gu = GameUtilities.new()
+
+export(SlotType) var type = SlotType.STORED_SLOT
+
 signal selected(exercise_list, slot_number)
 
 export var exercise_name = "test"
@@ -9,11 +18,19 @@ export(String) var active_marker = ""
 var exercise_list = []
 var timestamp = ""
 var score = {}
+var duration = 0
+var challenge_handle = null
+
+
+func file_location(id):
+	if self.type == SlotType.ONLINE_CHALLENGE:
+		return "user://challenge_slot_%d.json"%id
+	return "user://stored_slot_%d.json"%id
 
 func load_exerise_slot(id):
 	var retVal = []
 	var f = File.new()
-	var err = f.open("user://stored_slot_%d.json"%id, File.READ)
+	var err = f.open(file_location(id), File.READ)
 	if err == OK:
 		var tmp = JSON.parse(f.get_as_text()).result
 		f.close()
@@ -21,27 +38,34 @@ func load_exerise_slot(id):
 			timestamp = tmp.get("timestamp", "")
 			retVal = tmp.get("cue_list", [])
 			score = tmp.get("score_best", {})
+			duration = tmp.get("duration",0)
+			challenge_handle = tmp.get("handle", null)
 	return retVal
 	
 func save_exercise_slot(id, cue_list):
 	var f = File.new()
-	var err = f.open("user://stored_slot_%d.json"%id, File.WRITE)
+	var err = f.open(file_location(id), File.WRITE)
 	if err == OK:
 		var t = OS.get_datetime()
 		print ("Saving exercise")
 			
 		var tmp = {"timestamp": "%02d.%02d.%04d %02d:%02d:%02d"%[t["day"],t["month"],t["year"],t["hour"],t["minute"],t["second"]],
 				   "cue_list": cue_list,
+				   "duration": duration,
+				   "handle": challenge_handle,				   
 				   "score_best": {"points": score.get("points",0), "score": score.get("score",0)}}
 		var data = JSON.print(tmp)
 		f.store_string(data)
 		f.close()
 
 func update_widget():
-	if exercise_list:
-		get_node("TextElement").print_info("Slot #%d\nCreated: %s\n\nBest:\nScore: %.2f\nPoints: %.2f"%[slot_number, timestamp, score.get("score",0), score.get("points",0)])
+	if self.type == SlotType.ONLINE_CHALLENGE:
+			get_node("TextElement").print_info("Challenge #%d %s\nEmpty"%[slot_number, gu.seconds_to_timestring(duration)])
 	else:
-		get_node("TextElement").print_info("Slot #%d\nEmpty"%[slot_number])
+		if exercise_list:
+			get_node("TextElement").print_info("Slot #%d %s\nCreated: %s\n\nBest:\nScore: %.2f\nPoints: %.2f"%[slot_number,gu.seconds_to_timestring(duration), timestamp, score.get("score",0), score.get("points",0)])
+		else:
+			get_node("TextElement").print_info("Slot #%d\nEmpty"%[slot_number])
 
 func _ready():
 	var exercises = ""
@@ -51,8 +75,24 @@ func _ready():
 		if score["points"] < GameVariables.game_result.get("points",0):
 			score["points"] = GameVariables.game_result.get("points",0)
 			score["score"] = GameVariables.game_result.get("vrw_score",0)
+			duration = GameVariables.game_result.get("time",0)
 			save_exercise_slot(slot_number, exercise_list)
 			GameVariables.game_mode = GameVariables.GameMode.STANDARD
+	
+	if type == SlotType.ONLINE_CHALLENGE:
+		var slot_index = slot_number - 1
+		if slot_index >= 0:
+			var public_handle = GameVariables.challenge_slots.get("%d"%slot_index, "")
+			#print ("Slot #%d %s"%[slot_index, public_handle])
+			if public_handle and public_handle != challenge_handle:
+				var result = Dictionary()			
+				yield(get_tree().current_scene.get_node("RemoteInterface").get_public_dataobject(public_handle, result), "completed")
+				var data = result.get("dataobject", null)			
+				if data:
+					challenge_handle = public_handle
+					exercise_list = data.get("cue_list",[])
+					duration = data.get("duration",0)
+					save_exercise_slot(slot_number, exercise_list)
 
 	update_widget()
 
@@ -66,13 +106,16 @@ func touched_by_controller(obj,root):
 	print ("Slot selected")
 	get_node("AudioStreamPlayer").play(0.0)
 	mark_active()
+	GameVariables.current_challenge = challenge_handle
 	emit_signal("selected", exercise_list, slot_number)
 
 func _on_SaveButton_selected():
-	exercise_list = GameVariables.cue_list.duplicate()
-	score["points"] = GameVariables.game_result.get("points",0)
-	score["score"] = GameVariables.game_result.get("vrw_score",0)
-	GameVariables.selected_game_slot = slot_number
-	save_exercise_slot(slot_number, GameVariables.cue_list)
-	load_exerise_slot(slot_number)
-	update_widget()
+	if self.type == SlotType.STORED_SLOT:
+		exercise_list = GameVariables.cue_list.duplicate()
+		score["points"] = GameVariables.game_result.get("points",0)
+		score["score"] = GameVariables.game_result.get("vrw_score",0)
+		duration = GameVariables.game_result.get("time",0)
+		GameVariables.selected_game_slot = slot_number
+		save_exercise_slot(slot_number, GameVariables.cue_list)
+		load_exerise_slot(slot_number)
+		update_widget()

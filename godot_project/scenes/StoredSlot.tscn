@@ -30,7 +30,7 @@ albedo_texture = SubResource( 4 )
 extents = Vector3( 1, 0.01, 1 )
 
 [node name="StoredSlot" type="StaticBody"]
-transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, 0.537583, 1.435, -1.2496 )
+transform = Transform( 0.15, 0, 0, 0, -4.37114e-08, 0.15, 0, -1, -6.55671e-09, 0, 0, 0 )
 script = ExtResource( 2 )
 exercise_name = ""
 

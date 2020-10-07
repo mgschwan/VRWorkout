@@ -75,11 +75,22 @@ func reset_cue_spacing():
 	min_cue_space = level_min_cue_space
 
 func adjust_cue_spacing():
-	# Increase the cue speed for hand cues
-	if cue_selector == CueSelector.HAND:
-		min_cue_space = level_min_cue_space / 2
-	else:
 		min_cue_space = level_min_cue_space
+
+		if cue_emitter_state == CueState.STAND or cue_emitter_state == CueState.CRUNCH:
+			# Increase the cue speed for hand cues
+			if cue_selector == CueSelector.HAND:
+				min_cue_space = level_min_cue_space / 2
+			else:
+				min_cue_space = level_min_cue_space
+		elif cue_emitter_state == CueState.SQUAT:
+			min_cue_space = level_min_cue_space / 2
+		elif cue_emitter_state == CueState.BURPEE or  \
+			   cue_emitter_state == CueState.SPRINT or \
+			   cue_emitter_state == CueState.YOGA or \
+			   cue_emitter_state == CueState.JUMP or \
+			   cue_emitter_state == CueState.PUSHUP:
+			pass
 
 func insert_cue_sorted(ts, cue_data):
 	var selected_idx = 0
@@ -473,16 +484,14 @@ func emit_cue_node(current_time, target_time):
 	
 	reset_cue_spacing()
 	if not emitter_state_changed:
+		adjust_cue_spacing()
 		if cue_emitter_state == CueState.STAND:
-			adjust_cue_spacing()
 			handle_stand_cues(current_time, target_time, cue_emitter_state)
 		elif cue_emitter_state == CueState.JUMP:
 			handle_jump_cues(current_time, target_time, cue_emitter_state)
 		elif cue_emitter_state == CueState.SQUAT:
-			adjust_cue_spacing()
 			handle_squat_cues(current_time, target_time, cue_emitter_state)
 		elif cue_emitter_state == CueState.CRUNCH:
-			adjust_cue_spacing()
 			handle_crunch_cues(current_time, target_time, cue_emitter_state)
 		elif cue_emitter_state == CueState.BURPEE:
 			handle_burpee_cues(current_time, target_time, cue_emitter_state)

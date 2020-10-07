@@ -123,7 +123,7 @@ func _ready():
 	
 	update_widget()
 	get_node("SongSelector").select_difficulty(GameVariables.difficulty)
-	get_viewport().get_camera().blackout_screen(false)
+	GameVariables.vr_camera.blackout_screen(false)
 	#show_settings("battle")
 	#show_settings("switchboard")
 	yield(get_tree().create_timer(1.0),"timeout")
@@ -298,3 +298,14 @@ func _on_StoredSlot_selected(exercise_list, slot_number):
 		GameVariables.cue_list = exercise_list.duplicate()
 	else:
 		GameVariables.game_mode = GameVariables.GameMode.STANDARD
+
+var challenge_upload_possible = true
+func _on_CreateChallengeButton_selected():
+	if challenge_upload_possible:
+		challenge_upload_possible = false
+		gu.upload_challenge(get_tree().current_scene.get_node("RemoteInterface"))
+		#Prevent double uploads from spurious button events
+		yield(get_tree().create_timer(2.0),"timeout")
+	challenge_upload_possible = true
+
+

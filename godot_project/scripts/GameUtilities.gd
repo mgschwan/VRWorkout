@@ -82,5 +82,19 @@ func get_song_name(filename):
 	var tmp = filename.rsplit(".")[0].rsplit("/")[-1]
 	return tmp.replace("_"," ")
 
+func upload_challenge(remoteinterface):
+	
+	var challenge = {
+		"cue_list": GameVariables.cue_list,
+		"song": get_song_name(GameVariables.current_song),
+		"duration": GameVariables.game_result.get("time", 0),
+		"score": GameVariables.game_result.get("vrw_score",0),
+		"points": GameVariables.game_result.get("points",0)
+	}
+	print ("Current song: %s"%GameVariables.current_song)
+	remoteinterface.send_data(GameVariables.device_id,"challenge",challenge )
+
+
+
 
 

@@ -191,8 +191,18 @@ func setup_game_data():
 	
 	
 		
-	
+var player_head
+var spectator_cam
 func _ready():
+	
+	if not GameVariables.vr_mode:
+		player_head = load("res://scenes/PlayerHead.tscn").instance()
+		add_child(player_head)
+
+		spectator_cam = Camera.new()
+		add_child(spectator_cam)
+		spectator_cam.current = true
+	
 	if random_seed:
 		rng.randomize()
 		exercise_builder.rng.randomize()
@@ -300,6 +310,10 @@ func _ready():
 		
 	update_safe_pushup()
 	
+	
+	
+	
+	
 
 
 func update_groove_iteration():
@@ -332,6 +346,16 @@ func check_beast_status():
 var last_playback_time = 0
 var last_game_update = 0
 func _process(delta):
+	if not GameVariables.vr_mode:
+		var c = get_viewport().get_camera()
+		#c.translation = GameVariables.vr_camera.translation + Vector3(0,0,1.0)
+		player_head.global_transform = GameVariables.vr_camera.global_transform
+		
+		spectator_cam.global_transform = player_head.global_transform
+		spectator_cam.global_transform.basis = Basis.IDENTITY
+		spectator_cam.translate(Vector3(0.0,0.2,1.0))
+
+		
 	#cue_emitter.current_playback_time += delta
 	var sp = stream.get_playback_position()
 	var gl = AudioServer.get_output_latency()
@@ -604,12 +628,14 @@ func internal_state_change():
 		
 func update_safe_pushup():
 	if hud_enabled:
-		var main_camera = get_viewport().get_camera()
+		var main_camera = GameVariables.vr_camera
 		if actual_game_state == CueState.BURPEE or actual_game_state == CueState.PUSHUP:
 			main_camera.show_hud(true)
+			gu.activate_node(get_node("PushupView"))
 			get_node("MainStage/mat").open_mat()
 		else:
 			get_node("MainStage/mat").close_mat()
+			gu.deactivate_node(get_node("PushupView"))
 			main_camera.show_hud(false)
 		
 func switch_boxman(state, name):

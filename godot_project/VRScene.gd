@@ -20,7 +20,6 @@ var levelselect
 var level = null
 var cam = null
 
-var vr_mode = true
 var beast_mode = false
 export var record_tracker_data = false
 
@@ -170,6 +169,11 @@ func set_detail_selection_mode(value):
 			print ("Set tracker detail (%s): %s"%[str(t),str(value)])
 			t.set_detail_select(value)
 
+func _enter_tree():
+	if GameVariables.demo_mode:
+		ProjectSettings.set("application/config/backend_server", "http://127.0.0.1:5000")
+
+
 func initialize():
 	var arvr_ovr_mobile_interface = ARVRServer.find_interface("OVRMobile");
 	var arvr_oculus_interface = ARVRServer.find_interface("Oculus");
@@ -178,7 +182,7 @@ func initialize():
 	ARVRServer.connect("tracker_added",self,"_on_Tracker_added")
 	ARVRServer.connect("tracker_removed",self, "_on_Tracker_removed")
 
-	vr_mode = false
+	GameVariables.vr_mode = false
 	cam = get_node("ARVROrigin/ARVRCamera")
 
 
@@ -207,12 +211,12 @@ func initialize():
 			#that this is because of th FPS not being a multiple of 30
 			# deactivated for now # #Engine.target_fps = 72 
 			_initialize_OVR_API()
-			vr_mode = true
+			GameVariables.vr_mode = true
 		
 	elif arvr_oculus_interface:
 		if arvr_oculus_interface.initialize():
 			arvr_interface = arvr_oculus_interface
-			vr_mode = true
+			GameVariables.vr_mode = true
 			get_viewport().arvr = true;
 			Engine.target_fps = 80 # TODO: this is headset dependent (RiftS == 80)=> figure out how to get this info at runtime
 			OS.vsync_enabled = false;
@@ -222,7 +226,7 @@ func initialize():
 			get_viewport().arvr = true;
 			Engine.target_fps = 90 # TODO: this is headset dependent => figure out how to get this info at runtime
 			OS.vsync_enabled = false;
-			vr_mode = true;	
+			GameVariables.vr_mode = true;	
 			get_viewport().keep_3d_linear = true
 	else:
 		#Not running in VR / Demo mode
@@ -233,7 +237,7 @@ func initialize():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	GameVariables.device_id = str(gu.get_device_id())
-	
+	GameVariables.vr_camera = get_node("ARVROrigin/ARVRCamera")
 	print ("Unique device id %s"%GameVariables.device_id)
 	GameVariables.setup_globals()
 	
@@ -259,12 +263,9 @@ func _ready():
 	if ovr_hand_tracking: 
 		ovr_hand_tracking = ovr_hand_tracking.new()
 	
-	get_node("ARVROrigin/ARVRCamera").vr_mode = vr_mode
-	
-	
 	level_blueprint = preload("res://scenes/Level.tscn")
 	levelselect_blueprint = preload("res://scenes/Levelselect.tscn")
-	if not vr_mode:
+	if not GameVariables.vr_mode:
 		_on_Tracker_added("right", ARVRServer.TRACKER_CONTROLLER, 1)
 		_on_Tracker_added("left", ARVRServer.TRACKER_CONTROLLER, 2)
 
@@ -272,39 +273,33 @@ var xrot = 0.0
 var yrot = 0.0
 func _input(event):
 	var update_controllers = false
-	if not vr_mode:
+	if not GameVariables.vr_mode:
 		if event is InputEventMouseButton and event.pressed:
 			if event.button_index == BUTTON_LEFT:
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)				
 			elif event.button_index == BUTTON_RIGHT:								
 				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		elif event is InputEventMouseMotion:
-			print("Relative motion %s"%str(event.relative))
-			#cam.rotate_y(-event.relative[0]/500.0)
-			#cam.rotate_x(-event.relative[1]/500.0)
-			#cam.rotation.z = 0
 			xrot -= event.relative[1]/500.0
 			yrot -= event.relative[0]/500.0
 			cam.rotation = Vector3(xrot,0,0)
 			cam.rotate(Vector3(0,1,0), yrot)
-			#cam.rotate(Vector3(1,0,0), -event.relative[1]/500.0)
-			#cam.rotate_object_local(Vector3(0,0,1), 0)
 			
 			update_controllers = true
 		elif event is InputEventKey:
 			update_controllers = true	
 	
 		if update_controllers:			
-			var arm_length = demo_mode_player_height/2.0
-			var tmp = cam.transform.xform(Vector3(0.1,0,-arm_length))
+			var arm_length = min(0.6,demo_mode_player_height/2.0)
+			var tmp = cam.transform.xform(Vector3(0.15,-0.25,-arm_length))
 			GameVariables.trackers[0].translation = tmp
-			tmp = cam.transform.xform(Vector3(-0.1,0,-arm_length))	
+			tmp = cam.transform.xform(Vector3(-0.15,-0.25,-arm_length))	
 			GameVariables.trackers[1].translation = tmp
 	
 			
 func _on_level_finished	():
-	get_viewport().get_camera().blackout_screen(true)
-	get_viewport().get_camera().show_hud(false)
+	GameVariables.vr_camera.blackout_screen(true)
+	GameVariables.vr_camera.show_hud(false)
 	
 	if record_tracker_data:
 		print ("Storing tracker data")
@@ -329,6 +324,9 @@ func _on_level_finished	():
 	game_statistics["vrw_score"] = GameVariables.game_result["vrw_score"]
 	game_statistics["duration"] =  GameVariables.game_result["time"]
 	game_statistics["data"] = GameVariables.level_statistics_data
+	if GameVariables.current_challenge:
+		game_statistics["challenge"] = GameVariables.current_challenge
+	GameVariables.current_challenge = null
 	var error = get_node("RemoteInterface").send_data(GameVariables.device_id, "workout", game_statistics)
 	if error != OK:
 		print ("Statistics not sent to portal. Error code %d"%error)
@@ -351,8 +349,8 @@ func _on_level_finished	():
 	levelselect.set_stat_text("Results for %s\n\nLast round\nScore: %.2f (%d/%d)\nPoints: %d"%[GameVariables.player_name, vrw_score,GameVariables.game_result["hits"],GameVariables.game_result["max_hits"],last_points]+" Duration: %s"%last_played_str+"\n\nTotal\nPoints: %d"%total_points+" Duration: %s"%total_played_str, vrw_score) 
 
 	yield(get_tree().create_timer(1), "timeout")
-	get_viewport().get_camera().blackout_screen(false)
-	if not vr_mode:
+	GameVariables.vr_camera.blackout_screen(false)
+	if not GameVariables.vr_mode:
 		pass
 		#get_node("DemoTimer").start()
 
@@ -456,7 +454,7 @@ func on_recenter_scene():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 
-	if not vr_mode:
+	if not GameVariables.vr_mode:
 		if Input.is_key_pressed(KEY_P):
 			# start screen capture
 			var image = get_viewport().get_texture().get_data()
@@ -491,7 +489,7 @@ func get_persisting_parameters():
 var game_statistics = {}
 func _on_Area_level_selected(filename, diff, num):
 	if level == null:
-		
+		GameVariables.current_song = filename
 		#Store the parameters that should survive a restart
 		gu.store_persistent_config(GameVariables.config_file_location, get_persisting_parameters())
 		
@@ -520,7 +518,7 @@ func _on_Area_level_selected(filename, diff, num):
 		levelselect.queue_free()
 		add_child(level)	
 	
-		if not vr_mode:
+		if not GameVariables.vr_mode:
 			demo_mode_player_height = level.player_height
 			level._on_HeartRateData(113)
 
@@ -560,7 +558,7 @@ func set_beast_mode(enabled):
 			t.set_beast_mode(enabled)
 
 func _on_Splashscreen_finished():
-	get_viewport().get_camera().blackout_screen(true)
+	GameVariables.vr_camera.blackout_screen(true)
 	
 	
 	red_environment = load("res://default_env_red.tres")
@@ -573,7 +571,7 @@ func _on_Splashscreen_finished():
 
 	splashscreen.queue_free()
 	add_child(levelselect)
-	if not vr_mode:
+	if not GameVariables.vr_mode:
 		pass
 		#get_node("DemoTimer").start()
 

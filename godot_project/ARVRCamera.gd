@@ -8,7 +8,7 @@ var smooth_y = 0
 var steps = 0
 var last_pos = Vector3(0,0,0)
 var distance_avg = 0
-var vr_mode = true
+
 
 
 var keys = {
@@ -21,20 +21,20 @@ var keys = {
 }
 func manual_position_update(delta):
 			if keys[KEY_UP]:
-				translation -= transform.basis.z * delta
+				translation.y += delta
 			elif keys[KEY_DOWN]:
-				translation += transform.basis.z * delta
+				translation.y -= delta
 			elif keys[KEY_LEFT]:
 				translation.x -= delta
 			elif keys[KEY_RIGHT]:
 				translation.x += delta
 			elif keys[KEY_PAGEUP]:
-				translation.y += delta
+				translation -= transform.basis.z * delta
 			elif keys[KEY_PAGEDOWN]:
-				translation.y -= delta
+				translation += transform.basis.z * delta
 
 func _input(ev):
-	if not vr_mode:
+	if not GameVariables.vr_mode:
 		if ev is InputEventKey:
 			if ev.scancode in keys:
 				keys[ev.scancode] = ev.pressed
@@ -127,7 +127,7 @@ func _process(delta):
 	#	print ("Average groove time: %.f"%average_groove_time)
 	#	print ("%.2f "%avg_y + " %.2f"%average_interval + " Steps: %d"%steps +" Speed %.2f"%self.get_running_speed())
 	
-	if not vr_mode:
+	if not GameVariables.vr_mode:
 		manual_position_update(delta)
 
 	

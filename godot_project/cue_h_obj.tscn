@@ -208,7 +208,7 @@ anims/explode = SubResource( 1 )
 anims/idle = SubResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Circle"]
-transform = Transform( 0.6, 0, 0, 0, -9.77524e-08, 0.5, 0, -0.6, -8.14603e-08, 0, 0, 0 )
+transform = Transform( 0.6, 0, 0, 0, -9.77524e-08, 0.5, 0, -0.6, -8.14603e-08, 0, -0.196525, 1.13032e-08 )
 mesh = ExtResource( 2 )
 material/0 = ExtResource( 1 )
 
