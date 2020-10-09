@@ -102,6 +102,9 @@ func insert_cue_sorted(ts, cue_data):
 
 func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", target_cue = null, hit_velocity = null, hit_score = 1.0):
 	#Cue IDs have to be generated when they are added to the list so others can reference it
+	if fly_time == 0:
+		fly_time = self.fly_time
+		
 	var ingame_id = GameVariables.get_next_ingame_id()
 	var cue_data = {
 		"cue_type": cue_type, 

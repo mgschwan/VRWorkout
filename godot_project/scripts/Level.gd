@@ -500,7 +500,6 @@ func create_and_attach_cue_actual(cue_data):
 	
 	cue_node.hit_score = hit_score
 	
-	
 	var main_node = get_node("cue_emitter")
 	var move_modifier = Tween.new()
 	move_modifier.set_name("tween")

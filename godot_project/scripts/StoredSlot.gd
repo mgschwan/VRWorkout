@@ -20,6 +20,7 @@ var timestamp = ""
 var score = {}
 var duration = 0
 var challenge_handle = null
+var additional_data = {}
 
 
 func file_location(id):
@@ -39,6 +40,7 @@ func load_exerise_slot(id):
 			retVal = tmp.get("cue_list", [])
 			score = tmp.get("score_best", {})
 			duration = tmp.get("duration",0)
+			additional_data = tmp.get("additional_data",{})
 			challenge_handle = tmp.get("handle", null)
 	return retVal
 	
@@ -52,7 +54,8 @@ func save_exercise_slot(id, cue_list):
 		var tmp = {"timestamp": "%02d.%02d.%04d %02d:%02d:%02d"%[t["day"],t["month"],t["year"],t["hour"],t["minute"],t["second"]],
 				   "cue_list": cue_list,
 				   "duration": duration,
-				   "handle": challenge_handle,				   
+				   "handle": challenge_handle,	
+				   "additional_data": additional_data,
 				   "score_best": {"points": score.get("points",0), "score": score.get("score",0)}}
 		var data = JSON.print(tmp)
 		f.store_string(data)
@@ -60,7 +63,10 @@ func save_exercise_slot(id, cue_list):
 
 func update_widget():
 	if self.type == SlotType.ONLINE_CHALLENGE:
-			get_node("TextElement").print_info("Challenge #%d %s\nEmpty"%[slot_number, gu.seconds_to_timestring(duration)])
+		if duration:
+			get_node("TextElement").print_info("Challenge #%d\n%s\n%s\n%s\n"%[slot_number, gu.seconds_to_timestring(duration), additional_data.get("song",""), additional_data.get("message","")])
+		else:
+			get_node("TextElement").print_info("Challenge #%d\nEmpty"%[slot_number])
 	else:
 		if exercise_list:
 			get_node("TextElement").print_info("Slot #%d %s\nCreated: %s\n\nBest:\nScore: %.2f\nPoints: %.2f"%[slot_number,gu.seconds_to_timestring(duration), timestamp, score.get("score",0), score.get("points",0)])
@@ -72,7 +78,7 @@ func _ready():
 	exercise_list = load_exerise_slot(slot_number)
 	if GameVariables.game_mode == GameVariables.GameMode.STORED and GameVariables.selected_game_slot == slot_number:
 		print ("Saving game slot")
-		if score["points"] < GameVariables.game_result.get("points",0):
+		if score.get("points",0) < GameVariables.game_result.get("points",0):
 			score["points"] = GameVariables.game_result.get("points",0)
 			score["score"] = GameVariables.game_result.get("vrw_score",0)
 			duration = GameVariables.game_result.get("time",0)
@@ -92,6 +98,9 @@ func _ready():
 					challenge_handle = public_handle
 					exercise_list = data.get("cue_list",[])
 					duration = data.get("duration",0)
+					additional_data = {}
+					additional_data["song"] = data.get("song","")
+					additional_data["message"] = data.get("message","")
 					save_exercise_slot(slot_number, exercise_list)
 
 	update_widget()
