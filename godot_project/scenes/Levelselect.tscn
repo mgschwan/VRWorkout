@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -18,6 +18,7 @@
 [ext_resource path="res://scenes/VRHealthConnection.tscn" type="PackedScene" id=16]
 [ext_resource path="res://InfoBoxOpaque.tscn" type="PackedScene" id=17]
 [ext_resource path="res://TextPanel.tscn" type="PackedScene" id=18]
+[ext_resource path="res://audio/menu_selection.wav" type="AudioStream" id=19]
 [ext_resource path="res://audio/snare_hit.wav" type="AudioStream" id=20]
 [ext_resource path="res://SongLevelBlock.tscn" type="PackedScene" id=21]
 [ext_resource path="res://Tutorial.tscn" type="PackedScene" id=22]
@@ -605,49 +606,68 @@ transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.
 ontext = "Save"
 
 [node name="ChallengeSlot1" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.222, 2.033, -0.749 )
+transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.222, 1.95209, -0.749 )
 type = 1
+save_button_active = false
 slot_number = 1
 active_marker = "WorkoutMarker"
 
 [node name="SaveButton" parent="SettingsCarousel/Battle/ChallengeSlot1" instance=ExtResource( 24 )]
 transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.79481e-07, 4, 6.55671e-09, 0, 0, -1.6 )
+visible = false
 ontext = "Save"
 
 [node name="ChallengeSlot2" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.222, 2.033, -0.378 )
+transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.222, 1.95209, -0.378 )
 type = 1
+save_button_active = false
 slot_number = 2
 active_marker = "WorkoutMarker"
 
 [node name="SaveButton" parent="SettingsCarousel/Battle/ChallengeSlot2" instance=ExtResource( 24 )]
 transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.79481e-07, 4, 6.55671e-09, 0, 0, -1.6 )
+visible = false
 ontext = "Save"
 
 [node name="ChallengeSlot3" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.222, 2.033, 0 )
+transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.222, 1.95209, 0 )
 type = 1
+save_button_active = false
 slot_number = 3
 active_marker = "WorkoutMarker"
 
 [node name="SaveButton" parent="SettingsCarousel/Battle/ChallengeSlot3" instance=ExtResource( 24 )]
 transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.79481e-07, 4, 6.55671e-09, 0, 0, -1.6 )
+visible = false
 ontext = "Save"
 
 [node name="ChallengeSlot4" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.222, 2.033, 0.375 )
+transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.222, 1.95209, 0.375 )
 type = 1
 slot_number = 4
 active_marker = "WorkoutMarker"
 
 [node name="SaveButton" parent="SettingsCarousel/Battle/ChallengeSlot4" instance=ExtResource( 24 )]
 transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.79481e-07, 4, 6.55671e-09, 0, 0, -1.6 )
+visible = false
 ontext = "Save"
 
 [node name="CreateChallengeButton" parent="SettingsCarousel/Battle" instance=ExtResource( 24 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.26531, 1.44111, -0.185248 )
 font_size = 20
 ontext = "Create\\nChallenge"
+
+[node name="BattleButtonRed" parent="SettingsCarousel/Battle" instance=ExtResource( 24 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.283, 1.38678, 0.132 )
+font_size = 24
+ontext = "Battle\\nTeam Blue"
+select_sound = ExtResource( 19 )
+
+[node name="BattleButtonBlue" parent="SettingsCarousel/Battle" instance=ExtResource( 24 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.283, 1.51954, 0.132 )
+font_size = 24
+ontext = "Battle\\nTeam Red"
+select_sound = ExtResource( 19 )
 
 [node name="SettingsButton" parent="." instance=ExtResource( 24 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 1.05393, -1 )
@@ -713,6 +733,8 @@ transform = Transform( 0.0521398, 0, -0.0539115, 0, 0.075, 0, 0.0539115, 0, 0.05
 [connection signal="selected" from="SettingsCarousel/Battle/ChallengeSlot4" to="." method="_on_StoredSlot_selected"]
 [connection signal="selected" from="SettingsCarousel/Battle/ChallengeSlot4/SaveButton" to="SettingsCarousel/Battle/ChallengeSlot4" method="_on_SaveButton_selected"]
 [connection signal="selected" from="SettingsCarousel/Battle/CreateChallengeButton" to="." method="_on_CreateChallengeButton_selected"]
+[connection signal="selected" from="SettingsCarousel/Battle/BattleButtonRed" to="." method="_on_BattleMode_selected" binds= [ "red" ]]
+[connection signal="selected" from="SettingsCarousel/Battle/BattleButtonBlue" to="." method="_on_BattleMode_selected" binds= [ "blue" ]]
 [connection signal="selected" from="SettingsButton" to="." method="_on_SettingsButton_selected"]
 [connection signal="selected" from="ExerciseButton" to="." method="_on_ExerciseButton_selected"]
 [connection signal="selected" from="ConnectionsButton" to="." method="_on_ConnectionsButton_selected"]

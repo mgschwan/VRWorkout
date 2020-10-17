@@ -175,3 +175,4 @@ For suggestions/feedback join the discord group [VRWorkout Dojo](https://discord
 * Low Poly Forest by isbl 
 * Floating Islands by Otis25 
 * Open Tatami Room by OSad 
+* Tron by 1Angelika_A 

@@ -4,15 +4,21 @@ extends Node
 ################## Warning, this has to be set to false in production builds
 #############################################################################
 
-var demo_mode = false
+var demo_mode = true
 
 #############################################################################
+
+var vr_camera = true
+var hit_player = null
+
+#############################################################################
+
+
 
 var app_name = "VRWorkout"
 var api_version = 1
 var player_name = "Player"
 var vr_mode = true
-var vr_camera
 
 var detail_selection_mode = true
 var trackers = null
@@ -37,14 +43,20 @@ func get_next_ingame_id():
 func reset_ingame_id():
 	current_ingame_id = 0
 
+enum BattleTeam {
+	BLUE = 0,
+	RED = 1,	
+};
 
 enum GameMode {
 	STANDARD = 0,
 	EXERCISE_SET = 1,
-	STORED = 2,	
+	STORED = 2,
+	BATTLE = 3,
 };
 
 var game_mode = GameMode.STANDARD
+var battle_team = BattleTeam.BLUE
 var selected_game_slot = -1
 var cue_list = Array()
 

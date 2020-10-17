@@ -238,6 +238,8 @@ func initialize():
 func _ready():
 	GameVariables.device_id = str(gu.get_device_id())
 	GameVariables.vr_camera = get_node("ARVROrigin/ARVRCamera")
+	GameVariables.hit_player = get_node("HitPlayer")
+	
 	print ("Unique device id %s"%GameVariables.device_id)
 	GameVariables.setup_globals()
 	
@@ -300,6 +302,8 @@ func _input(event):
 func _on_level_finished	():
 	GameVariables.vr_camera.blackout_screen(true)
 	GameVariables.vr_camera.show_hud(false)
+	#In case the player exited while controller were hidden
+	set_controller_visible(true)
 	
 	if record_tracker_data:
 		print ("Storing tracker data")

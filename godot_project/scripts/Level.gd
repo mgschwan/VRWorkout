@@ -142,6 +142,8 @@ func _on_HeartRateData(hr):
 func setup_game_data():
 	GameVariables.level_statistics_data = {}
 	auto_difficulty = GameVariables.auto_difficulty
+
+	
 	if len(GameVariables.exercise_state_list) > 0:
 		exercise_builder.state_list = GameVariables.exercise_state_list	
 	
@@ -185,6 +187,14 @@ func setup_game_data():
 		exercise_builder.cue_emitter_list = GameVariables.cue_list.duplicate()
 	GameVariables.cue_list.clear()
 
+	if GameVariables.game_mode == GameVariables.GameMode.BATTLE:
+		gu.activate_node(get_node("BattleDisplay"))
+		if GameVariables.battle_team == GameVariables.BattleTeam.RED:
+			get_node("MainStage/blue_outdoor_stage").set_color("red")
+		else:
+			get_node("MainStage/blue_outdoor_stage").set_color("blue")
+	else:
+		gu.deactivate_node(get_node("BattleDisplay"))
 
 	internal_state_change()
 	
@@ -310,11 +320,6 @@ func _ready():
 		
 	update_safe_pushup()
 	
-	
-	
-	
-	
-
 
 func update_groove_iteration():
 	if beat_index > 0:
@@ -753,8 +758,20 @@ func update_sequence_results():
 		
 	cue_emitter.reset_current_points()
 
+func attack(by_player):
+	if by_player == "left":
+		boxman1.attack_01(false,false, boxman2.get_node("Armature/Skeleton/BoneAttachment").global_transform.origin)
+	else:
+		boxman2.attack_01(false,false, boxman1.get_node("Armature/Skeleton/BoneAttachment").global_transform.origin)
 
-func _on_PositionSign_state_change_completed():
+func defend(by_player):
+	if by_player == "left":
+		boxman1.defense_01(false,false)
+	else:
+		boxman2.defense_01(false,false)
+
+
+func _on_PositionSign_state_change_completed():		
 	update_safe_pushup()
 	var gauge = get_node("rungauge")
 	if actual_game_state == CueState.SPRINT and not gauge.visible:
@@ -772,7 +789,7 @@ func controller_tracking_lost(controller):
 			var type = "right"
 			if controller.is_left:
 				type = "left"
-				
+			GameVariables.hit_player.play(0)
 			node.has_been_hit(type)
 	
 func controller_tracking_regained(controller):
@@ -784,10 +801,8 @@ func controller_tracking_regained(controller):
 			var type = "right"
 			if controller.is_left:
 				type = "left"
-				
+			GameVariables.hit_player.play(0)
 			node.has_been_hit(type)
-		
-
 
 func play_encouragement():
 	var selector = rng.randi()%5
@@ -814,3 +829,4 @@ func _on_cue_emitter_streak_changed(count):
 				get_node("VoiceInstructor").say("faster")
 		else:					
 			play_encouragement()
+

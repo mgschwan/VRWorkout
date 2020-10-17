@@ -3,8 +3,8 @@ extends Spatial
 signal beast_attack_successful
 signal beast_killed
 
-var standard_material = load("res://boxman_standard_material.tres")
-var angry_material = load("res://boxman_angry_material.tres")
+var standard_material = load("res://materials/tron_blue_material.tres")
+var angry_material = load("res://materials/tron_red_material.tres")
 var mesh_obj
 
 var active = true 
@@ -25,6 +25,8 @@ enum BoxmanAnimations {
 	Dying = 11,
 	Run = 12,
 	Dying_Middle = 13,
+	Attack_01 = 14,
+	Defense_01 = 15,
 
 }
 
@@ -36,8 +38,12 @@ var animation_queue = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	get_node("EnergyBall").set_as_toplevel(true)
 	animations = get_node("AnimationPlayer")
-	mesh_obj = get_node("Armature/Skeleton/Cube001")	
+	for anim in animations.get_animation_list():
+		animations.get_animation(anim).loop = false
+	mesh_obj = get_node("Armature/Skeleton/Mesh_0")	
+	set_appearance("standard")
 	idle(true)
 	
 func clear_animation_queue():
@@ -46,34 +52,37 @@ func clear_animation_queue():
 func play_current_animation(continuous=false):
 	self.continuous = continuous
 	if current_animation == BoxmanAnimations.Idle:
-		animations.play("idle")
+		animations.play("idle-loop")
 	elif current_animation == BoxmanAnimations.Idle_To_Situp:
-		animations.play("idle_to_situp")
+		animations.play("idle_to_situp-lopp")
 	elif current_animation == BoxmanAnimations.Situp_To_Idle:
-		animations.play_backwards("idle_to_situp")
+		animations.play_back("situp_to_idle-lopp")
 	elif current_animation == BoxmanAnimations.Situps:
-		animations.play("situps")
+		animations.play("situps-lopp")
 	elif current_animation == BoxmanAnimations.Jumping:
-		animations.play("jumping")
+		animations.play("jumping-loop")
 	elif current_animation == BoxmanAnimations.Stand_To_Plank:
-		animations.play("stand_to_plank")
+		animations.play("stand_to_plank-loop")
 	elif current_animation == BoxmanAnimations.Plank_To_Stand:
-		animations.play_backwards("stand_to_plank")
+		animations.play_backwards("planl_to_plank-loop")
 	elif current_animation == BoxmanAnimations.Squat:
-		animations.play("squat")
+		animations.play("squat-loop")
 	elif current_animation == BoxmanAnimations.Stand_To_Squat:
-		animations.play("stand_to_squat")
+		animations.play("stand_to_squat-loop")
 	elif current_animation == BoxmanAnimations.Squat_To_Stand:
-		animations.play("squat_to_stand")
+		animations.play("squat_to_stand-loop")
 	elif current_animation == BoxmanAnimations.Plank:
-		animations.play("plank")
+		animations.play("plank-loop")
 	elif current_animation == BoxmanAnimations.Dying:
-		animations.play("dying_back")
+		animations.play("dying_back-loop")
 	elif current_animation == BoxmanAnimations.Dying_Middle:
-		animations.play("dying")
+		animations.play("dying-loop")
 	elif current_animation == BoxmanAnimations.Run:
-		animations.play("running")
-		
+		animations.play("running-loop")
+	elif current_animation == BoxmanAnimations.Attack_01:
+		animations.play("attack_01-loop")
+	elif current_animation == BoxmanAnimations.Defense_01:
+		animations.play("defense_01-loop")
 
 func play_state(animation, continuous = false, enqueue = false):
 	if enqueue:
@@ -123,6 +132,20 @@ func dying_middle(continuous = false, enqueue = false):
 	play_state(BoxmanAnimations.Dying_Middle, continuous,  enqueue)
 
 
+func attack_01(continuous = false, enqueue = false, target = Vector3(0,0,0)):
+	play_state(BoxmanAnimations.Attack_01, continuous,  enqueue)
+	yield(get_tree().create_timer(0.5),"timeout")
+	get_node("EnergyBall").show()
+	get_node("EnergyBall/Tween").interpolate_property(get_node("EnergyBall"),"translation", get_node("Armature/Skeleton/HandAttachment").global_transform.origin, target,0.4,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT, 0)
+	get_node("EnergyBall/Tween").start()
+
+func _on_Tween_Energyball_completed():
+	get_node("EnergyBall").hide()
+
+
+func defense_01(continuous = false, enqueue = false):
+	play_state(BoxmanAnimations.Defense_01, continuous,  enqueue)
+	
 func run(continuous = false, enqueue = false):
 	play_state(BoxmanAnimations.Run, continuous,  enqueue)
 
@@ -220,11 +243,17 @@ func _on_beast_run_finished(obj, path):
 		#The beast has reached the target
 		beast_reset()
 		emit_signal("beast_attack_successful")
-	
+
+func set_appearance(value):
+	if value == "red" or value == "angry":
+		mesh_obj.set_surface_material(0, angry_material)
+	else:
+		mesh_obj.set_surface_material(0, standard_material)
+
 func activate_beast(target, duration):
 	if not in_beast_mode:
 		in_beast_mode = true
-		mesh_obj.set_surface_material(0, angry_material)
+		set_appearance("angry")
 		beast_start_transformation = transform
 		run(true)
 		movement_tween = Tween.new()
@@ -237,5 +266,6 @@ func activate_beast(target, duration):
 		movement_tween.start()		
 	
 	
+
 
 

@@ -8,6 +8,7 @@ enum SlotType {
 var gu = GameUtilities.new()
 
 export(SlotType) var type = SlotType.STORED_SLOT
+export(bool) var save_button_active = true
 
 signal selected(exercise_list, slot_number)
 
@@ -76,6 +77,11 @@ func update_widget():
 func _ready():
 	var exercises = ""
 	exercise_list = load_exerise_slot(slot_number)
+	if save_button_active:
+		gu.activate_node(get_node("SaveButton"))
+	else:
+		gu.deactivate_node(get_node("SaveButton"))
+		
 	if GameVariables.game_mode == GameVariables.GameMode.STORED and GameVariables.selected_game_slot == slot_number:
 		print ("Saving game slot")
 		if score.get("points",0) < GameVariables.game_result.get("points",0):

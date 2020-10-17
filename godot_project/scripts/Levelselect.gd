@@ -309,3 +309,11 @@ func _on_CreateChallengeButton_selected():
 	challenge_upload_possible = true
 
 
+
+
+func _on_BattleMode_selected(team):
+	if team == "red":
+		GameVariables.battle_team = GameVariables.BattleTeam.RED
+	else:	
+		GameVariables.battle_team = GameVariables.BattleTeam.BLUE
+	GameVariables.game_mode = GameVariables.GameMode.BATTLE

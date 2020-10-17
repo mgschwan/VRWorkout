@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://PointIndicatorSprite.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scripts/HeartRateReceiver.gd" type="Script" id=8]
 [ext_resource path="res://AreaHead.gd" type="Script" id=9]
+[ext_resource path="res://audio/hand_hit.wav" type="AudioStream" id=10]
 [ext_resource path="res://audio/head_hit.wav" type="AudioStream" id=16]
 [ext_resource path="res://RemoteInterface.gd" type="Script" id=18]
 
@@ -146,6 +147,10 @@ script = ExtResource( 8 )
 
 [node name="RemoteInterface" type="Node" parent="."]
 script = ExtResource( 18 )
+
+[node name="HitPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+volume_db = -2.5
 [connection signal="body_entered" from="ARVROrigin/ARVRCamera/AreaHead" to="ARVROrigin/ARVRCamera/AreaHead" method="_on_AreaHead_body_entered"]
 [connection signal="timeout" from="ARVROrigin/ARVRCamera/HUDHideTimer" to="ARVROrigin/ARVRCamera" method="_on_HUDHideTimer_timeout"]
 [connection signal="timeout" from="DemoTimer" to="." method="_on_DemoTimer_timeout"]
