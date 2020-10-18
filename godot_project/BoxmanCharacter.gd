@@ -27,7 +27,9 @@ enum BoxmanAnimations {
 	Dying_Middle = 13,
 	Attack_01 = 14,
 	Defense_01 = 15,
-
+	Burpee = 16,
+	Stand_To_Burpee = 17,
+	Burpee_To_Stand = 18,
 }
 
 var animations
@@ -50,21 +52,25 @@ func clear_animation_queue():
 	animation_queue.clear()
 
 func play_current_animation(continuous=false):
+	print ("Current animation %s"%str(current_animation))
 	self.continuous = continuous
+	animations.stop()
+
 	if current_animation == BoxmanAnimations.Idle:
+		print ("Play idle loop")
 		animations.play("idle-loop")
 	elif current_animation == BoxmanAnimations.Idle_To_Situp:
-		animations.play("idle_to_situp-lopp")
+		animations.play("idle_to_situp-loop")
 	elif current_animation == BoxmanAnimations.Situp_To_Idle:
-		animations.play_back("situp_to_idle-lopp")
+		animations.play("situp_to_idle-loop")
 	elif current_animation == BoxmanAnimations.Situps:
-		animations.play("situps-lopp")
+		animations.play("situps-loop")
 	elif current_animation == BoxmanAnimations.Jumping:
 		animations.play("jumping-loop")
 	elif current_animation == BoxmanAnimations.Stand_To_Plank:
 		animations.play("stand_to_plank-loop")
 	elif current_animation == BoxmanAnimations.Plank_To_Stand:
-		animations.play_backwards("planl_to_plank-loop")
+		animations.play_backwards("stand_to_plank-loop")
 	elif current_animation == BoxmanAnimations.Squat:
 		animations.play("squat-loop")
 	elif current_animation == BoxmanAnimations.Stand_To_Squat:
@@ -83,11 +89,18 @@ func play_current_animation(continuous=false):
 		animations.play("attack_01-loop")
 	elif current_animation == BoxmanAnimations.Defense_01:
 		animations.play("defense_01-loop")
+	elif current_animation == BoxmanAnimations.Burpee:
+		animations.play("burpee-loop")
+	elif current_animation == BoxmanAnimations.Stand_To_Burpee:
+		animations.play("idle_to_burpee-loop")
+	elif current_animation == BoxmanAnimations.Burpee_To_Stand:
+		animations.play("burpee_to_idle-loop")
 
 func play_state(animation, continuous = false, enqueue = false):
 	if enqueue:
 		add_state(animation)
 	else:
+		animations.stop()
 		current_animation = animation
 		clear_animation_queue()
 		play_current_animation(continuous)
@@ -113,6 +126,9 @@ func stand_to_plank(continuous = false, enqueue = false):
 func plank_to_stand(continuous = false, enqueue = false):
 	play_state(BoxmanAnimations.Plank_To_Stand, continuous,  enqueue)
 
+func burpee_to_stand(continuous = false, enqueue = false):
+	play_state(BoxmanAnimations.Burpee_To_Stand, continuous,  enqueue)
+
 func squat(continuous = false, enqueue = false):
 	play_state(BoxmanAnimations.Squat, continuous,  enqueue)
 	
@@ -122,8 +138,14 @@ func stand_to_squat(continuous = false, enqueue = false):
 func squat_to_stand(continuous = false, enqueue = false):
 	play_state(BoxmanAnimations.Squat_To_Stand, continuous,  enqueue)
 
+func squat_to_burpee(continuous = false, enqueue = false):
+	play_state(BoxmanAnimations.Stand_To_Burpee, continuous,  enqueue)
+
 func plank(continuous = false, enqueue = false):
 	play_state(BoxmanAnimations.Plank, continuous,  enqueue)
+
+func burpee(continuous = false, enqueue = false):
+	play_state(BoxmanAnimations.Burpee, continuous,  enqueue)
 
 func dying(continuous = false, enqueue = false):
 	play_state(BoxmanAnimations.Dying, continuous,  enqueue)
@@ -157,6 +179,8 @@ func stop_animation():
 func to_stand(enqueue):
 	if current_animation == BoxmanAnimations.Stand_To_Plank or current_animation == BoxmanAnimations.Plank:
 		plank_to_stand(false,enqueue)
+	if current_animation == BoxmanAnimations.Stand_To_Burpee or current_animation == BoxmanAnimations.Burpee:
+		burpee_to_stand(false,enqueue)
 	elif current_animation == BoxmanAnimations.Jumping:
 		idle(false, enqueue)
 	elif current_animation == BoxmanAnimations.Squat:
@@ -190,6 +214,12 @@ func switch_to_plank():
 	add_state(BoxmanAnimations.Plank)
 	play_current_animation(true)
 
+func switch_to_burpee():
+	to_stand(true)
+	add_state(BoxmanAnimations.Stand_To_Burpee)
+	add_state(BoxmanAnimations.Burpee)
+	play_current_animation(true)
+
 func switch_to_squat():
 	to_stand(true)
 	add_state(BoxmanAnimations.Stand_To_Squat)
@@ -204,6 +234,7 @@ func switch_to_situps():
 	
 
 func _on_AnimationPlayer_animation_finished(anim_name):
+	print ("Animation finished")
 	if len(animation_queue) > 0:
 		current_animation = animation_queue.pop_front()
 		play_current_animation(continuous)

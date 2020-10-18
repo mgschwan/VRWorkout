@@ -14,6 +14,8 @@ var hud_enabled = false
 signal show_hud()
 signal hide_hud()
 signal streak_changed(count)
+signal hit_scored(hit_score, base_score, points)
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -57,15 +59,21 @@ func get_success_rate():
 
 func update_statistics_element(obj, hit, points):
 	current_points += points
+	var hit_score = 1
+	var actual_hit_score = 0
+	if obj:
+		hit_score = obj.hit_score
 	if hit:
-		current_hits += 1
+		actual_hit_score = hit_score
 		streak_length += 1
 	else:
 		streak_length = 0
-	current_max_hits +=1
+		
+	current_hits +=  actual_hit_score
+	current_max_hits += hit_score
 
 	emit_signal("streak_changed", get_current_streak())
-
+	emit_signal("hit_scored", actual_hit_score, hit_score, points)
 	if obj:
 		if GameVariables.level_statistics_data.has(obj.ingame_id):
 			GameVariables.level_statistics_data[obj.ingame_id]["h"] = hit

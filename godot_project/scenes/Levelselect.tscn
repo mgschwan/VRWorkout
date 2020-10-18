@@ -653,18 +653,18 @@ visible = false
 ontext = "Save"
 
 [node name="CreateChallengeButton" parent="SettingsCarousel/Battle" instance=ExtResource( 24 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.26531, 1.44111, -0.185248 )
+transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, -1.26531, 1.44111, -0.185248 )
 font_size = 20
 ontext = "Create\\nChallenge"
 
 [node name="BattleButtonRed" parent="SettingsCarousel/Battle" instance=ExtResource( 24 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.283, 1.38678, 0.132 )
+transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, -1.283, 1.357, 0.193 )
 font_size = 24
 ontext = "Battle\\nTeam Blue"
 select_sound = ExtResource( 19 )
 
 [node name="BattleButtonBlue" parent="SettingsCarousel/Battle" instance=ExtResource( 24 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.283, 1.51954, 0.132 )
+transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, -1.283, 1.46038, 0.193105 )
 font_size = 24
 ontext = "Battle\\nTeam Red"
 select_sound = ExtResource( 19 )
@@ -733,8 +733,8 @@ transform = Transform( 0.0521398, 0, -0.0539115, 0, 0.075, 0, 0.0539115, 0, 0.05
 [connection signal="selected" from="SettingsCarousel/Battle/ChallengeSlot4" to="." method="_on_StoredSlot_selected"]
 [connection signal="selected" from="SettingsCarousel/Battle/ChallengeSlot4/SaveButton" to="SettingsCarousel/Battle/ChallengeSlot4" method="_on_SaveButton_selected"]
 [connection signal="selected" from="SettingsCarousel/Battle/CreateChallengeButton" to="." method="_on_CreateChallengeButton_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/BattleButtonRed" to="." method="_on_BattleMode_selected" binds= [ "red" ]]
-[connection signal="selected" from="SettingsCarousel/Battle/BattleButtonBlue" to="." method="_on_BattleMode_selected" binds= [ "blue" ]]
+[connection signal="selected" from="SettingsCarousel/Battle/BattleButtonRed" to="." method="_on_BattleMode_selected" binds= [ "blue" ]]
+[connection signal="selected" from="SettingsCarousel/Battle/BattleButtonBlue" to="." method="_on_BattleMode_selected" binds= [ "red" ]]
 [connection signal="selected" from="SettingsButton" to="." method="_on_SettingsButton_selected"]
 [connection signal="selected" from="ExerciseButton" to="." method="_on_ExerciseButton_selected"]
 [connection signal="selected" from="ConnectionsButton" to="." method="_on_ConnectionsButton_selected"]

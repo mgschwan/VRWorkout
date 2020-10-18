@@ -4,7 +4,7 @@ extends Node
 ################## Warning, this has to be set to false in production builds
 #############################################################################
 
-var demo_mode = true
+var demo_mode = false
 
 #############################################################################
 
@@ -48,15 +48,21 @@ enum BattleTeam {
 	RED = 1,	
 };
 
+enum BattleMode {
+	NO = 0,
+	CPU = 1,
+	# NOT IMPLEMENTED # STORED = 2,	
+};
+
 enum GameMode {
 	STANDARD = 0,
 	EXERCISE_SET = 1,
 	STORED = 2,
-	BATTLE = 3,
 };
 
 var game_mode = GameMode.STANDARD
 var battle_team = BattleTeam.BLUE
+var battle_mode = BattleMode.NO
 var selected_game_slot = -1
 var cue_list = Array()
 

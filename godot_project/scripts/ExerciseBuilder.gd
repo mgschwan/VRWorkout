@@ -159,8 +159,7 @@ func update_distribution(distribution, index, delta):
 # If current_distribution is set the probabilities are normalized by the actual distribution
 func state_transition(old_state, state_model, current_distribution = null, allow_self_transition = true):
 	var probabilities = state_model[old_state].duplicate(true)
-	print ("Old state: %d(%s)"%[old_state, state_string(old_state)])
-	print ("Probabilities pre: %s (%d)"%[str(probabilities),old_state])
+	#print ("Probabilities pre: %s (%d)"%[str(probabilities),old_state])
 	if len(probabilities) < len(state_model):
 		var sum = 0
 		for k in probabilities.keys():
@@ -169,11 +168,11 @@ func state_transition(old_state, state_model, current_distribution = null, allow
 
 	#If the actual state must not be the target state remove it
 	if not allow_self_transition:
-		print ("Remove old state %d"%old_state)
+		#print ("Remove old state %d"%old_state)
 		if probabilities.has(old_state):
-			print ("Remove")
+			#print ("Remove")
 			probabilities.erase(old_state)
-			print ("Probabilities mid: %s"%str(probabilities))
+			#print ("Probabilities mid: %s"%str(probabilities))
 			
 	if current_distribution != null:
 		if len(current_distribution) < len(state_model):
@@ -186,21 +185,21 @@ func state_transition(old_state, state_model, current_distribution = null, allow
 			total = total + probabilities[k]
 		for k in probabilities.keys():
 			probabilities[k] = 100 * probabilities[k] / total
-		print ("Probabilities: %s"%str(probabilities))
+		#print ("Probabilities: %s"%str(probabilities))
 	var state_selector = rng.randi()%100
 	var new_state = old_state
 	var sum = 0
-	print ("Probabilities actual: %s"%str(probabilities))
+	#print ("Probabilities actual: %s"%str(probabilities))
 	for p in probabilities:
 		sum += probabilities[p]
-	print ("Probabilit sum: %f"%sum)
+	#print ("Probabilit sum: %f"%sum)
 	
 	#If the probabilities don't add up to 1 rescale them
 	var factor = 1.0
 	if sum > 0 and sum < 100:
 		factor = 100.0/sum	
-	print ("Factor: %f"%factor)
-	print ("State selector: %d"%state_selector)
+	#print ("Factor: %f"%factor)
+	#print ("State selector: %d"%state_selector)
 	if len(probabilities) > 0:
 		var cumulative_probability = 0
 		new_state = probabilities.keys()[0]
@@ -215,13 +214,13 @@ func state_transition(old_state, state_model, current_distribution = null, allow
 	
 	if current_distribution != null:
 		current_distribution = update_distribution(current_distribution, new_state, redistribution_speed)
-		print ("Distribution: %s"%str(current_distribution))
+		#print ("Distribution: %s"%str(current_distribution))
 	return new_state
 
 func set_fly_distance(fly_distance, target_distance):
 	self.fly_distance = fly_distance
 	self.target_distance = target_distance
-	print ("Fly distance: %s / %s"%[str(self.fly_distance), str(self.target_distance)])
+	#print ("Fly distance: %s / %s"%[str(self.fly_distance), str(self.target_distance)])
 	
 func update_cue_timing():
 	var time_to_target = target_distance / fly_distance
@@ -398,7 +397,7 @@ func next_state_from_list():
 	state_duration = get_current_duration_from_list()
 	level_min_state_duration = state_duration
 	min_state_duration = state_duration
-	print ("State duration %.2f"%float(state_duration)) 
+	#print ("State duration %.2f"%float(state_duration)) 
 	
 func get_current_state_from_list():
 	var retVal = "stand"
@@ -435,7 +434,7 @@ func get_weights(diff):
 	
 func adjust_state_model(diff, model):
 	var weights = get_weights(diff)
-	print ("Weights: %s"%str(weights))
+	#print ("Weights: %s"%str(weights))
 	var retVal = model.duplicate(true)
 	for k in retVal:
 		var sum = 0
@@ -454,23 +453,23 @@ func emit_cue_node(current_time, target_time):
 	if last_state_change + state_duration < current_time or cue_emitter_state < 0:
 		var old_state = cue_emitter_state
 		if len(state_list) > 0:
-			print ("Take preset state")
+			#print ("Take preset state")
 			next_state_from_list()
 		else:
-			print ("Take random state\n\n\n\n")		
+			#print ("Take random state\n\n\n\n")		
 			if auto_difficulty:
-				print ("Model prejadjust: %s"%str(exercise_state_model))
+				#print ("Model prejadjust: %s"%str(exercise_state_model))
 				var adjusted_model = adjust_state_model(current_difficulty, exercise_state_model)
-				print ("Model postadjust: %s"%str(adjusted_model))
+				#print ("Model postadjust: %s"%str(adjusted_model))
 				
 				cue_emitter_state = state_transition(cue_emitter_state, adjusted_model, null, false)
-				print ("New state (%d) %s\n\n\n\n"%[cue_emitter_state, state_string(cue_emitter_state)])
+				#print ("New state (%d) %s\n\n\n\n"%[cue_emitter_state, state_string(cue_emitter_state)])
 			else:
-				print ("Take from standard model %s"%str(auto_difficulty))
+				#print ("Take from standard model %s"%str(auto_difficulty))
 				cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model, null, false)
 			state_duration = min_state_duration + 5*current_difficulty*rng.randf()
 		state_transition_pause = get_state_transition_pause(old_state, cue_emitter_state)
-		print ("State transition pause %.2f"%state_transition_pause)
+		#print ("State transition pause %.2f"%state_transition_pause)
 		var cue_data = {
 		"cue_type": "state_change",
 		"state": cue_emitter_state, 
@@ -555,7 +554,7 @@ func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 	var y_hand = rot_distance_reduction *  cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
 	var x = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"]/2
 	
-	print ("Crunch Spread %.2f"%(cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]))
+	#print ("Crunch Spread %.2f"%(cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]))
 
 	var spread = cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]/2.0+rng.randf()*cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]
 	var t = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), Vector3(0,0,0)).rotated(Vector3(0,0,1), rot)

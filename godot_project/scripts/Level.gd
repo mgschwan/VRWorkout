@@ -8,6 +8,8 @@ var stored
 var CueState = GameVariables.CueState
 var CueSelector = GameVariables.CueSelector
 
+onready var battle_module = $BattleDisplay
+
 var exercise_state_model_template
 var pushup_state_model
 var squat_state_model
@@ -118,7 +120,7 @@ func load_audio_resource(filename):
 		var f = File.new()
 		
 		if  f.file_exists(filename):
-			print ("External resource exists")
+			#print ("External resource exists")
 			f.open(filename, File.READ)
 			var buffer = f.get_buffer(f.get_len())
 			resource = AudioStreamOGGVorbis.new()
@@ -187,13 +189,21 @@ func setup_game_data():
 		exercise_builder.cue_emitter_list = GameVariables.cue_list.duplicate()
 	GameVariables.cue_list.clear()
 
-	if GameVariables.game_mode == GameVariables.GameMode.BATTLE:
+	if GameVariables.battle_mode != GameVariables.BattleMode.NO:
+		cue_emitter.connect("hit_scored", battle_module, "hit_scored")
 		gu.activate_node(get_node("BattleDisplay"))
+		gu.deactivate_node(boxman1)
+		gu.deactivate_node(boxman2)	
 		if GameVariables.battle_team == GameVariables.BattleTeam.RED:
 			get_node("MainStage/blue_outdoor_stage").set_color("red")
+			battle_module.set_player_teams(GameVariables.BattleTeam.RED,GameVariables.BattleTeam.BLUE)
 		else:
 			get_node("MainStage/blue_outdoor_stage").set_color("blue")
+			battle_module.set_player_teams(GameVariables.BattleTeam.BLUE,GameVariables.BattleTeam.RED)
 	else:
+		gu.deactivate_node(get_node("BattleDisplay"))
+		gu.activate_node(boxman1)
+		gu.activate_node(boxman2)	
 		gu.deactivate_node(get_node("BattleDisplay"))
 
 	internal_state_change()
@@ -247,7 +257,7 @@ func _ready():
 	if not ProjectSettings.get("game/equalizer"):
 		self.remove_child(get_node("SpectrumDisplay"))
 
-	print ("Rebalance exercises: %s"%(str(rebalance_exercises)))
+	#print ("Rebalance exercises: %s"%(str(rebalance_exercises)))
 
 	get_node("heart_coin").set_marker("low", low_hr)
 	get_node("heart_coin").set_marker("high", high_hr)
@@ -556,7 +566,7 @@ func get_start_exercise():
 		actual_game_state = retVal
 		actual_state_duration = exercise_builder.state_duration
 		exercise_builder.min_state_duration = exercise_builder.state_duration
-		print ("Using preset workout  %s/%s"%[exercise_builder.cue_emitter_state,exercise_builder.state_duration])
+		#print ("Using preset workout  %s/%s"%[exercise_builder.cue_emitter_state,exercise_builder.state_duration])
 
 	else:
 		var states = { 	CueState.STAND  : ProjectSettings.get("game/exercise/stand"),
@@ -594,7 +604,7 @@ func populate_state_model():
 				var val = exercise_state_model_template[key][key_2]
 				if key != key_2 and states[key_2]:
 					exercise_builder.exercise_state_model[key][key_2] = val
-	print (str(exercise_builder.exercise_state_model))
+	#print (str(exercise_builder.exercise_state_model))
 	
 	exercise_builder.stand_state_model = exercise_builder.stand_state_model_template.duplicate(true)
 	
@@ -614,6 +624,10 @@ var actual_game_state
 var actual_state_duration = 0
 var actual_last_state_change = 0
 func internal_state_change():
+	
+	if GameVariables.battle_mode == GameVariables.BattleMode.CPU:
+		battle_module.evaluate_exercise()		
+	
 	if actual_game_state != CueState.SPRINT:
 		get_tree().current_scene.set_controller_visible(true)
 		
@@ -643,24 +657,26 @@ func update_safe_pushup():
 			main_camera.show_hud(false)
 		
 func switch_boxman(state, name):
-	var boxman = get_node(name)
-	if state == CueState.STAND:
-		if name == "boxman2":
-			boxman.switch_to_run()
-		else:
-			boxman.switch_to_stand()
-	elif state == CueState.JUMP:
-		boxman.switch_to_jumping()
-	elif state == CueState.SQUAT:
-		boxman.switch_to_squat()
-	elif state == CueState.CRUNCH:
-		boxman.switch_to_situps()
-	elif state == CueState.PUSHUP:
-		boxman.switch_to_plank()
-	elif state == CueState.BURPEE:
-		boxman.switch_to_plank() #TODO make a burpee animation
-	elif state == CueState.SPRINT:
-		boxman.switch_to_run() 
+	if name == "boxman2":
+		print ("Boxman switch: %s"%str(state))
+		var boxman = get_node(name)
+		if state == CueState.STAND:
+			if name == "boxman2":
+				boxman.switch_to_run()
+			else:
+				boxman.switch_to_stand()
+		elif state == CueState.JUMP:
+			boxman.switch_to_jumping()
+		elif state == CueState.SQUAT:
+			boxman.switch_to_squat()
+		elif state == CueState.CRUNCH:
+			boxman.switch_to_situps()
+		elif state == CueState.PUSHUP:
+			boxman.switch_to_plank()
+		elif state == CueState.BURPEE:
+			boxman.switch_to_burpee()
+		elif state == CueState.SPRINT:
+			boxman.switch_to_run() 
 
 
 func _on_exit_button_pressed():
@@ -758,19 +774,6 @@ func update_sequence_results():
 		
 	cue_emitter.reset_current_points()
 
-func attack(by_player):
-	if by_player == "left":
-		boxman1.attack_01(false,false, boxman2.get_node("Armature/Skeleton/BoneAttachment").global_transform.origin)
-	else:
-		boxman2.attack_01(false,false, boxman1.get_node("Armature/Skeleton/BoneAttachment").global_transform.origin)
-
-func defend(by_player):
-	if by_player == "left":
-		boxman1.defense_01(false,false)
-	else:
-		boxman2.defense_01(false,false)
-
-
 func _on_PositionSign_state_change_completed():		
 	update_safe_pushup()
 	var gauge = get_node("rungauge")
@@ -783,7 +786,7 @@ func _on_PositionSign_state_change_completed():
 var auto_hit_distance = 0.3
 func controller_tracking_lost(controller):
 	var node = cue_emitter.get_closest_cue(controller.global_transform.origin, "hand", controller.is_left)
-	print ("Tracking lost. Closest object: %s"%str(node))
+	#print ("Tracking lost. Closest object: %s"%str(node))
 	if node:
 		if node.global_transform.origin.distance_to(controller.global_transform.origin) < auto_hit_distance:
 			var type = "right"
@@ -794,7 +797,7 @@ func controller_tracking_lost(controller):
 	
 func controller_tracking_regained(controller):
 	var node = cue_emitter.get_closest_cue(controller.global_transform.origin, "hand", controller.is_left)
-	print ("Tracking regained. Closest object: %s"%str(node))
+	#print ("Tracking regained. Closest object: %s"%str(node))
 
 	if node:
 		if node.global_transform.origin.distance_to(controller.global_transform.origin) < auto_hit_distance:

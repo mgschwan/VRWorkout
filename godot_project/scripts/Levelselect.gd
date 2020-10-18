@@ -316,4 +316,4 @@ func _on_BattleMode_selected(team):
 		GameVariables.battle_team = GameVariables.BattleTeam.RED
 	else:	
 		GameVariables.battle_team = GameVariables.BattleTeam.BLUE
-	GameVariables.game_mode = GameVariables.GameMode.BATTLE
+	GameVariables.battle_mode = GameVariables.BattleMode.CPU
