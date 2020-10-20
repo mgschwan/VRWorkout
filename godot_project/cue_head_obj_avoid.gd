@@ -9,6 +9,8 @@ var cue_type = "head"
 var point_multiplier = 1.0
 var hit_score = 0
 
+var emit_sound = true
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass	

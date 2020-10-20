@@ -62,7 +62,6 @@ var cue_vert = preload("res://cue_v_obj.tscn")
 var cue_head = preload("res://cue_head_obj.tscn")
 var cue_head_avoid = preload("res://cue_head_obj_avoid.tscn")
 var cue_highlight = preload("res://scenes/highlight_ring.tscn")
-var environment = preload("res://outdoor_env.tres")
 var infolayer
 
 var cue_emitter
@@ -220,6 +219,7 @@ func _ready():
 		add_child(player_head)
 
 		spectator_cam = Camera.new()
+		spectator_cam.far = 300
 		add_child(spectator_cam)
 		spectator_cam.current = true
 	
@@ -326,8 +326,10 @@ func _ready():
 			pos += delta
 
 	if stream.stream:
-		stream.play()
-		
+		stream.play()	
+		if GameVariables.battle_mode != GameVariables.BattleMode.NO:
+			get_node("BattleDisplay").setup_data(int(stream.stream.get_length()))
+			
 	update_safe_pushup()
 	
 
@@ -657,26 +659,24 @@ func update_safe_pushup():
 			main_camera.show_hud(false)
 		
 func switch_boxman(state, name):
-	if name == "boxman2":
-		print ("Boxman switch: %s"%str(state))
-		var boxman = get_node(name)
-		if state == CueState.STAND:
-			if name == "boxman2":
-				boxman.switch_to_run()
-			else:
-				boxman.switch_to_stand()
-		elif state == CueState.JUMP:
-			boxman.switch_to_jumping()
-		elif state == CueState.SQUAT:
-			boxman.switch_to_squat()
-		elif state == CueState.CRUNCH:
-			boxman.switch_to_situps()
-		elif state == CueState.PUSHUP:
-			boxman.switch_to_plank()
-		elif state == CueState.BURPEE:
-			boxman.switch_to_burpee()
-		elif state == CueState.SPRINT:
-			boxman.switch_to_run() 
+	var boxman = get_node(name)
+	if state == CueState.STAND:
+		if name == "boxman2":
+			boxman.switch_to_run()
+		else:
+			boxman.switch_to_stand()
+	elif state == CueState.JUMP:
+		boxman.switch_to_jumping()
+	elif state == CueState.SQUAT:
+		boxman.switch_to_squat()
+	elif state == CueState.CRUNCH:
+		boxman.switch_to_situps()
+	elif state == CueState.PUSHUP:
+		boxman.switch_to_plank()
+	elif state == CueState.BURPEE:
+		boxman.switch_to_burpee()
+	elif state == CueState.SPRINT:
+		boxman.switch_to_run() 
 
 
 func _on_exit_button_pressed():

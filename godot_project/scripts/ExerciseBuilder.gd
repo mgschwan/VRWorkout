@@ -229,7 +229,7 @@ func update_cue_timing():
 func setup_difficulty(diff, auto_difficulty = false, avg_hr=0, target_hr=0):
 	self.auto_difficulty = auto_difficulty
 	if auto_difficulty:
-		diff = 1.0 + min(1.0,max(-1.0,(target_hr - avg_hr+5.0)/20.0))
+		diff = 1.0 + min(1.0,max(-1.0,(target_hr - avg_hr)/20.0))
 	else:
 		#Keep the difficulty in the supported bounds	
 		diff = min(2,max(0,diff))
@@ -458,12 +458,12 @@ func emit_cue_node(current_time, target_time):
 		else:
 			#print ("Take random state\n\n\n\n")		
 			if auto_difficulty:
-				#print ("Model prejadjust: %s"%str(exercise_state_model))
+				print ("Model prejadjust: %s"%str(exercise_state_model))
 				var adjusted_model = adjust_state_model(current_difficulty, exercise_state_model)
-				#print ("Model postadjust: %s"%str(adjusted_model))
+				print ("Model postadjust: %s"%str(adjusted_model))
 				
 				cue_emitter_state = state_transition(cue_emitter_state, adjusted_model, null, false)
-				#print ("New state (%d) %s\n\n\n\n"%[cue_emitter_state, state_string(cue_emitter_state)])
+				print ("New state (%d) %s\n\n\n\n"%[cue_emitter_state, state_string(cue_emitter_state)])
 			else:
 				#print ("Take from standard model %s"%str(auto_difficulty))
 				cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model, null, false)

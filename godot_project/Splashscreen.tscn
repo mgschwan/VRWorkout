@@ -12,6 +12,7 @@
 
 [sub_resource type="SpatialMaterial" id=2]
 flags_unshaded = true
+params_blend_mode = 1
 albedo_texture = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]

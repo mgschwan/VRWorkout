@@ -52,12 +52,10 @@ func clear_animation_queue():
 	animation_queue.clear()
 
 func play_current_animation(continuous=false):
-	print ("Current animation %s"%str(current_animation))
 	self.continuous = continuous
 	animations.stop()
 
 	if current_animation == BoxmanAnimations.Idle:
-		print ("Play idle loop")
 		animations.play("idle-loop")
 	elif current_animation == BoxmanAnimations.Idle_To_Situp:
 		animations.play("idle_to_situp-loop")
@@ -163,10 +161,17 @@ func attack_01(continuous = false, enqueue = false, target = Vector3(0,0,0)):
 
 func _on_Tween_Energyball_completed():
 	get_node("EnergyBall").hide()
+	play_state(BoxmanAnimations.Idle, true,  false)
 
 
 func defense_01(continuous = false, enqueue = false):
 	play_state(BoxmanAnimations.Defense_01, continuous,  enqueue)
+	yield(get_tree().create_timer(0.5),"timeout")
+	get_node("Armature/Skeleton/HandAttachment/EnergyShield").show()	
+	yield(get_tree().create_timer(0.5),"timeout")
+	get_node("Armature/Skeleton/HandAttachment/EnergyShield").hide()	
+	play_state(BoxmanAnimations.Idle, continuous,  enqueue)
+
 	
 func run(continuous = false, enqueue = false):
 	play_state(BoxmanAnimations.Run, continuous,  enqueue)
@@ -234,12 +239,10 @@ func switch_to_situps():
 	
 
 func _on_AnimationPlayer_animation_finished(anim_name):
-	print ("Animation finished")
 	if len(animation_queue) > 0:
 		current_animation = animation_queue.pop_front()
 		play_current_animation(continuous)
 	elif continuous:
-		print ("Repeat animation")
 		play_current_animation(continuous)
 
 func kill(hitarea = "head"):

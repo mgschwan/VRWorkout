@@ -18,4 +18,6 @@ func _ready():
 func _on_AreaHead_body_entered(body):
 	if body.has_method("has_been_hit") and body.cue_type == "head":
 		body.has_been_hit()
-		hit_player.play(0)
+		if body.emit_sound:
+			body.emit_sound = false
+			hit_player.play(0)

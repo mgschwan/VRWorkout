@@ -255,6 +255,7 @@ func _ready():
 	connect("recenter_scene",self,"on_recenter_scene")
 
 	initialize() #VR specific initialization
+	get_node("ARVROrigin/SkyBox/AnimationPlayer").play("starfield_rotation",-1,0.05)
 
 	screen_tint_node = get_node("ARVROrigin/ARVRCamera/ScreenTint")
 	splashscreen.head_node = get_node("ARVROrigin/ARVRCamera")
@@ -336,6 +337,9 @@ func _on_level_finished	():
 		print ("Statistics not sent to portal. Error code %d"%error)
 	else:
 		print ("Statistics sent")
+	
+	#Battle mode does not persist for now
+	GameVariables.battle_mode = GameVariables.BattleMode.NO
 		
 	level.queue_free()
 	level = null 
@@ -583,8 +587,10 @@ func _on_Splashscreen_finished():
 func change_environment(value):
 	if value == "angry":
 		get_viewport().get_camera().environment = red_environment
+		get_node("ARVROrigin/SkyBox").switch("angry")
 	else:
 		get_viewport().get_camera().environment = blue_environment
+		get_node("ARVROrigin/SkyBox").switch("calm")
 
 
 

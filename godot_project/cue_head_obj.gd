@@ -14,6 +14,8 @@ var extended = false
 var point_multiplier = 1.0
 export var avoid = false
 
+var emit_sound = true
+
 var hit_score = 1.0
 
 # Called when the node enters the scene tree for the first time.

@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://models/tron_animations.gltf" type="PackedScene" id=1]
 [ext_resource path="res://ClawTarget.gd" type="Script" id=2]
 [ext_resource path="res://materials/tron_red_material.tres" type="Material" id=3]
 [ext_resource path="res://BoxmanCharacter.gd" type="Script" id=4]
 [ext_resource path="res://assets/energy_ball.jpg" type="Texture" id=5]
+[ext_resource path="res://scenes/EnergyShield.tscn" type="PackedScene" id=6]
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 0.05, 0.05 )
@@ -35,7 +36,7 @@ material/0 = SubResource( 2 )
 material/0 = ExtResource( 3 )
 
 [node name="BoneAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="1"]
-transform = Transform( 0.999133, 0.0138148, 0.039277, -0.0396157, 0.0251578, 0.998898, 0.0128115, -0.999588, 0.0256835, 0.000899434, 0.00682782, -0.03517 )
+transform = Transform( 0.986541, -0.152138, -0.0599199, 0.144473, 0.982649, -0.116308, 0.076575, 0.106086, 0.991404, -0.00588353, 0.0848884, 0.00578958 )
 bone_name = "head"
 
 [node name="StaticBody" type="StaticBody" parent="Armature/Skeleton/BoneAttachment" index="0"]
@@ -46,7 +47,7 @@ transform = Transform( 1, -1.60323e-17, -2.77556e-17, -1.4176e-17, 1, 1.42109e-1
 shape = SubResource( 3 )
 
 [node name="BoneAttachment2" type="BoneAttachment" parent="Armature/Skeleton" index="2"]
-transform = Transform( 0.998893, 0.0468776, -0.00387334, 0.0053213, -0.0308016, 0.999511, 0.0467353, -0.998425, -0.0310169, 0.000610162, 0.00615867, -0.015188 )
+transform = Transform( 0.563226, -0.224109, -0.795331, -0.0679429, 0.946698, -0.314876, 0.823505, 0.231383, 0.517978, -0.000694645, 0.0664924, -0.000152021 )
 bone_name = "spine_1"
 
 [node name="StaticBody" type="StaticBody" parent="Armature/Skeleton/BoneAttachment2" index="0"]
@@ -57,7 +58,11 @@ target_area = "torso"
 shape = SubResource( 4 )
 
 [node name="HandAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="3"]
-transform = Transform( 0.130759, 0.965857, -0.223655, 0.778589, 0.0396156, 0.626282, 0.61376, -0.256028, -0.746826, 0.00228635, 0.0218658, -0.0345533 )
+transform = Transform( -0.716193, -0.371566, -0.590766, -0.515903, 0.851948, 0.0895987, 0.47001, 0.368949, -0.801852, -0.031513, 0.0797832, -0.00498759 )
 bone_name = "right_hand_index_1"
+
+[node name="EnergyShield" parent="Armature/Skeleton/HandAttachment" index="0" instance=ExtResource( 6 )]
+transform = Transform( 0.0153668, -0.00254843, 0.0125446, -0.0107745, -0.0131576, 0.0105255, 0.00691165, -0.0148453, -0.0114824, 0.00152316, 0.0126692, -0.00320818 )
+visible = false
 [connection signal="tween_all_completed" from="EnergyBall/Tween" to="." method="_on_Tween_Energyball_completed"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
