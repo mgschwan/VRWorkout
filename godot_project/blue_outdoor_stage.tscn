@@ -23,7 +23,7 @@ material/0 = ExtResource( 6 )
 material/0 = ExtResource( 1 )
 
 [node name="retro_sun" parent="." index="2" instance=ExtResource( 2 )]
-transform = Transform( 7.96294e-14, -4.88762e-07, 3, -3, -4.88762e-07, 0, 4.88762e-07, -3, -4.88762e-07, -0.168069, 2.50243, -7.44617 )
+transform = Transform( 6.90122e-14, -4.56178e-07, 2.8, -2.6, -4.56178e-07, -3.16226e-20, 4.23594e-07, -2.8, -4.56178e-07, -0.168069, 2.50243, -7.44617 )
 
 [node name="Grid002" parent="." index="3"]
 material/0 = SubResource( 1 )

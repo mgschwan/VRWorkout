@@ -61,6 +61,7 @@ var cue_horiz = preload("res://cue_h_obj.tscn")
 var cue_vert = preload("res://cue_v_obj.tscn")
 var cue_head = preload("res://cue_head_obj.tscn")
 var cue_head_avoid = preload("res://cue_head_obj_avoid.tscn")
+var cue_squat_avoid = preload("res://scenes/SquatAvoidCue.tscn")
 var cue_highlight = preload("res://scenes/highlight_ring.tscn")
 var infolayer
 
@@ -362,6 +363,8 @@ func check_beast_status():
 		
 var last_playback_time = 0
 var last_game_update = 0
+var last_battle_update = 0
+
 func _process(delta):
 	if not GameVariables.vr_mode:
 		var c = get_viewport().get_camera()
@@ -393,6 +396,11 @@ func _process(delta):
 		beat_index += 1
 		infolayer.print_info("FINISHED", "main")
 		infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
+
+#	if GameVariables.battle_mode == GameVariables.BattleMode.CPU:
+#		if last_battle_update + GameVariables.battle_interval < cue_emitter.current_playback_time :
+#			last_battle_update = cue_emitter.current_playback_time
+#			battle_module.evaluate_exercise()		
 
 	if cue_emitter.current_playback_time > last_game_update + 0.5:
 		last_game_update = cue_emitter.current_playback_time
@@ -495,6 +503,10 @@ func create_and_attach_cue_actual(cue_data):
 		cue_node = cue_horiz.instance()
 	elif cue_type == "left" or cue_type == "left_hold":
 		cue_node = cue_vert.instance()
+	elif cue_type == "head_avoid_block":
+		is_head = true
+		is_avoid = true
+		cue_node = cue_squat_avoid.instance()
 	else:
 		head_y_pos = y
 		if cue_type == "head_avoid":
@@ -625,11 +637,7 @@ func handle_sprint_cues_actual(target_time):
 var actual_game_state  
 var actual_state_duration = 0
 var actual_last_state_change = 0
-func internal_state_change():
-	
-	if GameVariables.battle_mode == GameVariables.BattleMode.CPU:
-		battle_module.evaluate_exercise()		
-	
+func internal_state_change():	
 	if actual_game_state != CueState.SPRINT:
 		get_tree().current_scene.set_controller_visible(true)
 		
@@ -743,7 +751,7 @@ func _on_UpdateTimer_timeout():
 	gui_update += 1
 
 
-func _on_AudioStreamPlayer_finished():
+func end_level():
 	stream.stop()
 	var t = Timer.new()
 	t.connect("timeout", self, "_on_exit_timer_timeout")
@@ -751,6 +759,10 @@ func _on_AudioStreamPlayer_finished():
 	self.add_child(t)
 	t.start()
 
+
+func _on_AudioStreamPlayer_finished():
+	end_level()
+	
 #Returns true if the current state supports claws
 func beast_mode_supported():
 	return exercise_builder.cue_emitter_state == CueState.STAND or boxman1.in_beast_mode or boxman2.in_beast_mode
@@ -832,4 +844,12 @@ func _on_cue_emitter_streak_changed(count):
 				get_node("VoiceInstructor").say("faster")
 		else:					
 			play_encouragement()
+
+
+
+func _on_BattleDisplay_player_won(player):
+	end_level()
+
+
+
 

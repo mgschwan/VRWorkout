@@ -2,12 +2,31 @@ extends Spatial
 
 signal beast_attack_successful
 signal beast_killed
+signal charge_complete
+signal attack_complete
+signal defense_complete
 
 var standard_material = load("res://materials/tron_blue_material.tres")
 var angry_material = load("res://materials/tron_red_material.tres")
 var mesh_obj
 
 var active = true 
+
+
+
+
+##################################
+# Battle variables
+##################################
+var player_score
+var player_points
+var player_max_health
+var player_max_energy
+var player_health
+var player_energy
+var player_is_attack
+var attack_mode = "idle"
+##################################
 
 
 enum BoxmanAnimations {
@@ -155,23 +174,48 @@ func dying_middle(continuous = false, enqueue = false):
 func attack_01(continuous = false, enqueue = false, target = Vector3(0,0,0)):
 	play_state(BoxmanAnimations.Attack_01, continuous,  enqueue)
 	yield(get_tree().create_timer(0.5),"timeout")
+	energy_ball_tween = "attack"
 	get_node("EnergyBall").show()
 	get_node("EnergyBall/Tween").interpolate_property(get_node("EnergyBall"),"translation", get_node("Armature/Skeleton/HandAttachment").global_transform.origin, target,0.4,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT, 0)
 	get_node("EnergyBall/Tween").start()
 
+var energy_ball_tween = ""
+
 func _on_Tween_Energyball_completed():
-	get_node("EnergyBall").hide()
-	play_state(BoxmanAnimations.Idle, true,  false)
+	if energy_ball_tween == "attack":
+		attack_mode="idle"
+		get_node("EnergyBall").hide()
+		emit_signal("attack_complete")
+		play_state(BoxmanAnimations.Idle, true,  false)
+	elif energy_ball_tween == "charge":
+		emit_signal("charge_complete")
+	energy_ball_tween = ""
 
+var energy_ball_scale = 26.8
+func charge_attack(duration):
+	if attack_mode == "idle":
+		attack_mode = "attack"
+		var ball = get_node("EnergyBall")
+		ball.translation = get_node("Armature/EnergyBase").global_transform.origin
+		ball.scale = Vector3(0,0,0)
+		ball.show() 
+		energy_ball_tween = "charge"
+		get_node("EnergyBall/Tween").interpolate_property(ball,"scale",Vector3(0,0,0),Vector3(energy_ball_scale,energy_ball_scale,energy_ball_scale),duration,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+		get_node("EnergyBall/Tween").start()
+		
 
-func defense_01(continuous = false, enqueue = false):
-	play_state(BoxmanAnimations.Defense_01, continuous,  enqueue)
-	yield(get_tree().create_timer(0.5),"timeout")
-	get_node("Armature/Skeleton/HandAttachment/EnergyShield").show()	
-	yield(get_tree().create_timer(0.5),"timeout")
-	get_node("Armature/Skeleton/HandAttachment/EnergyShield").hide()	
-	play_state(BoxmanAnimations.Idle, continuous,  enqueue)
+func defense_01(continuous = false, enqueue = false, duration = 2.0):
+	if attack_mode == "idle":
+		attack_mode = "defense"
+		play_state(BoxmanAnimations.Defense_01, continuous,  enqueue)
+		get_node("Armature/Skeleton/HandAttachment/EnergyShield").show()	
+		yield(get_tree().create_timer(duration-0.5),"timeout")
+		get_node("Armature/Skeleton/HandAttachment/EnergyShield").hide()	
+		play_state(BoxmanAnimations.Idle, continuous,  enqueue)
+		emit_signal("defense_complete")
+		attack_mode="idle"
 
+	
 	
 func run(continuous = false, enqueue = false):
 	play_state(BoxmanAnimations.Run, continuous,  enqueue)

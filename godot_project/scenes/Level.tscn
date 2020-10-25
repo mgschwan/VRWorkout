@@ -174,10 +174,10 @@ transform = Transform( 0.117853, 0, 0.161588, 0, 0.2, 0, -0.161588, 0, 0.117853,
 environment = ExtResource( 1 )
 
 [node name="boxman" parent="." instance=ExtResource( 27 )]
-transform = Transform( 0.166962, 0, 0.679797, 0, 0.7, 0, -0.679797, 0, 0.166962, -2.14794, 0.0354877, -8.39827 )
+transform = Transform( 0.466673, 0, 0.521743, 0, 0.7, 0, -0.521743, 0, 0.466673, -2.14794, 0.0354877, -5.33982 )
 
 [node name="boxman2" parent="." instance=ExtResource( 27 )]
-transform = Transform( 0.279236, 0, -0.641893, 0, 0.7, 0, 0.641893, 0, 0.279236, 2.21215, 0.0354877, -8.35537 )
+transform = Transform( 0.65914, 0, -0.235656, 0, 0.7, 0, 0.235656, 0, 0.65914, 2.21215, 0.0354877, -5.29692 )
 
 [node name="FloorSign" parent="." instance=ExtResource( 23 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0908899, -0.0706311 )
@@ -228,8 +228,16 @@ script = ExtResource( 26 )
 [node name="HealthBarRight" parent="BattleDisplay" instance=ExtResource( 9 )]
 transform = Transform( 0.866025, 0.5, -3.35681e-08, -0.5, 0.866025, -3.78552e-08, 1.01433e-08, 4.95676e-08, 1, -2, 0, 0 )
 
+[node name="EnergyBarRight" parent="BattleDisplay" instance=ExtResource( 9 )]
+transform = Transform( 0.866025, 0.5, -3.35681e-08, -0.5, 0.866025, -3.78552e-08, 1.01433e-08, 4.95676e-08, 1, -2, 0, -0.2 )
+is_energy = true
+
 [node name="HealthBarLeft" parent="BattleDisplay" instance=ExtResource( 9 )]
 transform = Transform( -0.866025, -0.5, 1.09278e-07, -0.5, 0.866025, -8.15666e-08, -5.38547e-08, -1.25278e-07, -1, 2, 0, 0 )
+
+[node name="EnergyBarLeft" parent="BattleDisplay" instance=ExtResource( 9 )]
+transform = Transform( -0.866025, -0.5, 1.09278e-07, -0.5, 0.866025, -8.15666e-08, -5.38547e-08, -1.25278e-07, -1, 2, 0, -0.2 )
+is_energy = true
 
 [node name="PlayerLeft" parent="BattleDisplay" instance=ExtResource( 27 )]
 transform = Transform( 0.606218, -8.75459e-08, -0.35, -0.35, -1.5299e-08, -0.606218, 6.81675e-08, 0.7, -5.70222e-08, 1.93605, 0, -2.37609 )
@@ -256,5 +264,10 @@ is_attack = false
 [connection signal="beast_attack_successful" from="boxman2" to="." method="_on_boxman_beast_attack_successful"]
 [connection signal="beast_killed" from="boxman2" to="." method="_on_boxman_beast_killed"]
 [connection signal="selected" from="ExerciseSelector" to="." method="_on_ExerciseSelector_selected"]
+[connection signal="player_won" from="BattleDisplay" to="." method="_on_BattleDisplay_player_won"]
+[connection signal="attack_complete" from="BattleDisplay/PlayerLeft" to="BattleDisplay" method="_on_Attack_complete" binds= [ "left" ]]
+[connection signal="charge_complete" from="BattleDisplay/PlayerLeft" to="BattleDisplay" method="_on_Attack_charge_complete" binds= [ "left" ]]
+[connection signal="attack_complete" from="BattleDisplay/PlayerRight" to="BattleDisplay" method="_on_Attack_complete" binds= [ "right" ]]
+[connection signal="charge_complete" from="BattleDisplay/PlayerRight" to="BattleDisplay" method="_on_Attack_charge_complete" binds= [ "right" ]]
 [connection signal="activated" from="BattleDisplay/Attack" to="BattleDisplay" method="_on_Attack_activated"]
 [connection signal="activated" from="BattleDisplay/Defense" to="BattleDisplay" method="_on_Defense_activated"]

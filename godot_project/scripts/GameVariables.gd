@@ -63,6 +63,7 @@ enum GameMode {
 var game_mode = GameMode.STANDARD
 var battle_team = BattleTeam.BLUE
 var battle_mode = BattleMode.NO
+var battle_interval = 5.0
 var selected_game_slot = -1
 var cue_list = Array()
 
@@ -324,7 +325,7 @@ var difficulty_weight_adjustments = {
 		CueState.PUSHUP: 0.5,
 		CueState.CRUNCH: 0.7,
 		CueState.JUMP: 1.5,
-		CueState.BURPEE: 0.1,
+		CueState.BURPEE: 0.0,
 		CueState.SPRINT: 1.0,
 		CueState.YOGA: 1.0
 		},
@@ -341,10 +342,10 @@ var difficulty_weight_adjustments = {
 	"hard" : {
 		CueState.STAND: 0.1,
 		CueState.SQUAT: 0.1,
-		CueState.PUSHUP: 1.7,
+		CueState.PUSHUP: 2.2,
 		CueState.CRUNCH: 1.7,
 		CueState.JUMP: 0.5,
-		CueState.BURPEE: 2.0,
+		CueState.BURPEE: 1.3,
 		CueState.SPRINT: 1.0,
 		CueState.YOGA: 1.0
 	},

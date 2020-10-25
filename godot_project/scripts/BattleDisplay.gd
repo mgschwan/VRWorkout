@@ -3,28 +3,33 @@ extends Spatial
 onready var player_bar1 = $HealthBarLeft
 onready var player_bar2 = $HealthBarRight
 
+onready var player_energybar1 = $EnergyBarLeft
+onready var player_energybar2 = $EnergyBarRight
+
 onready var player1 = $PlayerLeft
 onready var player2 = $PlayerRight
 
-var health_total = 100
+var health_total = 100.0
+var energy_total = 100.0
+var defense_bonus = 0.2
+var min_attack_percent = 0.33
 
-var defense_bonus = 0.1
-
-
-var player1_score = 0
-var player1_points = 0
-var player1_max_health = health_total
-var player1_health = player1_max_health
-var player1_is_attack = true
-
-var player2_score = 0
-var player2_points = 0
-var player2_max_health = health_total
-var player2_health = player2_max_health
-var player2_is_attack = true
+var current_round_max_score = 0
 
 var base_hit_damage = 10.0
 
+signal player_won(player)
+
+func player_by_name(player):
+	if player == "left":
+		return player1
+	else:
+		return player2
+
+func can_attack(player_obj):
+	if (player_obj.player_energy / player_obj.player_max_energy) >= min_attack_percent:
+		return true
+	return false
 
 func attack(by_player):
 	if by_player == "left":
@@ -38,76 +43,43 @@ func defend(by_player):
 	else:
 		player2.defense_01(false,false)
 
-func get_winner():
-	var max_score = max(player1_score,player2_score)
-	var min_score = min(player1_score,player2_score)
-
-	var retVal = 1
-	
-	var adjusted_player1_score = player1_score
-	var adjusted_player2_score = player2_score
-	if not player1_is_attack:
-		adjusted_player1_score = adjusted_player1_score * (1+defense_bonus)
-	if not player2_is_attack:
-		adjusted_player2_score = adjusted_player2_score * (1+defense_bonus)
-	
-	if player1_score > player2_score:
-		retVal = -1
-	if player1_score == player2_score:
-		retVal = 0
-
-	if retVal == 0:
-		if player1_points != player2_points:
-			if player1_points > player2_points:
-				retVal = -1
-			else:
-				retVal = 1
-				
-	return retVal
-
-func evaluate_exercise():
-	if player1_is_attack:
-		self.attack("left")
+func evaluate_attack(player):
+	var attacker = player_by_name(player)
+	var defender
+	if player == "left":
+		defender = player_by_name("right")
 	else:
-		self.defend("left")
-	
-	if player2_is_attack:
-		self.attack("right")
-	else:
-		self.defend("right")
+		defender = player_by_name("left")
 
-	var winner = get_winner()
+
+	var attack_energy = (100.0 * attacker.player_energy/attacker.player_max_energy) / 10.0
 	
-	var percent_delta = 0
-	var delta = abs (player1_score-player2_score)
-	if max(player1_score,player2_score) > 0:
-		percent_delta = delta / max(player1_score,player2_score)
-		
-	var attack_power = min(percent_delta * base_hit_damage, base_hit_damage)
-	if winner == -1:
-		print ("Player 1 scores. Hit: %s"%str(attack_power))
-		if player1_is_attack:
-			player2_health -= attack_power
-		else:
-			print ("Player 2 defends")
-	elif winner == 1:
-		print ("Player 2 scores. Hit: %s"%str(attack_power))	
-		if player2_is_attack:
-			player1_health -= attack_power
-		else:
-			print ("Player 1 defends")
-	player1_score = 0
-	player1_points = 0
-	player2_score = 0
-	player2_points = 0
+	if defender.attack_mode == "defense":
+		attack_energy = max(attack_energy - (100.0 * defender.player_energy/defender.player_max_energy)/10.0,0)
+		defender.player_energy = max(0, defender.player_energy - attacker.player_energy)
+	
+	defender.player_health = clamp(defender.player_health-attack_energy, 0, defender.player_max_health)
+	attacker.player_energy = 0
+	
+	print ("Attack: %f Defender health: %f"%[attack_energy, defender.player_health])
+	
+	if player1.player_health == 0:
+		emit_signal("player_won","right")
+	elif player2.player_health == 0:
+		emit_signal("player_won","left")
 	
 	update_healthbars()
 	
 func update_healthbars():
-	if player1_max_health > 0:
-		set_level("left", player1_health/player1_max_health)
-	if player2_max_health > 0:
-		set_level("right", player2_health/player2_max_health)
+	if player1.player_max_health > 0:
+		set_level("left", player1.player_health/player1.player_max_health)
+	if player1.player_max_energy > 0:
+		set_energy("left", player1.player_energy/player1.player_max_energy)	
+	if player2.player_max_health > 0:
+		set_level("right", player2.player_health/player2.player_max_health)
+	if player2.player_max_energy > 0:
+		set_energy("right", player2.player_energy/player2.player_max_energy)
+	
 	
 func set_player_teams(left, right):
 	if left == GameVariables.BattleTeam.BLUE:
@@ -121,47 +93,94 @@ func set_player_teams(left, right):
 		player2.set_appearance("red")
 
 func cpu_hit():
-	var cpu_strength = 0.6
+	var cpu_strength = 0.70
 	if GameVariables.difficulty > 0:
-		cpu_strength = 0.75
+		cpu_strength = 0.80
 	if GameVariables.difficulty > 1:
-		cpu_strength  = 0.85
+		cpu_strength  = 0.90
 	
 	var retVal = false
 	if randf() < cpu_strength:
 		#CPU scored a hit
 		retVal = true
+	return retVal
 
-func cpu_select_strategy():
-	var attack_desire = 0.6
-	if GameVariables.difficulty > 0:
-		attack_desire = 0.75
-	if GameVariables.difficulty > 1:
-		attack_desire  = 0.85
-	
-	player2_is_attack = false
-	if randf() < attack_desire:
-		#CPU scored a hit
-		player2_is_attack = true
+
+func cpu_select_strategy():		
+	if player2.attack_mode == "idle":
+		if player1.attack_mode == "attack":
+			var defense_desire = 0.3
+			if GameVariables.difficulty > 0:
+				defense_desire = 0.5
+			if GameVariables.difficulty > 1:
+				defense_desire  = 0.75
+			if randf() < defense_desire:
+				player2.player_is_attack = false
+				player2.defense_01(false,false,3.5)
+				
+				
+		if player2.attack_mode == "idle":
+			if can_attack(player2):
+				var attack_desire = 0.3
+				if GameVariables.difficulty > 0:
+					attack_desire = 0.5
+				if GameVariables.difficulty > 1:
+					attack_desire  = 0.75
+				if randf() < attack_desire:
+					player2.player_is_attack = true
+					player2.charge_attack(2.0)
 			
-		
 
 func hit_scored(hit_score, base_hit_score, points):
-	player1_score += hit_score
-	player1_points += points
+	player1.player_score += hit_score
+	player1.player_points += points
+	
+	current_round_max_score += base_hit_score
+	
 	
 	if GameVariables.battle_mode == GameVariables.BattleMode.CPU:
 		if cpu_hit():
-			player2_score += base_hit_score
-			player2_points += 100
-		cpu_select_strategy()
+			player2.player_score += base_hit_score
+			#This formula should be calculated at a central location
+			var hitp = int(200 - randf()*199)
+			player2.player_points += hitp
+
+			player2.player_energy = clamp(player2.player_energy + hitp/30.0, 0, 100)
+	
+	player1.player_energy = clamp(player1.player_energy + points/30.0, 0, 100)
+	update_healthbars()
 
 func setup_data(duration):
 	if duration > 0:
 	  base_hit_damage = clamp(health_total/(duration/20.0), 5, 20)
 
+var last_eval = 0
+var eval_interval = 500
+func _process(delta):
+	var now = OS.get_ticks_msec()
+	if last_eval + eval_interval < now:
+		last_eval = now 
+		cpu_select_strategy()
+
 func _ready():
-	pass
+	
+	player1.player_score = 0
+	player1.player_points = 0
+	player1.player_max_health = health_total
+	player1.player_max_energy = energy_total
+	player1.player_health = health_total
+	player1.player_energy = 0
+	player1.player_is_attack = true
+
+	player2.player_score = 0
+	player2.player_points = 0
+	player2.player_max_health = health_total
+	player2.player_max_energy = energy_total
+	player2.player_health = health_total
+	player2.player_energy = 0
+	player2.player_is_attack = true
+	
+	update_healthbars()
 	
 func set_level(player, level):
 	if player == "left":
@@ -169,17 +188,26 @@ func set_level(player, level):
 	elif player == "right":
 		player_bar2.set_level(level)
 
+func set_energy(player, level):
+	if player == "left":
+		player_energybar1.set_level(level)
+	elif player == "right":
+		player_energybar2.set_level(level)
 
 func _on_Attack_activated():
-	get_node("Attack").set_state(true)
-	get_node("Defense").set_state(false)
-	
-	player1_is_attack = true
+	if can_attack(player1):
+		player1.player_is_attack = true
+		player1.charge_attack(2.0)
+
 
 func _on_Defense_activated():
-	get_node("Attack").set_state(false)
-	get_node("Defense").set_state(true)
+	player1.player_is_attack = false
+	player1.defense_01()
+
+func _on_Attack_charge_complete(player):
+	attack(player)
+
+func _on_Attack_complete(player):
+	evaluate_attack(player)
 
 
-
-	player1_is_attack = false

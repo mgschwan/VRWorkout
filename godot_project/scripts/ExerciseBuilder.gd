@@ -270,7 +270,8 @@ func setup_cue_parameters(difficulty, ph):
 				"xrange" : 0.45,
 				"yoffset" : -0.2 - difficulty * 0.1,
 				"yrange" : 0.3 + difficulty * player_height/8.0,
-				"double_swing_spread": player_height/ ( 3.0 + (2.0-difficulty)/1.5 ) 
+				"double_swing_spread": player_height/ ( 3.0 + (2.0-difficulty)/1.5 ) ,
+				"invertible_sides": difficulty >= 1.0 #If hands can cross the sides
 			}
 		},	
 		CueState.SQUAT : {
@@ -312,6 +313,7 @@ func setup_cue_parameters(difficulty, ph):
 		CueState.JUMP : {
 			CueSelector.HEAD : {
 				"yoffset" : jump_offset,
+				"squat_head" : difficulty >= 1.5
 			},
 			CueSelector.HAND : {
 				"has_hand" : difficulty > 0.9,
@@ -529,6 +531,13 @@ func handle_jump_cues(current_time, target_time, cue_emitter_state):
 	if cue_parameters[cue_emitter_state][CueSelector.HAND]["has_hand"]:
 		create_and_attach_cue(current_time,"left", x-cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time, -hand_delay * dd_df)
 		create_and_attach_cue(current_time, "right", x+cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time, -hand_delay * dd_df)
+	if cue_parameters[cue_emitter_state][CueSelector.HEAD]["squat_head"]:
+		y_head = player_height *0.8
+		var spacing_pre = 0.4
+		var spacing_post = 0.4
+		create_and_attach_cue(current_time + spacing_pre,"head", x_head, y_head, target_time+spacing_pre+spacing_post, 0, 0, "jump_squat")
+		temporary_cue_space_extension = spacing_pre+spacing_post
+
 
 
 ############################# CRUNCH ######################################
@@ -834,7 +843,12 @@ func handle_stand_cues_regular(current_time, target_time, cue_emitter_state):
 	
 	var y_hand = player_height + cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
 	var y_head = player_height + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
-	var x = sign(randf()-0.5) * (cue_parameters[cue_emitter_state][CueSelector.HAND]["xoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"])
+	
+	var side = 1.0
+	if cue_parameters[cue_emitter_state][CueSelector.HAND]["invertible_sides"]:
+		side = sign(randf()-0.5)
+		
+	var x = side * (cue_parameters[cue_emitter_state][CueSelector.HAND]["xoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"])
 	var x_head = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2.0
 	
 	if cue_selector == CueSelector.HAND and node_selector < 20:
@@ -876,6 +890,8 @@ var squat_state = SquatState.HEAD
 var squat_state_model
 var squat_state_model_change = false
 	
+	
+var last_head_avoid = 0	
 func handle_squat_cues(current_time, target_time, cue_emitter_state):
 	switch_floor_sign(current_time,"feet")
 	var last_squat_state = squat_state
@@ -883,6 +899,11 @@ func handle_squat_cues(current_time, target_time, cue_emitter_state):
 	
 	if last_squat_state != squat_state:
 		squat_state_model_change = true
+	
+	if last_head_avoid + 2 < current_time:
+		if current_difficulty >= 1.0 and not kneesaver_mode:
+			last_head_avoid = current_time
+			create_and_attach_cue(current_time,"head_avoid_block", 0, player_height*1.1, target_time)		
 	
 	#Skip one cue after a double swing stretch
 	if last_squat_state == SquatState.DOUBLE_SWING and last_squat_state != squat_state:

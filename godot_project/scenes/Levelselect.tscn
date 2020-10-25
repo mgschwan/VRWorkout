@@ -653,18 +653,18 @@ visible = false
 ontext = "Save"
 
 [node name="CreateChallengeButton" parent="SettingsCarousel/Battle" instance=ExtResource( 24 )]
-transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, -1.26531, 1.44111, -0.185248 )
+transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, -1.26531, 1.44111, -0.369874 )
 font_size = 20
 ontext = "Create\\nChallenge"
 
 [node name="BattleButtonRed" parent="SettingsCarousel/Battle" instance=ExtResource( 24 )]
-transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, -1.283, 1.357, 0.193 )
+transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, -1.283, 1.357, -0.00809932 )
 font_size = 24
 ontext = "Battle\\nTeam Blue"
 select_sound = ExtResource( 19 )
 
 [node name="BattleButtonBlue" parent="SettingsCarousel/Battle" instance=ExtResource( 24 )]
-transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, -1.283, 1.46038, 0.193105 )
+transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, -1.283, 1.46038, -0.00799429 )
 font_size = 24
 ontext = "Battle\\nTeam Red"
 select_sound = ExtResource( 19 )

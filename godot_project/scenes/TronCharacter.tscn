@@ -64,5 +64,8 @@ bone_name = "right_hand_index_1"
 [node name="EnergyShield" parent="Armature/Skeleton/HandAttachment" index="0" instance=ExtResource( 6 )]
 transform = Transform( 0.0153668, -0.00254843, 0.0125446, -0.0107745, -0.0131576, 0.0105255, 0.00691165, -0.0148453, -0.0114824, 0.00152316, 0.0126692, -0.00320818 )
 visible = false
+
+[node name="EnergyBase" type="Spatial" parent="Armature" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0343539, 0.0828633, -0.00251316 )
 [connection signal="tween_all_completed" from="EnergyBall/Tween" to="." method="_on_Tween_Energyball_completed"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
