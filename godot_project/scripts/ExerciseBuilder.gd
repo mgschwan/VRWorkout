@@ -345,7 +345,9 @@ func setup_cue_parameters(difficulty, ph):
 	#Easy difficulties don't have double swings
 	if difficulty < 1.0:
 		stand_state_model = model_without_state(stand_state_model_template, StandState.DOUBLE_SWING)
+		
 		squat_state_model = model_without_state(squat_state_model_template, SquatState.DOUBLE_SWING)
+		squat_state_model = model_without_state(squat_state_model, SquatState.CROSS_CUT)
 	else:
 		stand_state_model = stand_state_model_template.duplicate(true)
 		squat_state_model = squat_state_model_template.duplicate(true)
@@ -535,7 +537,7 @@ func handle_jump_cues(current_time, target_time, cue_emitter_state):
 		y_head = player_height *0.8
 		var spacing_pre = 0.4
 		var spacing_post = 0.4
-		create_and_attach_cue(current_time + spacing_pre,"head", x_head, y_head, target_time+spacing_pre+spacing_post, 0, 0, "jump_squat")
+		create_and_attach_cue(current_time + spacing_pre,"head", x_head, y_head, target_time+spacing_pre, 0, 0, "jump_squat")
 		temporary_cue_space_extension = spacing_pre+spacing_post
 
 
@@ -899,9 +901,10 @@ func handle_squat_cues(current_time, target_time, cue_emitter_state):
 	
 	if last_squat_state != squat_state:
 		squat_state_model_change = true
+		print ("Squat state: %d"%squat_state)
 	
 	if last_head_avoid + 2 < current_time:
-		if current_difficulty >= 1.0 and not kneesaver_mode:
+		if current_difficulty >= 1.0 and not kneesaver_mode and not squat_state == SquatState.CROSS_CUT:
 			last_head_avoid = current_time
 			create_and_attach_cue(current_time,"head_avoid_block", 0, player_height*1.1, target_time)		
 	
@@ -911,10 +914,35 @@ func handle_squat_cues(current_time, target_time, cue_emitter_state):
 
 	if squat_state == SquatState.DOUBLE_SWING:
 		handle_double_swing_cues(current_time, target_time, player_height/2.0, cue_emitter_state, squat_state_model_change)
+	elif squat_state == SquatState.CROSS_CUT:
+		handle_squat_cues_cross_cut(current_time, target_time, cue_emitter_state)	
 	else:
 		handle_squat_cues_regular(current_time, target_time, cue_emitter_state)
 
 	squat_state_model_change = false
+
+var cross_cut_left = false
+func handle_squat_cues_cross_cut(current_time, target_time, cue_emitter_state):
+	var y_hand_up = player_height * 1.15
+	var x_hand_up = player_height * 0.40
+	var y_hand_down = player_height * 0.3
+	var x_hand_down = player_height * 0.35
+
+	var node_selector = rng.randi()%100
+	if node_selector < 35:
+		cross_cut_left = not cross_cut_left
+
+	var double_punch_delay = 0.75
+
+	if cross_cut_left:
+		var n = create_and_attach_cue(current_time,"left", x_hand_up,y_hand_up, target_time, -hand_cue_offset)
+		var n2 = create_and_attach_cue(current_time+double_punch_delay,"right", -x_hand_down, y_hand_down, target_time+double_punch_delay , -hand_cue_offset,0,"",n)
+	else:
+		var n = create_and_attach_cue(current_time,"right", -x_hand_up,y_hand_up, target_time, -hand_cue_offset)
+		var n2 = create_and_attach_cue(current_time+double_punch_delay,"left", x_hand_down, y_hand_down, target_time+double_punch_delay , -hand_cue_offset,0,"",n)
+	
+	temporary_cue_space_extension = 2*double_punch_delay
+
 
 var is_high_squat = false	
 func handle_squat_cues_regular(current_time, target_time, cue_emitter_state):

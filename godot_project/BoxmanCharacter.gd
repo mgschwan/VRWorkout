@@ -289,8 +289,9 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	elif continuous:
 		play_current_animation(continuous)
 
-func kill(hitarea = "head"):
+func kill(hitarea = "head", respawn = true):
 	if active:
+		animations.stop()
 		active = false
 		if movement_tween:
 			movement_tween.stop_all()
@@ -298,9 +299,10 @@ func kill(hitarea = "head"):
 			dying_middle()
 		else:
 			dying()
-		yield(get_tree().create_timer(2.0),"timeout")
-		beast_reset()
-		emit_signal("beast_killed")
+		if respawn:	
+			yield(get_tree().create_timer(2.0),"timeout")
+			beast_reset()
+			emit_signal("beast_killed")
 
 var in_beast_mode = false
 var beast_start_transformation

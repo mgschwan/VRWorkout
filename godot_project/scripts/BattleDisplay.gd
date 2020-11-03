@@ -8,11 +8,14 @@ onready var player_energybar2 = $EnergyBarRight
 
 onready var player1 = $PlayerLeft
 onready var player2 = $PlayerRight
+onready var buttons = $Buttons
 
 var health_total = 100.0
 var energy_total = 100.0
 var defense_bonus = 0.2
 var min_attack_percent = 0.33
+var min_defend_percent = 0.33
+var cpu_player = load("res://scripts/CPUPlayer.gd").new()
 
 var current_round_max_score = 0
 
@@ -30,6 +33,13 @@ func can_attack(player_obj):
 	if (player_obj.player_energy / player_obj.player_max_energy) >= min_attack_percent:
 		return true
 	return false
+
+func can_defend(player_obj):
+	if (player_obj.player_energy / player_obj.player_max_energy) >= min_defend_percent:
+		return true
+	return false
+
+
 
 func attack(by_player):
 	if by_player == "left":
@@ -64,8 +74,10 @@ func evaluate_attack(player):
 	print ("Attack: %f Defender health: %f"%[attack_energy, defender.player_health])
 	
 	if player1.player_health == 0:
+		player1.kill("head", false)
 		emit_signal("player_won","right")
 	elif player2.player_health == 0:
+		player2.kill("head", false)
 		emit_signal("player_won","left")
 	
 	update_healthbars()
@@ -92,31 +104,18 @@ func set_player_teams(left, right):
 	else:
 		player2.set_appearance("red")
 
-func cpu_hit():
-	var cpu_strength = 0.70
-	if GameVariables.difficulty > 0:
-		cpu_strength = 0.80
-	if GameVariables.difficulty > 1:
-		cpu_strength  = 0.90
-	
-	var retVal = false
-	if randf() < cpu_strength:
-		#CPU scored a hit
-		retVal = true
-	return retVal
-
-
 func cpu_select_strategy():		
 	if player2.attack_mode == "idle":
 		if player1.attack_mode == "attack":
-			var defense_desire = 0.3
-			if GameVariables.difficulty > 0:
-				defense_desire = 0.5
-			if GameVariables.difficulty > 1:
-				defense_desire  = 0.75
-			if randf() < defense_desire:
-				player2.player_is_attack = false
-				player2.defense_01(false,false,3.5)
+			if can_defend(player2):
+				var defense_desire = 0.3
+				if GameVariables.difficulty > 0:
+					defense_desire = 0.5
+				if GameVariables.difficulty > 1:
+					defense_desire  = 0.75
+				if randf() < defense_desire:
+					player2.player_is_attack = false
+					player2.defense_01(false,false,4.0)
 				
 				
 		if player2.attack_mode == "idle":
@@ -129,7 +128,11 @@ func cpu_select_strategy():
 				if randf() < attack_desire:
 					player2.player_is_attack = true
 					player2.charge_attack(2.0)
-			
+
+
+var current_exercise = GameVariables.CueState.STAND	
+func set_exercise(exercise):
+	current_exercise = exercise
 
 func hit_scored(hit_score, base_hit_score, points):
 	player1.player_score += hit_score
@@ -139,7 +142,7 @@ func hit_scored(hit_score, base_hit_score, points):
 	
 	
 	if GameVariables.battle_mode == GameVariables.BattleMode.CPU:
-		if cpu_hit():
+		if cpu_player.cpu_hit(current_exercise):
 			player2.player_score += base_hit_score
 			#This formula should be calculated at a central location
 			var hitp = int(200 - randf()*199)
@@ -154,33 +157,49 @@ func setup_data(duration):
 	if duration > 0:
 	  base_hit_damage = clamp(health_total/(duration/20.0), 5, 20)
 
+
+var current_button_height = 0
+var min_button_height = 0
 var last_eval = 0
 var eval_interval = 500
 func _process(delta):
-	var now = OS.get_ticks_msec()
-	if last_eval + eval_interval < now:
-		last_eval = now 
-		cpu_select_strategy()
-
+	if GameVariables.battle_mode != GameVariables.BattleMode.NO:	
+		var now = OS.get_ticks_msec()
+		if last_eval + eval_interval < now:
+			last_eval = now 
+			cpu_select_strategy()
+		current_button_height = clamp((current_button_height*0.95 + GameVariables.vr_camera.translation.y*0.05),0.6,2.0)
+		buttons.translation.z = min_button_height + current_button_height
+	
+var enemy_images = {
+	"easy": "res://assets/enemy_easy.jpg",
+	"medium": "res://assets/enemy_medium.jpg",
+	"hard": "res://assets/enemy_hard.jpg",
+}
+	
 func _ready():
+	if GameVariables.battle_mode != GameVariables.BattleMode.NO:
+		cpu_player.character = GameVariables.battle_enemy
+		get_node("EnemyPanel").set_image(enemy_images.get(cpu_player.character))
+		
+		min_button_height = buttons.translation.z
+		player1.player_score = 0
+		player1.player_points = 0
+		player1.player_max_health = health_total
+		player1.player_max_energy = energy_total
+		player1.player_health = health_total
+		player1.player_energy = 0
+		player1.player_is_attack = true
 	
-	player1.player_score = 0
-	player1.player_points = 0
-	player1.player_max_health = health_total
-	player1.player_max_energy = energy_total
-	player1.player_health = health_total
-	player1.player_energy = 0
-	player1.player_is_attack = true
-
-	player2.player_score = 0
-	player2.player_points = 0
-	player2.player_max_health = health_total
-	player2.player_max_energy = energy_total
-	player2.player_health = health_total
-	player2.player_energy = 0
-	player2.player_is_attack = true
-	
-	update_healthbars()
+		player2.player_score = 0
+		player2.player_points = 0
+		player2.player_max_health = health_total
+		player2.player_max_energy = energy_total
+		player2.player_health = health_total
+		player2.player_energy = 0
+		player2.player_is_attack = true
+		
+		update_healthbars()
 	
 func set_level(player, level):
 	if player == "left":
@@ -201,8 +220,9 @@ func _on_Attack_activated():
 
 
 func _on_Defense_activated():
-	player1.player_is_attack = false
-	player1.defense_01()
+	if can_defend(player1):
+		player1.player_is_attack = false
+		player1.defense_01(false,false,4.0)
 
 func _on_Attack_charge_complete(player):
 	attack(player)

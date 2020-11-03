@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://blue_outdoor_stage.tscn" type="PackedScene" id=2]
@@ -27,6 +27,7 @@
 [ext_resource path="res://scenes/VoiceInstructor.tscn" type="PackedScene" id=25]
 [ext_resource path="res://scripts/BattleDisplay.gd" type="Script" id=26]
 [ext_resource path="res://scenes/TronCharacter.tscn" type="PackedScene" id=27]
+[ext_resource path="res://scenes/ImagePanel.tscn" type="PackedScene" id=28]
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 2, 5 )
@@ -245,12 +246,18 @@ transform = Transform( 0.606218, -8.75459e-08, -0.35, -0.35, -1.5299e-08, -0.606
 [node name="PlayerRight" parent="BattleDisplay" instance=ExtResource( 27 )]
 transform = Transform( -0.457976, -3.97828e-09, 0.529394, 0.529394, 3.99681e-08, 0.457976, -3.28298e-08, 0.7, -2.31405e-08, -2.09511, -3.50949, -2.37609 )
 
-[node name="Attack" parent="BattleDisplay" instance=ExtResource( 12 )]
-transform = Transform( 6.5567e-09, -0.15, 2.26494e-08, -0.15, -6.55671e-09, -4.23195e-08, 4.23195e-08, -2.26494e-08, -0.15, 1.21388, 3.57142, -0.981443 )
+[node name="Buttons" type="Spatial" parent="BattleDisplay"]
+transform = Transform( 1, 0, -1.11075e-28, 0, 1, 0, 0, 0, 1, 1.20366, 3.58096, -2.3 )
 
-[node name="Defense" parent="BattleDisplay" instance=ExtResource( 12 )]
-transform = Transform( 6.5567e-09, -0.15, 2.26494e-08, -0.15, -6.55671e-09, -4.23195e-08, 4.23195e-08, -2.26494e-08, -0.15, 1.214, 3.571, -1.36877 )
+[node name="Attack" parent="BattleDisplay/Buttons" instance=ExtResource( 12 )]
+transform = Transform( 6.5567e-09, -0.15, 2.26494e-08, -0.15, -6.55671e-09, -4.23195e-08, 4.23195e-08, -2.26494e-08, -0.15, -0.22375, 0.10741, 0.135356 )
+
+[node name="Defense" parent="BattleDisplay/Buttons" instance=ExtResource( 12 )]
+transform = Transform( 6.5567e-09, -0.15, 2.26494e-08, -0.15, -6.55671e-09, -4.23195e-08, 4.23195e-08, -2.26494e-08, -0.15, -0.22363, 0.10699, -0.251971 )
 is_attack = false
+
+[node name="EnemyPanel" parent="BattleDisplay" instance=ExtResource( 28 )]
+transform = Transform( -0.344645, 0.203027, -6.03983e-08, 0.203027, 0.344645, 1.77492e-08, 6.10488e-08, -1.53634e-08, -0.4, -2.49696, 0.316873, 0.536654 )
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="streak_changed" from="cue_emitter" to="." method="_on_cue_emitter_streak_changed"]
 [connection signal="camera_entered" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_entered"]
@@ -269,5 +276,5 @@ is_attack = false
 [connection signal="charge_complete" from="BattleDisplay/PlayerLeft" to="BattleDisplay" method="_on_Attack_charge_complete" binds= [ "left" ]]
 [connection signal="attack_complete" from="BattleDisplay/PlayerRight" to="BattleDisplay" method="_on_Attack_complete" binds= [ "right" ]]
 [connection signal="charge_complete" from="BattleDisplay/PlayerRight" to="BattleDisplay" method="_on_Attack_charge_complete" binds= [ "right" ]]
-[connection signal="activated" from="BattleDisplay/Attack" to="BattleDisplay" method="_on_Attack_activated"]
-[connection signal="activated" from="BattleDisplay/Defense" to="BattleDisplay" method="_on_Defense_activated"]
+[connection signal="activated" from="BattleDisplay/Buttons/Attack" to="BattleDisplay" method="_on_Attack_activated"]
+[connection signal="activated" from="BattleDisplay/Buttons/Defense" to="BattleDisplay" method="_on_Defense_activated"]

@@ -243,6 +243,7 @@ func show_settings(panel):
 		gu.deactivate_node(connections_node)
 		gu.deactivate_node(exercises_node)
 		gu.activate_node(battle_node)
+		update_online_features()
 		angle = PI/2.0
 	elif panel == "empty":
 		gu.deactivate_node(switchboard_node)
@@ -276,8 +277,24 @@ func _on_PresetCollector_selected(collection):
 	GameVariables.game_mode = GameVariables.GameMode.STANDARD
 	GameVariables.exercise_state_list = collection
 
+func update_online_features():
+	var enabled = ProjectSettings.get("game/portal_connection")
+	if enabled:
+		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot1"))
+		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot2"))
+		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot3"))
+		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot4"))
+		gu.activate_node(get_node("SettingsCarousel/Battle/CreateChallengeButton"))		
+	else:
+		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot1"))
+		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot2"))
+		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot3"))
+		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot4"))
+		gu.deactivate_node(get_node("SettingsCarousel/Battle/CreateChallengeButton"))		
+
 func _on_PortalSwitch_toggled(value):
 	ProjectSettings.set("game/portal_connection", value)
+	update_online_features()
 
 func _on_InstructorSwitch_toggled(value):
 	ProjectSettings.set("game/instructor", value)
@@ -308,12 +325,28 @@ func _on_CreateChallengeButton_selected():
 		yield(get_tree().create_timer(2.0),"timeout")
 	challenge_upload_possible = true
 
+func update_battle_mode():
+	if GameVariables.battle_mode == GameVariables.BattleMode.NO:
+		get_node("SettingsCarousel/Battle/Opponents/NoEnemy").mark_active()
+	else:
+		if GameVariables.battle_enemy == "easy":
+			get_node("SettingsCarousel/Battle/Opponents/EasyEnemy").mark_active()
+		elif GameVariables.battle_enemy == "medium":
+			get_node("SettingsCarousel/Battle/Opponents/MediumEnemy").mark_active()
+		elif GameVariables.battle_enemy == "hard":
+			get_node("SettingsCarousel/Battle/Opponents/HardEnemy").mark_active()
 
 
-
-func _on_BattleMode_selected(team):
+func _on_BattleMode_selected(team, enemy):
 	if team == "red":
 		GameVariables.battle_team = GameVariables.BattleTeam.RED
 	else:	
 		GameVariables.battle_team = GameVariables.BattleTeam.BLUE
-	GameVariables.battle_mode = GameVariables.BattleMode.CPU
+	
+	if enemy == "none":
+		GameVariables.battle_enemy = enemy	
+		GameVariables.battle_mode = GameVariables.BattleMode.NO
+	else:
+		GameVariables.battle_enemy = enemy	
+		GameVariables.battle_mode = GameVariables.BattleMode.CPU
+	update_battle_mode()

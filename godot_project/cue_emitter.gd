@@ -80,7 +80,7 @@ func update_statistics_element(obj, hit, points):
 			GameVariables.level_statistics_data[obj.ingame_id]["p"] = points
 
 func update_hits(hit_score, is_hit):
-	self.max_hits += hit_score
+	self.max_hits += max(0,hit_score)
 	if is_hit:
 		self.hits += hit_score
 		self.hits = max(self.hits, 0)

@@ -26,7 +26,7 @@ params_cull_mode = 2
 albedo_color = Color( 0.752941, 0, 0, 0.345098 )
 
 [sub_resource type="CubeMesh" id=4]
-size = Vector3( 0.2, 0.2, 0.2 )
+size = Vector3( 0.4, 0.4, 0.4 )
 
 [sub_resource type="SpatialMaterial" id=5]
 flags_unshaded = true

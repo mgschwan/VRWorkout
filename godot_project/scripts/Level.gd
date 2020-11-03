@@ -1,6 +1,9 @@
 extends Spatial
 
 signal level_finished
+signal level_finished_manually
+
+signal set_exercise(exercise)
 var gu = GameUtilities.new()
 
 var exercise_builder = preload("res://scripts/ExerciseBuilder.gd").new()
@@ -191,6 +194,7 @@ func setup_game_data():
 
 	if GameVariables.battle_mode != GameVariables.BattleMode.NO:
 		cue_emitter.connect("hit_scored", battle_module, "hit_scored")
+		self.connect("set_exercise", battle_module, "set_exercise")
 		gu.activate_node(get_node("BattleDisplay"))
 		gu.deactivate_node(boxman1)
 		gu.deactivate_node(boxman2)	
@@ -623,7 +627,7 @@ func populate_state_model():
 	exercise_builder.stand_state_model = exercise_builder.stand_state_model_template.duplicate(true)
 	
 	
-var sprint_multiplier = 10.0
+var sprint_multiplier = 15.0
 var last_sprint_update = 0
 func handle_sprint_cues_actual(target_time):
 	switch_floor_sign_actual("feet")
@@ -643,6 +647,8 @@ func internal_state_change():
 		
 	if actual_game_state == CueState.BURPEE or actual_game_state == CueState.PUSHUP:
 			update_safe_pushup()	
+		
+	emit_signal("select_exercise", actual_game_state)	
 		
 	infolayer.print_info(exercise_builder.state_string(actual_game_state).to_upper(), "main")
 	infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
@@ -688,7 +694,7 @@ func switch_boxman(state, name):
 
 
 func _on_exit_button_pressed():
-	emit_signal("level_finished")
+	emit_signal("level_finished_manually")
 
 var last_run_update = 0		
 func setup_multiplier(running_speed):

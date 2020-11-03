@@ -63,6 +63,7 @@ enum GameMode {
 var game_mode = GameMode.STANDARD
 var battle_team = BattleTeam.BLUE
 var battle_mode = BattleMode.NO
+var battle_enemy = "easy"
 var battle_interval = 5.0
 var selected_game_slot = -1
 var cue_list = Array()
@@ -104,6 +105,7 @@ enum SquatState {
 	LEFT_HAND = 1,
 	RIGHT_HAND = 2,
 	DOUBLE_SWING = 3,
+	CROSS_CUT = 4,
 };	
 
 
@@ -272,10 +274,11 @@ var exercise_model = {
 						PushupState.LEFT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.RIGHT_HAND: 10},
 						PushupState.RIGHT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.LEFT_HAND: 10},
 						},
-		"squat_state_model": { SquatState.HEAD : { SquatState.LEFT_HAND : 13, SquatState.RIGHT_HAND : 13, SquatState.DOUBLE_SWING : 25},
+		"squat_state_model": { SquatState.HEAD : { SquatState.LEFT_HAND : 13, SquatState.RIGHT_HAND : 13, SquatState.DOUBLE_SWING : 25,  SquatState.CROSS_CUT : 25},
 								SquatState.LEFT_HAND  : { SquatState.HEAD: 30,  SquatState.RIGHT_HAND: 30, SquatState.DOUBLE_SWING : 25},
 								SquatState.RIGHT_HAND  : { SquatState.HEAD: 30,  SquatState.LEFT_HAND: 30, SquatState.DOUBLE_SWING : 25},
 								SquatState.DOUBLE_SWING  : { SquatState.HEAD: 40},
+								SquatState.CROSS_CUT  : { SquatState.HEAD: 30},
 						},
 		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 15, StandState.WINDMILL_TOE: 15},
 						StandState.DOUBLE_SWING : { StandState.REGULAR: 27, StandState.WINDMILL_TOE: 15},
@@ -303,9 +306,10 @@ var exercise_model = {
 						PushupState.LEFT_SIDEPLANK : { PushupState.REGULAR: 100},
 						PushupState.RIGHT_SIDEPLANK : { PushupState.REGULAR: 100},
 						},
-		"squat_state_model": { SquatState.HEAD : { SquatState.LEFT_HAND : 5, SquatState.RIGHT_HAND : 5},
+		"squat_state_model": { SquatState.HEAD : { SquatState.LEFT_HAND : 5, SquatState.RIGHT_HAND : 5, SquatState.CROSS_CUT: 25},
 								SquatState.LEFT_HAND  : { SquatState.HEAD: 90,  SquatState.RIGHT_HAND: 5},
 								SquatState.RIGHT_HAND  : { SquatState.HEAD: 90,  SquatState.LEFT_HAND: 5},
+								SquatState.CROSS_CUT  : { SquatState.HEAD: 30},
 						},
 		"stand_state_model" : { StandState.REGULAR : { },
 					},

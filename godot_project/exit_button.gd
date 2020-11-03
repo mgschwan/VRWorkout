@@ -5,15 +5,20 @@ signal touched
 # var a = 2
 # var b = "text"
 
-var touch_begin = 0
+func _process(delta):
+	if touched:
+		var dt = OS.get_ticks_msec() - touch_begin
+		if dt > 800:
+			print ("Exit touch event")
+			emit_signal("touched")
 
+var touch_begin = 0
+var touched = false
 func touched_by_controller(obj, root):
+	touched = true
 	touch_begin = OS.get_ticks_msec()
-	print ("Exit button was touched")
+
 
 func released_by_controller(obj, root):
-	var delta = OS.get_ticks_msec() - touch_begin
-	if delta > 500:
-		print ("Exit touch event")
-		emit_signal("touched")
+	touched = false
 

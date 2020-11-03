@@ -301,6 +301,12 @@ func _input(event):
 	
 			
 func _on_level_finished	():
+	_on_level_finished_actual(true)
+	
+func _on_level_finished_manually():
+	_on_level_finished_actual(false)
+
+func _on_level_finished_actual(valid_end):
 	GameVariables.vr_camera.blackout_screen(true)
 	GameVariables.vr_camera.show_hud(false)
 	#In case the player exited while controller were hidden
@@ -329,7 +335,8 @@ func _on_level_finished	():
 	game_statistics["vrw_score"] = GameVariables.game_result["vrw_score"]
 	game_statistics["duration"] =  GameVariables.game_result["time"]
 	game_statistics["data"] = GameVariables.level_statistics_data
-	if GameVariables.current_challenge:
+	if GameVariables.current_challenge and valid_end:
+		#Do not send as challenge entry if the player exited manually
 		game_statistics["challenge"] = GameVariables.current_challenge
 	GameVariables.current_challenge = null
 	var error = get_node("RemoteInterface").send_data(GameVariables.device_id, "workout", game_statistics)
@@ -523,6 +530,7 @@ func _on_Area_level_selected(filename, diff, num):
 		level.bpm = ProjectSettings.get("game/bpm")
 		level.first_beat = levelselect.get_last_beat()
 		level.connect("level_finished",self,"_on_level_finished")
+		level.connect("level_finished_manually",self,"_on_level_finished_manually")
 		levelselect.queue_free()
 		add_child(level)	
 	
