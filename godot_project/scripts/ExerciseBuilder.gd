@@ -679,7 +679,7 @@ func handle_burpee_cues(current_time, target_time, cue_emitter_state):
 	time_offset = 0.6*length
 
 	switch_floor_sign(current_time+time_offset,"feet")
-	y_head = player_height + jump_offset
+	y_head = "ph+%f"%jump_offset
 	temporary_cue_space_extension = length
 
 	create_and_attach_cue(current_time+time_offset,"head_extended", x_head, y_head, target_time+time_offset)
@@ -852,8 +852,8 @@ func handle_stand_cues_regular(current_time, target_time, cue_emitter_state):
 	var node_selector = rng.randi()%100
 	
 	#var y_hand = player_height + cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
-	var y_hand = "ph + %f"%(cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"])
-	var y_head = player_height + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
+	var y_hand = "ph+%f"%(cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"])
+	var y_head = "ph+%f"%cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
 	
 	var side = 1.0
 	if cue_parameters[cue_emitter_state][CueSelector.HAND]["invertible_sides"]:
