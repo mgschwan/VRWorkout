@@ -485,12 +485,14 @@ func create_all_current_cues(ts):
 				if target_cue:
 					cue.activate_path_cue(target_cue)
 					pass
+			if GameVariables.battle_mode != GameVariables.BattleMode.NO:
+				battle_module.queue_cue(cue)
 					
 # Create the actual cue node add it to the scene and the statistics
 func create_and_attach_cue_actual(cue_data):
 	var cue_type = cue_data["cue_type"]
-	var x = cue_data["x"]
-	var y = cue_data["y"]
+	var x = exercise_builder.eval_expression(cue_data["x"])
+	var y = exercise_builder.eval_expression(cue_data["y"])
 	var target_time = cue_data["target_time"]
 	var fly_offset = cue_data["fly_offset"]
 	var fly_time = cue_data["fly_time"]
@@ -637,6 +639,8 @@ func handle_sprint_cues_actual(target_time):
 	last_sprint_update = now
 	var ingame_id = add_statistics_element(GameVariables.get_next_ingame_id(), exercise_builder.state_string(exercise_builder.cue_emitter_state), "", exercise_builder.current_difficulty, points, true, cue_emitter.current_playback_time, cue_emitter.current_playback_time, GameVariables.current_hr)
 	cue_emitter.score_points(points)
+	if GameVariables.battle_mode != GameVariables.BattleMode.NO:
+		battle_module.hit_scored_opponent(null)
 
 var actual_game_state  
 var actual_state_duration = 0

@@ -1,5 +1,7 @@
 extends Spatial
 
+var gu = GameUtilities.new()
+
 onready var player_bar1 = $HealthBarLeft
 onready var player_bar2 = $HealthBarRight
 
@@ -134,21 +136,29 @@ var current_exercise = GameVariables.CueState.STAND
 func set_exercise(exercise):
 	current_exercise = exercise
 
-func hit_scored(hit_score, base_hit_score, points):
+var active_cues = Array()
+func queue_cue(cue):
+	gu.insert_cue_sorted(cue.target_time, cue, active_cues)
+
+func hit_scored_opponent (obj):
+	if cpu_player.cpu_hit(current_exercise):
+		if obj and obj.has_method("hit_by_opponent"):
+			obj.hit_by_opponent()
+		#This formula should be calculated at a central location
+		var hitp = int(200 - randf()*199)
+		player2.player_points += hitp
+
+		player2.player_energy = clamp(player2.player_energy + hitp/30.0, 0, 100)
+	update_healthbars()
+
+func hit_scored(hit_score, base_hit_score, points, obj):
 	player1.player_score += hit_score
 	player1.player_points += points
 	
 	current_round_max_score += base_hit_score
 	
-	
 	if GameVariables.battle_mode == GameVariables.BattleMode.CPU:
-		if cpu_player.cpu_hit(current_exercise):
-			player2.player_score += base_hit_score
-			#This formula should be calculated at a central location
-			var hitp = int(200 - randf()*199)
-			player2.player_points += hitp
-
-			player2.player_energy = clamp(player2.player_energy + hitp/30.0, 0, 100)
+		player2.player_score += base_hit_score
 	
 	player1.player_energy = clamp(player1.player_energy + points/30.0, 0, 100)
 	update_healthbars()
@@ -162,8 +172,13 @@ var current_button_height = 0
 var min_button_height = 0
 var last_eval = 0
 var eval_interval = 500
-func _process(delta):
+func _process(delta):	
 	if GameVariables.battle_mode != GameVariables.BattleMode.NO:	
+		
+		while len(active_cues) > 0 and active_cues[0][0] < cue_emitter.current_playback_time:
+			var cue = active_cues.pop_front()
+			hit_scored_opponent(cue[1])
+		
 		var now = OS.get_ticks_msec()
 		if last_eval + eval_interval < now:
 			last_eval = now 
@@ -177,7 +192,10 @@ var enemy_images = {
 	"hard": "res://assets/enemy_hard.jpg",
 }
 	
+var cue_emitter
 func _ready():
+	cue_emitter = get_parent().get_node("cue_emitter")
+	
 	if GameVariables.battle_mode != GameVariables.BattleMode.NO:
 		cpu_player.character = GameVariables.battle_enemy
 		get_node("EnemyPanel").set_image(enemy_images.get(cpu_player.character))

@@ -6,7 +6,7 @@ var SquatState = GameVariables.SquatState
 var StandState = GameVariables.StandState
 var CrunchState = GameVariables.CrunchState
 
-
+var gu = GameUtilities.new()
 
 var PushupState = GameVariables.PushupState
 
@@ -92,13 +92,6 @@ func adjust_cue_spacing():
 			   cue_emitter_state == CueState.PUSHUP:
 			pass
 
-func insert_cue_sorted(ts, cue_data):
-	var selected_idx = 0
-	for cidx in range(len(cue_emitter_list)):
-		if ts < cue_emitter_list[cidx][0]:
-			break
-		selected_idx = cidx + 1
-	cue_emitter_list.insert(selected_idx, [ts, cue_data])
 
 func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", target_cue = null, hit_velocity = null, hit_score = 1.0):
 	#Cue IDs have to be generated when they are added to the list so others can reference it
@@ -121,7 +114,7 @@ func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_ti
 		"fly_distance": fly_distance
 		}
 	#print (str(cue_data))
-	insert_cue_sorted(ts, cue_data)
+	gu.insert_cue_sorted(ts, cue_data, cue_emitter_list)
 	return ingame_id  #true #create_and_attach_cue_actual(cue_type, x, y, target_time, fly_offset, fly_time , cue_subtype)
 
 
@@ -131,7 +124,7 @@ func switch_floor_sign(ts, floorsign):
 		"state": floorsign, 
 		"target_time": ts, 
 		}
-	insert_cue_sorted(ts, cue_data)
+	gu.insert_cue_sorted(ts, cue_data, cue_emitter_list)
 
 #Returns a copy of the model without the state as a target
 func model_without_state(model, state):
@@ -141,7 +134,20 @@ func model_without_state(model, state):
 		tmp.erase(state)
 		new_model[s] = tmp
 	return new_model
-
+	
+#Execute an expression with player variables or return
+#the input if it's not an expression string
+var ex = Expression.new()	
+func eval_expression(expression):
+	var result = 0
+	if typeof(expression) == TYPE_STRING:
+		var perror = ex.parse(expression,["ph"])
+		if perror == OK:
+			result = ex.execute([player_height])
+	else:
+		result = expression
+	return result
+	
 func update_distribution(distribution, index, delta):
 	var tmp = delta / len(distribution)
 	var total = 0
@@ -282,7 +288,9 @@ func setup_cue_parameters(difficulty, ph):
 			CueSelector.HAND :  {
 				"xspread" : 0.6,
 				"yrange" : 0.4,
-				"double_swing_spread": player_height/ ( 3.0 + (2.0-difficulty)/1.5 ) 
+				"double_swing_spread": player_height/ ( 3.0 + (2.0-difficulty)/1.5 ) ,
+				"cross_cut_multiplier": 0.15 + clamp(difficulty,0.0,2.0)/10.0,
+				
 			}		
 		},	
 		CueState.PUSHUP : {
@@ -483,7 +491,7 @@ func emit_cue_node(current_time, target_time):
 		
 		
 		
-		insert_cue_sorted(current_time, cue_data)
+		gu.insert_cue_sorted(current_time, cue_data, cue_emitter_list)
 		emitter_state_changed = true
 		builder_state_changed(current_time)
 	
@@ -804,35 +812,35 @@ func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitte
 var windmill_left = true
 var windmill_high = true
 func handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, state_change):
-	var y_head = player_height 
+	var y_head = "ph" 
 
 	if state_change:
 		#Prevent windmills from always going in the same direction
 		windmill_high = (randi()%2 == 0)
 		windmill_left = (randi()%2 == 0)
 
-	var y_hand1 = player_height
-	var y_hand2 = player_height*1.2
-	var y_hand3 = player_height*0.6
+	var y_hand1 = "ph"
+	var y_hand2 = "ph*1.2"
+	var y_hand3 = "ph*0.6"
 	
 	if not windmill_high:
-		y_hand1 = player_height*0.8
-		y_hand2 = player_height*0.6
-		y_hand3 = player_height
+		y_hand1 = "ph*0.8"
+		y_hand2 = "ph*0.6"
+		y_hand3 = "ph"
 	
-	var x_hand = player_height * 0.4
+	var x_hand = "ph*0.4"
 	#create_and_attach_cue(current_time,"head", 0, y_head, target_time)
 	
 	var double_punch_delay = 0.5
 
 	if windmill_left:
-		var n_id = create_and_attach_cue(current_time,"left", -x_hand,y_hand1, target_time, -hand_cue_offset)
-		var n2_id = create_and_attach_cue(current_time+double_punch_delay*0.5,"left", 0.1666*x_hand, y_hand2, target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
+		var n_id = create_and_attach_cue(current_time,"left", "-%s"%x_hand,y_hand1, target_time, -hand_cue_offset)
+		var n2_id = create_and_attach_cue(current_time+double_punch_delay*0.5,"left", "0.1666*%s"%x_hand, y_hand2, target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
 		var n3_id = create_and_attach_cue(current_time+double_punch_delay,"left", x_hand, y_hand3, target_time+double_punch_delay , -hand_cue_offset,0,"",n2_id)
 	else:
 		var n_id = create_and_attach_cue(current_time,"right", x_hand,y_hand1, target_time, -hand_cue_offset)
-		var n2_id = create_and_attach_cue(current_time+double_punch_delay*0.5,"right", -0.1666*x_hand, y_hand2, target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
-		var n3_id = create_and_attach_cue(current_time+double_punch_delay,"right", -x_hand, y_hand3, target_time+double_punch_delay , -hand_cue_offset,0,"",n2_id)
+		var n2_id = create_and_attach_cue(current_time+double_punch_delay*0.5,"right", "-0.1666*%s"%x_hand, y_hand2, target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
+		var n3_id = create_and_attach_cue(current_time+double_punch_delay,"right", "-%s"%x_hand, y_hand3, target_time+double_punch_delay , -hand_cue_offset,0,"",n2_id)
 
 	windmill_left = not windmill_left
 	windmill_high = not windmill_high
@@ -843,7 +851,8 @@ func handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, st
 func handle_stand_cues_regular(current_time, target_time, cue_emitter_state):
 	var node_selector = rng.randi()%100
 	
-	var y_hand = player_height + cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
+	#var y_hand = player_height + cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
+	var y_hand = "ph + %f"%(cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"])
 	var y_head = player_height + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
 	
 	var side = 1.0
@@ -865,11 +874,11 @@ func handle_stand_cues_regular(current_time, target_time, cue_emitter_state):
 		if node_selector < 50:	
 			var n_id = create_and_attach_cue(current_time,"left", -x,y_hand, target_time, -hand_cue_offset)
 			if double_punch:
-				var n2 = create_and_attach_cue(current_time+double_punch_delay,"left", -x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
+				var n2 = create_and_attach_cue(current_time+double_punch_delay,"left", -x*rng.randf(),"(%s+ph*%f)/2.0"%[y_hand,(0.5+rng.randf()*0.2)], target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
 		else:			
 			var n_id = create_and_attach_cue(current_time,"right", x,y_hand, target_time, -hand_cue_offset)
 			if double_punch:
-				var n2 = create_and_attach_cue(current_time+double_punch_delay,"right", x*rng.randf(),(y_hand+player_height*(0.5+rng.randf()*0.2))/2, target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
+				var n2 = create_and_attach_cue(current_time+double_punch_delay,"right", x*rng.randf(),"(%s+ph*%f)/2.0"%[y_hand,(0.5+rng.randf()*0.2)], target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
 	else:
 		if ducking_mode and rng.randf() < stand_avoid_head_cue:
 			temporary_cue_space_extension = 1.0
@@ -906,7 +915,7 @@ func handle_squat_cues(current_time, target_time, cue_emitter_state):
 	if last_head_avoid + 2 < current_time:
 		if current_difficulty >= 1.0 and not kneesaver_mode and not squat_state == SquatState.CROSS_CUT:
 			last_head_avoid = current_time
-			create_and_attach_cue(current_time,"head_avoid_block", 0, player_height*1.1, target_time)		
+			create_and_attach_cue(current_time,"head_avoid_block", 0, "ph*1.1", target_time)		
 	
 	#Skip one cue after a double swing stretch
 	if last_squat_state == SquatState.DOUBLE_SWING and last_squat_state != squat_state:
@@ -923,10 +932,10 @@ func handle_squat_cues(current_time, target_time, cue_emitter_state):
 
 var cross_cut_left = false
 func handle_squat_cues_cross_cut(current_time, target_time, cue_emitter_state):
-	var y_hand_up = player_height * 1.15
-	var x_hand_up = player_height * 0.40
-	var y_hand_down = player_height * 0.3
-	var x_hand_down = player_height * 0.35
+	var y_hand_up = "ph*1.15"
+	var x_hand_up = "ph*%f"%cue_parameters[cue_emitter_state][CueSelector.HAND]["cross_cut_multiplier"]
+	var y_hand_down = "ph*0.3"
+	var x_hand_down = "ph*%f"%cue_parameters[cue_emitter_state][CueSelector.HAND]["cross_cut_multiplier"]
 
 	var node_selector = rng.randi()%100
 	if node_selector < 35:
@@ -936,9 +945,9 @@ func handle_squat_cues_cross_cut(current_time, target_time, cue_emitter_state):
 
 	if cross_cut_left:
 		var n = create_and_attach_cue(current_time,"left", x_hand_up,y_hand_up, target_time, -hand_cue_offset)
-		var n2 = create_and_attach_cue(current_time+double_punch_delay,"right", -x_hand_down, y_hand_down, target_time+double_punch_delay , -hand_cue_offset,0,"",n)
+		var n2 = create_and_attach_cue(current_time+double_punch_delay,"right", "-%s"%x_hand_down, y_hand_down, target_time+double_punch_delay , -hand_cue_offset,0,"",n)
 	else:
-		var n = create_and_attach_cue(current_time,"right", -x_hand_up,y_hand_up, target_time, -hand_cue_offset)
+		var n = create_and_attach_cue(current_time,"right", "-%s"%x_hand_up,y_hand_up, target_time, -hand_cue_offset)
 		var n2 = create_and_attach_cue(current_time+double_punch_delay,"left", x_hand_down, y_hand_down, target_time+double_punch_delay , -hand_cue_offset,0,"",n)
 	
 	temporary_cue_space_extension = 2*double_punch_delay
@@ -947,22 +956,22 @@ func handle_squat_cues_cross_cut(current_time, target_time, cue_emitter_state):
 var is_high_squat = false	
 func handle_squat_cues_regular(current_time, target_time, cue_emitter_state):
 	var node_selector = rng.randi()%100
-	var y_head
+	var y_head = ""
 
 	if is_high_squat:
 		#Put it in the uper 25% range
-		y_head = player_height/2 + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + (cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"] - rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"] * 0.25 )
+		y_head = "ph/2.0+%f"%(cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + (cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"] - rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"] * 0.25 ))
 	else:
 		#Put it in the lower 25% range
-		y_head = player_height/2 + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"] * 0.25
+		y_head = "ph/2.0+%f"%(cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"] * 0.25)
 	is_high_squat = not is_high_squat
 
-	var y_hand = y_head + (rng.randf() * 0.4 - 0.2)
+	var y_hand = "%s+%f"%[y_head,(rng.randf() * 0.4 - 0.2)]
 	var x = 0.3 + rng.randf() * 0.45
 	var x_head = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"] - cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]/2
 	
 	if squat_state == SquatState.LEFT_HAND:
-		var n = create_and_attach_cue(current_time,"left", -x,y_hand, target_time, -hand_cue_offset)
+		var n = create_and_attach_cue(current_time,"left", "-%s"%x,y_hand, target_time, -hand_cue_offset)
 	elif squat_state == SquatState.RIGHT_HAND:
 		var n = create_and_attach_cue(current_time,"right", x,y_hand, target_time, -hand_cue_offset)
 	else:

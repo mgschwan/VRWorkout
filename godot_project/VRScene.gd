@@ -427,9 +427,10 @@ func _update_hand_model(hand: ARVRController, model : Spatial, offset_model: Spa
 			if delta_t < prediction_limit_ms:
 				var vec = last["vector"]
 				var predict_v = vec * delta_t / prediction_max_dist
-				var vl = predict_v.length()
+				var tmp_v=predict_v-last["pos"]
+				var vl = (tmp_v).length()
 				if vl > prediction_max_dist:
-					predict_v = prediction_max_dist * predict_v / vl
+					predict_v = tmp_v.normalized * prediction_max_dist
 				model.translation = history[0]["pos"] + predict_v 
 			else:
 				model.hide()

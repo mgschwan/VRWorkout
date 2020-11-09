@@ -42,7 +42,11 @@ background_mode = 1
 size = Vector2( 2, 1 )
 
 [sub_resource type="SpatialMaterial" id=9]
+flags_transparent = true
 flags_unshaded = true
+params_blend_mode = 1
+params_use_alpha_scissor = true
+params_alpha_scissor_threshold = 0.73
 albedo_texture = ExtResource( 4 )
 
 [sub_resource type="PrismMesh" id=10]

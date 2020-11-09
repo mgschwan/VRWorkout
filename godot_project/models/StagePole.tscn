@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://materials/blue_outdoor_stage_shiny.tres" type="Material" id=2]
+[ext_resource path="res://models/stage_pole.gltf" type="PackedScene" id=3]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_unshaded = true
+params_cull_mode = 2
+albedo_color = Color( 0.415686, 0.756863, 0, 1 )
+
+[node name="stage_pole" instance=ExtResource( 3 )]
+
+[node name="Cube" parent="." index="0"]
+material/0 = ExtResource( 2 )
+material/1 = SubResource( 1 )

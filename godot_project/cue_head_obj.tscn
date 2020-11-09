@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://models/head_model.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://cue_head_obj.gd" type="Script" id=2]
@@ -64,6 +64,14 @@ extents = Vector3( 0.8, 0.48, 3.77057 )
 material = ExtResource( 5 )
 size = Vector3( 0.1, 0.1, 0.1 )
 
+[sub_resource type="SpatialMaterial" id=8]
+params_depth_draw_mode = 1
+albedo_color = Color( 0.690196, 0, 0, 1 )
+
+[sub_resource type="CubeMesh" id=9]
+material = SubResource( 8 )
+size = Vector3( 0.1, 0.1, 0.1 )
+
 [node name="StaticBody" type="StaticBody"]
 transform = Transform( 0.1, 0, 0, 0, 0.15, 0, 0, 0, 0.3, 0, 0, 0 )
 script = ExtResource( 2 )
@@ -122,6 +130,17 @@ material/0 = ExtResource( 5 )
 emitting = false
 amount = 16
 mesh = SubResource( 7 )
+direction = Vector3( 0, 0, -1 )
+spread = 180.0
+flatness = 0.5
+gravity = Vector3( 0, -1, 0 )
+initial_velocity = 1.0
+
+[node name="sprinkle_opponent" type="CPUParticles" parent="."]
+emitting = false
+amount = 16
+one_shot = true
+mesh = SubResource( 9 )
 direction = Vector3( 0, 0, -1 )
 spread = 180.0
 flatness = 0.5

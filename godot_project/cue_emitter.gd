@@ -14,7 +14,7 @@ var hud_enabled = false
 signal show_hud()
 signal hide_hud()
 signal streak_changed(count)
-signal hit_scored(hit_score, base_score, points)
+signal hit_scored(hit_score, base_score, points, obj)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -73,7 +73,7 @@ func update_statistics_element(obj, hit, points):
 	current_max_hits += hit_score
 
 	emit_signal("streak_changed", get_current_streak())
-	emit_signal("hit_scored", actual_hit_score, hit_score, points)
+	emit_signal("hit_scored", actual_hit_score, hit_score, points, obj)
 	if obj:
 		if GameVariables.level_statistics_data.has(obj.ingame_id):
 			GameVariables.level_statistics_data[obj.ingame_id]["h"] = hit

@@ -44,6 +44,13 @@ func has_been_hit():
 		get_node("sprinkle").emitting = true
 		get_node("head_cue/AnimationPlayer").play("explode")
 
+var opponent_hit = false
+func hit_by_opponent():
+	if not opponent_hit:
+		opponent_hit = true
+		get_node("sprinkle_opponent").emitting = true
+
+
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	get_node("sprinkle").emitting = false

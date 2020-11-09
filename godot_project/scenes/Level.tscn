@@ -1,10 +1,9 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://blue_outdoor_stage.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/SpectrumDisplay.tscn" type="PackedScene" id=3]
 [ext_resource path="res://cue_emitter.gd" type="Script" id=4]
-[ext_resource path="res://materials/blue_noninvasive.tres" type="Material" id=5]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=6]
 [ext_resource path="res://exit_button.gd" type="Script" id=7]
 [ext_resource path="res://spawn_timer.gd" type="Script" id=8]
@@ -28,6 +27,7 @@
 [ext_resource path="res://scripts/BattleDisplay.gd" type="Script" id=26]
 [ext_resource path="res://scenes/TronCharacter.tscn" type="PackedScene" id=27]
 [ext_resource path="res://scenes/ImagePanel.tscn" type="PackedScene" id=28]
+[ext_resource path="res://models/StagePole.tscn" type="PackedScene" id=29]
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 2, 5 )
@@ -65,16 +65,14 @@ _data = {
 "tilts": PoolRealArray( 0, 0, 0, 0 )
 }
 
-[sub_resource type="CubeMesh" id=9]
+[sub_resource type="BoxShape" id=9]
+extents = Vector3( 0.311419, 0.0926839, 0.161588 )
 
-[sub_resource type="BoxShape" id=10]
-extents = Vector3( 0.455611, 0.0926839, 0.161588 )
-
-[sub_resource type="SpatialMaterial" id=11]
+[sub_resource type="SpatialMaterial" id=10]
 albedo_color = Color( 0.94902, 0.937255, 0.937255, 1 )
 albedo_texture = ExtResource( 11 )
 
-[sub_resource type="PlaneMesh" id=12]
+[sub_resource type="PlaneMesh" id=11]
 size = Vector2( 0.22, 0.13 )
 
 [node name="Main" type="Spatial"]
@@ -138,27 +136,23 @@ bus = "Music"
 [node name="target" type="Spatial" parent="."]
 transform = Transform( 0.118828, 0, 0, 0, 1, 0, 0, 0, 0.0898216, -0.87, 1, -0.0667922 )
 
-[node name="target_zone_l" type="MeshInstance" parent="target"]
-transform = Transform( 0.2, 0, 0, 0, 1, 0, 0, 0, 0.8, -2.7525, 0, 0 )
-mesh = SubResource( 9 )
-material/0 = ExtResource( 5 )
-
-[node name="target_zone_l2" type="MeshInstance" parent="target"]
-transform = Transform( 0.2, 0, 0, 0, 1, 0, 0, 0, 0.6, 17.5653, 0, 0 )
-mesh = SubResource( 9 )
-material/0 = ExtResource( 5 )
-
 [node name="exit_button" type="StaticBody" parent="target"]
-transform = Transform( -8.74228e-08, 1, -8.74228e-09, 0, -4.37114e-08, -0.2, -2, -4.37114e-08, 3.82137e-16, -2.16194, 0.750559, -1.45188 )
+transform = Transform( -8.74228e-08, 1, -8.74228e-09, 0, -4.37114e-08, -0.2, -2, -4.37114e-08, 3.82137e-16, -2.57036, 0.750559, -1.50016 )
 script = ExtResource( 7 )
 
 [node name="exit_text" parent="target/exit_button" instance=ExtResource( 6 )]
-transform = Transform( 1, -3.55271e-15, 1.19114e-22, 0, 1, -6.21725e-15, 1.18585e-20, -4.26326e-14, 1, 0, 0, 0 )
+transform = Transform( 1, -3.55271e-15, 1.45584e-22, 0, 1, -7.99361e-15, 1.35525e-20, -4.26326e-14, 1, 0, 0, 0 )
 default_text = "EXIT STAGE"
 
 [node name="CollisionShape" type="CollisionShape" parent="target/exit_button"]
 transform = Transform( 1, -3.55271e-15, 2.64698e-23, 0, 1, -1.77636e-15, 3.38813e-21, -2.84217e-14, 1, -0.688979, 0, -0.413249 )
-shape = SubResource( 10 )
+shape = SubResource( 9 )
+
+[node name="target_zone_l" parent="target" instance=ExtResource( 29 )]
+transform = Transform( 4, 0, 0, 0, 0.4, 0, 0, 0, 4, -3.10597, -0.919663, 0.00937921 )
+
+[node name="target_zone_l2" parent="target" instance=ExtResource( 29 )]
+transform = Transform( -4, 0, -1.30337e-06, 0, 0.4, 0, 1.30337e-06, 0, -4, 17.0173, -0.919663, 0.00937921 )
 
 [node name="PositionSign" parent="." instance=ExtResource( 17 )]
 transform = Transform( 0.5, 0, 0, 0, -4.37114e-08, -0.5, 0, 1, -2.18557e-08, -1.79988, 0.513339, -4.91669 )
@@ -198,7 +192,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.026268, -0.001, -0.586 )
 [node name="mat_simple" parent="MainStage" instance=ExtResource( 18 )]
 transform = Transform( -6.99382e-10, 0, 0.018, 0, 0.02, 0, -0.016, 0, -7.86805e-10, 0.109178, -0.01, 0.493 )
 visible = false
-material/0 = SubResource( 11 )
+material/0 = SubResource( 10 )
 
 [node name="mat" parent="MainStage" instance=ExtResource( 14 )]
 transform = Transform( 0.19, 0, 0, 0, 0.2, 0, 0, 0, 0.19, 0.0230895, 0.00996999, 0.522808 )
@@ -219,7 +213,7 @@ transform = Transform( 0.2, 0, 0, 0, -0.168573, -0.107625, 0, 0.107625, -0.16857
 
 [node name="PushupView" type="MeshInstance" parent="."]
 transform = Transform( 10, 0, 0, 0, 8.50029, -5.53584, 0, 5.07871, 8.45678, -0.019583, -0.28405, -0.772499 )
-mesh = SubResource( 12 )
+mesh = SubResource( 11 )
 material/0 = null
 
 [node name="BattleDisplay" type="Spatial" parent="."]

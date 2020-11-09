@@ -95,6 +95,15 @@ func upload_challenge(remoteinterface):
 	remoteinterface.send_data(GameVariables.device_id,"challenge",challenge )
 
 
+func insert_cue_sorted(ts, cue_data, cue_emitter_list):
+	var selected_idx = 0
+	for cidx in range(len(cue_emitter_list)):
+		if ts < cue_emitter_list[cidx][0]:
+			break
+		selected_idx = cidx + 1
+	cue_emitter_list.insert(selected_idx, [ts, cue_data])
+
+
 
 
 

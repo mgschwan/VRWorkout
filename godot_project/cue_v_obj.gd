@@ -105,6 +105,12 @@ func has_been_hit(hand = "unknown"):
 		get_node("Circle/AnimationPlayer").play("explode")
 	return points
 
+var opponent_hit = false
+func hit_by_opponent():
+	if not opponent_hit:
+		opponent_hit = true
+		get_node("sprinkle_opponent").emitting = true
+
 func begin_hold(hand = "unknown"):
 	if has_node(hand):
 		holding = true
@@ -125,4 +131,5 @@ func activate_path_cue(target):
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	get_node("sprinkle").emitting = false
+	get_node("sprinkle_opponent").emitting = false
 	self.queue_free()

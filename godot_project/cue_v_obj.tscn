@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://cue_v_obj.gd" type="Script" id=1]
 [ext_resource path="res://models/Berzerker.material" type="Material" id=2]
@@ -195,7 +195,14 @@ height = 0.0897926
 material = ExtResource( 8 )
 size = Vector3( 0.02, 0.02, 0.02 )
 
-[sub_resource type="SphereMesh" id=9]
+[sub_resource type="SpatialMaterial" id=9]
+albedo_color = Color( 0.690196, 0, 0, 1 )
+
+[sub_resource type="CubeMesh" id=10]
+material = SubResource( 9 )
+size = Vector3( 0.02, 0.02, 0.02 )
+
+[sub_resource type="SphereMesh" id=11]
 radius = 0.01
 height = 0.02
 radial_segments = 6
@@ -258,11 +265,25 @@ initial_velocity = 0.5
 initial_velocity_random = 0.59
 linear_accel = 2.0
 
+[node name="sprinkle_opponent" type="CPUParticles" parent="."]
+cast_shadow = 0
+emitting = false
+amount = 16
+one_shot = true
+speed_scale = 2.0
+mesh = SubResource( 10 )
+direction = Vector3( 0, 0, 1 )
+spread = 90.0
+gravity = Vector3( 0, 0, -2 )
+initial_velocity = 0.5
+initial_velocity_random = 0.59
+linear_accel = 2.0
+
 [node name="left" type="Spatial" parent="."]
 transform = Transform( 0.03, -8.08722e-16, 4.37114e-09, 0, 0.006, -2.78182e-10, -5.24537e-09, -4.62535e-09, 0.025, 0, 0, 0 )
 
 [node name="dot" type="MeshInstance" parent="."]
 visible = false
-mesh = SubResource( 9 )
+mesh = SubResource( 11 )
 material/0 = ExtResource( 8 )
 [connection signal="animation_finished" from="Circle/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
