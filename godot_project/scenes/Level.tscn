@@ -137,7 +137,7 @@ bus = "Music"
 transform = Transform( 0.118828, 0, 0, 0, 1, 0, 0, 0, 0.0898216, -0.87, 1, -0.0667922 )
 
 [node name="exit_button" type="StaticBody" parent="target"]
-transform = Transform( -8.74228e-08, 1, -8.74228e-09, 0, -4.37114e-08, -0.2, -2, -4.37114e-08, 3.82137e-16, -2.57036, 0.750559, -1.50016 )
+transform = Transform( -8.74228e-08, 1, -8.74228e-09, 0, -4.37114e-08, -0.2, -2, -4.37114e-08, 3.82137e-16, -2.57036, 0.25962, -1.50016 )
 script = ExtResource( 7 )
 
 [node name="exit_text" parent="target/exit_button" instance=ExtResource( 6 )]

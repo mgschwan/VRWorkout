@@ -275,20 +275,20 @@ func setup_cue_parameters(difficulty, ph):
 				"xoffset" : 0.2,
 				"xrange" : 0.45,
 				"yoffset" : -0.2 - difficulty * 0.1,
-				"yrange" : 0.3 + difficulty * player_height/8.0,
-				"double_swing_spread": player_height/ ( 3.0 + (2.0-difficulty)/1.5 ) ,
+				"yrange" : "0.3+%f*ph/8.0"%difficulty,
+				"double_swing_spread": "ph/%f"%( 3.0 + (2.0-difficulty)/1.5 ) ,
 				"invertible_sides": difficulty >= 1.0 #If hands can cross the sides
 			}
 		},	
 		CueState.SQUAT : {
 			CueSelector.HEAD : {
 				"yoffset" : 0.0,
-				"yrange" : player_height * 0.3,
+				"yrange" : "ph*0.3",
 			},
 			CueSelector.HAND :  {
 				"xspread" : 0.6,
 				"yrange" : 0.4,
-				"double_swing_spread": player_height/ ( 3.0 + (2.0-difficulty)/1.5 ) ,
+				"double_swing_spread": "ph/%f"%( 3.0 + (2.0-difficulty)/1.5 ) ,
 				"cross_cut_multiplier": 0.15 + clamp(difficulty,0.0,2.0)/10.0,
 				
 			}		
@@ -314,7 +314,7 @@ func setup_cue_parameters(difficulty, ph):
 				"rotation_range": difficulty*35, #increase core rotation with difficulty
 				"xrange" : 0.1,
 				"xspread" : max(0.1, 0.2 - difficulty/10.0), #If core rotation increases, decrease spread
-				"yoffset" : player_height * 0.526 + difficulty * player_height/20.0,
+				"yoffset" : "ph*0.526+%f*ph/20.0"%difficulty,
 				"yrange" : 0.2
 			}
 		},	
@@ -326,7 +326,7 @@ func setup_cue_parameters(difficulty, ph):
 			CueSelector.HAND : {
 				"has_hand" : difficulty > 0.9,
 				"yoffset" : jump_offset,
-				"xspread" : player_height / 5.0,
+				"xspread" : "ph/5.0",
 			}
 		},
 		CueState.BURPEE : {
@@ -337,7 +337,7 @@ func setup_cue_parameters(difficulty, ph):
 			CueSelector.HAND : {
 				"has_hand" : difficulty > 0.9,
 				"yoffset" : jump_offset,
-				"xspread" : player_height / 5.0,
+				"xspread" : "ph/5.0",
 			}
 		},	
 		CueState.YOGA : {
@@ -348,7 +348,7 @@ func setup_cue_parameters(difficulty, ph):
 		}	
 	}
 	if kneesaver_mode:
-		cue_parameters[CueState.SQUAT][CueSelector.HEAD]["yoffset"] = player_height * 0.18
+		cue_parameters[CueState.SQUAT][CueSelector.HEAD]["yoffset"] = "ph*0.18"
 	
 	#Easy difficulties don't have double swings
 	if difficulty < 1.0:
@@ -529,8 +529,8 @@ func emit_cue_node(current_time, target_time):
 
 func handle_jump_cues(current_time, target_time, cue_emitter_state):
 	switch_floor_sign(current_time,"feet")
-	var y_hand = player_height + cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"]
-	var y_head = player_height + cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
+	var y_hand = "ph+%s"%str(cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"])
+	var y_head = "ph+%s"%str(cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"])
 	var x = 0
 	var x_head = 0
 	
@@ -539,8 +539,8 @@ func handle_jump_cues(current_time, target_time, cue_emitter_state):
 	
 	create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 	if cue_parameters[cue_emitter_state][CueSelector.HAND]["has_hand"]:
-		create_and_attach_cue(current_time,"left", x-cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time, -hand_delay * dd_df)
-		create_and_attach_cue(current_time, "right", x+cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time, -hand_delay * dd_df)
+		create_and_attach_cue(current_time,"left", "%s-%s"%[str(x),str(cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"])], y_hand, target_time, -hand_delay * dd_df)
+		create_and_attach_cue(current_time, "right", "%s+%s"%[str(x),str(cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"])], y_hand, target_time, -hand_delay * dd_df)
 	if cue_parameters[cue_emitter_state][CueSelector.HEAD]["squat_head"]:
 		y_head = player_height *0.8
 		var spacing_pre = 0.4
@@ -570,19 +570,19 @@ func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 	var y_head = cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"]
 	
 	var rot_distance_reduction = max(0.4, 1.0 - (1.5 * abs(rot)/PI))
-	var y_hand = rot_distance_reduction *  cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
+	var y_hand = "%s*%s+%s"%[str(rot_distance_reduction),str(cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"]), str(rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"])]
 	var x = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HAND]["xrange"]/2
 	
 	#print ("Crunch Spread %.2f"%(cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]))
 
 	var spread = cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]/2.0+rng.randf()*cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"]
-	var t = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), Vector3(0,0,0)).rotated(Vector3(0,0,1), rot)
-	var tmp = t.xform(Vector3(x+spread,y_hand,0))		
+	var t = "Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), Vector3(0,0,0)).rotated(Vector3(0,0,1), %f)"%rot
+	var tmp = "%s.xform(Vector3(%f,(%s),0))"%[t,x+spread,y_hand]		
 	
 	if crunch_state == CrunchState.HAND:
-		create_and_attach_cue(current_time,"right", tmp.x, tmp.y, target_time,0,0,"",null,null,0.5)
-		tmp = t.xform(Vector3(x-spread,y_hand,0))		
-		create_and_attach_cue(current_time,"left", tmp.x,tmp.y, target_time,0,0,"",null,null,0.5)
+		create_and_attach_cue(current_time,"right", "%s.x"%tmp, "%s.y"%tmp, target_time,0,0,"",null,null,0.5)
+		tmp = "%s.xform(Vector3(%f,(%s),0))"%[t,x-spread,y_hand]				
+		create_and_attach_cue(current_time,"left", "%s.x"%tmp, "%s.y"%tmp, target_time,0,0,"",null,null,0.5)
 	elif crunch_state == CrunchState.HEAD:
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 	elif crunch_state == CrunchState.MEDIUM_HOLD:
@@ -687,8 +687,8 @@ func handle_burpee_cues(current_time, target_time, cue_emitter_state):
 	var dd_df = fly_distance/fly_time	
 	var y_hand = y_head			
 	if cue_parameters[cue_emitter_state][CueSelector.HAND]["has_hand"]:
-		create_and_attach_cue(current_time+time_offset,"left", x_head-cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+time_offset, -hand_delay * dd_df, 0, "burpee_hand")
-		create_and_attach_cue(current_time+time_offset,"right", x_head+cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"], y_hand, target_time+time_offset, -hand_delay * dd_df, 0, "burpee_hand")		
+		create_and_attach_cue(current_time+time_offset,"left", "%s-%s"%[str(x_head),str(cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"])], y_hand, target_time+time_offset, -hand_delay * dd_df, 0, "burpee_hand")
+		create_and_attach_cue(current_time+time_offset,"right", "%s+%s"%[str(x_head),str(cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"])], y_hand, target_time+time_offset, -hand_delay * dd_df, 0, "burpee_hand")		
 	
 #	if exercise_changed:
 #		burpee_state = BurpeeState.JUMP
@@ -738,9 +738,9 @@ func handle_yoga_cues(current_time, target_time, cue_emitter_state):
 	yoga_state = state_transition(yoga_state, yoga_state_model)
 
 	if yoga_state == YogaState.LEFT:
-		create_and_attach_cue(current_time,"left_hold", -0.3*player_height, 0.85 * player_height, target_time, 0, target_time+0.5)
+		create_and_attach_cue(current_time,"left_hold", "-0.3*ph", "0.85*ph", target_time, 0, target_time+0.5)
 	else:
-		create_and_attach_cue(current_time,"right_hold", 0.3*player_height, 0.85 * player_height, target_time, 0, target_time+0.5)
+		create_and_attach_cue(current_time,"right_hold", "0.3*ph", "0.85*ph", target_time, 0, target_time+0.5)
 
 
 
@@ -762,7 +762,7 @@ func handle_stand_cues(current_time,target_time,cue_emitter_state):
 		return
 		
 	if stand_state == StandState.DOUBLE_SWING:
-		handle_double_swing_cues(current_time, target_time, player_height*0.8, cue_emitter_state, stand_state_model_changed)
+		handle_double_swing_cues(current_time, target_time, "ph*0.8", cue_emitter_state, stand_state_model_changed)
 	elif stand_state == StandState.WINDMILL_TOE:
 		handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, stand_state_model_changed)
 	else:
@@ -776,27 +776,27 @@ func get_double_swing_y(y_hand_base, high):
 	var delta = 1.0 - base
 
 	if high:
-		y_hand = y_hand_base - (delta * rng.randf() + base) * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]/2.0
+		y_hand = "%s-%f*%s/2.0"%[str(y_hand_base), (delta * rng.randf() + base), str(cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"])]
 	else:
-		y_hand = y_hand_base + (delta * rng.randf() + base) * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]/2.0
+		y_hand = "%s+%f*%s/2.0"%[str(y_hand_base), (delta * rng.randf() + base) , str(cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"])]
 	return y_hand
 
 var last_double_swing_left = true	
 var last_double_swing_high = true
 func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitter_state, state_change = false):	
-	var x_hand = cue_parameters[cue_emitter_state][CueSelector.HAND]["double_swing_spread"]
+	var x_hand = str(cue_parameters[cue_emitter_state][CueSelector.HAND]["double_swing_spread"])
 
 	if state_change:
 		last_double_swing_high = (randi()%2 == 0)
 		last_double_swing_left = (randi()%2 == 0)
 	if not last_double_swing_left:
-		x_hand = -x_hand
+		x_hand = "-%s"%x_hand
 	
 	var y_hand = get_double_swing_y(y_hand_base, last_double_swing_high)
 	last_double_swing_high = not last_double_swing_high
 
-	create_and_attach_cue(current_time,"left", x_hand-0.1, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
-	create_and_attach_cue(current_time,"right", x_hand+0.1, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
+	create_and_attach_cue(current_time,"left", "%s-0.1"%x_hand, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
+	create_and_attach_cue(current_time,"right", "%s+0.1"%x_hand, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
 
 	if min_cue_space >= 0.5:	
 		var double_punch_delay = 0.4
@@ -804,8 +804,8 @@ func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitte
 		y_hand = get_double_swing_y(y_hand_base, last_double_swing_high)
 		last_double_swing_high = not last_double_swing_high
 		
-		create_and_attach_cue(current_time+double_punch_delay,"left", -x_hand-0.1, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
-		create_and_attach_cue(current_time+double_punch_delay,"right", -x_hand+0.1, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
+		create_and_attach_cue(current_time+double_punch_delay,"left", "-(%s)-0.1"%x_hand, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
+		create_and_attach_cue(current_time+double_punch_delay,"right", "-(%s)+0.1"%x_hand, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
 	else:
 		last_double_swing_left = not last_double_swing_left
 	
@@ -852,7 +852,7 @@ func handle_stand_cues_regular(current_time, target_time, cue_emitter_state):
 	var node_selector = rng.randi()%100
 	
 	#var y_hand = player_height + cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
-	var y_hand = "ph+%f"%(cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"])
+	var y_hand = "ph+%s+%f*%s"%[str(cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"]), rng.randf(), str(cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"])]
 	var y_head = "ph+%f"%cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
 	
 	var side = 1.0
@@ -922,7 +922,7 @@ func handle_squat_cues(current_time, target_time, cue_emitter_state):
 		return
 
 	if squat_state == SquatState.DOUBLE_SWING:
-		handle_double_swing_cues(current_time, target_time, player_height/2.0, cue_emitter_state, squat_state_model_change)
+		handle_double_swing_cues(current_time, target_time, "ph/2.0", cue_emitter_state, squat_state_model_change)
 	elif squat_state == SquatState.CROSS_CUT:
 		handle_squat_cues_cross_cut(current_time, target_time, cue_emitter_state)	
 	else:
@@ -960,10 +960,10 @@ func handle_squat_cues_regular(current_time, target_time, cue_emitter_state):
 
 	if is_high_squat:
 		#Put it in the uper 25% range
-		y_head = "ph/2.0+%f"%(cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + (cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"] - rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"] * 0.25 ))
+		y_head = "ph/2.0+%s+%s-%f*%s*0.25"%[str(cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]),str(cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"]), rng.randf(), str(cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"])]
 	else:
 		#Put it in the lower 25% range
-		y_head = "ph/2.0+%f"%(cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"] * 0.25)
+		y_head = "ph/2.0+%s+%f*%s*0.25"%[str(cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]), rng.randf(), str(cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"])]
 	is_high_squat = not is_high_squat
 
 	var y_hand = "%s+%f"%[y_head,(rng.randf() * 0.4 - 0.2)]
