@@ -218,6 +218,8 @@ func setup_game_data():
 var player_head
 var spectator_cam
 func _ready():
+	if GameVariables.ar_mode:
+		gu.deactivate_node(get_node("MainStage/blue_outdoor_stage"))
 	
 	if not GameVariables.vr_mode:
 		player_head = load("res://scenes/PlayerHead.tscn").instance()

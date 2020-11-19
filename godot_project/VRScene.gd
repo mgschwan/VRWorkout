@@ -57,9 +57,11 @@ var ovr_vr_api_proxy = null;
 
 var ovr_hand_tracking = null;
 
+
 var arvr_ovr_mobile_interface = null;
 var arvr_oculus_interface = null;
 var arvr_open_vr_interface = null;
+var arvr_webxr_interface = null;
 
 func _initialize_OVR_API():
 	# load the .gdns classes.
@@ -94,6 +96,64 @@ func handle_mobile_permissions():
 	if not (read_storage_perm and write_storage_perm):
 		print ("Requesting permissions")
 		OS.request_permissions()
+
+
+# webxr callback
+func _webxr_cb_session_supported(a, b):
+	print("WebXR session is supported: " + str(a) + ", " + str(b));
+	pass
+
+func _webxr_cb_session_started():
+	get_viewport().arvr = true
+	print("WebXR Session Started; reference space type: " + arvr_webxr_interface.reference_space_type);
+
+signal signal_webxr_started;
+
+func _webxr_initialize(enable_vr):
+	if (!enable_vr):
+		GameVariables.vr_mode = false;
+		print("  Starting in nonVR mode");
+		emit_signal("signal_webxr_started");
+		return;
+		
+	if (arvr_webxr_interface.initialize()):
+		get_viewport().arvr = true;
+		OS.vsync_enabled = false;
+		GameVariables.vr_mode = true;
+		print("  Success initializing WebXR Interface.");
+		emit_signal("signal_webxr_started")
+	else:
+		OS.alert("Failed to initialize WebXR Interface")
+		GameVariables.vr_mode = false;
+		emit_signal("signal_webxr_started");
+		
+# create two buttons and connect them to _webxr_initialize; this is required
+# for WebXR because initializing it on webpage load might fail
+func _webxr_create_entervr_buttons():
+	var enter_vr_button = Button.new();
+	var simulate_vr_button = Button.new();
+	
+	# the info label here is only for info during dev right now; it will be replaced
+	# in the future by something more generic
+	var info_label = Label.new();
+	info_label.text = "VRWorkout WebXR Demo";
+	
+	enter_vr_button.text = "Enter VR";
+	simulate_vr_button.text = "Simulator Only"
+
+	var vbox = VBoxContainer.new();
+	vbox.add_child(info_label);
+	vbox.add_child(enter_vr_button);
+	#vbox.add_child(simulate_vr_button);
+	var centercontainer = CenterContainer.new();
+	centercontainer.rect_size = OS.get_real_window_size();
+	centercontainer.add_child(vbox);
+	get_tree().get_current_scene().add_child(centercontainer);
+
+	enter_vr_button.connect("pressed", self, "_webxr_initialize", [true]);
+	#simulate_vr_button.connect("pressed", self, "_webxr_initialize", [false]);
+
+
 
 func _on_Controller_Tracking_Lost(controller):
 	if level != null:
@@ -146,10 +206,12 @@ func _on_Tracker_added(tracker_name, type, id):
 			print ("Left controller")
 			new_controller = left_controller_blueprint.instance()
 			new_controller.is_left = true
+			left_controller = new_controller
 		else:			
 			print ("Right controller")	
 			new_controller = right_controller_blueprint.instance()
 			new_controller.is_left = false
+			right_controller = new_controller
 
 		new_controller.controller_id = id
 		get_node("ARVROrigin").add_child(new_controller)
@@ -169,15 +231,18 @@ func set_detail_selection_mode(value):
 			print ("Set tracker detail (%s): %s"%[str(t),str(value)])
 			t.set_detail_select(value)
 
-func _enter_tree():
+func _enter_tree():		
+	check_ar_mode()
+	
 	if GameVariables.demo_mode:
 		ProjectSettings.set("application/config/backend_server", "http://127.0.0.1:5000")
 
 
 func initialize():
-	var arvr_ovr_mobile_interface = ARVRServer.find_interface("OVRMobile");
-	var arvr_oculus_interface = ARVRServer.find_interface("Oculus");
-	var arvr_open_vr_interface = ARVRServer.find_interface("OpenVR");
+	arvr_ovr_mobile_interface = ARVRServer.find_interface("OVRMobile");
+	arvr_oculus_interface = ARVRServer.find_interface("Oculus");
+	arvr_open_vr_interface = ARVRServer.find_interface("OpenVR");
+	arvr_webxr_interface = ARVRServer.find_interface("WebXR");
 
 	ARVRServer.connect("tracker_added",self,"_on_Tracker_added")
 	ARVRServer.connect("tracker_removed",self, "_on_Tracker_removed")
@@ -228,14 +293,33 @@ func initialize():
 			OS.vsync_enabled = false;
 			GameVariables.vr_mode = true;	
 			get_viewport().keep_3d_linear = true
+	elif arvr_webxr_interface:
+			print("  Found WebXR Interface.");
+			arvr_webxr_interface.connect("session_supported", self, "_webxr_cb_session_supported")
+			arvr_webxr_interface.connect("session_started", self, "_webxr_cb_session_started")
+			arvr_webxr_interface.session_mode = 'immersive-vr'
+			arvr_webxr_interface.required_features = 'local-floor'
+			arvr_webxr_interface.optional_features = 'bounded-floor'
+			arvr_webxr_interface.requested_reference_space_types = 'bounded-floor, local-floor, local'
+			arvr_webxr_interface.is_session_supported("immersive-vr")
+			_webxr_create_entervr_buttons();
 	else:
 		#Not running in VR / Demo mode
 		cam.translation.y = demo_mode_player_height
 		cam.rotation.x = -0.4
-		
+	
 
+func check_ar_mode():
+	var isar = false
+	print ("Checking AR mdoe. System: %s"%OS.get_name())
+	if OS.get_name() == "HTML5":
+		isar = JavaScript.eval("location.href.indexOf('?ar=1') > 0")
+		print ("IS AR?: %s"%str(isar))
+	GameVariables.ar_mode = isar
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
 	GameVariables.device_id = str(gu.get_device_id())
 	GameVariables.vr_camera = get_node("ARVROrigin/ARVRCamera")
 	GameVariables.hit_player = get_node("HitPlayer")
@@ -268,9 +352,6 @@ func _ready():
 	
 	level_blueprint = preload("res://scenes/Level.tscn")
 	levelselect_blueprint = preload("res://scenes/Levelselect.tscn")
-	if not GameVariables.vr_mode:
-		_on_Tracker_added("right", ARVRServer.TRACKER_CONTROLLER, 1)
-		_on_Tracker_added("left", ARVRServer.TRACKER_CONTROLLER, 2)
 
 var xrot = 0.0
 var yrot = 0.0
@@ -295,9 +376,11 @@ func _input(event):
 		if update_controllers:			
 			var arm_length = min(0.6,demo_mode_player_height/2.0)
 			var tmp = cam.transform.xform(Vector3(0.15,-0.25,-arm_length))
-			GameVariables.trackers[0].translation = tmp
-			tmp = cam.transform.xform(Vector3(-0.15,-0.25,-arm_length))	
-			GameVariables.trackers[1].translation = tmp
+			if right_controller:
+				right_controller.translation = tmp
+			if left_controller:
+				tmp = cam.transform.xform(Vector3(-0.15,-0.25,-arm_length))	
+				left_controller.translation = tmp
 	
 			
 func _on_level_finished	():
@@ -312,13 +395,15 @@ func _on_level_finished_actual(valid_end):
 	#In case the player exited while controller were hidden
 	set_controller_visible(true)
 	
-	if record_tracker_data:
+	if record_tracker_data and ProjectSettings.get("game/is_oculusquest"):
 		print ("Storing tracker data")
 		var f = File.new()
-		f.open("user://tracker.data", File.WRITE)
+		f.open("/sdcard/tracker.data", File.WRITE)
 		f.store_var(tracking_data)
 		f.close()
 		tracking_data.clear()	
+	
+	GameVariables.override_beatmap = false
 	
 	print ("Level is finished ... remove from scene")
 	GameVariables.game_result = level.get_points()
@@ -489,8 +574,8 @@ func _process(delta):
 		if t:	
 			_update_hand_model(t, t.collision_root, t.model, t.last_controller);
 
-	#if record_tracker_data and left_controller and right_controller:
-	#	tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
+	if record_tracker_data and left_controller and right_controller:
+		tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
 
 #Return the config parameters that should be stored in the config file
 func get_persisting_parameters():
@@ -499,7 +584,8 @@ func get_persisting_parameters():
 			"game/equalizer": ProjectSettings.get("game/equalizer"),
 			"game/exercise/kneesaver": ProjectSettings.get("game/exercise/kneesaver"),
 			"game/easy_transition": ProjectSettings.get("game/easy_transition"),
-			"game/instructor": ProjectSettings.get("game/instructor")
+			"game/instructor": ProjectSettings.get("game/instructor"),
+			"game/override_beats": ProjectSettings.get("game/override_beats")
 	}
 	
 var game_statistics = {}
@@ -509,10 +595,12 @@ func _on_Area_level_selected(filename, diff, num):
 		#Store the parameters that should survive a restart
 		gu.store_persistent_config(GameVariables.config_file_location, get_persisting_parameters())
 		
+		record_tracker_data = ProjectSettings.get("game/record_tracker")
+		
 		set_beast_mode(ProjectSettings.get("game/beast_mode"))
 		level = level_blueprint.instance()
 		
-		GameVariables.override_beatmap = false
+		GameVariables.override_beatmap = ProjectSettings.get("game/override_beats")
 		if diff == 3:
 			GameVariables.override_beatmap = true
 		
@@ -585,6 +673,9 @@ func _on_Splashscreen_finished():
 	levelselect.translation = Vector3(0,0,0)
 	levelselect.connect("level_selected",self,"_on_Area_level_selected")
 
+	if not GameVariables.vr_mode:
+		_on_Tracker_added("right", ARVRServer.TRACKER_CONTROLLER, 1)
+		_on_Tracker_added("left", ARVRServer.TRACKER_CONTROLLER, 2)
 
 	splashscreen.queue_free()
 	add_child(levelselect)

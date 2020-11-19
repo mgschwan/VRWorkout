@@ -542,7 +542,7 @@ func handle_jump_cues(current_time, target_time, cue_emitter_state):
 		create_and_attach_cue(current_time,"left", "%s-%s"%[str(x),str(cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"])], y_hand, target_time, -hand_delay * dd_df)
 		create_and_attach_cue(current_time, "right", "%s+%s"%[str(x),str(cue_parameters[cue_emitter_state][CueSelector.HAND]["xspread"])], y_hand, target_time, -hand_delay * dd_df)
 	if cue_parameters[cue_emitter_state][CueSelector.HEAD]["squat_head"]:
-		y_head = player_height *0.8
+		y_head = "ph*0.8"
 		var spacing_pre = 0.4
 		var spacing_post = 0.4
 		create_and_attach_cue(current_time + spacing_pre,"head", x_head, y_head, target_time+spacing_pre, 0, 0, "jump_squat")
@@ -588,14 +588,14 @@ func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 	elif crunch_state == CrunchState.MEDIUM_HOLD:
 		x_head = 0
 		if medium_hold_high:
-			y_head = player_height/1.8
+			y_head = "ph/1.8"
 		else:
-			y_head = player_height/3.1
+			y_head = "ph/3.1"
 		medium_hold_high = not medium_hold_high
 			
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time, 0,0,"", null,null, 0.4)
-		create_and_attach_cue(current_time + 0.1,"right", x_head + player_height/5.0, y_head, target_time+0.1,0,0,"",null,null,0.3)
-		create_and_attach_cue(current_time + 0.1,"left", x_head - player_height/5.0, y_head, target_time+0.1,0,0,"",null,null,0.3)	
+		create_and_attach_cue(current_time + 0.1,"right", "%s+ph/5,0"%str(x_head), y_head, target_time+0.1,0,0,"",null,null,0.3)
+		create_and_attach_cue(current_time + 0.1,"left", "%s-ph/5.0"%str(x_head), y_head, target_time+0.1,0,0,"",null,null,0.3)	
 
 ############################# PUSHUP ######################################
 
@@ -628,8 +628,8 @@ func handle_pushup_cues(current_time, target_time, cue_emitter_state):
 		#side plank
 		x_head = 0
 		x = 0
-		y_head = player_height * 0.5
-		y_hand = player_height * 0.9
+		y_head = "ph*0.5"
+		y_hand = "ph*0.9"
 
 		var hand_delay = 0.15
 		var dd_df = fly_distance/fly_time				
@@ -637,10 +637,10 @@ func handle_pushup_cues(current_time, target_time, cue_emitter_state):
 		temporary_cue_space_extension = cue_parameters[cue_emitter_state]["sideplank_cue_space"]
 				
 		if pushup_state == PushupState.LEFT_SIDEPLANK:
-			create_and_attach_cue(current_time,"head_left", x_head-0.3, y_head, target_time,0,0,"sideplank")
+			create_and_attach_cue(current_time,"head_left", "%s-0.3"%str(x_head), y_head, target_time,0,0,"sideplank")
 			create_and_attach_cue(current_time,"right", x, y_hand, target_time+hand_delay, -hand_delay * dd_df,0,"sideplank")
 		else:
-			create_and_attach_cue(current_time,"head_right", x_head+0.3, y_head, target_time,0,0,"sideplank")
+			create_and_attach_cue(current_time,"head_right", "%s+0.3"%str(x_head), y_head, target_time,0,0,"sideplank")
 			create_and_attach_cue(current_time,"left", x, y_hand, target_time + hand_delay, -hand_delay * dd_df,0,"sideplank")
 		if cue_parameters[cue_emitter_state]["sideplank_has_pushup"]:
 			var tmp = 3*temporary_cue_space_extension / 4.0

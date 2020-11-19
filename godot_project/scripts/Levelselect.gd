@@ -85,6 +85,9 @@ func update_widget():
 	get_node("SettingsCarousel/Switchboard/ExtendedSwitch").value = ProjectSettings.get("game/easy_transition")
 	get_node("SettingsCarousel/Switchboard/ExtendedSwitch").update_switch()
 
+	get_node("BPM/OverrideBeats").value = ProjectSettings.get("game/override_beats")
+	get_node("BPM/OverrideBeats").update_switch()
+
 
 	GameVariables.exercise_state_list = []
 	
@@ -194,6 +197,10 @@ func _on_StrengthCardioSwitch_toggled(value):
 
 func _on_EqualizerSwitch_toggled(value):
 	ProjectSettings.set("game/equalizer", value)
+	
+func _on_OverrideBeats_toggled(value):
+	ProjectSettings.set("game/override_beats", value)
+
 
 
 func _on_SongSelector_level_selected(filename, difficulty, level_number):
@@ -350,3 +357,5 @@ func _on_BattleMode_selected(team, enemy):
 		GameVariables.battle_enemy = enemy	
 		GameVariables.battle_mode = GameVariables.BattleMode.CPU
 	update_battle_mode()
+
+

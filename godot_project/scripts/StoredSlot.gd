@@ -83,13 +83,14 @@ func _ready():
 		gu.deactivate_node(get_node("SaveButton"))
 		
 	if GameVariables.game_mode == GameVariables.GameMode.STORED and GameVariables.selected_game_slot == slot_number:
+		GameVariables.game_mode = GameVariables.GameMode.STANDARD
+
 		print ("Saving game slot")
 		if score.get("points",0) < GameVariables.game_result.get("points",0):
 			score["points"] = GameVariables.game_result.get("points",0)
 			score["score"] = GameVariables.game_result.get("vrw_score",0)
 			duration = GameVariables.game_result.get("time",0)
 			save_exercise_slot(slot_number, exercise_list)
-			GameVariables.game_mode = GameVariables.GameMode.STANDARD
 	
 	if type == SlotType.ONLINE_CHALLENGE:
 		var slot_index = slot_number - 1

@@ -255,6 +255,11 @@ default_text = "Hit to set bpm\\nfor Freeplay mode"
 stream = ExtResource( 20 )
 bus = "Voice"
 
+[node name="OverrideBeats" parent="BPM" instance=ExtResource( 15 )]
+transform = Transform( -0.982105, 0.0147357, -0.187757, -0.0600452, 0.92041, 0.386317, 0.178506, 0.390677, -0.903054, -0.0119992, 0.27563, 0.160782 )
+ontext = "Override beats"
+offtext = "Default beats"
+
 [node name="TutorialVideo" parent="." instance=ExtResource( 22 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.04662, 0.781789, -1.70517e-07 )
 
@@ -715,29 +720,29 @@ visible = false
 ontext = "Save"
 
 [node name="CreateChallengeButton" parent="SettingsCarousel/Battle" instance=ExtResource( 24 )]
-transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, -1.26531, 1.44111, -0.6494 )
+transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, -1.26531, 1.37788, -0.6494 )
 font_size = 20
 ontext = "Create\\nChallenge"
 
 [node name="Opponents" type="Spatial" parent="SettingsCarousel/Battle"]
 
 [node name="NoEnemy" parent="SettingsCarousel/Battle/Opponents" instance=ExtResource( 10 )]
-transform = Transform( -2.8213e-08, -0.1, 4.37114e-09, 0, -4.37114e-09, -0.1, 0.1, -2.8213e-08, 1.23323e-15, -1.23036, 1.40794, -0.337731 )
+transform = Transform( -2.8213e-08, -0.1, 4.37114e-09, 0, -4.37114e-09, -0.1, 0.1, -2.8213e-08, 1.23323e-15, -1.23036, 1.34471, -0.337731 )
 image = ExtResource( 34 )
 active_marker = "WorkoutMarker"
 
 [node name="EasyEnemy" parent="SettingsCarousel/Battle/Opponents" instance=ExtResource( 10 )]
-transform = Transform( -2.8213e-08, -0.1, 4.37114e-09, 0, -4.37114e-09, -0.1, 0.1, -2.8213e-08, 1.23323e-15, -1.23036, 1.40794, -0.101524 )
+transform = Transform( -2.8213e-08, -0.1, 4.37114e-09, 0, -4.37114e-09, -0.1, 0.1, -2.8213e-08, 1.23323e-15, -1.23036, 1.34471, -0.101524 )
 image = ExtResource( 32 )
 active_marker = "WorkoutMarker"
 
 [node name="MediumEnemy" parent="SettingsCarousel/Battle/Opponents" instance=ExtResource( 10 )]
-transform = Transform( -2.8213e-08, -0.1, 4.37114e-09, 0, -4.37114e-09, -0.1, 0.1, -2.8213e-08, 1.23323e-15, -1.23036, 1.40794, 0.136019 )
+transform = Transform( -2.8213e-08, -0.1, 4.37114e-09, 0, -4.37114e-09, -0.1, 0.1, -2.8213e-08, 1.23323e-15, -1.23036, 1.34471, 0.136019 )
 image = ExtResource( 19 )
 active_marker = "WorkoutMarker"
 
 [node name="HardEnemy" parent="SettingsCarousel/Battle/Opponents" instance=ExtResource( 10 )]
-transform = Transform( -2.8213e-08, -0.1, 4.37114e-09, 0, -4.37114e-09, -0.1, 0.1, -2.8213e-08, 1.23323e-15, -1.23036, 1.40794, 0.367736 )
+transform = Transform( -2.8213e-08, -0.1, 4.37114e-09, 0, -4.37114e-09, -0.1, 0.1, -2.8213e-08, 1.23323e-15, -1.23036, 1.34471, 0.367736 )
 image = ExtResource( 33 )
 active_marker = "WorkoutMarker"
 
@@ -769,6 +774,7 @@ ontext = "Battle"
 [node name="PlayerHeightAdjuster" parent="." instance=ExtResource( 26 )]
 transform = Transform( 0.0521398, 0, -0.0539115, 0, 0.075, 0, 0.0539115, 0, 0.0521398, 0.901743, 0, -0.952223 )
 [connection signal="selected" from="Recenter" to="." method="_on_Recenter_selected"]
+[connection signal="toggled" from="BPM/OverrideBeats" to="." method="_on_OverrideBeats_toggled"]
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
 [connection signal="selected" from="SongSelector/Freeplay1" to="SongSelector" method="_on_level_block_selected"]
 [connection signal="selected" from="SongSelector/Freeplay2" to="SongSelector" method="_on_level_block_selected"]

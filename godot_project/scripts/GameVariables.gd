@@ -19,6 +19,7 @@ var app_name = "VRWorkout"
 var api_version = 1
 var player_name = "Player"
 var vr_mode = true
+var ar_mode = false
 
 var detail_selection_mode = true
 var trackers = null
@@ -411,6 +412,10 @@ func setup_globals_demo():
 	ProjectSettings.set("game/instructor", true)
 	ProjectSettings.set("game/easy_transition", true)
 	
+	ProjectSettings.set("game/override_beats", false)
+	ProjectSettings.set("game/record_tracker", true)
+
+
 	
 
 func setup_globals_regular():
@@ -438,6 +443,10 @@ func setup_globals_regular():
 	ProjectSettings.set("game/portal_connection", false)
 	ProjectSettings.set("game/instructor", true)
 	ProjectSettings.set("game/easy_transition", true)
+	ProjectSettings.set("game/override_beats", false)
+	ProjectSettings.set("game/record_tracker", false)
+
+
 
 
 
