@@ -11,6 +11,9 @@ var model = null
 # var a = 2
 # var b = "text"
 
+var gu = GameUtilities.new()
+
+
 var last_controller = [{"pos": Vector3(0,0,0), "ts": 0, "vector": Vector3(0,0,0)}]
 
 var last_pos = [Vector3(0,0,0),Vector3(0,0,0),Vector3(0,0,0)]
@@ -28,8 +31,22 @@ func fix_global_transform(fix):
 	else:
 		get_node("CenterMarker").hide()
 
+
+func set_hand_mode(hand_tracking):
+	if hand_tracking:
+		get_node("Area/hand_model").set_hand_active(true)
+		gu.deactivate_node(get_node("Area/CollisionShape"))
+		gu.deactivate_node(get_node("Area/handle_ball"))
+	else:
+		get_node("Area/hand_model").set_hand_active(false)
+		gu.activate_node(get_node("Area/CollisionShape"))
+		gu.activate_node(get_node("Area/handle_ball"))
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	set_hand_mode(false)
+	
 	collision_root = get_node("Area")
 	model = get_node("Area/handle_ball")
 	if ProjectSettings.get("game/is_oculusquest"):
@@ -93,6 +110,7 @@ func set_visible(value):
 		
 #Resize the collision area to make menu selection easier
 func set_detail_select(value):
+	get_node("Area/hand_model").set_detail_select(value)
 	var main_area = get_node("Area/CollisionShape")
 	if value:
 		print ("Set detail mode")
@@ -102,3 +120,6 @@ func set_detail_select(value):
 
 
 
+
+func _on_Area_body_exited(area):
+	pass # Replace with function body.

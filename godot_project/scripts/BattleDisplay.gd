@@ -2,6 +2,8 @@ extends Spatial
 
 var gu = GameUtilities.new()
 
+
+
 onready var player_bar1 = $HealthBarLeft
 onready var player_bar2 = $HealthBarRight
 
@@ -10,7 +12,6 @@ onready var player_energybar2 = $EnergyBarRight
 
 onready var player1 = $PlayerLeft
 onready var player2 = $PlayerRight
-onready var buttons = $Buttons
 
 var health_total = 100.0
 var energy_total = 100.0
@@ -168,8 +169,6 @@ func setup_data(duration):
 	  base_hit_damage = clamp(health_total/(duration/20.0), 5, 20)
 
 
-var current_button_height = 0
-var min_button_height = 0
 var last_eval = 0
 var eval_interval = 500
 func _process(delta):	
@@ -183,8 +182,6 @@ func _process(delta):
 		if last_eval + eval_interval < now:
 			last_eval = now 
 			cpu_select_strategy()
-		current_button_height = clamp((current_button_height*0.95 + GameVariables.vr_camera.translation.y*0.05),0.6,2.0)
-		buttons.translation.z = min_button_height + current_button_height
 	
 var enemy_images = {
 	"easy": "res://assets/enemy_easy.jpg",
@@ -196,11 +193,13 @@ var cue_emitter
 func _ready():
 	cue_emitter = get_parent().get_node("cue_emitter")
 	
+	get_node("GestureInterface").attach(GameVariables.vr_camera)
+	
 	if GameVariables.battle_mode != GameVariables.BattleMode.NO:
 		cpu_player.character = GameVariables.battle_enemy
 		get_node("EnemyPanel").set_image(enemy_images.get(cpu_player.character))
 		
-		min_button_height = buttons.translation.z
+		
 		player1.player_score = 0
 		player1.player_points = 0
 		player1.player_max_health = health_total
@@ -235,7 +234,6 @@ func _on_Attack_activated():
 	if can_attack(player1):
 		player1.player_is_attack = true
 		player1.charge_attack(2.0)
-
 
 func _on_Defense_activated():
 	if can_defend(player1):

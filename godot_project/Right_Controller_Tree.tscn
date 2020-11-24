@@ -74,3 +74,5 @@ material/0 = ExtResource( 5 )
 [connection signal="timeout" from="RumbleTimer" to="." method="_on_RumbleTimer_timeout"]
 [connection signal="body_entered" from="Area" to="Area" method="_on_Area_body_entered"]
 [connection signal="body_exited" from="Area" to="Area" method="_on_Area_body_exited"]
+[connection signal="body_entered" from="Area/hand_model" to="Area" method="_on_Area_body_entered"]
+[connection signal="body_exited" from="Area/hand_model" to="." method="_on_Area_body_exited"]

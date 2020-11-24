@@ -359,3 +359,11 @@ func _on_BattleMode_selected(team, enemy):
 	update_battle_mode()
 
 
+
+
+func _on_TrackerRecorderButton_selected():
+	ProjectSettings.set("game/record_tracker",true)
+
+
+func _on_AudioStreamPlayer_finished():
+	get_node("AudioStreamPlayer").play(0)

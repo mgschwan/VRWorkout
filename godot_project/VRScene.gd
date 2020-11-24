@@ -171,6 +171,9 @@ func _on_Tracker_removed(tracker_name, type, id):
 			GameVariables.trackers.erase(t)
 			t.queue_free()
 			break
+
+func is_hand(name):
+	return (name.to_lower().find("tracked") >= 0 and name.to_lower().find("hand") >= 0)
 			
 func _on_Tracker_added(tracker_name, type, id):
 	print ("Tracker added: %s / %d / %d"%[tracker_name, type, id])	
@@ -214,6 +217,7 @@ func _on_Tracker_added(tracker_name, type, id):
 			right_controller = new_controller
 
 		new_controller.controller_id = id
+		new_controller.set_hand_mode(is_hand(tracker_name))
 		get_node("ARVROrigin").add_child(new_controller)
 		new_controller.set_detail_select(GameVariables.detail_selection_mode)
 		GameVariables.trackers.append(new_controller)
@@ -276,6 +280,14 @@ func initialize():
 			#that this is because of th FPS not being a multiple of 30
 			# deactivated for now # #Engine.target_fps = 72 
 			_initialize_OVR_API()
+
+			if ovr_performance:
+				print ("Set foveation performance level")
+				ovr_performance.set_foveation_level(4)
+				ovr_performance.set_enable_dynamic_foveation(true)
+			else:
+				print ("Can't set dynamic foveation")
+
 			GameVariables.vr_mode = true
 		
 	elif arvr_oculus_interface:
@@ -615,7 +627,7 @@ func _on_Area_level_selected(filename, diff, num):
 		
 		level.audio_filename = filename
 		level.song_index_parameter = num
-		level.player_height = ProjectSettings.get("game/player_height")
+		GameVariables.player_height = ProjectSettings.get("game/player_height")
 		level.bpm = ProjectSettings.get("game/bpm")
 		level.first_beat = levelselect.get_last_beat()
 		level.connect("level_finished",self,"_on_level_finished")
@@ -624,7 +636,7 @@ func _on_Area_level_selected(filename, diff, num):
 		add_child(level)	
 	
 		if not GameVariables.vr_mode:
-			demo_mode_player_height = level.player_height
+			demo_mode_player_height = GameVariables.player_height
 			level._on_HeartRateData(113)
 
 

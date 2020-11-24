@@ -34,7 +34,6 @@ var beat_index = 0
 var selected_song = 0
 var stream
 
-var player_height = 0
 var run_point_multiplier = 1
 var beast_mode = false
 var kneesaver_mode = false
@@ -110,7 +109,7 @@ func update_info(hits, max_hits, points):
 	
 	infolayer.print_info("Hits %d/%d - Song: %s (%.1f%%) - Points: %d - Speed: %.1f"% [hits,max_hits,elapsed_string,float(100*song_pos)/total,points,running_speed])
 	if update_counter % 5 == 0:
-		infolayer.print_info("Player height: %.2f Difficulty: %.1f/%.2f/%.2f - E: %.2f"%[player_height, exercise_builder.current_difficulty, exercise_builder.min_cue_space, exercise_builder.min_state_duration,actual_state_duration], "debug")
+		infolayer.print_info("Player height: %.2f Difficulty: %.1f/%.2f/%.2f - E: %.2f"%[GameVariables.player_height, exercise_builder.current_difficulty, exercise_builder.min_cue_space, exercise_builder.min_state_duration,actual_state_duration], "debug")
 	update_counter += 1
 	infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
 
@@ -183,7 +182,7 @@ func setup_game_data():
 	exercise_builder.set_fly_distance( abs(cue_emitter.translation.z-target.translation.z) + 2, abs(cue_emitter.translation.z-target.translation.z) )
 
 
-	exercise_builder.player_height = player_height
+	exercise_builder.player_height = GameVariables.player_height
 	exercise_builder.setup_difficulty(exercise_builder.current_difficulty)
 	actual_game_state = exercise_builder.cue_emitter_state
 
@@ -306,7 +305,7 @@ func _ready():
 		#error = audio_file.open(audio_filename,File.READ)
 		#infolayer.append_info(" / File opened %s" % str(audio_file.is_open()))
 		infolayer.print_info(exercise_builder.state_string(actual_game_state).to_upper(), "main")
-		infolayer.print_info("Player height: %.2f Difficulty: %.2f/%.2f"%[player_height, exercise_builder.min_cue_space, exercise_builder.min_state_duration], "debug")
+		infolayer.print_info("Player height: %.2f Difficulty: %.2f/%.2f"%[GameVariables.player_height, exercise_builder.min_cue_space, exercise_builder.min_state_duration], "debug")
 		infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
 		var audio_resource = load_audio_resource(audio_filename)
 		stream = get_node("AudioStreamPlayer")

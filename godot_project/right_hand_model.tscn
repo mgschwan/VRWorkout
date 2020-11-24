@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://hand_skeleton.gd" type="Script" id=1]
 [ext_resource path="res://right_hand_model.glb" type="PackedScene" id=2]
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=3]
+[ext_resource path="res://green_ball.tscn" type="PackedScene" id=4]
+
+[sub_resource type="SphereShape" id=1]
+radius = 9.22
 
 [node name="right_hand_model" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
@@ -64,3 +68,16 @@ bone_name = "b_r_wrist"
 
 [node name="claws" parent="ArmatureRight/Skeleton/middle_root_bone" index="0" instance=ExtResource( 3 )]
 transform = Transform( -3.25841e-07, -0.174311, -1.49429, 0, 1.99239, -0.130734, 2, -2.83989e-08, -2.43451e-07, -7, 0, 0 )
+
+[node name="ball_attachment" type="Spatial" parent="ArmatureRight/Skeleton/middle_root_bone" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.327, 0, 0 )
+
+[node name="Area" type="Area" parent="ArmatureRight/Skeleton/middle_root_bone/ball_attachment" index="0"]
+
+[node name="CollisionShape" type="CollisionShape" parent="ArmatureRight/Skeleton/middle_root_bone/ball_attachment/Area" index="0"]
+shape = SubResource( 1 )
+
+[node name="green_ball" parent="ArmatureRight/Skeleton/middle_root_bone/ball_attachment" index="1" instance=ExtResource( 4 )]
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0 )
+[connection signal="body_entered" from="ArmatureRight/Skeleton/middle_root_bone/ball_attachment/Area" to="." method="_on_Area_body_entered"]
+[connection signal="body_exited" from="ArmatureRight/Skeleton/middle_root_bone/ball_attachment/Area" to="." method="_on_Area_body_exited"]

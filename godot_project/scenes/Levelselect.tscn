@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=2]
+[gd_scene load_steps=60 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -34,6 +34,7 @@
 [ext_resource path="res://assets/enemy_easy.jpg" type="Texture" id=32]
 [ext_resource path="res://assets/enemy_hard.jpg" type="Texture" id=33]
 [ext_resource path="res://assets/enemy_none.jpg" type="Texture" id=34]
+[ext_resource path="res://audio/menu_bg_music.ogg" type="AudioStream" id=35]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.2
@@ -773,6 +774,15 @@ ontext = "Battle"
 
 [node name="PlayerHeightAdjuster" parent="." instance=ExtResource( 26 )]
 transform = Transform( 0.0521398, 0, -0.0539115, 0, 0.075, 0, 0.0539115, 0, 0.0521398, 0.901743, 0, -0.952223 )
+
+[node name="TrackerRecorderButton" parent="." instance=ExtResource( 24 )]
+transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -0.369874, 0.0648079, 0.921215 )
+visible = false
+ontext = "Record tracker"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 35 )
+volume_db = -9.0
 [connection signal="selected" from="Recenter" to="." method="_on_Recenter_selected"]
 [connection signal="toggled" from="BPM/OverrideBeats" to="." method="_on_OverrideBeats_toggled"]
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
@@ -828,3 +838,5 @@ transform = Transform( 0.0521398, 0, -0.0539115, 0, 0.075, 0, 0.0539115, 0, 0.05
 [connection signal="selected" from="ExerciseButton" to="." method="_on_ExerciseButton_selected"]
 [connection signal="selected" from="ConnectionsButton" to="." method="_on_ConnectionsButton_selected"]
 [connection signal="selected" from="BattleButton" to="." method="_on_BattleButton_selected"]
+[connection signal="selected" from="TrackerRecorderButton" to="." method="_on_TrackerRecorderButton_selected"]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
