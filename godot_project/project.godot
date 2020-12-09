@@ -34,6 +34,10 @@ config/pc_music_directory="C:/VRWorkout"
 config/vrhealth_config="user://vrhealth.txt"
 config/backend_server="http://backend.vrworkout.at:8080"
 
+[audio]
+
+output_latency.web=15
+
 [autoload]
 
 GameVariables="*res://scenes/GameVariables.tscn"

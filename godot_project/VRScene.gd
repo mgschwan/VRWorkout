@@ -597,7 +597,8 @@ func get_persisting_parameters():
 			"game/exercise/kneesaver": ProjectSettings.get("game/exercise/kneesaver"),
 			"game/easy_transition": ProjectSettings.get("game/easy_transition"),
 			"game/instructor": ProjectSettings.get("game/instructor"),
-			"game/override_beats": ProjectSettings.get("game/override_beats")
+			"game/override_beats": ProjectSettings.get("game/override_beats"),
+			"game/bpm": ProjectSettings.get("game/bpm")
 	}
 	
 var game_statistics = {}

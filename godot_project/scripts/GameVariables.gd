@@ -21,6 +21,9 @@ var player_name = "Player"
 var vr_mode = true
 var ar_mode = false
 
+var multiplayer_server = "ws://127.0.0.1:33105"
+
+
 var player_height = 1.8
 
 var detail_selection_mode = true

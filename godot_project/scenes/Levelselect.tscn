@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=2]
+[gd_scene load_steps=61 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -35,6 +35,7 @@
 [ext_resource path="res://assets/enemy_hard.jpg" type="Texture" id=33]
 [ext_resource path="res://assets/enemy_none.jpg" type="Texture" id=34]
 [ext_resource path="res://audio/menu_bg_music.ogg" type="AudioStream" id=35]
+[ext_resource path="res://scenes/ConnectPad.tscn" type="PackedScene" id=36]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.2
@@ -320,9 +321,12 @@ transform = Transform( -4.88762e-08, 0.3, -1.31134e-08, 0, -1.31134e-08, -0.3, -
 transform = Transform( -4.88762e-08, 0.3, -1.31134e-08, 0, -1.31134e-08, -0.3, -0.3, -4.88762e-08, 2.13645e-15, 1.259, 1.791, -0.444245 )
 
 [node name="PortalSwitch" parent="SettingsCarousel/Connections/VRWorkoutConnection" instance=ExtResource( 15 )]
-transform = Transform( 3.33333, -7.70957e-20, -3.97365e-07, 3.97365e-07, -1.45704e-07, 3.33333, -1.73693e-14, -3.33333, -1.45704e-07, 0.0119298, 0.225308, 1.72995 )
+transform = Transform( 3.33333, -8.5128e-20, -3.97365e-07, 3.97365e-07, -1.45704e-07, 3.33333, -1.73693e-14, -3.33333, -1.45704e-07, -2.73725, 0.225307, 1.72995 )
 ontext = "Online: yes"
 offtext = "Online: no"
+
+[node name="ConnectPad" parent="SettingsCarousel/Connections" instance=ExtResource( 36 )]
+transform = Transform( 1, 0, -2.38419e-07, 0, 1, 0, 2.38419e-07, 0, 1, 1.27542, 1.18846, -0.45944 )
 
 [node name="Switchboard" type="Spatial" parent="SettingsCarousel"]
 

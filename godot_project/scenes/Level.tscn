@@ -1,14 +1,12 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://blue_outdoor_stage.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/SpectrumDisplay.tscn" type="PackedScene" id=3]
 [ext_resource path="res://cue_emitter.gd" type="Script" id=4]
-[ext_resource path="res://scenes/GestureInterface.tscn" type="PackedScene" id=5]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=6]
 [ext_resource path="res://exit_button.gd" type="Script" id=7]
 [ext_resource path="res://spawn_timer.gd" type="Script" id=8]
-[ext_resource path="res://scenes/HealthBar.tscn" type="PackedScene" id=9]
 [ext_resource path="res://ExerciseSelector.tscn" type="PackedScene" id=10]
 [ext_resource path="res://assets/vrworkout_logo_cracked_noise.jpg" type="Texture" id=11]
 [ext_resource path="res://PointIndicatorOrigin.tscn" type="PackedScene" id=13]
@@ -24,9 +22,7 @@
 [ext_resource path="res://floor_sign.tscn" type="PackedScene" id=23]
 [ext_resource path="res://RunIndicator.tscn" type="PackedScene" id=24]
 [ext_resource path="res://scenes/VoiceInstructor.tscn" type="PackedScene" id=25]
-[ext_resource path="res://scripts/BattleDisplay.gd" type="Script" id=26]
 [ext_resource path="res://scenes/TronCharacter.tscn" type="PackedScene" id=27]
-[ext_resource path="res://scenes/ImagePanel.tscn" type="PackedScene" id=28]
 [ext_resource path="res://models/StagePole.tscn" type="PackedScene" id=29]
 
 [sub_resource type="PlaneMesh" id=1]
@@ -215,36 +211,6 @@ transform = Transform( 0.2, 0, 0, 0, -0.168573, -0.107625, 0, 0.107625, -0.16857
 transform = Transform( 10, 0, 0, 0, 8.50029, -5.53584, 0, 5.07871, 8.45678, -0.019583, -0.28405, -0.772499 )
 mesh = SubResource( 11 )
 material/0 = null
-
-[node name="BattleDisplay" type="Spatial" parent="."]
-transform = Transform( -1, -3.82137e-15, -8.74228e-08, -8.74228e-08, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, 2.32348, -4.079 )
-script = ExtResource( 26 )
-
-[node name="HealthBarRight" parent="BattleDisplay" instance=ExtResource( 9 )]
-transform = Transform( 0.866025, 0.5, -3.35681e-08, -0.5, 0.866025, -3.78552e-08, 1.01433e-08, 4.95676e-08, 1, -2, 0, 0 )
-
-[node name="EnergyBarRight" parent="BattleDisplay" instance=ExtResource( 9 )]
-transform = Transform( 0.866025, 0.5, -3.35681e-08, -0.5, 0.866025, -3.78552e-08, 1.01433e-08, 4.95676e-08, 1, -2, 0, -0.2 )
-is_energy = true
-
-[node name="HealthBarLeft" parent="BattleDisplay" instance=ExtResource( 9 )]
-transform = Transform( -0.866025, -0.5, 1.09278e-07, -0.5, 0.866025, -8.15666e-08, -5.38547e-08, -1.25278e-07, -1, 2, 0, 0 )
-
-[node name="EnergyBarLeft" parent="BattleDisplay" instance=ExtResource( 9 )]
-transform = Transform( -0.866025, -0.5, 1.09278e-07, -0.5, 0.866025, -8.15666e-08, -5.38547e-08, -1.25278e-07, -1, 2, 0, -0.2 )
-is_energy = true
-
-[node name="PlayerLeft" parent="BattleDisplay" instance=ExtResource( 27 )]
-transform = Transform( 0.606218, -8.75459e-08, -0.35, -0.35, -1.5299e-08, -0.606218, 6.81675e-08, 0.7, -5.70222e-08, 1.93605, 0, -2.37609 )
-
-[node name="PlayerRight" parent="BattleDisplay" instance=ExtResource( 27 )]
-transform = Transform( -0.457976, -3.97828e-09, 0.529394, 0.529394, 3.99681e-08, 0.457976, -3.28298e-08, 0.7, -2.31405e-08, -2.09511, -3.50949, -2.37609 )
-
-[node name="EnemyPanel" parent="BattleDisplay" instance=ExtResource( 28 )]
-transform = Transform( -0.344645, 0.203027, -6.03983e-08, 0.203027, 0.344645, 1.77492e-08, 6.10488e-08, -1.53634e-08, -0.4, -2.49696, 0.316873, 0.536654 )
-
-[node name="GestureInterface" parent="BattleDisplay" instance=ExtResource( 5 )]
-transform = Transform( 1, -2.2215e-28, 8.47033e-22, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="streak_changed" from="cue_emitter" to="." method="_on_cue_emitter_streak_changed"]
 [connection signal="camera_entered" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_entered"]
@@ -258,10 +224,3 @@ transform = Transform( 1, -2.2215e-28, 8.47033e-22, 0, -4.37114e-08, -1, 0, 1, -
 [connection signal="beast_attack_successful" from="boxman2" to="." method="_on_boxman_beast_attack_successful"]
 [connection signal="beast_killed" from="boxman2" to="." method="_on_boxman_beast_killed"]
 [connection signal="selected" from="ExerciseSelector" to="." method="_on_ExerciseSelector_selected"]
-[connection signal="player_won" from="BattleDisplay" to="." method="_on_BattleDisplay_player_won"]
-[connection signal="attack_complete" from="BattleDisplay/PlayerLeft" to="BattleDisplay" method="_on_Attack_complete" binds= [ "left" ]]
-[connection signal="charge_complete" from="BattleDisplay/PlayerLeft" to="BattleDisplay" method="_on_Attack_charge_complete" binds= [ "left" ]]
-[connection signal="attack_complete" from="BattleDisplay/PlayerRight" to="BattleDisplay" method="_on_Attack_complete" binds= [ "right" ]]
-[connection signal="charge_complete" from="BattleDisplay/PlayerRight" to="BattleDisplay" method="_on_Attack_charge_complete" binds= [ "right" ]]
-[connection signal="attack" from="BattleDisplay/GestureInterface" to="BattleDisplay" method="_on_Attack_activated"]
-[connection signal="defense" from="BattleDisplay/GestureInterface" to="BattleDisplay" method="_on_Defense_activated"]

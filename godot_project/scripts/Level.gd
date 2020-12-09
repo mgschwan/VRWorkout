@@ -11,7 +11,7 @@ var stored
 var CueState = GameVariables.CueState
 var CueSelector = GameVariables.CueSelector
 
-onready var battle_module = $BattleDisplay
+onready var battle_module
 
 var exercise_state_model_template
 var pushup_state_model
@@ -194,9 +194,13 @@ func setup_game_data():
 	if GameVariables.battle_mode != GameVariables.BattleMode.NO:
 		cue_emitter.connect("hit_scored", battle_module, "hit_scored")
 		self.connect("set_exercise", battle_module, "set_exercise")
-		gu.activate_node(get_node("BattleDisplay"))
 		gu.deactivate_node(boxman1)
 		gu.deactivate_node(boxman2)	
+
+		battle_module = load("res://scenes/BattleDisplay.tscn").instance()
+		battle_module.name = "BattleDisplay"
+		add_child(battle_module)
+		
 		if GameVariables.battle_team == GameVariables.BattleTeam.RED:
 			get_node("MainStage/blue_outdoor_stage").set_color("red")
 			battle_module.set_player_teams(GameVariables.BattleTeam.RED,GameVariables.BattleTeam.BLUE)
@@ -204,11 +208,9 @@ func setup_game_data():
 			get_node("MainStage/blue_outdoor_stage").set_color("blue")
 			battle_module.set_player_teams(GameVariables.BattleTeam.BLUE,GameVariables.BattleTeam.RED)
 	else:
-		gu.deactivate_node(get_node("BattleDisplay"))
 		gu.activate_node(boxman1)
 		gu.activate_node(boxman2)	
-		gu.deactivate_node(get_node("BattleDisplay"))
-
+		
 	internal_state_change()
 	
 	
