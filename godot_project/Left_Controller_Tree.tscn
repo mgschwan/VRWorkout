@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Area.gd" type="Script" id=1]
 [ext_resource path="res://ControllerScript.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://forearm_model.tscn" type="PackedScene" id=8]
 [ext_resource path="res://hand_left.tscn" type="PackedScene" id=9]
 [ext_resource path="res://red_ball.tscn" type="PackedScene" id=10]
+[ext_resource path="res://MultiplayerRoom/RemoteSpatial.gd" type="Script" id=11]
 
 [sub_resource type="SphereShape" id=1]
 
@@ -70,6 +71,13 @@ wait_time = 0.2
 visible = false
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
+
+[node name="RemoteSpatial" type="Spatial" parent="."]
+script = ExtResource( 11 )
+is_local = true
+is_root = false
+transform_parent = true
+node_type = "controller"
 [connection signal="body_entered" from="Area" to="Area" method="_on_Area_body_entered"]
 [connection signal="body_exited" from="Area" to="Area" method="_on_Area_body_exited"]
 [connection signal="body_entered" from="Area/hand_model" to="Area" method="_on_Area_body_entered"]

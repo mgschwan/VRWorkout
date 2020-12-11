@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/MultiplayerAvatar.tscn" type="PackedScene" id=1]
+[ext_resource path="res://MultiplayerRoom/RemoteSpatial.gd" type="Script" id=2]
+
+[node name="RemoteAvatar" type="Spatial"]
+transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0 )
+script = ExtResource( 2 )
+
+[node name="multiplayer_avatar" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )

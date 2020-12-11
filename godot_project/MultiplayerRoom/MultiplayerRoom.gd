@@ -2,7 +2,8 @@ extends Node
 
 signal user_join(id, name)
 signal user_leave(id)
-signal add_spatial(userid, nodeid, type)
+signal add_spatial(userid, nodeid, type, parent_node)
+signal remove_spatial(userid, nodeid)
 signal connected()
 
 var self_id = -1
@@ -49,6 +50,10 @@ func get_node_position(id, target_node):
 	var node_position = nodes.get(target_node,{"pos":Vector3(0,0,0), "rot":Vector3(0,0,0)})
 	return node_position	
 
+func spatial_remove_message(node):
+	var pos_update = {"nodeid":node.get_instance_id()}
+	self.send_message("spatial_remove", pos_update)
+
 func send_move_message(node, parent, node_type):
 	var pos_update = {"nodeid":node.get_instance_id(),"parent": parent,
 													  "type" : node_type,
@@ -59,6 +64,18 @@ func send_move_message(node, parent, node_type):
 														  node.rotation.y,
 														  node.rotation.z]}
 	self.send_message("move", pos_update)
+
+func process_spatial_remove_message(data_object):
+	var data = data_object.get("data", {})
+	var id = data_object.get("id",-1)
+	var target_node = data.get("nodeid","root")
+	var user = user_list.get(id,null)
+	if user and id != self_id:
+		if "nodes" in user:
+			if target_node in user["nodes"]:
+				user["nodes"][target_node] = {"pos": Vector3(0,0,0), "rot": Vector3(0,0,0)}
+				emit_signal("remove_spatial",id,target_node) 
+
 
 func process_move_message(data_object):
 	var data = data_object.get("data", {})
@@ -75,7 +92,7 @@ func process_move_message(data_object):
 		if parent_node < 0 or parent_node in user["nodes"]:
 			if not target_node in user["nodes"]:
 				user["nodes"][target_node] = {"pos": Vector3(0,0,0), "rot": Vector3(0,0,0)}
-				emit_signal("add_spatial",id,target_node,node_type) 
+				emit_signal("add_spatial",id,target_node,node_type, parent_node) 
 			user["nodes"][target_node]["pos"] = pos
 			user["nodes"][target_node]["rot"] = rot
 		else:
@@ -103,6 +120,8 @@ func decode_data(data):
 				process_move_message(data_object)
 			"room_join":
 				process_room_join_message(data_object)
+			"spatial_remove":
+				process_spatial_remove_message(data_object)
 			"identity":
 				self_id = data_object.get("id",-1)
 			"ping":

@@ -70,3 +70,12 @@ func _on_CreateRoom_button_down():
 	if multiplayer_room:
 		multiplayer_room.connect_to_server(GameVariables.multiplayer_server, "")
 	
+func _on_ExitRoom_button_down():
+	pass # Replace with function body.
+
+
+func _on_Enter_Room_pressed():
+	#TODO: check if it's already connected and handle accordingly
+	if multiplayer_room:
+		multiplayer_room.connect_to_server(GameVariables.multiplayer_server, get_node("Viewport/CanvasLayer/Code").text)
+	 

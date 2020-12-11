@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -12,6 +12,8 @@
 [ext_resource path="res://audio/hand_hit.wav" type="AudioStream" id=10]
 [ext_resource path="res://scenes/SkyBox.tscn" type="PackedScene" id=11]
 [ext_resource path="res://MultiplayerRoom/MultiplayerRoom.gd" type="Script" id=12]
+[ext_resource path="res://MultiplayerRoom/PlayerArea.gd" type="Script" id=13]
+[ext_resource path="res://MultiplayerRoom/RemoteSpatial.gd" type="Script" id=14]
 [ext_resource path="res://audio/head_hit.wav" type="AudioStream" id=16]
 [ext_resource path="res://RemoteInterface.gd" type="Script" id=18]
 
@@ -75,6 +77,11 @@ far = 300.0
 [node name="ARVRCamera" type="ARVRCamera" parent="ARVROrigin"]
 far = 300.0
 script = ExtResource( 2 )
+
+[node name="RemoteSpatial" type="Spatial" parent="ARVROrigin/ARVRCamera"]
+script = ExtResource( 14 )
+is_local = true
+transform_parent = true
 
 [node name="RemoteTransform" type="RemoteTransform" parent="ARVROrigin/ARVRCamera"]
 transform = Transform( 1, 0, 0, 0, -0.0153054, -0.999883, 0, 0.999883, -0.0153054, 0, 0, 0 )
@@ -187,6 +194,10 @@ script = ExtResource( 18 )
 script = ExtResource( 12 )
 
 [node name="PlayerArea" type="Spatial" parent="MultiplayerRoom"]
+script = ExtResource( 13 )
 [connection signal="body_entered" from="ARVROrigin/ARVRCamera/AreaHead" to="ARVROrigin/ARVRCamera/AreaHead" method="_on_AreaHead_body_entered"]
 [connection signal="timeout" from="ARVROrigin/ARVRCamera/HUDHideTimer" to="ARVROrigin/ARVRCamera" method="_on_HUDHideTimer_timeout"]
 [connection signal="timeout" from="DemoTimer" to="." method="_on_DemoTimer_timeout"]
+[connection signal="add_spatial" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_MultiplayerRoom_add_spatial"]
+[connection signal="remove_spatial" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_MultiplayerRoom_remove_spatial"]
+[connection signal="user_leave" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_MultiplayerRoom_user_leave"]

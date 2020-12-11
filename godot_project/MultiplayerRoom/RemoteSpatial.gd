@@ -19,6 +19,12 @@ func _ready():
 	if transform_parent:
 		target_node = get_parent()
 
+func _exit_tree():
+	if multiplayer_room and target_node:
+		if is_local:
+			multiplayer_room.spatial_remove_message(target_node)
+			
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if multiplayer_room and target_node:
@@ -27,7 +33,6 @@ func _process(delta):
 				multiplayer_room.send_move_message(target_node, -1, node_type)
 			else:
 				multiplayer_room.send_move_message(target_node, target_node.get_parent().get_instance_id(), node_type)
-				
 		else:
 			var node_pos = multiplayer_room.get_node_position(remote_player_id,remote_node_id)
 			var pos = node_pos.get("pos")

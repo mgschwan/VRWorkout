@@ -164,28 +164,37 @@ expand_icon = true
 anchor_left = 0.699
 anchor_top = 0.25
 anchor_right = 0.812
-anchor_bottom = 0.375
+anchor_bottom = 0.3
 margin_right = 86.0
 margin_bottom = 20.0
 text = "Enter Room"
 
 [node name="Clear" type="Button" parent="Viewport/CanvasLayer/Container"]
 anchor_left = 0.699
-anchor_top = 0.499
+anchor_top = 0.424
 anchor_right = 0.812
-anchor_bottom = 0.624
+anchor_bottom = 0.474
 margin_right = 86.0
 margin_bottom = 20.0
 text = "Clear"
 
 [node name="CreateRoom" type="Button" parent="Viewport/CanvasLayer/Container"]
 anchor_left = 0.699
-anchor_top = 0.749
+anchor_top = 0.587
 anchor_right = 0.812
-anchor_bottom = 0.874
+anchor_bottom = 0.649
 margin_right = 86.0
 margin_bottom = 20.0
 text = "Create Room"
+
+[node name="ExitRoom" type="Button" parent="Viewport/CanvasLayer/Container"]
+anchor_left = 0.699
+anchor_top = 0.762
+anchor_right = 0.812
+anchor_bottom = 0.812
+margin_right = 86.0
+margin_bottom = 20.0
+text = "Exit Room"
 
 [node name="Label" type="Label" parent="Viewport/CanvasLayer"]
 anchor_right = 1.0
@@ -245,7 +254,9 @@ material/0 = SubResource( 4 )
 [connection signal="button_down" from="Viewport/CanvasLayer/Container/Button0_2" to="." method="_on_Button_button_down" binds= [ "2" ]]
 [connection signal="button_down" from="Viewport/CanvasLayer/Container/Button0_3" to="." method="_on_Button_button_down" binds= [ "3" ]]
 [connection signal="button_down" from="Viewport/CanvasLayer/Container/Button0_4" to="." method="_on_Button_button_down" binds= [ "4" ]]
+[connection signal="pressed" from="Viewport/CanvasLayer/Container/Enter Room" to="." method="_on_Enter_Room_pressed"]
 [connection signal="button_down" from="Viewport/CanvasLayer/Container/Clear" to="." method="_on_Clear_button_down"]
 [connection signal="button_down" from="Viewport/CanvasLayer/Container/CreateRoom" to="." method="_on_CreateRoom_button_down"]
+[connection signal="button_down" from="Viewport/CanvasLayer/Container/ExitRoom" to="." method="_on_ExitRoom_button_down"]
 [connection signal="interface_release" from="ConnectPadInput" to="." method="_on_ConnectPadInput_interface_release"]
 [connection signal="interface_touch" from="ConnectPadInput" to="." method="_on_ConnectPadInput_interface_touch"]
