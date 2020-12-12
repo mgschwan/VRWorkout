@@ -76,7 +76,6 @@ material/0 = ExtResource( 5 )
 [node name="RemoteSpatial" type="Spatial" parent="."]
 script = ExtResource( 11 )
 is_local = true
-is_root = false
 transform_parent = true
 node_type = "controller"
 [connection signal="timeout" from="RumbleTimer" to="." method="_on_RumbleTimer_timeout"]

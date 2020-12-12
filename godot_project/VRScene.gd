@@ -452,6 +452,8 @@ func _on_level_finished_actual(valid_end):
 	
 	levelselect.translation = Vector3(0,0,0)
 	levelselect.connect("level_selected",self,"_on_Area_level_selected")
+	levelselect.connect("room_joined",get_node("MultiplayerRoom"),"_on_multiplayer_room_joined")
+	levelselect.connect("room_left",get_node("MultiplayerRoom"),"_on_multiplayer_room_left")
 
 	add_child(levelselect)
 	
@@ -686,6 +688,9 @@ func _on_Splashscreen_finished():
 	levelselect = levelselect_blueprint.instance()
 	levelselect.translation = Vector3(0,0,0)
 	levelselect.connect("level_selected",self,"_on_Area_level_selected")
+	levelselect.connect("room_joined",get_node("MultiplayerRoom"),"_on_multiplayer_room_joined")
+	levelselect.connect("room_left",get_node("MultiplayerRoom"),"_on_multiplayer_room_left")
+
 
 	if not GameVariables.vr_mode:
 		_on_Tracker_added("right", ARVRServer.TRACKER_CONTROLLER, 1)

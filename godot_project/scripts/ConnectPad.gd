@@ -7,6 +7,10 @@ var multiplayer_room = null
 
 
 func _ready():
+	if len(OS.get_cmdline_args()) > 0:
+		var arg = OS.get_cmdline_args()[0]
+		if arg.find("room:") >= 0:
+			get_node("Viewport/CanvasLayer/Code").text = arg.split(":")[1]
 	multiplayer_room = get_tree().current_scene.get_node("MultiplayerRoom")
 
 var frame_count = 0
@@ -54,8 +58,6 @@ func _on_ConnectPadInput_interface_release(u, v):
 	label.anchor_top = u
 	print ("Anchors: %f %f"%[label.anchor_left, label.anchor_top])
 	click_event(Vector2(v,u), false)
-
-
 
 
 func _on_Button_button_down(character):

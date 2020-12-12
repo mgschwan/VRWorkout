@@ -5,6 +5,12 @@ signal user_leave(id)
 signal add_spatial(userid, nodeid, type, parent_node)
 signal remove_spatial(userid, nodeid)
 signal connected()
+signal room_joined(as_host)
+signal room_left()
+
+
+var is_active = false
+var is_host = false
 
 var self_id = -1
 var user_list = {}
@@ -41,8 +47,6 @@ func update_users(ulist):
 		user_list.erase(u)
 		emit_signal("user_leave", u)
 		
-		
-
 func get_node_position(id, target_node):
 	var user = user_list.get(id,{})
 	var nodes = user.get("nodes",{})
@@ -96,12 +100,16 @@ func process_move_message(data_object):
 			user["nodes"][target_node]["pos"] = pos
 			user["nodes"][target_node]["rot"] = rot
 		else:
-			print ("Can't add node yet")
+			print ("Can't add node yet: %s"%str(data_object))
 	#print ("User List: %s"%str(user_list))
 
 func process_room_join_message(data_object):
 	var room = data_object.get("room", "")
+	print ("Room joined %s"%str(data_object))
+	is_host = data_object.get("ishost", false)
+	is_active = true
 	if room:
+		emit_signal("room_joined",is_host)
 		print ("Room has been joined: %s"%room)
 		self.room = room
 
@@ -145,6 +153,7 @@ func _ready():
 	client.connect("connection_established",self,"_on_connection_established")
 	client.connect("connection_error",self,"_on_connection_error")
 	client.connect("data_received",self,"_on_data_received")
+	client.connect("connection_closed",self,"_on_connection_closed")
 	
 func connect_to_server(url, room=""):
 	print ("Start connection")
@@ -172,7 +181,18 @@ func _on_connection_established(protocol):
 	_join_room()
 
 func _on_connection_error():
+	if is_active:
+		emit_signal("room_left")
+	is_active = false
+	is_host = false
 	print ("Could not connect")
+
+func _on_connection_closed():
+	if is_active:
+		emit_signal("room_left")
+		is_active = false
+	is_host = false
+	print ("Connection ended")
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
