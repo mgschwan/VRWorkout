@@ -73,7 +73,8 @@ func _on_CreateRoom_button_down():
 		multiplayer_room.connect_to_server(GameVariables.multiplayer_server, "")
 	
 func _on_ExitRoom_button_down():
-	pass # Replace with function body.
+	if multiplayer_room:
+		multiplayer_room.disconnect_from_server()
 
 
 func _on_Enter_Room_pressed():

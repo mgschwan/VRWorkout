@@ -655,7 +655,7 @@ func internal_state_change():
 	if actual_game_state == CueState.BURPEE or actual_game_state == CueState.PUSHUP:
 			update_safe_pushup()	
 		
-	emit_signal("select_exercise", actual_game_state)	
+	emit_signal("set_exercise", actual_game_state)	
 		
 	infolayer.print_info(exercise_builder.state_string(actual_game_state).to_upper(), "main")
 	infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE

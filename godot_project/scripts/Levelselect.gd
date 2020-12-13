@@ -97,7 +97,7 @@ func update_widget():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	show_settings("empty")
-
+	update_online_features()
 	
 	var songs = []
 #			 ["res://audio/songs/vrworkout.ogg",
@@ -293,12 +293,14 @@ func _on_PresetCollector_selected(collection):
 func update_online_features():
 	var enabled = ProjectSettings.get("game/portal_connection")
 	if enabled:
+		gu.activate_node(get_node("SettingsCarousel/Connections/ConnectPad"))
 		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot1"))
 		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot2"))
 		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot3"))
 		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot4"))
 		gu.activate_node(get_node("SettingsCarousel/Battle/CreateChallengeButton"))		
 	else:
+		gu.deactivate_node(get_node("SettingsCarousel/Connections/ConnectPad"))
 		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot1"))
 		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot2"))
 		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot3"))

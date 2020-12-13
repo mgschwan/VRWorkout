@@ -170,6 +170,10 @@ func send_data(data):
 	if conn_peer and conn_peer.is_connected_to_host():
 		conn_peer.put_packet(data.to_utf8())
 	
+func disconnect_from_server():
+	if conn_peer and conn_peer.is_connected_to_host():
+		conn_peer.close()
+	
 func _on_data_received():
 	var data = conn_peer.get_packet().get_string_from_utf8()
 	decode_data(data)
@@ -187,7 +191,7 @@ func _on_connection_error():
 	is_host = false
 	print ("Could not connect")
 
-func _on_connection_closed():
+func _on_connection_closed(was_clean):
 	if is_active:
 		emit_signal("room_left")
 		is_active = false
