@@ -277,7 +277,8 @@ func setup_cue_parameters(difficulty, ph):
 				"yoffset" : -0.2 - difficulty * 0.1,
 				"yrange" : "0.3+%f*ph/8.0"%difficulty,
 				"double_swing_spread": "ph/%f"%( 3.0 + (2.0-difficulty)/1.5 ) ,
-				"invertible_sides": difficulty >= 1.0 #If hands can cross the sides
+				"invertible_sides": difficulty >= 1.0, #If hands can cross the sides
+				"windmill": ProjectSettings.get("game/exercise/stand/windmill")
 			}
 		},	
 		CueState.SQUAT : {
@@ -353,12 +354,15 @@ func setup_cue_parameters(difficulty, ph):
 	#Easy difficulties don't have double swings
 	if difficulty < 1.0:
 		stand_state_model = model_without_state(stand_state_model_template, StandState.DOUBLE_SWING)
-		
 		squat_state_model = model_without_state(squat_state_model_template, SquatState.DOUBLE_SWING)
 		squat_state_model = model_without_state(squat_state_model, SquatState.CROSS_CUT)
 	else:
 		stand_state_model = stand_state_model_template.duplicate(true)
 		squat_state_model = squat_state_model_template.duplicate(true)
+
+	if not cue_parameters[CueState.STAND][CueSelector.HAND]["windmill"]:
+		stand_state_model = model_without_state(stand_state_model_template, StandState.WINDMILL_TOE)
+
 	stand_state = StandState.REGULAR
 	
 

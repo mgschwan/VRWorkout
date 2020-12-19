@@ -25,6 +25,13 @@ var conn_peer
 func is_self_user(id):
 	return id == self_id
 
+func remove_user(id):
+	if id in user_list:
+		var nodes = user_list[id].get("nodes",{})
+		for n in nodes.keys():
+			emit_signal("remove_spatial",id,n) 
+	user_list.erase(id)
+	
 func update_users(ulist):
 	var pre_update_users = {}
 	for u in user_list.keys():
@@ -44,7 +51,7 @@ func update_users(ulist):
 	print ("The following users left: %s"%str(pre_update_users))
 	
 	for u in pre_update_users:
-		user_list.erase(u)
+		remove_user(u)
 		emit_signal("user_leave", u)
 		
 func get_node_position(id, target_node):
@@ -184,9 +191,20 @@ func _on_connection_established(protocol):
 	emit_signal("connected")
 	_join_room()
 
+func remove_all_users():
+	print ("Remove all users")
+	var tmp = user_list.keys()
+	for u in tmp:
+		remove_user(u)
+	user_list = Dictionary()
+
+
 func _on_connection_error():
 	if is_active:
 		emit_signal("room_left")
+	#This removes all stale nodes
+	get_node("PlayerArea").remove_all_entities()
+	remove_all_users()
 	is_active = false
 	is_host = false
 	print ("Could not connect")
@@ -194,7 +212,12 @@ func _on_connection_error():
 func _on_connection_closed(was_clean):
 	if is_active:
 		emit_signal("room_left")
-		is_active = false
+	
+	remove_all_users()
+	#This removes all stale nodes
+	get_node("PlayerArea").remove_all_entities()
+	
+	is_active = false
 	is_host = false
 	print ("Connection ended")
 	

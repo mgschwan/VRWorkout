@@ -21,7 +21,7 @@ var player_name = "Player"
 var vr_mode = true
 var ar_mode = false
 
-var multiplayer_server = "ws://127.0.0.1:33105"
+var multiplayer_server = ProjectSettings.get("application/config/room_server")
 
 
 var player_height = 1.8
@@ -403,6 +403,7 @@ func setup_globals_demo():
 	ProjectSettings.set("game/exercise/duck", true)
 	ProjectSettings.set("game/exercise/sprint", true)
 	ProjectSettings.set("game/exercise/kneesaver", false)
+	ProjectSettings.set("game/exercise/stand/windmill", true)
 	ProjectSettings.set("game/exercise/yoga", false)
 	ProjectSettings.set("game/exercise/strength_focus", false)
 	ProjectSettings.set("game/is_oculusquest", false)
@@ -434,6 +435,7 @@ func setup_globals_regular():
 	ProjectSettings.set("game/exercise/burpees", false)
 	ProjectSettings.set("game/exercise/duck", true)
 	ProjectSettings.set("game/exercise/sprint", true)
+	ProjectSettings.set("game/exercise/stand/windmill", true)
 	ProjectSettings.set("game/exercise/kneesaver", false)
 	ProjectSettings.set("game/exercise/strength_focus", false)
 	ProjectSettings.set("game/exercise/yoga", false)

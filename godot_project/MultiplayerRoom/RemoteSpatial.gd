@@ -4,15 +4,13 @@ export(bool) var is_local = false
 export(bool) var is_root = true
 export(bool) var transform_parent = false
 export var node_type = "player"
+export var update_interval_ms = 200
 
 var remote_player_id = -1
 var remote_node_id = -1
 var multiplayer_room = null
 var target_node = self
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var last_update = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -23,12 +21,12 @@ func _exit_tree():
 	if multiplayer_room and target_node:
 		if is_local:
 			multiplayer_room.spatial_remove_message(target_node)
-			
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if multiplayer_room and target_node:
-		if is_local:
+		if is_local and last_update < OS.get_ticks_msec() + update_interval_ms:
+			last_update = OS.get_ticks_msec()
 			if is_root:
 				multiplayer_room.send_move_message(target_node, -1, node_type)
 			else:

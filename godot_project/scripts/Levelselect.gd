@@ -41,6 +41,9 @@ func update_widget():
 	
 	get_node("SettingsCarousel/Switchboard/StandSwitch").value = ProjectSettings.get("game/exercise/stand")
 	get_node("SettingsCarousel/Switchboard/StandSwitch").update_switch()
+
+	get_node("SettingsCarousel/Switchboard/WindmillSwitch").value = ProjectSettings.get("game/exercise/stand/windmill")
+	get_node("SettingsCarousel/Switchboard/WindmillSwitch").update_switch()
 	
 	get_node("SettingsCarousel/Switchboard/SquatSwitch").value = ProjectSettings.get("game/exercise/squat")
 	get_node("SettingsCarousel/Switchboard/SquatSwitch").update_switch()
@@ -168,6 +171,8 @@ func _on_JumpSwitch_toggled(value):
 func _on_StandSwitch_toggled(value):
 	ProjectSettings.set("game/exercise/stand", value)
 
+func _on_WindmillSwitch_toggled(value):
+	ProjectSettings.set("game/exercise/stand/windmill", value)
 
 func _on_CrunchSwitch_toggled(value):
 	ProjectSettings.set("game/exercise/crunch", value)

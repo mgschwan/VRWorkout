@@ -331,7 +331,7 @@ transform = Transform( 1, 0, -2.38419e-07, 0, 1, 0, 2.38419e-07, 0, 1, 1.27542, 
 [node name="Switchboard" type="Spatial" parent="SettingsCarousel"]
 
 [node name="BeastModeSelector" type="StaticBody" parent="SettingsCarousel/Switchboard"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.132, 1.523, 1.277 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.0833833, 1.523, 1.277 )
 script = ExtResource( 3 )
 
 [node name="onshape" type="CollisionShape" parent="SettingsCarousel/Switchboard/BeastModeSelector"]
@@ -364,80 +364,85 @@ transform = Transform( 0.08, -1.62921e-07, 5.6972e-16, 0, -4.37114e-08, -0.08, 1
 text = "Beast mode off"
 
 [node name="JumpSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.608729, 1.25165, 1.27697 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.519198, 1.25165, 1.27697 )
 ontext = "Jump on"
 offtext = "Jump off"
 
 [node name="StandSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.608729, 1.52348, 1.27697 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.519198, 1.52348, 1.27697 )
 ontext = "Stand on"
 offtext = "Stand off"
 
+[node name="WindmillSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.730591, 1.52348, 1.27697 )
+ontext = "Windmill on"
+offtext = "Windmill off"
+
 [node name="CrunchSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.366857, 1.52348, 1.27696 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.293318, 1.52348, 1.27696 )
 ontext = "Crunch on"
 offtext = "Crunch off"
 
 [node name="SquatSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.367, 1.252, 1.277 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.293461, 1.252, 1.277 )
 ontext = "Squat on"
 offtext = "Squat off"
 
 [node name="PushupSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131597, 1.252, 1.277 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.0829804, 1.252, 1.277 )
 ontext = "Pushup on"
 offtext = "Pushup off"
 
 [node name="SafePushupSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131597, 0.992445, 1.277 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.0829804, 0.992445, 1.277 )
 ontext = "Safe pushups on"
 offtext = "Safe pushup off"
 
 [node name="StrengthCardioSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.367, 0.992, 1.277 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.293461, 0.992, 1.277 )
 ontext = "Strength focus"
 offtext = "Cardio focus"
 
 [node name="InstructorSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.609, 0.992, 1.277 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.519469, 0.992, 1.277 )
 value = true
 ontext = "Instructor on"
 offtext = "Instructor off"
 
 [node name="BurpeeSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0963061, 1.252, 1.277 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.141196, 1.252, 1.277 )
 ontext = "Burpees on"
 offtext = "Burpees off"
 
 [node name="EqualizerSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0960001, 0.992, 1.277 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.14089, 0.992, 1.277 )
 ontext = "Equalizer on"
 offtext = "Equalizer off"
 
 [node name="ExtendedSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.557797, 1.33513, 1.277 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.557797, 1.33513, 1.277 )
 value = true
 ontext = "Easy transition"
 offtext = "Regular transition"
 
 [node name="DuckSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0960004, 1.523, 1.277 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.14089, 1.523, 1.277 )
 ontext = "Ducking on"
 offtext = "Ducking off"
 
 [node name="SprintSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324165, 1.523, 1.277 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.347082, 1.523, 1.277 )
 ontext = "Sprint on"
 offtext = "Sprint off"
 
 [node name="KneesaverSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, 1.252, 1.277 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.346917, 1.252, 1.277 )
 value = true
 ontext = "Knee saver on"
 offtext = "Knee saver off"
 
 [node name="YogaSwitch" parent="SettingsCarousel/Switchboard" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.324, -0.992, 1.28 )
+transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.324, -0.992, 1.28 )
 value = true
 ontext = "Warmup on"
 offtext = "Warmup off"
@@ -796,6 +801,7 @@ volume_db = -9.0
 [connection signal="toggled" from="SettingsCarousel/Connections/VRWorkoutConnection/PortalSwitch" to="." method="_on_PortalSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/JumpSwitch" to="." method="_on_JumpSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/StandSwitch" to="." method="_on_StandSwitch_toggled"]
+[connection signal="toggled" from="SettingsCarousel/Switchboard/WindmillSwitch" to="." method="_on_WindmillSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/CrunchSwitch" to="." method="_on_CrunchSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/SquatSwitch" to="." method="_on_SquatSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/PushupSwitch" to="." method="_on_PushupSwitch_toggled"]

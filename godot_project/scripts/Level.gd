@@ -106,10 +106,10 @@ func update_info(hits, max_hits, points):
 	var total = int(stream.stream.get_length())
 	
 	var elapsed_string = gu.seconds_to_timestring(song_pos)
-	
-	infolayer.print_info("Hits %d/%d - Song: %s (%.1f%%) - Points: %d - Speed: %.1f"% [hits,max_hits,elapsed_string,float(100*song_pos)/total,points,running_speed])
+	var t = OS.get_time()	
+	infolayer.print_info("Hits %d/%d - Song: %s (%.1f%%) - P: %d"% [hits,max_hits,elapsed_string,float(100*song_pos)/total,points])
 	if update_counter % 5 == 0:
-		infolayer.print_info("Player height: %.2f Difficulty: %.1f/%.2f/%.2f - E: %.2f"%[GameVariables.player_height, exercise_builder.current_difficulty, exercise_builder.min_cue_space, exercise_builder.min_state_duration,actual_state_duration], "debug")
+		infolayer.print_info("Difficulty: %.1f/%.2f/%.2f - E: %.2f - H: %.2f - Clock: %02d:%02d"%[exercise_builder.current_difficulty, exercise_builder.min_cue_space, exercise_builder.min_state_duration,actual_state_duration,GameVariables.player_height, t["hour"],t["minute"]], "debug")
 	update_counter += 1
 	infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
 

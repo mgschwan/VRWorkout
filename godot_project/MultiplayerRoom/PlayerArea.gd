@@ -37,6 +37,13 @@ func _on_MultiplayerRoom_add_spatial(userid, nodeid, type,parent_node):
 			additional_objects[nodeid] = node
 			add_child(node)
 
+
+func remove_all_entities():
+	for c in get_children():
+		c.queue_free()
+	player_objects = Dictionary()
+	additional_objects = Dictionary()
+
 func _on_MultiplayerRoom_user_leave(userid):
 	print ("Remove user")
 	var p = player_objects.get(userid,null)
