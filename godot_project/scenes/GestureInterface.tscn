@@ -25,7 +25,7 @@ mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
 [node name="Buttons_Left" type="Spatial" parent="Interface"]
-transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -0.2, -0.053, 0 )
+transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -0.25, -0.053, 0 )
 
 [node name="Defense" parent="Interface/Buttons_Left" instance=ExtResource( 2 )]
 transform = Transform( -0.0999986, 0.000527076, -2.30393e-11, 0, -4.37114e-09, -0.1, -0.000527076, -0.0999986, 4.37108e-09, 0, -0.174856, 0 )
@@ -35,7 +35,7 @@ is_attack = false
 transform = Transform( -0.1, 2.98023e-08, -1.02445e-08, 0, -0.034202, -0.0939693, -3.35276e-08, -0.0939692, 0.034202, 0, 0.129662, -0.0643332 )
 
 [node name="Buttons_Right" type="Spatial" parent="Interface"]
-transform = Transform( 0.861221, 0, 0.50823, 0, 1, 0, -0.50823, 0, 0.861221, 0.2, -0.053, 0 )
+transform = Transform( 0.861221, 0, 0.50823, 0, 1, 0, -0.50823, 0, 0.861221, 0.25, -0.053, 0 )
 
 [node name="Defense" parent="Interface/Buttons_Right" instance=ExtResource( 2 )]
 transform = Transform( -0.0999986, 0.000527076, -2.30393e-11, 0, -4.37114e-09, -0.1, -0.000527076, -0.0999986, 4.37108e-09, 0, -0.174856, 0 )
