@@ -630,7 +630,7 @@ func _on_Area_level_selected(filename, diff, num):
 		GameVariables.difficulty = diff
 		
 		
-		level.audio_filename = filename
+		level.audio_filename = [filename,filename]
 		level.song_index_parameter = num
 		GameVariables.player_height = ProjectSettings.get("game/player_height")
 		level.bpm = ProjectSettings.get("game/bpm")

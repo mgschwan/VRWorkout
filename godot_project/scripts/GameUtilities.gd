@@ -77,6 +77,26 @@ func apply_config_parameters(parameters):
 	for parameter in parameters:
 		ProjectSettings.set(parameter, parameters[parameter])
 
+func load_audio_resource(filename):
+	var resource = null
+	
+	if filename.find("res://") == 0:
+		resource = ResourceLoader.load(filename)
+	else:
+		var f = File.new()
+		
+		if  f.file_exists(filename):
+			#print ("External resource exists")
+			f.open(filename, File.READ)
+			var buffer = f.get_buffer(f.get_len())
+			resource = AudioStreamOGGVorbis.new()
+			resource.data = buffer
+		else:
+			print ("External resource does not exist")
+
+	return resource
+
+
 #Get song name from path
 func get_song_name(filename):
 	var tmp = filename.rsplit(".")[0].rsplit("/")[-1]

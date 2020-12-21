@@ -113,24 +113,6 @@ func update_info(hits, max_hits, points):
 	update_counter += 1
 	infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
 
-func load_audio_resource(filename):
-	var resource = null
-	
-	if filename.find("res://") == 0:
-		resource = ResourceLoader.load(filename)
-	else:
-		var f = File.new()
-		
-		if  f.file_exists(filename):
-			#print ("External resource exists")
-			f.open(filename, File.READ)
-			var buffer = f.get_buffer(f.get_len())
-			resource = AudioStreamOGGVorbis.new()
-			resource.data = buffer
-		else:
-			print ("External resource does not exist")
-
-	return resource
 
 var last_update = 0
 func _on_HeartRateData(hr):
@@ -213,9 +195,7 @@ func setup_game_data():
 		gu.activate_node(boxman2)	
 		
 	internal_state_change()
-	
-	
-	
+
 		
 var player_head
 var spectator_cam
@@ -277,7 +257,7 @@ func _ready():
 	beats = []
 	
 	print ("Initializing AUDIO")
-	print ("File: %s"%audio_filename)
+	print ("File: %s"%str(audio_filename))
 	
 	if song_index_parameter < 0:
 		#freeplay mode
@@ -288,51 +268,58 @@ func _ready():
 		self.add_child(stream)
 	else:
 		selected_song = audio_filename
-				
-		var beat_file = File.new()
-		var error = beat_file.open("%s.json"%audio_filename, File.READ)
-		beats = []
-		
-		if error == OK:
-			var tmp = JSON.parse(beat_file.get_as_text()).result
-			beat_file.close()
-			beats = tmp.get("beats", [])
-			print ("%d beats loaded"%len(beats))
-		else: 
-			print ("Could not open beat list")
+#
+#		var beat_file = File.new()
+#		#TODO load multiples beat files
+#		var error = beat_file.open("%s.json"%str(audio_filename), File.READ)
+#		beats = []
+#
+#		if error == OK:
+#			var tmp = JSON.parse(beat_file.get_as_text()).result
+#			beat_file.close()
+#			beats = tmp.get("beats", [])
+#			print ("%d beats loaded"%len(beats))
+#		else: 
+#			print ("Could not open beat list")
 
 		#var audio_file = File.new()
 		
-		infolayer.print_info("Loading song %s"%audio_filename)
-		print ("Loading song: %s"%audio_filename)
+		infolayer.print_info("Loading song %s"%str(audio_filename))
+		print ("Loading song: %s"%(str(audio_filename)))
 		#error = audio_file.open(audio_filename,File.READ)
 		#infolayer.append_info(" / File opened %s" % str(audio_file.is_open()))
 		infolayer.print_info(exercise_builder.state_string(actual_game_state).to_upper(), "main")
 		infolayer.print_info("Player height: %.2f Difficulty: %.2f/%.2f"%[GameVariables.player_height, exercise_builder.min_cue_space, exercise_builder.min_state_duration], "debug")
 		infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
-		var audio_resource = load_audio_resource(audio_filename)
-		stream = get_node("AudioStreamPlayer")
+		
+		stream = AudioStreamPlaylist.new(audio_filename)
+		stream.connect("stream_finished",self,"_on_AudioStreamPlayer_finished")
+		add_child(stream)
+		beats = stream.playlist_beats		
+		
+		#var audio_resource = gu.load_audio_resource(audio_filename)
+		#stream = get_node("AudioStreamPlayer")
 
-		if audio_resource:
-			stream.stream = audio_resource
-		else:
-			print ("Could not load audio")
-			emit_signal("level_finished")	
+		#if audio_resource:
+		#	stream.stream = audio_resource
+		#else:
+		#	print ("Could not load audio")
+		#	emit_signal("level_finished")	
 	
-	#If the song has no beats use the default beats
-	if (GameVariables.override_beatmap or len(beats) == 0) and stream.stream:
-		beats = []
-		var delta = max(0.1, 60.0/float(max(1,bpm)))
-		var now = OS.get_ticks_msec()	
-		var pos = 0
-		#get the correct starting time
-		var elapsed = (now - first_beat)/1000.0
-		pos =  (ceil(elapsed/delta) - elapsed/delta)*delta
-		print ("Start at: %.2f"%pos)
-				
-		while pos < stream.stream.get_length()-delta:
-			beats.append(pos)
-			pos += delta
+#	#If the song has no beats use the default beats
+#	if (GameVariables.override_beatmap or len(beats) == 0) and stream.stream:
+#		beats = []
+#		var delta = max(0.1, 60.0/float(max(1,bpm)))
+#		var now = OS.get_ticks_msec()	
+#		var pos = 0
+#		#get the correct starting time
+#		var elapsed = (now - first_beat)/1000.0
+#		pos =  (ceil(elapsed/delta) - elapsed/delta)*delta
+#		print ("Start at: %.2f"%pos)
+#
+#		while pos < stream.stream.get_length()-delta:
+#			beats.append(pos)
+#			pos += delta
 
 	if stream.stream:
 		stream.play()	

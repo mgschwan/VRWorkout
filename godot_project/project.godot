@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
+"class": "AudioStreamPlaylist",
+"language": "GDScript",
+"path": "res://scripts/AudioStreamPlaylist.gd"
+}, {
+"base": "Node",
 "class": "DummyAudioStream",
 "language": "GDScript",
 "path": "res://DummyStream.gd"
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://scripts/GameUtilities.gd"
 } ]
 _global_script_class_icons={
+"AudioStreamPlaylist": "",
 "DummyAudioStream": "",
 "GameUtilities": ""
 }
