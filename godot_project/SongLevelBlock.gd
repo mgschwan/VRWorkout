@@ -38,7 +38,7 @@ func get_difficulty_selector():
 	return 0
 
 func touched_by_controller(obj,root):
-	if is_set:
+	if is_set and gu.double_tap_debounce(self):
 		emit_signal("selected",song_filename, null, level_number)
 	
 func is_in_animation():

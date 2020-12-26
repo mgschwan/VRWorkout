@@ -14,10 +14,10 @@
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 1, 0.0477028, 0.534034 )
 
-[sub_resource type="BoxShape" id=2]
+[sub_resource type="BoxShape" id=6]
 extents = Vector3( 1, 0.0325357, 0.999178 )
 
-[sub_resource type="PlaneMesh" id=3]
+[sub_resource type="PlaneMesh" id=7]
 
 [sub_resource type="ViewportTexture" id=4]
 viewport_path = NodePath("Viewport")
@@ -150,10 +150,10 @@ script = ExtResource( 7 )
 
 [node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0345452, 0 )
-shape = SubResource( 2 )
+shape = SubResource( 6 )
 
 [node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
-mesh = SubResource( 3 )
+mesh = SubResource( 7 )
 material/0 = SubResource( 5 )
 
 [node name="tl_marker" type="Spatial" parent="StaticBody"]

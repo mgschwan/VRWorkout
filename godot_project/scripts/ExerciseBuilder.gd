@@ -633,7 +633,7 @@ func handle_pushup_cues(current_time, target_time, cue_emitter_state):
 		x_head = 0
 		x = 0
 		y_head = "ph*0.5"
-		y_hand = "ph*0.9"
+		y_hand = "ph*0.84"
 
 		var hand_delay = 0.15
 		var dd_df = fly_distance/fly_time				
@@ -857,7 +857,7 @@ func handle_stand_cues_regular(current_time, target_time, cue_emitter_state):
 	
 	#var y_hand = player_height + cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
 	var y_hand = "ph+%s+%f*%s"%[str(cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"]), rng.randf(), str(cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"])]
-	var y_head = "ph+%f"%cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
+	var y_head = "ph/1.071+%f"%cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
 	
 	var side = 1.0
 	if cue_parameters[cue_emitter_state][CueSelector.HAND]["invertible_sides"]:
@@ -919,7 +919,7 @@ func handle_squat_cues(current_time, target_time, cue_emitter_state):
 	if last_head_avoid + 2 < current_time:
 		if current_difficulty >= 1.0 and not kneesaver_mode and not squat_state == SquatState.CROSS_CUT:
 			last_head_avoid = current_time
-			create_and_attach_cue(current_time,"head_avoid_block", 0, "ph*1.1", target_time)		
+			create_and_attach_cue(current_time,"head_avoid_block", 0, "ph", target_time)		
 	
 	#Skip one cue after a double swing stretch
 	if last_squat_state == SquatState.DOUBLE_SWING and last_squat_state != squat_state:

@@ -1,7 +1,7 @@
 extends StaticBody
 
 signal touched
-
+var gu = GameUtilities.new()
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -13,7 +13,8 @@ func _ready():
 	pass # Replace with function body.
 
 func touched_by_controller(obj, root):
-	emit_signal("touched")
+	if gu.double_tap_debounce(self):
+		emit_signal("touched")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

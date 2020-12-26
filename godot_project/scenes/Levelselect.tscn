@@ -241,7 +241,7 @@ transform = Transform( 0.671837, 0.294369, -0.679693, -6.47481e-08, 0.917637, 0.
 script = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="BPM"]
-transform = Transform( 1, 7.45058e-08, -1.19209e-07, 1.49012e-08, 1, -1.49012e-08, -1.49012e-07, 0, 1, 0, -0.050589, 0 )
+transform = Transform( 1, 7.45058e-08, -5.96046e-08, 2.98023e-08, 1, -2.98023e-08, -1.78814e-07, -1.49012e-08, 1, -1.19209e-07, -0.050589, -2.38419e-07 )
 shape = SubResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="BPM"]

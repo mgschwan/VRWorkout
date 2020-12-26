@@ -96,6 +96,18 @@ func load_audio_resource(filename):
 
 	return resource
 
+#Keep track of each debounced button and return true if the click should be
+#valid
+var tracked_objects = Dictionary()
+func double_tap_debounce(obj, limit=0.2):
+	var valid = false
+	var obj_id = self.get_instance_id()
+	var last_click = tracked_objects.get(obj_id, 0)
+	var delta = float(OS.get_ticks_msec()-last_click)/1000.0
+	if delta > limit:
+		valid = true
+		tracked_objects[obj_id] = OS.get_ticks_msec()
+	return valid
 
 #Get song name from path
 func get_song_name(value):
