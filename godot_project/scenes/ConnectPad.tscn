@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/ConnectPad.gd" type="Script" id=1]
 [ext_resource path="res://scripts/ConnectPadInput.gd" type="Script" id=2]
 [ext_resource path="res://audio/menu_selection.wav" type="AudioStream" id=3]
+[ext_resource path="res://scripts/TouchableViewport.gd" type="Script" id=4]
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=5]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.0185659, 0.198504, 0.300527 )
@@ -28,6 +30,7 @@ handle_input_locally = false
 msaa = 6
 render_target_v_flip = true
 gui_disable_input = true
+script = ExtResource( 4 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Viewport"]
 
@@ -39,50 +42,56 @@ color = Color( 0, 0, 0, 1 )
 [node name="Button0_1" type="Button" parent="Viewport/CanvasLayer"]
 margin_right = 92.0
 margin_bottom = 92.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "ONE (1)"
+text = "[ 1 ]"
 expand_icon = true
 
 [node name="Button1_1" type="Button" parent="Viewport/CanvasLayer"]
 margin_top = 128.0
 margin_right = 92.0
 margin_bottom = 220.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "SIX (6)"
+text = "[ 6 ]"
 expand_icon = true
 
 [node name="Button2_1" type="Button" parent="Viewport/CanvasLayer"]
 margin_top = 256.0
 margin_right = 92.0
 margin_bottom = 348.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "GOLF (G)"
+text = "[ G ]"
 expand_icon = true
 
 [node name="Button3_1" type="Button" parent="Viewport/CanvasLayer"]
 margin_top = 384.0
 margin_right = 92.0
 margin_bottom = 476.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "ROMEO (R)"
+text = "[ R ]"
 expand_icon = true
 
 [node name="Button3_2" type="Button" parent="Viewport/CanvasLayer"]
 margin_left = 128.0
 margin_top = 384.0
-margin_right = 225.0
+margin_right = 220.0
 margin_bottom = 476.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "UNIFORM (U)"
+text = "[ U ]"
 expand_icon = true
 
 [node name="Button3_3" type="Button" parent="Viewport/CanvasLayer"]
 margin_left = 256.0
 margin_top = 384.0
-margin_right = 353.0
+margin_right = 348.0
 margin_bottom = 476.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "WHISKY (W)"
+text = "[ W ]"
 expand_icon = true
 
 [node name="Button3_4" type="Button" parent="Viewport/CanvasLayer"]
@@ -90,8 +99,9 @@ margin_left = 384.0
 margin_top = 384.0
 margin_right = 481.0
 margin_bottom = 476.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "XRAY (X)"
+text = "[ X ]"
 expand_icon = true
 
 [node name="Button2_2" type="Button" parent="Viewport/CanvasLayer"]
@@ -99,8 +109,9 @@ margin_left = 128.0
 margin_top = 256.0
 margin_right = 220.0
 margin_bottom = 348.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "INDIA (I)"
+text = "[ I ]"
 expand_icon = true
 
 [node name="Button2_3" type="Button" parent="Viewport/CanvasLayer"]
@@ -108,8 +119,9 @@ margin_left = 256.0
 margin_top = 256.0
 margin_right = 348.0
 margin_bottom = 348.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "KILO (K)"
+text = "[ K ]"
 expand_icon = true
 
 [node name="Button2_4" type="Button" parent="Viewport/CanvasLayer"]
@@ -117,8 +129,9 @@ margin_left = 384.0
 margin_top = 256.0
 margin_right = 476.0
 margin_bottom = 348.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "LIMA (L)"
+text = "[ L ]"
 expand_icon = true
 
 [node name="Button1_2" type="Button" parent="Viewport/CanvasLayer"]
@@ -126,8 +139,9 @@ margin_left = 128.0
 margin_top = 128.0
 margin_right = 220.0
 margin_bottom = 220.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "SEVEN (7)"
+text = "[ 7 ]"
 expand_icon = true
 
 [node name="Button1_3" type="Button" parent="Viewport/CanvasLayer"]
@@ -135,8 +149,9 @@ margin_left = 256.0
 margin_top = 128.0
 margin_right = 348.0
 margin_bottom = 220.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "NINE (9)"
+text = "[ 9 ]"
 expand_icon = true
 
 [node name="Button1_4" type="Button" parent="Viewport/CanvasLayer"]
@@ -144,32 +159,36 @@ margin_left = 384.0
 margin_top = 128.0
 margin_right = 476.0
 margin_bottom = 220.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "ECHO (E)"
+text = "[ E ]"
 expand_icon = true
 
 [node name="Button0_2" type="Button" parent="Viewport/CanvasLayer"]
 margin_left = 128.0
 margin_right = 220.0
 margin_bottom = 92.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "TWO (2)"
+text = "[ 2 ]"
 expand_icon = true
 
 [node name="Button0_3" type="Button" parent="Viewport/CanvasLayer"]
 margin_left = 256.0
 margin_right = 348.0
 margin_bottom = 92.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "THREE (3)"
+text = "[ 3 ]"
 expand_icon = true
 
 [node name="Button0_4" type="Button" parent="Viewport/CanvasLayer"]
 margin_left = 384.0
 margin_right = 476.0
 margin_bottom = 92.0
+theme = ExtResource( 5 )
 action_mode = 0
-text = "FOUR (4)"
+text = "[ 4 ]"
 expand_icon = true
 
 [node name="Enter Room" type="Button" parent="Viewport/CanvasLayer"]
@@ -179,6 +198,7 @@ anchor_right = 0.812
 anchor_bottom = 0.3
 margin_right = 86.0
 margin_bottom = 20.0
+theme = ExtResource( 5 )
 action_mode = 0
 text = "Enter Room"
 
@@ -189,6 +209,7 @@ anchor_right = 0.812
 anchor_bottom = 0.474
 margin_right = 86.0
 margin_bottom = 20.0
+theme = ExtResource( 5 )
 action_mode = 0
 text = "Clear"
 
@@ -199,6 +220,7 @@ anchor_right = 0.812
 anchor_bottom = 0.649
 margin_right = 89.48
 margin_bottom = 20.0
+theme = ExtResource( 5 )
 action_mode = 0
 text = "Create Room"
 
@@ -209,38 +231,32 @@ anchor_right = 0.812
 anchor_bottom = 0.812
 margin_right = 86.0
 margin_bottom = 20.0
+theme = ExtResource( 5 )
 action_mode = 0
 text = "Exit Room"
-
-[node name="Label" type="Label" parent="Viewport/CanvasLayer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = 40.0
-margin_bottom = 14.0
-text = "X"
 
 [node name="RoomNumberLabel" type="RichTextLabel" parent="Viewport/CanvasLayer"]
 anchor_left = 0.637
 anchor_top = 0.013
-anchor_right = 0.662
+anchor_right = 0.862
 anchor_bottom = 0.1
 margin_right = 102.0
 margin_bottom = 14.0
+theme = ExtResource( 5 )
 bbcode_enabled = true
 bbcode_text = "MULTIPLAYER
-
 ROOM NUMBER"
 text = "MULTIPLAYER
-
 ROOM NUMBER"
 
 [node name="Code" type="TextEdit" parent="Viewport/CanvasLayer"]
 anchor_left = 0.637
-anchor_top = 0.1
-anchor_right = 0.95
-anchor_bottom = 0.1
-margin_right = 40.0
+anchor_top = 0.138
+anchor_right = 0.637
+anchor_bottom = 0.138
+margin_right = 260.0
 margin_bottom = 40.0
+theme = ExtResource( 5 )
 readonly = true
 
 [node name="ConnectPadInput" type="StaticBody" parent="."]
@@ -278,5 +294,5 @@ stream = ExtResource( 3 )
 [connection signal="pressed" from="Viewport/CanvasLayer/Clear" to="." method="_on_Clear_button_down"]
 [connection signal="pressed" from="Viewport/CanvasLayer/CreateRoom" to="." method="_on_CreateRoom_button_down"]
 [connection signal="pressed" from="Viewport/CanvasLayer/ExitRoom" to="." method="_on_ExitRoom_button_down"]
-[connection signal="interface_release" from="ConnectPadInput" to="." method="_on_ConnectPadInput_interface_release"]
-[connection signal="interface_touch" from="ConnectPadInput" to="." method="_on_ConnectPadInput_interface_touch"]
+[connection signal="interface_release" from="ConnectPadInput" to="Viewport" method="_on_ConnectPadInput_interface_release"]
+[connection signal="interface_touch" from="ConnectPadInput" to="Viewport" method="_on_ConnectPadInput_interface_touch"]

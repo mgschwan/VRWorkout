@@ -3,6 +3,7 @@ export var song_name = "default"
 export var level_number = -1
 export var song_filename = ""
 export var song_length = 0
+export(bool) var is_set = false
 
 var gu = GameUtilities.new()
 
@@ -17,13 +18,6 @@ signal selected(filename, difficulty, level_number)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_text(song_name,"")
-	
-	gu.deactivate_node(get_node("Text/Easy"))
-	gu.deactivate_node(get_node("Text/Medium"))
-	gu.deactivate_node(get_node("Text/Hard"))
-	gu.deactivate_node(get_node("Text/Auto"))
-
-
 
 func set_text(text, artist, duration = 0):
 	if duration:
@@ -44,7 +38,8 @@ func get_difficulty_selector():
 	return 0
 
 func touched_by_controller(obj,root):
-	emit_signal("selected",song_filename, null, level_number)
+	if is_set:
+		emit_signal("selected",song_filename, null, level_number)
 	
 func is_in_animation():
 	return get_node("AnimationPlayer").is_playing()
@@ -57,7 +52,3 @@ func set_song_info(text,filename, artist = "", length = 0):
 	#yield(get_tree().create_timer(0.2),"timeout")
 	set_text(text, artist, song_length)
 	
-
-func _on_difficulty_selected(difficulty):
-	print("Selected difficulty")
-	emit_signal("selected", song_filename, difficulty, level_number)

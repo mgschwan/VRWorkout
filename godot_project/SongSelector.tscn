@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://SongSelector.gd" type="Script" id=1]
 [ext_resource path="res://SongLevelBlock.tscn" type="PackedScene" id=2]
@@ -6,9 +6,26 @@
 [ext_resource path="res://NextPageButton.gd" type="Script" id=4]
 [ext_resource path="res://scenes/DifficultyButtons.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/Button.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scripts/ConnectPadInput.gd" type="Script" id=7]
+[ext_resource path="res://scripts/TouchableViewport.gd" type="Script" id=8]
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=9]
+[ext_resource path="res://scripts/PlaylistView.gd" type="Script" id=10]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 1, 0.0477028, 0.534034 )
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 1, 0.0325357, 0.999178 )
+
+[sub_resource type="PlaneMesh" id=3]
+
+[sub_resource type="ViewportTexture" id=4]
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="SpatialMaterial" id=5]
+resource_local_to_scene = true
+flags_unshaded = true
+albedo_texture = SubResource( 4 )
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
@@ -33,6 +50,7 @@ transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, 7
 ontext = "HR 170"
 
 [node name="SongBlocks" type="Spatial" parent="."]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.38205, 0, 1.80805 )
 
 [node name="Element2" parent="SongBlocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.676956, 0.416, 0 )
@@ -59,7 +77,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.657302, -0.437727, 0 )
 level_number = 4
 
 [node name="NextPage" parent="." instance=ExtResource( 3 )]
-transform = Transform( -0.25, -1.50996e-07, -1.65006e-15, 0, -4.37114e-08, 0.25, -3.7749e-08, 1, 1.09278e-08, 1.7626, 0, 0 )
+transform = Transform( -0.216506, -0.5, -5.4639e-09, 0, -4.37114e-08, 0.25, -0.125, 0.866025, 9.46375e-09, 1.7626, 0, 0.123467 )
 defaultext = "[b][i]Next page[/i][/b]"
 
 [node name="StaticBody" type="StaticBody" parent="NextPage"]
@@ -71,6 +89,81 @@ shape = SubResource( 1 )
 
 [node name="DifficultyButtons" parent="." instance=ExtResource( 5 )]
 transform = Transform( -8.40732e-08, 0, 1.92337, 0, 1.92337, 0, -1, 0, -4.37114e-08, -1.64334, -0.15069, 0.0439329 )
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 512, 512 )
+render_target_v_flip = true
+render_target_update_mode = 1
+script = ExtResource( 8 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Viewport"]
+
+[node name="ColorRect" type="ColorRect" parent="Viewport/CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 40.0
+margin_bottom = 40.0
+color = Color( 0.00784314, 0, 0.819608, 1 )
+
+[node name="ColorRect2" type="ColorRect" parent="Viewport/CanvasLayer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 502.0
+margin_bottom = 502.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="StartButton" type="Button" parent="Viewport/CanvasLayer"]
+margin_left = 360.0
+margin_top = 190.0
+margin_right = 480.0
+margin_bottom = 215.0
+theme = ExtResource( 9 )
+text = "Start"
+
+[node name="FreeplayButton" type="Button" parent="Viewport/CanvasLayer"]
+margin_left = 360.0
+margin_top = 110.0
+margin_right = 480.0
+margin_bottom = 145.0
+theme = ExtResource( 9 )
+text = "Freeplay"
+
+[node name="RemoveButton" type="Button" parent="Viewport/CanvasLayer"]
+margin_left = 360.0
+margin_top = 25.0
+margin_right = 480.0
+margin_bottom = 60.0
+theme = ExtResource( 9 )
+text = "-"
+
+[node name="Songs" type="Tree" parent="Viewport/CanvasLayer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 350.0
+margin_bottom = 492.0
+theme = ExtResource( 9 )
+script = ExtResource( 10 )
+
+[node name="StaticBody" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.441766, 0 )
+script = ExtResource( 7 )
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0345452, 0 )
+shape = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
+mesh = SubResource( 3 )
+material/0 = SubResource( 5 )
+
+[node name="tl_marker" type="Spatial" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1 )
+
+[node name="tr_marker" type="Spatial" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1 )
+
+[node name="bl_marker" type="Spatial" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1 )
 [connection signal="selected" from="Heartrate/Button_140" to="." method="_on_Heartrate_selected" binds= [ 140 ]]
 [connection signal="selected" from="Heartrate/Button_160" to="." method="_on_Heartrate_selected" binds= [ 160 ]]
 [connection signal="selected" from="Heartrate/Button_150" to="." method="_on_Heartrate_selected" binds= [ 150 ]]
@@ -83,3 +176,8 @@ transform = Transform( -8.40732e-08, 0, 1.92337, 0, 1.92337, 0, -1, 0, -4.37114e
 [connection signal="selected" from="SongBlocks/Element5" to="." method="_on_level_block_selected"]
 [connection signal="touched" from="NextPage/StaticBody" to="." method="_on_NextPage_touched"]
 [connection signal="difficulty_selected" from="DifficultyButtons" to="." method="_on_DifficultyButtons_difficulty_selected"]
+[connection signal="pressed" from="Viewport/CanvasLayer/StartButton" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/FreeplayButton" to="." method="_on_FreeplayButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/RemoveButton" to="." method="_on_RemoveButton_pressed"]
+[connection signal="interface_release" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_release"]
+[connection signal="interface_touch" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_touch"]

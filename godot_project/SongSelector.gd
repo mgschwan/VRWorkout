@@ -10,7 +10,7 @@ var page = 0
 
 var gu = GameUtilities.new()
 
-
+var playlist = []
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -22,15 +22,18 @@ func update_song_list():
 	var offset = page * 6
 	var pages = ceil(len(song_list)/6.0)
 	for idx in range(6):
+		var element = get_node("SongBlocks/Element%d"%(idx+1))
 		if len(song_list) > idx+offset:
 			var filename = song_list[idx+offset]
 			var song_name = gu.get_song_name(filename)
 			var song_info = song_infos.get(filename,{})
 			var artist = song_info.get("artist","")
 			var length = song_info.get("length",0)
-			get_node("SongBlocks/Element%d"%(idx+1)).set_song_info(song_name,filename,artist,length)
+			element.is_set = true
+			element.set_song_info(song_name,filename,artist,length)
 		else:
-			get_node("SongBlocks/Element%d"%(idx+1)).set_song_info("empty",null)
+			element.is_set = false
+			element.set_song_info("empty",null)
 	get_node("NextPage").print_info("[b]\n  Page %d/%d[b]"%[page+1,pages])
 
 func get_song_infos(songs):
@@ -83,9 +86,20 @@ func _ready():
 	update_automatic()
 	update_song_list()
 	update_hr_selectors()
+	update_songs()
 	select_difficulty(current_difficulty)
 
-
+func update_songs():
+	var t = ""
+	var songs_tree = get_node("Viewport/CanvasLayer/Songs")
+	songs_tree.clear()
+	var root = songs_tree.create_item()
+	root.set_text(0,"Your Playlist")
+	for song in playlist:
+		var tmp = songs_tree.create_item()
+		tmp.set_text(0, gu.get_song_name(song))
+	get_node("Viewport").render_target_update_mode = Viewport.UPDATE_ONCE
+		
 func next_page():
 	print ("Page: %d, Songs: %d, Pages: %d"%[page, len(song_list), int(ceil(len(song_list)/6.0))])
 	if len(song_list) > 0:
@@ -108,9 +122,8 @@ func select_difficulty(d):
 
 
 func _on_level_block_selected(filename, difficulty, level_number):
-	if difficulty == null:
-		difficulty = current_difficulty
-	emit_signal("level_selected", filename, difficulty, level_number)
+	playlist.append(filename)
+	update_songs()
 
 func _on_NextPage_touched():
 	next_page()
@@ -134,3 +147,17 @@ func update_hr_selectors():
 func _on_Heartrate_selected(extra_arg_0):
 	ProjectSettings.set("game/target_hr",extra_arg_0)
 	update_hr_selectors()
+
+func _on_Button_pressed():
+	print ("Start button pressed")
+	if len(playlist) > 0:
+		emit_signal("level_selected", playlist, current_difficulty, 0)
+
+func _on_RemoveButton_pressed():
+	print ("Remove button pressed")
+	playlist.pop_back()
+	update_songs()
+
+func _on_FreeplayButton_pressed():
+	playlist.append(300)
+	update_songs()

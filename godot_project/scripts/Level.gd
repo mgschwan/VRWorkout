@@ -103,7 +103,7 @@ func display_state(state):
 var update_counter = 0
 func update_info(hits, max_hits, points):
 	var song_pos = int(cue_emitter.current_playback_time)
-	var total = int(stream.stream.get_length())
+	var total = max(1.0, int(stream.stream.get_length())) #max(1.0,val) to prevent divison by zero
 	
 	var elapsed_string = gu.seconds_to_timestring(song_pos)
 	var t = OS.get_time()	
@@ -259,68 +259,19 @@ func _ready():
 	print ("Initializing AUDIO")
 	print ("File: %s"%str(audio_filename))
 	
-	if song_index_parameter < 0:
-		#freeplay mode
-		stream = DummyAudioStream.new(abs(song_index_parameter)*100)
-		selected_song = "Freeplay"
-		print ("BPM %.2f"%bpm)
-		stream.connect("stream_finished", self, "_on_AudioStreamPlayer_finished")
-		self.add_child(stream)
-	else:
-		selected_song = audio_filename
-#
-#		var beat_file = File.new()
-#		#TODO load multiples beat files
-#		var error = beat_file.open("%s.json"%str(audio_filename), File.READ)
-#		beats = []
-#
-#		if error == OK:
-#			var tmp = JSON.parse(beat_file.get_as_text()).result
-#			beat_file.close()
-#			beats = tmp.get("beats", [])
-#			print ("%d beats loaded"%len(beats))
-#		else: 
-#			print ("Could not open beat list")
-
-		#var audio_file = File.new()
-		
-		infolayer.print_info("Loading song %s"%str(audio_filename))
-		print ("Loading song: %s"%(str(audio_filename)))
-		#error = audio_file.open(audio_filename,File.READ)
-		#infolayer.append_info(" / File opened %s" % str(audio_file.is_open()))
-		infolayer.print_info(exercise_builder.state_string(actual_game_state).to_upper(), "main")
-		infolayer.print_info("Player height: %.2f Difficulty: %.2f/%.2f"%[GameVariables.player_height, exercise_builder.min_cue_space, exercise_builder.min_state_duration], "debug")
-		infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
-		
-		stream = AudioStreamPlaylist.new(audio_filename)
-		stream.connect("stream_finished",self,"_on_AudioStreamPlayer_finished")
-		add_child(stream)
-		beats = stream.playlist_beats		
-		
-		#var audio_resource = gu.load_audio_resource(audio_filename)
-		#stream = get_node("AudioStreamPlayer")
-
-		#if audio_resource:
-		#	stream.stream = audio_resource
-		#else:
-		#	print ("Could not load audio")
-		#	emit_signal("level_finished")	
+	selected_song = audio_filename
 	
-#	#If the song has no beats use the default beats
-#	if (GameVariables.override_beatmap or len(beats) == 0) and stream.stream:
-#		beats = []
-#		var delta = max(0.1, 60.0/float(max(1,bpm)))
-#		var now = OS.get_ticks_msec()	
-#		var pos = 0
-#		#get the correct starting time
-#		var elapsed = (now - first_beat)/1000.0
-#		pos =  (ceil(elapsed/delta) - elapsed/delta)*delta
-#		print ("Start at: %.2f"%pos)
-#
-#		while pos < stream.stream.get_length()-delta:
-#			beats.append(pos)
-#			pos += delta
-
+	infolayer.print_info("Loading songs %s"%str(audio_filename))
+	print ("Loading song: %s"%(str(audio_filename)))
+	infolayer.print_info(exercise_builder.state_string(actual_game_state).to_upper(), "main")
+	infolayer.print_info("Player height: %.2f Difficulty: %.2f/%.2f"%[GameVariables.player_height, exercise_builder.min_cue_space, exercise_builder.min_state_duration], "debug")
+	infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
+	
+	stream = AudioStreamPlaylist.new(audio_filename)
+	stream.connect("stream_finished",self,"_on_AudioStreamPlayer_finished")
+	add_child(stream)
+	beats = stream.playlist_beats		
+	
 	if stream.stream:
 		stream.play()	
 		if GameVariables.battle_mode != GameVariables.BattleMode.NO:

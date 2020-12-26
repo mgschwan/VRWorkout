@@ -36,6 +36,7 @@ func play():
 	playing = true
 	finished_signal_emitted = false
 	start_ts = OS.get_ticks_msec()
+	print ("Stream started")
 	
 func stop():
 	playing = false

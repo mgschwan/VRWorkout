@@ -14,7 +14,8 @@ class CombinedStream:
 	func get_length():
 		return stream_duration
 
-var actual_audio_stream = AudioStreamPlayer.new()
+var actual_audio_stream
+var dummy_audio_stream 
 var current_audio_resource
 
 var playlist = []
@@ -29,38 +30,65 @@ var playback_position = 0
 var playing = false
 var finished_signal_emitted = false
 
-func play_current_song():
-	actual_audio_stream.stop()
-	current_audio_resource = gu.load_audio_resource(playlist[current_index])
-	print ("Audio resource. Next playlist item: %s %f"%[str(current_audio_resource),current_audio_resource.get_length()])
-	actual_audio_stream.stream = current_audio_resource
-	if start_ts < 0:
-		start_ts = OS.get_ticks_msec()/1000.0
-	var actual_playback_position = (OS.get_ticks_msec()/1000.0) - start_ts
-	var skip_time = max(0,actual_playback_position - item_offset_ts)
-	actual_audio_stream.play()
-	print ("Is playing: %s (skip: %.4f)"%[str(actual_audio_stream.playing),skip_time])
+var is_dummy_stream = false
 
-func _on_item_finished():
+func play_current_song():
+	var song_file = playlist[current_index]
+
+	if is_dummy_stream and dummy_audio_stream:
+		dummy_audio_stream.queue_free()
+	elif actual_audio_stream:
+		print ("Stop old audio")
+		actual_audio_stream.stop()
+		actual_audio_stream.queue_free()
+		
+	
+	if typeof(song_file) == TYPE_REAL or typeof(song_file) == TYPE_INT:
+		dummy_audio_stream = DummyAudioStream.new(song_file)
+		current_audio_resource = dummy_audio_stream.stream
+		dummy_audio_stream.connect("stream_finished",self,"_on_item_finished")
+		add_child(dummy_audio_stream)
+		is_dummy_stream = true
+		dummy_audio_stream.play()
+		print ("Dummy stream: %.2f"%song_file)
+	else:
+		current_audio_resource = gu.load_audio_resource(song_file)
+		current_audio_resource.loop = false
+		actual_audio_stream = AudioStreamPlayer.new()
+		actual_audio_stream.bus = "Music"
+		actual_audio_stream.stream = current_audio_resource
+		actual_audio_stream.connect("finished",self,"_on_item_finished")
+		add_child(actual_audio_stream)
+
+		is_dummy_stream = false
+		
+		if start_ts < 0:
+			start_ts = OS.get_ticks_msec()/1000.0
+
+		var actual_playback_position = (OS.get_ticks_msec()/1000.0) - start_ts
+		var skip_time = max(0,actual_playback_position - item_offset_ts)
+		actual_audio_stream.play(skip_time)
+		print ("skip: %.4f"%skip_time)
+
+func _on_item_finished():		
+	print ("Item finished")
 	if current_index+1 < len(playlist):
 		current_index += 1
 		if current_audio_resource:
 			item_offset_ts += current_audio_resource.get_length()
+		print ("Play song #%d"%current_index)
 		play_current_song()		
 	else:
 		playing = false
 		emit_signal("stream_finished")
-		
+
 func _process(delta):
 	pass
-
 func _ready():
-	actual_audio_stream.bus = "Music"
 	pass	
 	
 func load_beatlist (song, offset = 0, duration = 0):
 	var beats = []
-	
 	
 	var beat_file = File.new()
 	var error = beat_file.open("%s.json"%str(song), File.READ)
@@ -100,34 +128,46 @@ func load_beatlist (song, offset = 0, duration = 0):
 		
 	
 func _init(songs):
-	actual_audio_stream.connect("finished",self,"_on_item_finished")
-	add_child(actual_audio_stream)
-
 	var duration = 0
 	for s in songs:
 		var offset = duration
+		var song_length = 0
 
-		var audio = gu.load_audio_resource(s)
-		duration += audio.get_length()
+		if typeof(s) == TYPE_REAL or typeof(s) == TYPE_INT:
+			song_length = s
+		else:
+			var audio = gu.load_audio_resource(s)
+			song_length = audio.get_length()
+		
+		duration += song_length
 
-		var beats = load_beatlist(s, offset, audio.get_length())
+		var beats = load_beatlist(s, offset, song_length)
 		playlist_beats += beats
 
 		playlist.append(s)
-		durations.append(audio.get_length())
+		durations.append(song_length)
+		
 	stream = CombinedStream.new(duration)
 
 func play():
-	playing = true
-	play_current_song()
+	if len(playlist) > 0:
+		playing = true
+		play_current_song()
 	finished_signal_emitted = false
 
 func stop():
-	actual_audio_stream.stop()
+	print ("Stop called")
+	if actual_audio_stream:
+		actual_audio_stream.stop()
 	playing = false
 
 func get_playback_position():
-	return item_offset_ts + actual_audio_stream.get_playback_position()
+	var pos = 0
+	if is_dummy_stream and dummy_audio_stream:
+		pos = dummy_audio_stream.get_playback_position()
+	elif actual_audio_stream:
+		pos = actual_audio_stream.get_playback_position()
+	return item_offset_ts + pos
 	
 	
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=2]
+[gd_scene load_steps=60 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -20,7 +20,6 @@
 [ext_resource path="res://TextPanel.tscn" type="PackedScene" id=18]
 [ext_resource path="res://assets/enemy_medium.jpg" type="Texture" id=19]
 [ext_resource path="res://audio/snare_hit.wav" type="AudioStream" id=20]
-[ext_resource path="res://SongLevelBlock.tscn" type="PackedScene" id=21]
 [ext_resource path="res://Tutorial.tscn" type="PackedScene" id=22]
 [ext_resource path="res://SongSelector.tscn" type="PackedScene" id=23]
 [ext_resource path="res://scenes/Button.tscn" type="PackedScene" id=24]
@@ -238,7 +237,7 @@ ontext = "Recenter"
 transform = Transform( 0.913545, 0, 0.406737, 0, 1, 0, -0.406737, 0, 0.913545, 0, -0.34, 0 )
 
 [node name="BPM" type="StaticBody" parent="."]
-transform = Transform( 0.979702, -0.0796681, 0.183952, -6.47481e-08, 0.917637, 0.39742, -0.200462, -0.389353, 0.89901, 0.550664, 1.19237, 0.995729 )
+transform = Transform( 0.671837, 0.294369, -0.679693, -6.47481e-08, 0.917637, 0.39742, 0.7407, -0.267002, 0.616503, -0.710166, 1.19237, 0.841135 )
 script = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="BPM"]
@@ -266,22 +265,7 @@ offtext = "Default beats"
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.04662, 0.781789, -1.70517e-07 )
 
 [node name="SongSelector" parent="." instance=ExtResource( 23 )]
-transform = Transform( -1.74846e-08, 0, -1, 0, 0.4, 0, 0.4, 0, -4.37114e-08, 0.919011, 1.43304, 1.71055e-07 )
-
-[node name="Freeplay1" parent="SongSelector" instance=ExtResource( 21 )]
-transform = Transform( -2.03651e-07, 0, -1.25, 0, 1.25, 0, 0.5, 0, -8.14602e-08, 2.18474, 0.4174, 1.08002 )
-song_name = "Freeplay 1 hour"
-level_number = -36
-
-[node name="Freeplay2" parent="SongSelector" instance=ExtResource( 21 )]
-transform = Transform( -2.03651e-07, 0, -1.25, 0, 1.25, 0, 0.5, 0, -8.14602e-08, 2.18542, -0.0750997, 1.07993 )
-song_name = "Freeplay 10 minutes"
-level_number = -6
-
-[node name="Freeplay3" parent="SongSelector" instance=ExtResource( 21 )]
-transform = Transform( -2.03651e-07, 0, -1.25, 0, 1.25, 0, 0.5, 0, -8.14602e-08, 2.18284, -0.598195, 1.09084 )
-song_name = "Freeplay 5 minutes"
-level_number = -3
+transform = Transform( -1.74846e-08, 0, -0.4, 0, 0.4, 0, 0.4, 0, -1.74846e-08, 0.919011, 1.43304, 1.71055e-07 )
 
 [node name="MainText" parent="." instance=ExtResource( 17 )]
 transform = Transform( -1.54463e-07, -0.974043, 0.226362, -7.37582e-08, -0.226362, -0.974043, 1, -1.6715e-07, -3.68791e-08, 2.17868, 2.30847, 3.54952e-07 )
@@ -552,8 +536,8 @@ material/0 = ExtResource( 7 )
 [node name="Header" type="Spatial" parent="SettingsCarousel/Exercises"]
 transform = Transform( 2.93257e-07, -1, 3.18518e-14, 9.77524e-08, 2.65431e-14, -0.6, 0.6, 4.88762e-07, 9.77524e-08, -1.06915, 2.11855, -0.111982 )
 script = SubResource( 16 )
-text = "Step 1: Select workout or exercises\\nStep 2: Select song to your right"
-font_size = 28
+text = "Step 1: Select workout or exercises\\nStep 2: Select song(s) behind you or Freeplay\\nStep 3: Press Start"
+font_size = 18
 viewport_width = 512
 viewport_height = 96
 
@@ -597,8 +581,8 @@ transform = Transform( 1.1, -1.13687e-13, 6.88809e-21, -5.68434e-14, 1, 0, 1.421
 [node name="Header" type="Spatial" parent="SettingsCarousel/Battle"]
 transform = Transform( 3.26639e-07, -1, 3.72904e-14, 9.77524e-08, 2.65431e-14, -0.6, 0.6, 5.44398e-07, 9.77524e-08, -1.18034, 2.33154, -0.250625 )
 script = SubResource( 16 )
-text = "Save: Play regular workout then save\\nLoad: Select slot and then song"
-font_size = 24
+text = "Save: Play any workout, afterwards press save\\nLoad: Select a slot and then the songs\\nChallenges: Play any workout then press 'Create Challenge'\\nChallenge is uploaded and can be shared with a link"
+font_size = 16
 viewport_width = 512
 viewport_height = 96
 
@@ -795,9 +779,6 @@ volume_db = -9.0
 [connection signal="selected" from="Recenter" to="." method="_on_Recenter_selected"]
 [connection signal="toggled" from="BPM/OverrideBeats" to="." method="_on_OverrideBeats_toggled"]
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
-[connection signal="selected" from="SongSelector/Freeplay1" to="SongSelector" method="_on_level_block_selected"]
-[connection signal="selected" from="SongSelector/Freeplay2" to="SongSelector" method="_on_level_block_selected"]
-[connection signal="selected" from="SongSelector/Freeplay3" to="SongSelector" method="_on_level_block_selected"]
 [connection signal="toggled" from="SettingsCarousel/Connections/VRWorkoutConnection/PortalSwitch" to="." method="_on_PortalSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/JumpSwitch" to="." method="_on_JumpSwitch_toggled"]
 [connection signal="toggled" from="SettingsCarousel/Switchboard/StandSwitch" to="." method="_on_StandSwitch_toggled"]

@@ -625,12 +625,16 @@ func _on_Area_level_selected(filename, diff, num):
 			GameVariables.auto_difficulty = true
 		else:
 			GameVariables.auto_difficulty = false
-		game_statistics = {"difficulty": diff, "song": gu.get_song_name(filename)}
+
+		var song_names = gu.readable_song_list(filename)
+		game_statistics = {"difficulty": diff, "song": song_names}
 
 		GameVariables.difficulty = diff
 		
-		
-		level.audio_filename = [filename,filename]
+		if num < 0:
+			level.audio_filename = [abs(num)*100]
+		else:
+			level.audio_filename = filename
 		level.song_index_parameter = num
 		GameVariables.player_height = ProjectSettings.get("game/player_height")
 		level.bpm = ProjectSettings.get("game/bpm")
@@ -655,7 +659,7 @@ func _on_DemoTimer_timeout():
 	
 	#_on_Area_level_selected("res://audio/nonfree_songs/03_Rule_The_World.ogg", -1, 1)
 	#levelselect.show_settings("switchboard")	
-	_on_Area_level_selected("res://audio/songs/Z_120BPM_Test.ogg", -1, 1)
+	_on_Area_level_selected(["res://audio/songs/Z_120BPM_Test.ogg"], -1, 1)
 	#_on_Area_level_selected("res://audio/songs/02_VRWorkout_Beater.ogg", 2, 1)
 
 

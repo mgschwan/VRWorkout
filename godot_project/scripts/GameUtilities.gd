@@ -98,20 +98,31 @@ func load_audio_resource(filename):
 
 
 #Get song name from path
-func get_song_name(filename):
-	var tmp = filename.rsplit(".")[0].rsplit("/")[-1]
+func get_song_name(value):
+	var tmp = ""
+	if typeof(value) == TYPE_REAL or typeof(value) == TYPE_INT:
+		tmp = "Freeplay %s"%(seconds_to_timestring(value))
+	else:
+		tmp = value.rsplit(".")[0].rsplit("/")[-1]
 	return tmp.replace("_"," ")
+
+#Create a string from the playlist
+func readable_song_list(value):
+	var song_names = ""
+	for i in value:
+		song_names += get_song_name(i) + " "
+	return song_names
 
 func upload_challenge(remoteinterface):
 	
 	var challenge = {
 		"cue_list": GameVariables.cue_list,
-		"song": get_song_name(GameVariables.current_song),
+		"song": readable_song_list(GameVariables.current_song),
 		"duration": GameVariables.game_result.get("time", 0),
 		"score": GameVariables.game_result.get("vrw_score",0),
 		"points": GameVariables.game_result.get("points",0)
 	}
-	print ("Current song: %s"%GameVariables.current_song)
+	print ("Current song: %s"%(readable_song_list(GameVariables.current_song)))
 	remoteinterface.send_data(GameVariables.device_id,"challenge",challenge )
 
 
