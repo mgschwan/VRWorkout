@@ -321,7 +321,7 @@ func setup_cue_parameters(difficulty, ph):
 		},	
 		CueState.JUMP : {
 			CueSelector.HEAD : {
-				"yoffset" : jump_offset,
+				"yoffset" : jump_offset*0.9, #TODO make the jump offset depend on the difficulty
 				"squat_head" : difficulty >= 1.5
 			},
 			CueSelector.HAND : {
@@ -835,15 +835,15 @@ func handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, st
 	var x_hand = "ph*0.4"
 	#create_and_attach_cue(current_time,"head", 0, y_head, target_time)
 	
-	var double_punch_delay = 0.5
+	var double_punch_delay = 0.8
 
 	if windmill_left:
 		var n_id = create_and_attach_cue(current_time,"left", "-%s"%x_hand,y_hand1, target_time, -hand_cue_offset)
-		var n2_id = create_and_attach_cue(current_time+double_punch_delay*0.5,"left", "0.1666*%s"%x_hand, y_hand2, target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
+		var n2_id = create_and_attach_cue(current_time+double_punch_delay*0.4,"left", "0.1666*%s"%x_hand, y_hand2, target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
 		var n3_id = create_and_attach_cue(current_time+double_punch_delay,"left", x_hand, y_hand3, target_time+double_punch_delay , -hand_cue_offset,0,"",n2_id)
 	else:
 		var n_id = create_and_attach_cue(current_time,"right", x_hand,y_hand1, target_time, -hand_cue_offset)
-		var n2_id = create_and_attach_cue(current_time+double_punch_delay*0.5,"right", "-0.1666*%s"%x_hand, y_hand2, target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
+		var n2_id = create_and_attach_cue(current_time+double_punch_delay*0.4,"right", "-0.1666*%s"%x_hand, y_hand2, target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
 		var n3_id = create_and_attach_cue(current_time+double_punch_delay,"right", "-%s"%x_hand, y_hand3, target_time+double_punch_delay , -hand_cue_offset,0,"",n2_id)
 
 	windmill_left = not windmill_left

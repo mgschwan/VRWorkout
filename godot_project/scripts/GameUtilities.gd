@@ -113,7 +113,10 @@ func double_tap_debounce(obj, limit=0.2):
 func get_song_name(value):
 	var tmp = ""
 	if typeof(value) == TYPE_REAL or typeof(value) == TYPE_INT:
-		tmp = "Freeplay %s"%(seconds_to_timestring(value))
+		if value >= 0:
+			tmp = "Freeplay %s"%(seconds_to_timestring(value))
+		else:
+			tmp = "Pause %s"%(seconds_to_timestring(-value))
 	else:
 		tmp = value.rsplit(".")[0].rsplit("/")[-1]
 	return tmp.replace("_"," ")

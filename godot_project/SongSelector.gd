@@ -159,5 +159,25 @@ func _on_RemoveButton_pressed():
 	update_songs()
 
 func _on_FreeplayButton_pressed():
-	playlist.append(300)
+	var complete = false
+	if playlist:
+		var last = playlist.back()
+		if typeof(last) == TYPE_REAL or typeof(last) == TYPE_INT:
+			if last > 0:
+				playlist[-1] = last + 300
+				complete = true
+	if not complete:
+		playlist.append(300)
+	update_songs()
+
+func _on_PauseButton_pressed():
+	var complete = false
+	if playlist:
+		var last = playlist.back()
+		if typeof(last) == TYPE_REAL or typeof(last) == TYPE_INT:
+			if last <= 0:
+				playlist[-1] = last - 10
+				complete = true
+	if not complete:
+		playlist.append(-10)
 	update_songs()

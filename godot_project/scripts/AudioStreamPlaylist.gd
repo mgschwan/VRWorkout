@@ -44,7 +44,7 @@ func play_current_song():
 		
 	
 	if typeof(song_file) == TYPE_REAL or typeof(song_file) == TYPE_INT:
-		dummy_audio_stream = DummyAudioStream.new(song_file)
+		dummy_audio_stream = DummyAudioStream.new(abs(song_file))
 		current_audio_resource = dummy_audio_stream.stream
 		dummy_audio_stream.connect("stream_finished",self,"_on_item_finished")
 		add_child(dummy_audio_stream)
@@ -132,17 +132,21 @@ func _init(songs):
 	for s in songs:
 		var offset = duration
 		var song_length = 0
+		var has_beats = true
 
 		if typeof(s) == TYPE_REAL or typeof(s) == TYPE_INT:
-			song_length = s
+			song_length = abs(s)
+			if s <= 0:
+				has_beats = false
 		else:
 			var audio = gu.load_audio_resource(s)
 			song_length = audio.get_length()
 		
 		duration += song_length
-
-		var beats = load_beatlist(s, offset, song_length)
-		playlist_beats += beats
+		
+		if has_beats:
+			var beats = load_beatlist(s, offset, song_length)
+			playlist_beats += beats
 
 		playlist.append(s)
 		durations.append(song_length)
