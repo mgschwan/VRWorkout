@@ -602,7 +602,8 @@ func get_persisting_parameters():
 			"game/instructor": ProjectSettings.get("game/instructor"),
 			"game/override_beats": ProjectSettings.get("game/override_beats"),
 			"game/bpm": ProjectSettings.get("game/bpm"),
-			"game/exercise/stand/windmill" : ProjectSettings.get("game/exercise/stand/windmill")
+			"game/exercise/stand/windmill" : ProjectSettings.get("game/exercise/stand/windmill"),
+			"game/default_playlist" : GameVariables.current_song
 	}
 	
 var game_statistics = {}
@@ -685,7 +686,10 @@ func set_beast_mode(enabled):
 
 func _on_Splashscreen_finished():
 	GameVariables.vr_camera.blackout_screen(true)
-	
+	get_node("SongDatabase").intialize_song_database()
+	var default_playlist = ProjectSettings.get("game/default_playlist")
+	if default_playlist:
+		GameVariables.current_song = default_playlist	
 	
 	red_environment = load("res://default_env_red.tres")
 	blue_environment = load("res://default_env.tres")

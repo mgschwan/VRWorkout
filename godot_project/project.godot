@@ -23,11 +23,17 @@ _global_script_classes=[ {
 "class": "GameUtilities",
 "language": "GDScript",
 "path": "res://scripts/GameUtilities.gd"
+}, {
+"base": "Node",
+"class": "SongDatabase",
+"language": "GDScript",
+"path": "res://scripts/SongDatabase.gd"
 } ]
 _global_script_class_icons={
 "AudioStreamPlaylist": "",
 "DummyAudioStream": "",
-"GameUtilities": ""
+"GameUtilities": "",
+"SongDatabase": ""
 }
 
 [application]

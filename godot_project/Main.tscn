@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://MultiplayerRoom/MultiplayerRoom.gd" type="Script" id=12]
 [ext_resource path="res://MultiplayerRoom/PlayerArea.gd" type="Script" id=13]
 [ext_resource path="res://MultiplayerRoom/RemoteSpatial.gd" type="Script" id=14]
+[ext_resource path="res://scripts/SongDatabase.gd" type="Script" id=15]
 [ext_resource path="res://audio/head_hit.wav" type="AudioStream" id=16]
 [ext_resource path="res://RemoteInterface.gd" type="Script" id=18]
 
@@ -196,6 +197,9 @@ script = ExtResource( 12 )
 
 [node name="PlayerArea" type="Spatial" parent="MultiplayerRoom"]
 script = ExtResource( 13 )
+
+[node name="SongDatabase" type="Node" parent="."]
+script = ExtResource( 15 )
 [connection signal="body_entered" from="ARVROrigin/ARVRCamera/AreaHead" to="ARVROrigin/ARVRCamera/AreaHead" method="_on_AreaHead_body_entered"]
 [connection signal="timeout" from="ARVROrigin/ARVRCamera/HUDHideTimer" to="ARVROrigin/ARVRCamera" method="_on_HUDHideTimer_timeout"]
 [connection signal="timeout" from="DemoTimer" to="." method="_on_DemoTimer_timeout"]

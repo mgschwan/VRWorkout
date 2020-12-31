@@ -121,6 +121,40 @@ func get_song_name(value):
 		tmp = value.rsplit(".")[0].rsplit("/")[-1]
 	return tmp.replace("_"," ")
 
+func get_songfile_from_name(name, songs):
+	var retVal = 0
+	print ("Looking for song %s"%str(name))
+	if typeof(name) == TYPE_REAL or typeof(name) == TYPE_INT:
+		retVal = name
+	else:
+		for fname in songs:
+			print ("Find song: %s vs %s"%[get_song_name(fname),name])
+			if get_song_name(fname) == name:
+				retVal = fname
+				break
+	return retVal
+	
+func get_song_list(path):
+	var song_dict = {}
+	var dir = Directory.new()
+	var ec = dir.open(path)
+	
+	if ec == OK:
+		dir.list_dir_begin()
+		var fname = dir.get_next()
+		while fname != "":
+			if not dir.current_is_dir():
+				var fields = fname.split(".")
+				print (str(fields))
+				if fields and (fields[-1] == "ogg" or fields[-1] == "import"):
+					var tmpf = fname
+					if fields[-1] == "import":
+						tmpf = fname.rsplit(".",true,1)[0]
+					var full_path = "%s/%s"%[dir.get_current_dir(),tmpf]
+					song_dict[full_path] = get_song_name(full_path)
+			fname = dir.get_next()
+	return song_dict.keys()
+
 #Create a string from the playlist
 func readable_song_list(value):
 	var song_names = ""

@@ -16,8 +16,26 @@ var playlist = []
 # var a = 2
 # var b = "text"
 
+func playlist_from_song_files(songs):
+	playlist.clear()
+	for song in songs:
+		if get_tree().current_scene.get_node("SongDatabase").valid_song(song):
+				playlist.append(song)	
+	update_songs()
 
-	
+func playlist_from_song_names(songs):
+	playlist.clear()
+	print ("Playlist from songs: %s"%str(songs))
+	for song in songs:
+		if typeof(song) == TYPE_REAL or typeof(song) == TYPE_INT:
+			playlist.append(song)
+		else:
+			var songfile = get_tree().current_scene.get_node("SongDatabase").get_songfile(song)
+			if songfile:
+				playlist.append(songfile)
+		
+	update_songs()
+
 func update_song_list():
 	var offset = page * 6
 	var pages = ceil(len(song_list)/6.0)
@@ -91,13 +109,17 @@ func _ready():
 
 func update_songs():
 	var t = ""
+	var duration = 0
 	var songs_tree = get_node("Viewport/CanvasLayer/Songs")
 	songs_tree.clear()
 	var root = songs_tree.create_item()
-	root.set_text(0,"Your Playlist")
 	for song in playlist:
 		var tmp = songs_tree.create_item()
 		tmp.set_text(0, gu.get_song_name(song))
+		duration += abs(get_tree().current_scene.get_node("SongDatabase").get_song_duration(song))
+
+	root.set_text(0,"Your Playlist %s"%(gu.seconds_to_timestring(duration)))
+
 	get_node("Viewport").render_target_update_mode = Viewport.UPDATE_ONCE
 		
 func next_page():

@@ -7,30 +7,6 @@ var gu = GameUtilities.new()
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-
-func get_song_list(path):
-	var song_dict = {}
-	var dir = Directory.new()
-	var ec = dir.open(path)
-	
-	if ec == OK:
-		dir.list_dir_begin()
-		var fname = dir.get_next()
-		while fname != "":
-			if not dir.current_is_dir():
-				var fields = fname.split(".")
-				print (str(fields))
-				if fields and (fields[-1] == "ogg" or fields[-1] == "import"):
-					var tmpf = fname
-					if fields[-1] == "import":
-						tmpf = fname.rsplit(".",true,1)[0]
-					var full_path = "%s/%s"%[dir.get_current_dir(),tmpf]
-					song_dict[full_path] = 1
-			fname = dir.get_next()
-	
-	return song_dict.keys()
-	
-
 	
 func update_widget():
 	get_node("SettingsCarousel/Switchboard/BeastModeSelector").beast_mode = ProjectSettings.get("game/beast_mode")
@@ -102,28 +78,11 @@ func _ready():
 	show_settings("empty")
 	update_online_features()
 	
-	var songs = []
-#			 ["res://audio/songs/vrworkout.ogg",
-#			"res://audio/songs/cdk_deeper_in_yourself.ogg",
-#			"res://audio/songs/cdk_like_this.ogg",
-#			"res://audio/songs/cdk_the_game_has_changed.ogg",
-#			"res://audio/songs/ffact_shameless_site_promotion.ogg",
-#			"res://audio/songs/scomber_clarity.ogg",
-#			"res://audio/songs/vrworkout_beater.ogg",
-#			"res://audio/nonfree_songs/Slayers_of_the_Ice_Dragon.ogg",
-#			"res://audio/nonfree_songs/Duty_to_Humanity.ogg"]
+	get_node("SongSelector").set_songs(get_tree().current_scene.get_node("SongDatabase").song_list())
+	if GameVariables.current_song:
+		get_node("SongSelector").playlist_from_song_files(GameVariables.current_song)
 	
-	songs += get_song_list("res://audio/songs")
-	songs += get_song_list("res://audio/nonfree_songs")
-	var external_dir = ProjectSettings.get("game/external_songs")
-
-	if external_dir:
-		songs += get_song_list(external_dir)	
-
-	print (str(songs))
-	get_node("SongSelector").set_songs(songs)
-	
-	get_node("MainText").print_info("VRWorkout\nSelect song by touching a block\nBest played hands only - no controllers\nPosition yourself between the blue poles\nRun in place to get multipliers\n\nTurn around for a tutorial")
+	get_node("MainText").print_info("VRWorkout\nSelect song by touching a block\nBest played hands only - no controllers\nPosition yourself between the green poles\nRun in place to get multipliers\n\nTurn around for a tutorial")
 	
 	get_node("Tutorial").print_info("How to play\n- Hit the hand cues to the beat of the music\n- Head cues should only be touched no headbutts\n- Run in place to receive point multipliers!\nThe optimal time to hit the cues is when the\nrotating marker meets the static one")	
 	
@@ -311,6 +270,13 @@ func update_online_features():
 		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot3"))
 		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot4"))
 		gu.deactivate_node(get_node("SettingsCarousel/Battle/CreateChallengeButton"))		
+
+
+	#Connect Pad Deactivated for now
+	if not GameVariables.FEATURE_MULTIPLAYER:
+		get_node("SettingsCarousel/Connections/ConnectPad").queue_free()
+
+
 
 func _on_PortalSwitch_toggled(value):
 	ProjectSettings.set("game/portal_connection", value)

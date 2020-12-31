@@ -23,14 +23,13 @@ var fly_time = 3.0
 var fly_distance = 0
 var target_distance = 0
 var hand_delay = 0
-var jump_offset = 0.42
+var jump_offset = 0.3
 var ducking_mode = false
 var stand_avoid_head_cue = 0.5
 var kneesaver_mode = false
 var beast_chance = 0.1
 var emit_early
 var auto_difficulty = false
-
 
 
 var rng = RandomNumberGenerator.new()
@@ -321,12 +320,12 @@ func setup_cue_parameters(difficulty, ph):
 		},	
 		CueState.JUMP : {
 			CueSelector.HEAD : {
-				"yoffset" : jump_offset*0.9, #TODO make the jump offset depend on the difficulty
+				"yoffset" : jump_offset,
 				"squat_head" : difficulty >= 1.5
 			},
 			CueSelector.HAND : {
 				"has_hand" : difficulty > 0.9,
-				"yoffset" : jump_offset,
+				"yoffset" : jump_offset+0.12,
 				"xspread" : "ph/5.0",
 			}
 		},
