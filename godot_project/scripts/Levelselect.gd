@@ -278,8 +278,6 @@ func update_online_features():
 	if not GameVariables.FEATURE_MULTIPLAYER and has_node("SettingsCarousel/Connections/ConnectPad"):
 		get_node("SettingsCarousel/Connections/ConnectPad").queue_free()
 
-
-
 func _on_PortalSwitch_toggled(value):
 	ProjectSettings.set("game/portal_connection", value)
 	update_online_features()

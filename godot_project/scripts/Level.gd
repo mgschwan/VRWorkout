@@ -178,6 +178,7 @@ func setup_game_data():
 		battle_module = load("res://scenes/BattleDisplay.tscn").instance()
 		battle_module.name = "BattleDisplay"
 		add_child(battle_module)
+		battle_module.connect("player_won",self,"_on_BattleDisplay_player_won")
 
 		cue_emitter.connect("hit_scored", battle_module, "hit_scored")
 		self.connect("set_exercise", battle_module, "set_exercise")

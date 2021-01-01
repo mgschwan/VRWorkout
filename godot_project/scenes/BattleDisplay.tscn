@@ -35,6 +35,7 @@ transform = Transform( -0.344645, 0.203027, -6.03983e-08, 0.203027, 0.344645, 1.
 
 [node name="GestureInterface" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, -2.2215e-28, 8.47033e-22, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+
 [connection signal="attack_complete" from="PlayerLeft" to="." method="_on_Attack_complete" binds= [ "left" ]]
 [connection signal="charge_complete" from="PlayerLeft" to="." method="_on_Attack_charge_complete" binds= [ "left" ]]
 [connection signal="attack_complete" from="PlayerRight" to="." method="_on_Attack_complete" binds= [ "right" ]]

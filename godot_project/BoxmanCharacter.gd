@@ -12,6 +12,7 @@ var mesh_obj
 
 var active = true 
 
+var animation_speed = 1.8
 
 
 
@@ -61,6 +62,7 @@ var animation_queue = []
 func _ready():
 	get_node("EnergyBall").set_as_toplevel(true)
 	animations = get_node("AnimationPlayer")
+	animations.playback_speed = animation_speed
 	for anim in animations.get_animation_list():
 		animations.get_animation(anim).loop = false
 	mesh_obj = get_node("Armature/Skeleton/Mesh_0")	
@@ -101,13 +103,13 @@ func play_current_animation(continuous=false):
 	elif current_animation == BoxmanAnimations.Dying_Middle:
 		animations.play("dying-loop")
 	elif current_animation == BoxmanAnimations.Run:
-		animations.play("running-loop")
+		animations.play("running-loop",-1, 0.75)
 	elif current_animation == BoxmanAnimations.Attack_01:
 		animations.play("attack_01-loop")
 	elif current_animation == BoxmanAnimations.Defense_01:
 		animations.play("defense_01-loop")
 	elif current_animation == BoxmanAnimations.Burpee:
-		animations.play("burpee-loop")
+		animations.play("burpee-loop", -1, 0.9)
 	elif current_animation == BoxmanAnimations.Stand_To_Burpee:
 		animations.play("idle_to_burpee-loop")
 	elif current_animation == BoxmanAnimations.Burpee_To_Stand:

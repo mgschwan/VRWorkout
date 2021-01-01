@@ -32,11 +32,16 @@ material/0 = SubResource( 2 )
 
 [node name="Tween" type="Tween" parent="EnergyBall" index="0"]
 
+[node name="Skeleton" parent="Armature" index="0"]
+bones/2/bound_children = [ NodePath("BoneAttachment2") ]
+bones/5/bound_children = [ NodePath("BoneAttachment") ]
+bones/19/bound_children = [ NodePath("HandAttachment") ]
+
 [node name="Mesh_0" parent="Armature/Skeleton" index="0"]
 material/0 = ExtResource( 3 )
 
 [node name="BoneAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="1"]
-transform = Transform( 0.986541, -0.152138, -0.0599199, 0.144473, 0.982649, -0.116308, 0.076575, 0.106086, 0.991404, -0.00588353, 0.0848884, 0.00578958 )
+transform = Transform( 0.983532, -0.0671211, -0.167806, 0.0374282, 0.983995, -0.174219, 0.176814, 0.16507, 0.970303, -0.00481163, 0.083118, 0.00546106 )
 bone_name = "head"
 
 [node name="StaticBody" type="StaticBody" parent="Armature/Skeleton/BoneAttachment" index="0"]
@@ -47,7 +52,7 @@ transform = Transform( 1, -1.60323e-17, -2.77556e-17, -1.4176e-17, 1, 1.42109e-1
 shape = SubResource( 3 )
 
 [node name="BoneAttachment2" type="BoneAttachment" parent="Armature/Skeleton" index="2"]
-transform = Transform( 0.563226, -0.224109, -0.795331, -0.0679429, 0.946698, -0.314876, 0.823505, 0.231383, 0.517978, -0.000694645, 0.0664924, -0.000152021 )
+transform = Transform( 0.705532, -0.182027, -0.684901, -0.00276611, 0.965735, -0.259515, 0.708672, 0.184991, 0.680854, -0.000720304, 0.0639177, 0.00136709 )
 bone_name = "spine_1"
 
 [node name="StaticBody" type="StaticBody" parent="Armature/Skeleton/BoneAttachment2" index="0"]
@@ -58,7 +63,7 @@ target_area = "torso"
 shape = SubResource( 4 )
 
 [node name="HandAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="3"]
-transform = Transform( -0.716193, -0.371566, -0.590766, -0.515903, 0.851948, 0.0895987, 0.47001, 0.368949, -0.801852, -0.031513, 0.0797832, -0.00498759 )
+transform = Transform( 0.67987, 0.220475, -0.699405, -0.536794, -0.500171, -0.67947, -0.499628, 0.837388, -0.221703, -0.0272466, 0.0560757, -0.00731635 )
 bone_name = "right_hand_index_1"
 
 [node name="EnergyShield" parent="Armature/Skeleton/HandAttachment" index="0" instance=ExtResource( 6 )]

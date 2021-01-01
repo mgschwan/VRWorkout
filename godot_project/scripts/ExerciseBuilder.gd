@@ -273,8 +273,8 @@ func setup_cue_parameters(difficulty, ph):
 			CueSelector.HAND : {
 				"xoffset" : 0.2,
 				"xrange" : 0.45,
-				"yoffset" : -0.2 - difficulty * 0.1,
-				"yrange" : "0.3+%f*ph/8.0"%difficulty,
+				"yoffset" : -0.35 - difficulty * 0.1,
+				"yrange" : "(0.3+%f*ph/8.0)"%difficulty,
 				"double_swing_spread": "ph/%f"%( 3.0 + (2.0-difficulty)/1.5 ) ,
 				"invertible_sides": difficulty >= 1.0, #If hands can cross the sides
 				"windmill": ProjectSettings.get("game/exercise/stand/windmill")
@@ -828,7 +828,7 @@ func handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, st
 		windmill_left = (randi()%2 == 0)
 
 	var y_hand1 = "ph"
-	var y_hand2 = "ph*1.2"
+	var y_hand2 = "ph*1.13"
 	var y_hand3 = "ph*0.6"
 	
 	if not windmill_high:
@@ -860,7 +860,7 @@ func handle_stand_cues_regular(current_time, target_time, cue_emitter_state):
 	var node_selector = rng.randi()%100
 	
 	#var y_hand = player_height + cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"]
-	var y_hand = "ph+%s+%f*%s"%[str(cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"]), rng.randf(), str(cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"])]
+	var y_hand = "ph+%s+%f*(%s)"%[str(cue_parameters[cue_emitter_state][CueSelector.HAND]["yoffset"]), rng.randf(), str(cue_parameters[cue_emitter_state][CueSelector.HAND]["yrange"])]
 	var y_head = "ph/1.071+%f"%cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
 	
 	var side = 1.0
@@ -940,7 +940,7 @@ func handle_squat_cues(current_time, target_time, cue_emitter_state):
 
 var cross_cut_left = false
 func handle_squat_cues_cross_cut(current_time, target_time, cue_emitter_state):
-	var y_hand_up = "ph*1.15"
+	var y_hand_up = "ph*1.05"
 	var x_hand_up = "ph*%f"%cue_parameters[cue_emitter_state][CueSelector.HAND]["cross_cut_multiplier"]
 	var y_hand_down = "ph*0.3"
 	var x_hand_down = "ph*%f"%cue_parameters[cue_emitter_state][CueSelector.HAND]["cross_cut_multiplier"]
