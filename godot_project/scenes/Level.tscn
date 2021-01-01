@@ -1,13 +1,13 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://blue_outdoor_stage.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/SpectrumDisplay.tscn" type="PackedScene" id=3]
 [ext_resource path="res://cue_emitter.gd" type="Script" id=4]
+[ext_resource path="res://assets/skip_exercise.jpg" type="Texture" id=5]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=6]
-[ext_resource path="res://exit_button.gd" type="Script" id=7]
+[ext_resource path="res://scripts/DelayedButton.gd" type="Script" id=7]
 [ext_resource path="res://spawn_timer.gd" type="Script" id=8]
-[ext_resource path="res://ExerciseSelector.tscn" type="PackedScene" id=10]
 [ext_resource path="res://assets/vrworkout_logo_cracked_noise.jpg" type="Texture" id=11]
 [ext_resource path="res://PointIndicatorOrigin.tscn" type="PackedScene" id=13]
 [ext_resource path="res://RetractableMat.tscn" type="PackedScene" id=14]
@@ -60,6 +60,15 @@ _data = {
 "points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -0.393426, 1.02695, 0.270852, 0, 0, 0, 0, 0, 0, 1.54268, 1.03279, 2.26938, 0, 0, 0, 0, 0, 0, 1.76955, 0.993884, 6.47424, 0, 0, 0, 0, 0, 0, -0.0516853, 1.12288, 8.81755 ),
 "tilts": PoolRealArray( 0, 0, 0, 0 )
 }
+
+[sub_resource type="PlaneMesh" id=12]
+size = Vector2( 4, 2 )
+
+[sub_resource type="SpatialMaterial" id=13]
+albedo_texture = ExtResource( 5 )
+
+[sub_resource type="BoxShape" id=14]
+extents = Vector3( 1.93832, 0.0224054, 1 )
 
 [sub_resource type="BoxShape" id=9]
 extents = Vector3( 0.311419, 0.0926839, 0.161588 )
@@ -129,6 +138,19 @@ curve = SubResource( 8 )
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 bus = "Music"
 
+[node name="SkipExerciseButton" type="StaticBody" parent="."]
+transform = Transform( 2.31367e-08, -1, 3.92623e-09, 0, -4.37114e-08, -0.0898216, 0.118828, 1.94707e-07, -7.64464e-16, 1.13944, 1, -0.377945 )
+script = ExtResource( 7 )
+
+[node name="MeshInstance" type="MeshInstance" parent="SkipExerciseButton"]
+transform = Transform( 1, 0, 2.84217e-14, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 12 )
+material/0 = SubResource( 13 )
+
+[node name="CollisionShape" type="CollisionShape" parent="SkipExerciseButton"]
+transform = Transform( 1, 0, 8.47033e-22, 0, 1, -1.48847e-22, -3.38813e-21, 5.68434e-14, 1, 0, -0.0253993, 0 )
+shape = SubResource( 14 )
+
 [node name="target" type="Spatial" parent="."]
 transform = Transform( 0.118828, 0, 0, 0, 1, 0, 0, 0, 0.0898216, -0.87, 1, -0.0667922 )
 
@@ -173,9 +195,6 @@ transform = Transform( 0.65914, 0, -0.235656, 0, 0.7, 0, 0.235656, 0, 0.65914, 2
 [node name="FloorSign" parent="." instance=ExtResource( 23 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0908899, -0.0706311 )
 
-[node name="ExerciseSelector" parent="." instance=ExtResource( 10 )]
-transform = Transform( -6.55671e-09, -0.15, 6.55671e-09, 0, -6.55671e-09, -0.15, 0.15, -6.55671e-09, 2.86603e-16, 1.1995, 0.55107, -0.274737 )
-
 [node name="GrooveDisplay" parent="." instance=ExtResource( 22 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 2.36304, -4.23735 )
 
@@ -216,6 +235,7 @@ material/0 = null
 [connection signal="camera_entered" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_entered"]
 [connection signal="camera_exited" from="cue_emitter/Position3D/VisibilityNotifier" to="cue_emitter" method="_on_VisibilityNotifier_camera_exited"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
+[connection signal="touched" from="SkipExerciseButton" to="." method="_on_SkipExerciseButton_touched"]
 [connection signal="touched" from="target/exit_button" to="." method="_on_exit_button_pressed"]
 [connection signal="state_change_completed" from="PositionSign" to="." method="_on_PositionSign_state_change_completed"]
 [connection signal="timeout" from="UpdateTimer" to="." method="_on_UpdateTimer_timeout"]
@@ -223,4 +243,3 @@ material/0 = null
 [connection signal="beast_killed" from="boxman" to="." method="_on_boxman_beast_killed"]
 [connection signal="beast_attack_successful" from="boxman2" to="." method="_on_boxman_beast_attack_successful"]
 [connection signal="beast_killed" from="boxman2" to="." method="_on_boxman_beast_killed"]
-[connection signal="selected" from="ExerciseSelector" to="." method="_on_ExerciseSelector_selected"]

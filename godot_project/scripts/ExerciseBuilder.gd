@@ -463,9 +463,14 @@ func adjust_state_model(diff, model):
 
 	return retVal
 
+var forced_state_change = false
+func force_state_change():
+	forced_state_change = true
+
 var emitter_state_changed = false
 func emit_cue_node(current_time, target_time):
-	if last_state_change + state_duration < current_time or cue_emitter_state < 0:
+	if last_state_change + state_duration < current_time or cue_emitter_state < 0 or forced_state_change:
+		forced_state_change = false
 		var old_state = cue_emitter_state
 		if len(state_list) > 0:
 			#print ("Take preset state")

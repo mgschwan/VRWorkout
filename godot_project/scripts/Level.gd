@@ -95,10 +95,7 @@ func display_state(state):
 	elif state == CueState.YOGA:
 		#TODO: Add sign
 		pass
-		
-	
-	get_node("ExerciseSelector").select(exercise_builder.state_string(state))
-	
+			
 	
 var update_counter = 0
 func update_info(hits, max_hits, points):
@@ -129,8 +126,10 @@ func setup_game_data():
 	GameVariables.level_statistics_data = {}
 	auto_difficulty = GameVariables.auto_difficulty
 
-	
+	var dynamic_states = true
+
 	if len(GameVariables.exercise_state_list) > 0:
+		dynamic_states = false
 		exercise_builder.state_list = GameVariables.exercise_state_list	
 	
 	if ProjectSettings.get("game/exercise/strength_focus"):
@@ -168,9 +167,11 @@ func setup_game_data():
 	exercise_builder.setup_difficulty(exercise_builder.current_difficulty)
 	actual_game_state = exercise_builder.cue_emitter_state
 
+
 	if GameVariables.game_mode == GameVariables.GameMode.STORED:
 		print ("Load stored cues")
 		exercise_builder.cue_emitter_list = GameVariables.cue_list.duplicate()
+		dynamic_states = false
 	GameVariables.cue_list.clear()
 
 	if GameVariables.battle_mode != GameVariables.BattleMode.NO:
@@ -193,6 +194,12 @@ func setup_game_data():
 	else:
 		gu.activate_node(boxman1)
 		gu.activate_node(boxman2)	
+
+	if not dynamic_states:
+		print ("States are not dynamic and can't be skipped")
+		get_node("SkipExerciseButton").queue_free()
+
+
 		
 	internal_state_change()
 
@@ -722,15 +729,8 @@ func beast_mode_supported():
 func _on_boxman_beast_attack_successful():
 	cue_emitter.score_negative_hits(10)
 
-
 func _on_boxman_beast_killed():
 	cue_emitter.score_positive_hits(10)
-
-
-func _on_ExerciseSelector_selected(type):
-	exercise_builder.cue_emitter_state = exercise_builder.string_to_state(type)
-	exercise_builder.builder_state_changed(cue_emitter.current_playback_time)
-	#internal_state_change()
 
 func update_sequence_results():
 	var last_score = cue_emitter.get_hit_score()
@@ -803,5 +803,6 @@ func _on_BattleDisplay_player_won(player):
 	end_level()
 
 
-
-
+func _on_SkipExerciseButton_touched():
+	print ("Force state change")
+	exercise_builder.force_state_change()

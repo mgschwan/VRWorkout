@@ -148,9 +148,17 @@ text = "-"
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 350.0
-margin_bottom = 492.0
+margin_bottom = 460.0
 theme = ExtResource( 9 )
 script = ExtResource( 10 )
+
+[node name="Instruction" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 120.0
+margin_top = 460.0
+margin_right = 384.0
+margin_bottom = 495.0
+theme = ExtResource( 9 )
+text = "Add Songs before starting"
 
 [node name="StaticBody" type="StaticBody" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.441766, 0 )

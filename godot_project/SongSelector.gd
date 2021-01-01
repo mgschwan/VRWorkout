@@ -113,6 +113,11 @@ func update_songs():
 	var songs_tree = get_node("Viewport/CanvasLayer/Songs")
 	songs_tree.clear()
 	var root = songs_tree.create_item()
+	if len(playlist) > 0:
+		get_node("Viewport/CanvasLayer/Instruction").hide()
+	else:
+		get_node("Viewport/CanvasLayer/Instruction").show()
+		
 	for song in playlist:
 		var tmp = songs_tree.create_item()
 		tmp.set_text(0, gu.get_song_name(song))

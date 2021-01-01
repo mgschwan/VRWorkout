@@ -257,14 +257,16 @@ func _on_PresetCollector_selected(collection):
 func update_online_features():
 	var enabled = ProjectSettings.get("game/portal_connection")
 	if enabled:
-		gu.activate_node(get_node("SettingsCarousel/Connections/ConnectPad"))
+		if has_node("SettingsCarousel/Connections/ConnectPad"):
+			gu.activate_node(get_node("SettingsCarousel/Connections/ConnectPad"))
 		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot1"))
 		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot2"))
 		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot3"))
 		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot4"))
 		gu.activate_node(get_node("SettingsCarousel/Battle/CreateChallengeButton"))		
 	else:
-		gu.deactivate_node(get_node("SettingsCarousel/Connections/ConnectPad"))
+		if has_node("SettingsCarousel/Connections/ConnectPad"):
+			gu.deactivate_node(get_node("SettingsCarousel/Connections/ConnectPad"))
 		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot1"))
 		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot2"))
 		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot3"))
@@ -273,7 +275,7 @@ func update_online_features():
 
 
 	#Connect Pad Deactivated for now
-	if not GameVariables.FEATURE_MULTIPLAYER:
+	if not GameVariables.FEATURE_MULTIPLAYER and has_node("SettingsCarousel/Connections/ConnectPad"):
 		get_node("SettingsCarousel/Connections/ConnectPad").queue_free()
 
 
