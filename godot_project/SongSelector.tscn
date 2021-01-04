@@ -93,7 +93,7 @@ transform = Transform( -8.40732e-08, 0, 1.92337, 0, 1.92337, 0, -1, 0, -4.37114e
 [node name="Viewport" type="Viewport" parent="."]
 size = Vector2( 512, 512 )
 render_target_v_flip = true
-render_target_update_mode = 1
+render_target_update_mode = 3
 script = ExtResource( 8 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Viewport"]
@@ -114,33 +114,33 @@ color = Color( 0, 0, 0, 1 )
 
 [node name="StartButton" type="Button" parent="Viewport/CanvasLayer"]
 margin_left = 360.0
-margin_top = 265.0
+margin_top = 30.0
 margin_right = 480.0
-margin_bottom = 300.0
+margin_bottom = 120.0
 theme = ExtResource( 9 )
 text = "Start"
 
 [node name="FreeplayButton" type="Button" parent="Viewport/CanvasLayer"]
 margin_left = 360.0
-margin_top = 110.0
+margin_top = 360.0
 margin_right = 480.0
-margin_bottom = 145.0
+margin_bottom = 450.0
 theme = ExtResource( 9 )
 text = "Freeplay"
 
 [node name="PauseButton" type="Button" parent="Viewport/CanvasLayer"]
 margin_left = 360.0
-margin_top = 190.0
+margin_top = 140.0
 margin_right = 480.0
-margin_bottom = 225.0
+margin_bottom = 230.0
 theme = ExtResource( 9 )
 text = "Rest"
 
 [node name="RemoveButton" type="Button" parent="Viewport/CanvasLayer"]
 margin_left = 360.0
-margin_top = 25.0
+margin_top = 250.0
 margin_right = 480.0
-margin_bottom = 60.0
+margin_bottom = 340.0
 theme = ExtResource( 9 )
 text = "-"
 
@@ -180,6 +180,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1 )
 
 [node name="bl_marker" type="Spatial" parent="StaticBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1 )
+
 [connection signal="selected" from="Heartrate/Button_140" to="." method="_on_Heartrate_selected" binds= [ 140 ]]
 [connection signal="selected" from="Heartrate/Button_160" to="." method="_on_Heartrate_selected" binds= [ 160 ]]
 [connection signal="selected" from="Heartrate/Button_150" to="." method="_on_Heartrate_selected" binds= [ 150 ]]

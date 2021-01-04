@@ -55,8 +55,7 @@ func update_widget():
 	get_node("SettingsCarousel/Switchboard/StrengthCardioSwitch").value = ProjectSettings.get("game/exercise/strength_focus")
 	get_node("SettingsCarousel/Switchboard/StrengthCardioSwitch").update_switch()
 
-	get_node("SettingsCarousel/Connections/VRWorkoutConnection/PortalSwitch").value = ProjectSettings.get("game/portal_connection")
-	get_node("SettingsCarousel/Connections/VRWorkoutConnection/PortalSwitch").update_switch()
+	get_node("SettingsCarousel/Connections/VRWorkoutConnection/PortalInfo").set_state(ProjectSettings.get("game/portal_connection"))
 
 	get_node("SettingsCarousel/Switchboard/InstructorSwitch").value = ProjectSettings.get("game/instructor")
 	get_node("SettingsCarousel/Switchboard/InstructorSwitch").update_switch()

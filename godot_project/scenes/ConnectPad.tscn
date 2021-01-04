@@ -274,6 +274,7 @@ material/0 = SubResource( 4 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+
 [connection signal="pressed" from="Viewport/CanvasLayer/Button0_1" to="." method="_on_Button_button_down" binds= [ "1" ]]
 [connection signal="pressed" from="Viewport/CanvasLayer/Button1_1" to="." method="_on_Button_button_down" binds= [ "6" ]]
 [connection signal="pressed" from="Viewport/CanvasLayer/Button2_1" to="." method="_on_Button_button_down" binds= [ "G" ]]

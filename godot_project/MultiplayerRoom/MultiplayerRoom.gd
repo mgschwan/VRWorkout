@@ -65,7 +65,7 @@ func spatial_remove_message(node):
 	var pos_update = {"nodeid":node.get_instance_id()}
 	self.send_message("spatial_remove", pos_update)
 
-func send_move_message(node, parent, node_type):
+func send_move_message(node, parent, node_type, movement_vector):
 	var pos_update = {"nodeid":node.get_instance_id(),"parent": parent,
 													  "type" : node_type,
 													  "pos": [node.translation.x,
@@ -73,7 +73,10 @@ func send_move_message(node, parent, node_type):
 														  node.translation.z],
 												      "rot": [node.rotation.x,
 														  node.rotation.y,
-														  node.rotation.z]}
+														  node.rotation.z],
+													  "movement": [movement_vector.x,
+														   movement_vector.y,
+														movement_vector.z]}
 	self.send_message("move", pos_update)
 
 func process_spatial_remove_message(data_object):
@@ -96,16 +99,21 @@ func process_move_message(data_object):
 	var node_type = data.get("type","player")
 	var pos = data.get("pos", Vector3(0,0,0))
 	var rot = data.get("rot", Vector3(0,0,0))
+	var movement = data.get("movement", Vector3(0,0,0))
+
 	var user = user_list.get(id,null)
 	if user and id != self_id:
 		if not "nodes" in user:
 			user["nodes"] = {}
 		if parent_node < 0 or parent_node in user["nodes"]:
+			var now = OS.get_ticks_msec()
 			if not target_node in user["nodes"]:
-				user["nodes"][target_node] = {"pos": Vector3(0,0,0), "rot": Vector3(0,0,0)}
+				user["nodes"][target_node] = {"timestamp": now, "pos": Vector3(0,0,0), "rot": Vector3(0,0,0), "movement": Vector3(0,0,0)}
 				emit_signal("add_spatial",id,target_node,node_type, parent_node) 
+			user["nodes"][target_node]["timestamp"] = now
 			user["nodes"][target_node]["pos"] = pos
 			user["nodes"][target_node]["rot"] = rot
+			user["nodes"][target_node]["movement"] = movement
 		else:
 			print ("Can't add node yet: %s"%str(data_object))
 	#print ("User List: %s"%str(user_list))

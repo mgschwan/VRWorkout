@@ -89,7 +89,10 @@ func load_audio_resource(filename):
 			#print ("External resource exists")
 			f.open(filename, File.READ)
 			var buffer = f.get_buffer(f.get_len())
-			resource = AudioStreamOGGVorbis.new()
+			if filename.ends_with(".mp3"):
+				resource = AudioStreamMP3.new()
+			else:
+				resource = AudioStreamOGGVorbis.new()
 			resource.data = buffer
 		else:
 			print ("External resource does not exist")
@@ -146,7 +149,7 @@ func get_song_list(path):
 			if not dir.current_is_dir():
 				var fields = fname.split(".")
 				print (str(fields))
-				if fields and (fields[-1] == "ogg" or fields[-1] == "import"):
+				if fields and (fields[-1] == "ogg" or fields[-1] == "mp3" or fields[-1] == "import"):
 					var tmpf = fname
 					if fields[-1] == "import":
 						tmpf = fname.rsplit(".",true,1)[0]
