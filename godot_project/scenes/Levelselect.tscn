@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=2]
+[gd_scene load_steps=63 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -36,6 +36,8 @@
 [ext_resource path="res://assets/enemy_none.jpg" type="Texture" id=34]
 [ext_resource path="res://audio/menu_bg_music.ogg" type="AudioStream" id=35]
 [ext_resource path="res://scenes/ConnectPad.tscn" type="PackedScene" id=36]
+[ext_resource path="res://scenes/SideQuestConnection.tscn" type="PackedScene" id=37]
+[ext_resource path="res://scenes/SideQuestPanel.tscn" type="PackedScene" id=38]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.2
@@ -298,6 +300,9 @@ transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, -3, 
 [node name="Tween" type="Tween" parent="SettingsCarousel"]
 
 [node name="Connections" type="Spatial" parent="SettingsCarousel"]
+
+[node name="SideQuestConnection" parent="SettingsCarousel/Connections" instance=ExtResource( 37 )]
+transform = Transform( -4.88762e-08, 0.3, -4.88762e-08, 0, -4.88762e-08, -0.3, -0.3, -4.88762e-08, 7.96294e-15, 1.259, 1.791, 1.20245 )
 
 [node name="VRHealthConnection" parent="SettingsCarousel/Connections" instance=ExtResource( 16 )]
 transform = Transform( -4.88762e-08, 0.3, -1.31134e-08, 0, -1.31134e-08, -0.3, -0.3, -4.88762e-08, 2.13645e-15, 1.259, 1.791, 0.417099 )
@@ -775,6 +780,9 @@ ontext = "Record tracker"
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 35 )
 volume_db = -9.0
+
+[node name="SideQuestPanel" parent="." instance=ExtResource( 38 )]
+transform = Transform( -2.06632e-07, 1.1921e-07, 1, -1, 1.91069e-15, -2.06632e-07, -1.94539e-14, -1, 1.1921e-07, -0.202036, 1.9648, 3.35821 )
 
 [connection signal="selected" from="Recenter" to="." method="_on_Recenter_selected"]
 [connection signal="toggled" from="BPM/OverrideBeats" to="." method="_on_OverrideBeats_toggled"]

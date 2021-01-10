@@ -2,6 +2,8 @@ extends Node
 
 class_name SideQuestAPI
 
+signal api_call_complete(status, data)
+
 var api_endpoint = "https://api.sidetestvr.com/v2"
 #var api_endpoint = "http://127.0.0.1:8889"
 var client_id = "client_f8af9f3efe178cba4fbfaf98"
@@ -16,6 +18,12 @@ var config_store = "user://sidequest_link.json"
 
 var sidequest_connection = {}
 
+enum API_CALL_STATUS {
+	SUCCESS,
+	PROGRESS,
+	FAILED	
+}
+
 enum SQ_API {
 	GET_SHORTCODE,
 	CHECK_SHORTCODE,
@@ -27,6 +35,7 @@ enum SQ_API {
 
 enum API_STATE {
 	IDLE,
+	TIMEOUT,
 	SQ_LINK_REQUEST_1,
 	SQ_LINK_REQUEST_2,
 	SQ_LINK_REQUEST_3,
@@ -44,7 +53,7 @@ enum API_STATE {
 	SQ_POST_REQUEST_1,
 	SQ_POST_REQUEST_2,
 	SQ_POST_REQUEST_FAILED,
-	SQ_POST_REQUEST_FINISHED
+	SQ_POST_REQUEST_FINISHED,
 	}
 
 
@@ -66,36 +75,82 @@ func _ready():
 	add_child(http_req)
 	http_req.connect("request_completed",self,"_http_request_completed")
 	
-func _process(delta):
+	
+var last_api_state_change = 0
+var state_timeout = 10000
+var last_api_state = null
+
+func _process(delta):	
+	var now = OS.get_ticks_msec()
+	if last_api_state != current_api_state:
+		last_api_state_change = now
+		last_api_state = current_api_state
+	
+	if current_api_state != null and current_api_state != API_STATE.IDLE:
+		if now > last_api_state_change + state_timeout:
+			current_api_state = API_STATE.TIMEOUT
+	
+	#State machine
 	if current_api_state == API_STATE.SQ_LINK_REQUEST_1:
 		api_request_shortcode()
+	elif current_api_state == API_STATE.SQ_LINK_REQUEST_2:
+		if request_type == SQ_API.FAILED:
+			current_api_state = API_STATE.SQ_LINK_REQUEST_FAILED
 	elif current_api_state == API_STATE.SQ_LINK_REQUEST_3:
+		emit_signal("api_call_complete",API_CALL_STATUS.PROGRESS, {"code": sidequest_connection.get("code",""), "link_url": sidequest_connection.get("link_url","")})
 		api_check_shortcode()
 	elif current_api_state == API_STATE.SQ_LINK_REQUEST_FINISHED:
 		print ("Linking Finished")
+		emit_signal("api_call_complete",API_CALL_STATUS.SUCCESS, {})
 		store_persistent_config(config_store, sidequest_connection)
 		current_api_state = API_STATE.IDLE
 	elif current_api_state == API_STATE.SQ_LINK_REQUEST_FAILED:
 		print ("Error: Could not retrieve link code")
+		emit_signal("api_call_complete",API_CALL_STATUS.FAILED, {})
 		current_api_state = API_STATE.IDLE
 	elif current_api_state == API_STATE.SQ_TOKEN_REQUEST_1:
 		api_request_token()
-	elif current_api_state == API_STATE.SQ_TOKEN_REQUEST_FAILED or current_api_state == API_STATE.SQ_TOKEN_REQUEST_FINISHED:
+	elif current_api_state == API_STATE.SQ_TOKEN_REQUEST_2:
+		if request_type == SQ_API.FAILED:
+			current_api_state = API_STATE.SQ_TOKEN_REQUEST_FAILED
+	elif current_api_state == API_STATE.SQ_TOKEN_REQUEST_FAILED:
+		current_api_state = API_STATE.IDLE	
+		emit_signal("api_call_complete",API_CALL_STATUS.FAILED, {})
+	elif current_api_state == API_STATE.SQ_TOKEN_REQUEST_FINISHED:
 		print ("Get Token finished")
 		store_persistent_config(config_store, sidequest_connection)
 		current_api_state = API_STATE.IDLE
+		emit_signal("api_call_complete",API_CALL_STATUS.SUCCESS, {})
 	elif current_api_state == API_STATE.SQ_GET_REQUEST_1:
 		api_generic_get_request()
-	elif current_api_state == API_STATE.SQ_GET_REQUEST_FAILED or current_api_state == API_STATE.SQ_GET_REQUEST_FINISHED:
-		print ("Generic GET request finished\n%s"%(str(generic_get_result)))
+	elif current_api_state == API_STATE.SQ_GET_REQUEST_2:
+		if request_type == SQ_API.FAILED:
+			current_api_state = API_STATE.SQ_GET_REQUEST_FAILED
+	elif current_api_state == API_STATE.SQ_GET_REQUEST_FAILED:
 		current_api_state = API_STATE.IDLE
+		emit_signal("api_call_complete",API_CALL_STATUS.FAILED, {})
+	elif current_api_state == API_STATE.SQ_GET_REQUEST_FINISHED:
+		current_api_state = API_STATE.IDLE
+		print ("Generic GET request finished\n%s"%(str(generic_get_result)))
+		emit_signal("api_call_complete",API_CALL_STATUS.SUCCESS, generic_get_result)
 	elif current_api_state == API_STATE.SQ_POST_REQUEST_1:
 		api_generic_post_request()
-	elif current_api_state == API_STATE.SQ_POST_REQUEST_FAILED or current_api_state == API_STATE.SQ_POST_REQUEST_FINISHED:
+	elif current_api_state == API_STATE.SQ_POST_REQUEST_2:
+		if request_type == SQ_API.FAILED:
+			current_api_state = API_STATE.SQ_POST_REQUEST_FAILED
+	elif current_api_state == API_STATE.SQ_POST_REQUEST_FAILED:
+		current_api_state = API_STATE.IDLE
+		emit_signal("api_call_complete",API_CALL_STATUS.FAILED, {})		
+	elif current_api_state == API_STATE.SQ_POST_REQUEST_FINISHED:
 		print ("Generic POST request finished\n%s"%(str(generic_post_result)))
 		current_api_state = API_STATE.IDLE
-
-
+		emit_signal("api_call_complete",API_CALL_STATUS.SUCCESS, generic_post_result)
+	elif current_api_state == API_STATE.TIMEOUT:
+		print ("Timeout")
+		http_req.cancel_request()
+		request_inprocess = false
+		current_api_state = API_STATE.IDLE
+		emit_signal("api_call_complete",API_CALL_STATUS.FAILED, {})		
 func _http_request_completed(result, response_code, headers, body):
 	print ("Request completed %s"%(str(response_code)))
 	if response_code >= 200 and response_code < 300:
@@ -122,6 +177,9 @@ func sidequest_user_id():
 func sidequest_app_id():
 	return sidequest_connection.get("app_id",-1)	
 
+func sidequest_is_connected():
+	return (sidequest_connection.get("refresh_token","") != "")
+	
 
 ##############################################################
 ###### SideQuest Linking
@@ -273,6 +331,12 @@ func api_generic_post_request():
 
 
 ############################################################
+
+#Disconnect all connections for a certain signal
+func disconnect_all_connections(node, signal_):
+	var connections = node.get_signal_connection_list(signal_)
+	for s in connections:
+		 node.disconnect(s["signal"], s["target"], s["method"])
 
 #Stores a config dict to disk
 func store_persistent_config(location, parameters):

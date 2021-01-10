@@ -25,6 +25,11 @@ _global_script_classes=[ {
 "path": "res://scripts/GameUtilities.gd"
 }, {
 "base": "Node",
+"class": "SideQuestAPI",
+"language": "GDScript",
+"path": "res://scripts/SideQuestAPI.gd"
+}, {
+"base": "Node",
 "class": "SongDatabase",
 "language": "GDScript",
 "path": "res://scripts/SongDatabase.gd"
@@ -33,6 +38,7 @@ _global_script_class_icons={
 "AudioStreamPlaylist": "",
 "DummyAudioStream": "",
 "GameUtilities": "",
+"SideQuestAPI": "",
 "SongDatabase": ""
 }
 
@@ -42,7 +48,7 @@ config/name="VRworkout"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 config/music_directory="/sdcard/Music/Workout"
-config/pc_music_directory="C:/VRWorkout"
+config/pc_music_directory="C:/Workout"
 config/vrhealth_config="user://vrhealth.txt"
 config/backend_server="http://backend.vrworkout.at:8080"
 config/room_server="ws://backend.vrworkout.at:33105"

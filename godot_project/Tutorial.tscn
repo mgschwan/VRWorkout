@@ -9,7 +9,7 @@
 script = ExtResource( 3 )
 
 [node name="Selector" parent="." instance=ExtResource( 2 )]
-transform = Transform( 0.1, 0, 0, 0, -2.18557e-08, -0.1, 0, 0.5, -4.37114e-09, 0.552336, 0, 0 )
+transform = Transform( 0.1, 0, 0, 0, -2.18557e-08, -0.1, 0, 0.5, -4.37114e-09, -0.0246854, 0, 0 )
 
 [node name="Videowall" parent="." instance=ExtResource( 1 )]
 transform = Transform( 2, 0, 0, 0, -8.74228e-08, -2, 0, 2, -8.74228e-08, 0, 0.548099, -1.86683 )
@@ -20,5 +20,6 @@ aabb = AABB( -1, -0.209462, -0.566546, 2, 0.24412, 1.13309 )
 [node name="Title" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.47715, -1.84014 )
 default_text = "demo"
+
 [connection signal="selected" from="Selector" to="." method="_on_Selector_selected"]
 [connection signal="camera_exited" from="Videowall/VisibilityNotifier" to="Videowall" method="_on_VisibilityNotifier_camera_exited"]

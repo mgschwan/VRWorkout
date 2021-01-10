@@ -57,13 +57,15 @@ func intialize_song_database():
 	#Moved out of the _ready function so the game does not immediately crash
 	#on game start if there is an error in song loading
 	print ("Initializing song database")
+
+	print ("Loading external songs: %s"%ProjectSettings.get("game/external_songs"))
 	
 	var local_song_database = gu.load_persistent_config(location)
 	var songs = []
 	songs += gu.get_song_list("res://audio/songs")
 	songs += gu.get_song_list("res://audio/nonfree_songs")
 	var external_dir = ProjectSettings.get("game/external_songs")
-
+	
 	if external_dir:
 		songs += gu.get_song_list(external_dir)
 
@@ -75,7 +77,7 @@ func intialize_song_database():
 
 	gu.store_persistent_config(location, song_database)
 
-	print ("Song database initialized")
+	print ("Song database initialized (%d songs)"%(len(song_database)))
 
 func _ready():
 	pass
