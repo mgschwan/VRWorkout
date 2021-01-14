@@ -420,6 +420,7 @@ func _on_level_finished_actual(valid_end):
 	
 	print ("Level is finished ... remove from scene")
 	GameVariables.game_result = level.get_points()
+	GameVariables.game_result["level_finished"] = valid_end
 	
 	last_points = GameVariables.game_result["points"]
 	total_points += GameVariables.game_result["points"]
@@ -448,6 +449,13 @@ func _on_level_finished_actual(valid_end):
 		
 	level.queue_free()
 	level = null 
+	
+	var evaluator = AchievementEvaluator.new(GameVariables.achievement_checks)
+	var achievements = evaluator.evaluate_achievements(GameVariables.game_result)
+	print ("Player achieved: %s"%str(achievements))
+	GameVariables.game_result["achievements"] = achievements
+	
+	
 	levelselect = levelselect_blueprint.instance()
 	
 	levelselect.translation = Vector3(0,0,0)

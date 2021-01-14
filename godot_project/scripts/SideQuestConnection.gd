@@ -46,6 +46,6 @@ func _on_link_shortcode(code, link_url):
 	
 func _on_link_finished():
 	get_node("SideQuestPanel").print_info("Congratulations!\n\nYour SideQuest account has been linked successfully.")
-	
+
 func _on_link_failed():	
 	get_node("SideQuestPanel").print_info("Linking did not work!\n\nThere was a problem linking your SideQuest account.")

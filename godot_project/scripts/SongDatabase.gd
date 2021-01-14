@@ -10,8 +10,7 @@ var location = "user://song_database.json"
 
 func create_database_entry(song):
 	var name = gu.get_song_name(song)
-	var audio = gu.load_audio_resource(song)
-	return {"name": name, "duration": audio.get_length()}
+	return {"name": name, "duration": 0, "file": song, "loaded": false}
 
 #If it's a string then find the actual filename, if it's a number then it's actually
 #not a song but either a rest or freeplay period
@@ -34,6 +33,11 @@ func get_song_duration(songfile):
 		return songfile
 
 	if song_database.has(songfile):
+		if not song_database.get(songfile).get("loaded", false):
+			var audio = gu.load_audio_resource(songfile)
+			song_database[songfile]["duration"] = audio.get_length()
+			song_database[songfile]["loaded"] = true
+			audio = null #Tell the garbage collector to dump that sh
 		duration = song_database.get(songfile,{"duration":0}).get("duration",0)
 		
 	return duration	
@@ -46,9 +50,6 @@ func valid_song(songfile):
 		if song_database.has(songfile):
 			retVal = true		
 	return retVal
-		
-		
-		
 		
 func song_list():
 	return song_database.keys()

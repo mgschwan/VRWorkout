@@ -46,7 +46,7 @@ func update_song_list():
 			var song_name = gu.get_song_name(filename)
 			var song_info = song_infos.get(filename,{})
 			var artist = song_info.get("artist","")
-			var length = song_info.get("length",0)
+			var length = get_tree().current_scene.get_node("SongDatabase").get_song_duration(filename)
 			element.is_set = true
 			element.set_song_info(song_name,filename,artist,length)
 		else:
@@ -64,8 +64,7 @@ func get_song_infos(songs):
 			beat_file.close()
 			if tmp:
 				var artist = tmp.get("artist", "")
-				var length = tmp.get("length", 0)
-				infos[song] = {"artist": artist, "length": length}
+				infos[song] = {"artist": artist, "length": 0}
 	return infos
 
 func sort_song_list(songs):

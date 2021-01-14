@@ -22,7 +22,9 @@ func _ready():
 			exercises += "No"
 		exercises += "\n"
 
-	get_node("TextElement").print_info("Exercise: %s\n\n%s"%[exercise_name,exercises])
+	get_node("TextElement/Viewport/CanvasLayer/Label").bbcode_text = "Exercise: %s\n\n%s"%[exercise_name,exercises]
+
+	#get_node("TextElement").print_info("Exercise: %s\n\n%s"%[exercise_name,exercises])
 
 func mark_active():
 	var node = get_parent().get_node(active_marker)

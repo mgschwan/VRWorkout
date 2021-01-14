@@ -70,6 +70,9 @@ enum GameMode {
 	STORED = 2,
 };
 
+
+var achievement_checks = Array()
+
 var game_mode = GameMode.STANDARD
 var battle_team = BattleTeam.BLUE
 var battle_mode = BattleMode.NO
@@ -148,10 +151,29 @@ var predefined_exercises = {
 		["sprint",30],["pushup",30],["stand",30],["sprint",25],
 		["crunch",30],["stand",15],["burpee",30],["crunch",25],
 	],	
+	"SideQuest Fitness": [
+		["stand",20],["squat",15],["stand",20],["sprint",20],
+		["jump",20],["squat",20],["crunch",20],["squat",20],
+		["pushup",20],["stand",30],["sprint",20],["squat",30],
+		["crunch",30],["sprint",25],["pushup",20]	
+	]
 }
 
 
-
+var predefined_achievements = {
+		"sidequest" : [
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.SCORE,
+				 "limit": 60,
+				 "achievement": "SIDEQUESTFITNESSWEEK21",
+				 "partial": true
+				},
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.DURATION,
+				 "limit": 360,
+				 "achievement": "SIDEQUESTFITNESSWEEK21",
+				 "partial": true
+				}
+			]
+	}
 
 var exercise_collections = [
 	[

@@ -22,6 +22,7 @@ func _ready():
 
 	textnode = viewport.get_node("CanvasLayer/Panel/Container/Label")
 	viewport.get_node("CanvasLayer/Panel").rect_size = Vector2(viewport_width/0.8,viewport_height/0.8)
+	viewport.get_node("CanvasLayer/Panel/Container").rect_size = viewport.get_node("CanvasLayer/Panel").rect_size
 	
 	var textmesh = get_node("MeshInstance")
 

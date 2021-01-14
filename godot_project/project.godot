@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Object",
+"class": "AchievementEvaluator",
+"language": "GDScript",
+"path": "res://scripts/AchievementEvaluator.gd"
+}, {
 "base": "Node",
 "class": "AudioStreamPlaylist",
 "language": "GDScript",
@@ -35,6 +40,7 @@ _global_script_classes=[ {
 "path": "res://scripts/SongDatabase.gd"
 } ]
 _global_script_class_icons={
+"AchievementEvaluator": "",
 "AudioStreamPlaylist": "",
 "DummyAudioStream": "",
 "GameUtilities": "",
@@ -52,6 +58,8 @@ config/pc_music_directory="C:/Workout"
 config/vrhealth_config="user://vrhealth.txt"
 config/backend_server="http://backend.vrworkout.at:8080"
 config/room_server="ws://backend.vrworkout.at:33105"
+config/sidequest_client_id="client_0ce3bebc49e33ccf9e8a62cc"
+config/sidequest_api_endpoint="https://api.sidequestvr.com/v2"
 
 [audio]
 

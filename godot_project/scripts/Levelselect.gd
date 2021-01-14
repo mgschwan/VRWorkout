@@ -81,7 +81,7 @@ func _ready():
 	if GameVariables.current_song:
 		get_node("SongSelector").playlist_from_song_files(GameVariables.current_song)
 	
-	get_node("MainText").print_info("VRWorkout\nSelect song by touching a block\nBest played hands only - no controllers\nPosition yourself between the green poles\nRun in place to get multipliers\n\nTurn around for a tutorial")
+	get_node("MainText").print_info("VRWorkout\nSelect song by touching a block\nBest played hands only - no controllers\nPosition yourself between the green poles\nRun in place to get multipliers\n")
 	
 	get_node("Tutorial").print_info("How to play\n- Hit the hand cues to the beat of the music\n- Head cues should only be touched no headbutts\n- Run in place to receive point multipliers!\nThe optimal time to hit the cues is when the\nrotating marker meets the static one")	
 	
@@ -181,6 +181,7 @@ func _on_YogaSwitch_toggled(value):
 
 func _on_ExerciseCollection_selected(collection):
 	GameVariables.game_mode = GameVariables.GameMode.EXERCISE_SET
+	GameVariables.achievement_checks = Array()
 	gu.set_exercise_collection(collection)
 	update_widget()
 
@@ -249,10 +250,11 @@ func _on_BattleButton_selected():
 	show_settings("battle")	
 
 
-func _on_PresetCollector_selected(collection):
+func _on_PresetCollector_selected(collection, achievements):
 	GameVariables.game_mode = GameVariables.GameMode.STANDARD
 	GameVariables.exercise_state_list = collection
-
+	GameVariables.achievement_checks = achievements
+	
 func update_online_features():
 	var enabled = ProjectSettings.get("game/portal_connection")
 	if enabled:
@@ -300,6 +302,7 @@ func _on_StoredSlot_selected(exercise_list, slot_number):
 		GameVariables.cue_list = exercise_list.duplicate()
 	else:
 		GameVariables.game_mode = GameVariables.GameMode.STANDARD
+	GameVariables.achievement_checks = Array()
 
 var challenge_upload_possible = true
 func _on_CreateChallengeButton_selected():

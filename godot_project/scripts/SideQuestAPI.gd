@@ -4,9 +4,11 @@ class_name SideQuestAPI
 
 signal api_call_complete(status, data)
 
-var api_endpoint = "https://api.sidetestvr.com/v2"
+var token_valid = false
+
+var api_endpoint = ProjectSettings.get("application/config/sidequest_api_endpoint")	
 #var api_endpoint = "http://127.0.0.1:8889"
-var client_id = "client_f8af9f3efe178cba4fbfaf98"
+var client_id = ProjectSettings.get("application/config/sidequest_client_id")
 
 var scopes = "scopes[0]=user.basic_profile.read&scopes[1]=user.app_achievements.read&scopes[2]=user.app_achievements.write"
 
@@ -101,13 +103,13 @@ func _process(delta):
 		api_check_shortcode()
 	elif current_api_state == API_STATE.SQ_LINK_REQUEST_FINISHED:
 		print ("Linking Finished")
+		current_api_state = API_STATE.IDLE
 		emit_signal("api_call_complete",API_CALL_STATUS.SUCCESS, {})
 		store_persistent_config(config_store, sidequest_connection)
-		current_api_state = API_STATE.IDLE
 	elif current_api_state == API_STATE.SQ_LINK_REQUEST_FAILED:
 		print ("Error: Could not retrieve link code")
-		emit_signal("api_call_complete",API_CALL_STATUS.FAILED, {})
 		current_api_state = API_STATE.IDLE
+		emit_signal("api_call_complete",API_CALL_STATUS.FAILED, {})
 	elif current_api_state == API_STATE.SQ_TOKEN_REQUEST_1:
 		api_request_token()
 	elif current_api_state == API_STATE.SQ_TOKEN_REQUEST_2:
@@ -150,7 +152,8 @@ func _process(delta):
 		http_req.cancel_request()
 		request_inprocess = false
 		current_api_state = API_STATE.IDLE
-		emit_signal("api_call_complete",API_CALL_STATUS.FAILED, {})		
+		emit_signal("api_call_complete",API_CALL_STATUS.FAILED, {})
+			
 func _http_request_completed(result, response_code, headers, body):
 	print ("Request completed %s"%(str(response_code)))
 	if response_code >= 200 and response_code < 300:
@@ -165,11 +168,16 @@ func _http_request_completed(result, response_code, headers, body):
 			generic_get_response(body)
 		elif request_type == SQ_API.GENERIC_POST_REQUEST:
 			generic_post_response(body)
+	elif response_code == 401:
+		print ("Token needs refreshing")
+		token_valid = false
+	elif response_code == 409 and request_type == SQ_API.GENERIC_POST_REQUEST:
+		#That happens if an achievement is uploaded that already exists
+		generic_post_response(body)
 	else:
 		print ("Request failed\n%s"%body.get_string_from_utf8())
 		request_type = SQ_API.FAILED
 	request_inprocess = false
-	
 	
 func sidequest_user_id():
 	return sidequest_connection.get("user_id",-1)	
@@ -178,7 +186,9 @@ func sidequest_app_id():
 	return sidequest_connection.get("app_id",-1)	
 
 func sidequest_is_connected():
-	return (sidequest_connection.get("refresh_token","") != "")
+	var rt = sidequest_connection.get("refresh_token","")
+	print ("Is connected? RT: %s"%rt)	 
+	return (rt != "")
 	
 
 ##############################################################
@@ -230,7 +240,9 @@ func api_check_shortcode():
 			print ("Could not send request %s"%str(ret))
 
 func sidequest_link():
-	print ("Start linking")
+	print ("Clear sidequest connection. Start linking")
+	sidequest_connection = {}
+	
 	if current_api_state == API_STATE.IDLE:
 		current_api_state = API_STATE.SQ_LINK_REQUEST_1
 
@@ -251,6 +263,7 @@ func get_token_response(body):
 		sidequest_connection["user_id"] = decoded.get("users_id","")
 		sidequest_connection["access_token_expires"] = decoded.get("access_token_expires","")
 		print ("Auth: %s"%str(decoded))
+		token_valid = true
 		current_api_state = API_STATE.SQ_TOKEN_REQUEST_FINISHED
 	else:
 		current_api_state = API_STATE.SQ_TOKEN_REQUEST_FAILED
@@ -265,6 +278,21 @@ func api_request_token():
 		if ret != OK:		
 			print ("Could not send request %s"%str(ret))
 
+func sidequest_token_valid():
+	return token_valid
+
+func wait_until_token_is_valid():
+	var success = false
+	var max_retries = 100
+	if not sidequest_token_valid():
+		api_request_token()	
+	while max_retries > 0:
+		if sidequest_token_valid():
+			success = true
+			break
+		yield(get_tree().create_timer(0.1),"timeout")	
+	return success
+	
 ##############################################################
 ###### SideQuest GenericGetRequest
 ##############################################################
@@ -277,7 +305,8 @@ func sidequest_generic_get_request(endpoint):
 	if current_api_state == API_STATE.IDLE:
 		generic_get_endpoint = endpoint
 		current_api_state = API_STATE.SQ_GET_REQUEST_1
-		
+	else:
+		print ("API busy state: %s"%str(current_api_state))
 func generic_get_response(body):
 	var decoded = parse_json(body.get_string_from_utf8())
 	if body and decoded:
@@ -314,18 +343,17 @@ func sidequest_generic_post_request(endpoint, parameters):
 		
 func generic_post_response(body):
 	var decoded = parse_json(body.get_string_from_utf8())
-	if body and decoded:
-		generic_post_result = decoded
-		current_api_state = API_STATE.SQ_POST_REQUEST_FINISHED
-	else:
-		current_api_state = API_STATE.SQ_POST_REQUEST_FAILED
-
+	generic_post_result = decoded
+	current_api_state = API_STATE.SQ_POST_REQUEST_FINISHED
+	
 func api_generic_post_request():
 	if not request_inprocess:
 		current_api_state = API_STATE.SQ_POST_REQUEST_2
 		request_inprocess = true
 		request_type = SQ_API.GENERIC_POST_REQUEST
-		var ret = http_req.request("%s%s"%[api_endpoint,generic_get_endpoint], ["Authorization: Bearer %s"%sidequest_connection.get("access_token",""),"Content-Type: application/json"], true, HTTPClient.METHOD_POST, to_json(generic_post_parameters))
+		var url = "%s%s"%[api_endpoint,generic_post_endpoint]
+		print ("Posting to: %s  (%s)"%[url,str(generic_post_parameters)])
+		var ret = http_req.request(url, ["Authorization: Bearer %s"%sidequest_connection.get("access_token",""),"Content-Type: application/json"], true, HTTPClient.METHOD_POST, to_json(generic_post_parameters))
 		if ret != OK:		
 			print ("Could not send request %s"%str(ret))
 
@@ -334,6 +362,7 @@ func api_generic_post_request():
 
 #Disconnect all connections for a certain signal
 func disconnect_all_connections(node, signal_):
+	print ("Disconnect: %s -> %s"%[str(node), str(signal_)])
 	var connections = node.get_signal_connection_list(signal_)
 	for s in connections:
 		 node.disconnect(s["signal"], s["target"], s["method"])

@@ -2,6 +2,7 @@
 *.import
 */addons/godot_ovrmobile
 *.apk
+override.cfg
 godot_project/audio/nonfree_songs/*
 godot_project/scripts/3rdparty/*
 
