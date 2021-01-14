@@ -208,7 +208,7 @@ func panel_update():
 		yield(co, "completed")
 	else:
 		print ("Token not refreshed")
-	
+	print ("Token refresh complete?")
 	if $SideQuestAPI.sidequest_token_valid():
 		print ("Get profile")
 		co = get_sidequest_profile()
@@ -226,9 +226,9 @@ func panel_update():
 			yield(co, "completed")
 		print ("Current achievements: %s"%str(achievements))
 		#download_achievement_images()
-		update_panel()
 	else:
 		print ("Token is not valid")
+	update_panel()
 
 func _ready():
 	add_child(req)

@@ -290,6 +290,9 @@ func wait_until_token_is_valid():
 		if sidequest_token_valid():
 			success = true
 			break
+		elif not request_inprocess:
+			#API request has finished without success
+			break
 		yield(get_tree().create_timer(0.1),"timeout")	
 	return success
 	
