@@ -5,17 +5,18 @@
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=4]
 [ext_resource path="res://audio/menu_selection.wav" type="AudioStream" id=6]
 
-[sub_resource type="PlaneMesh" id=2]
+[sub_resource type="PlaneMesh" id=1]
 
-[sub_resource type="ViewportTexture" id=3]
+[sub_resource type="ViewportTexture" id=2]
+flags = 12
 viewport_path = NodePath("TextElement/Viewport")
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="SpatialMaterial" id=3]
 resource_local_to_scene = true
 flags_unshaded = true
-albedo_texture = SubResource( 3 )
+albedo_texture = SubResource( 2 )
 
-[sub_resource type="BoxShape" id=5]
+[sub_resource type="BoxShape" id=4]
 extents = Vector3( 1, 0.01, 1 )
 
 [node name="ExerciseCollection" type="StaticBody"]
@@ -52,11 +53,11 @@ bbcode_text = "defaulttext"
 text = "defaulttext"
 
 [node name="MeshInstance" type="MeshInstance" parent="TextElement"]
-mesh = SubResource( 2 )
-material/0 = SubResource( 4 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-shape = SubResource( 5 )
+shape = SubResource( 4 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )

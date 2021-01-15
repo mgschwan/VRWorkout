@@ -9,6 +9,7 @@
 [sub_resource type="PlaneMesh" id=1]
 
 [sub_resource type="ViewportTexture" id=2]
+flags = 12
 viewport_path = NodePath("Viewport")
 
 [sub_resource type="SpatialMaterial" id=3]
