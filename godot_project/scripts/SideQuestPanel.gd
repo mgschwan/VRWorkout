@@ -125,66 +125,10 @@ func get_sidequest_achievements():
 
 #########################################
 
-
-var http_download_url = ""
-
-func download_achievement_images():
-	for achievement in achievements:
-		print ("Download achievement %s"%str(achievement))
-		get_image_from_url(achievement.get("image_url"))
-	
-
-func get_cache_filename(fname):
-	return "user://download_cache/%s"%fname
-
-func get_resource_filename(fname):
-	return "res://download_cache/%s"%fname
-
-func get_filename_from_url(url):
-	var fname = url.get_file()
-	if fname and not fname.ends_with(".png"):
-		fname = "%s.png"%fname
-	return fname
-	
-func save_url_image(image, url):
-	var d = Directory.new()
-	d.open("user://")
-	if not d.dir_exists("download_cache"):
-		print ("Create cache")
-		d.make_dir("download_cache")
-	else:
-		print ("Cache exists")
-	
-	var fname = get_filename_from_url(url)
-	print ("Save filename: %s"%fname)
-	if fname:
-		print ("Take over path")
-		image.save_png(get_cache_filename(fname))
-
-func _image_http_download_finished(result, response_code, headers, body):
-	var image = Image.new()
-	var error = ERR_CANT_OPEN
-	if http_download_url.ends_with(".png"):
-		error = image.load_png_from_buffer(body)
-	elif http_download_url.ends_with(".jpg"):
-		error = image.load_jpg_from_buffer(body)
-		
-	if error != OK:
-		push_error("Couldn't load the image.")
-	else:
-		save_url_image(image, http_download_url)
-	emit_signal("image_download_complete")
-
-func get_image_from_url(url):	
-	$SideQuestAPI.disconnect_all_connections(req,"request_completed")
-	req.connect("request_completed",self,"_image_http_download_finished")
-	http_download_url = url
-
-	var error = req.request(url)
-	if error != OK:
-		push_error("An error occurred in the HTTP request.")
-	else:
-		emit_signal("image_download_complete")
+#func download_achievement_images():
+#	for achievement in achievements:
+#		print ("Download achievement %s"%str(achievement))
+#		yield(get_image_from_url(achievement.get("image_url")), "completed")
 
 
 ##########################################
@@ -215,6 +159,7 @@ func panel_update():
 		if co is GDScriptFunctionState && co.is_valid():
 			yield(co, "completed")
 		print ("Upload achievements")
+		achievement_upload_list.append({"achievement_identifier":"SIDEQUESTUSER","achieved": true})
 		for a in achievement_upload_list:
 			co = upload_achievement(a)
 			if co is GDScriptFunctionState && co.is_valid():
@@ -233,13 +178,30 @@ func panel_update():
 func _ready():
 	add_child(req)
 	achievement_upload_list = GameVariables.game_result.get("achievements",[])
-	panel_update()
+	var co = panel_update()
+	if co is GDScriptFunctionState and co.is_valid():
+		yield(co,"completed")
 
+	var image_panel = load("res://scenes/RemoteImagePanel.tscn")
+
+	var offset = -0.75
+	for achievement in achievements:
+		var tmp = image_panel.instance()
+		tmp.http_download_url = achievement.get("image_url","")
+		print ("Set download url: %s"%(tmp.http_download_url))
+		add_child(tmp)
+		tmp.scale.x = 0.25
+		tmp.scale.z = 0.25
+		tmp.translation.z = 1.5
+		tmp.translation.x = offset
+		offset += 0.55
+	
 	
 func link():
-	$SideQuestAPI.disconnect_all_connections($SideQuestAPI,"api_call_complete")
-	$SideQuestAPI.connect("api_call_complete",self,"_on_SideQuestAPI_api_call_complete")
-	$SideQuestAPI.sidequest_link()
+	if $SideQuestAPI.sidequest_api_idle():
+		$SideQuestAPI.disconnect_all_connections($SideQuestAPI,"api_call_complete")
+		$SideQuestAPI.connect("api_call_complete",self,"_on_SideQuestAPI_api_call_complete")
+		$SideQuestAPI.sidequest_link()
 
 func _on_SideQuestAPI_api_call_complete(status, data):
 	if status == $SideQuestAPI.API_CALL_STATUS.PROGRESS:
@@ -248,7 +210,7 @@ func _on_SideQuestAPI_api_call_complete(status, data):
 			emit_signal("link_shortcode",data.get("code",""),data.get("link_url",""))
 	elif status == $SideQuestAPI.API_CALL_STATUS.SUCCESS:
 		emit_signal("link_finished")
-		set_achievements([{"achievement_identifier":"SIDEQUESTUSER","achieved":true}])
+		panel_update()
 	elif status == $SideQuestAPI.API_CALL_STATUS.FAILED:
 		emit_signal("link_failed")	
-		
+		panel_update()

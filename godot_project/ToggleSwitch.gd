@@ -4,6 +4,9 @@ export var value = false
 export var ontext = "On"
 export var offtext = "Off"
 
+export(bool) var two_way = true
+
+
 signal toggled(value)
 
 func _ready():
@@ -12,7 +15,10 @@ func _ready():
 	update_switch()
 	
 func touched_by_controller(body, root):
-	value = not value
+	if two_way:
+		value = not value
+	else:
+		value = true
 	get_node("AudioStreamPlayer").play(0.0)
 	emit_signal("toggled", value)
 	update_switch()

@@ -156,6 +156,7 @@ func _process(delta):
 			
 func _http_request_completed(result, response_code, headers, body):
 	print ("Request completed %s"%(str(response_code)))
+	request_inprocess = false
 	if response_code >= 200 and response_code < 300:
 		if request_type == SQ_API.GET_SHORTCODE:
 			get_shortcode_response(body)
@@ -177,7 +178,6 @@ func _http_request_completed(result, response_code, headers, body):
 	else:
 		print ("Request failed\n%s"%body.get_string_from_utf8())
 		request_type = SQ_API.FAILED
-	request_inprocess = false
 	
 func sidequest_user_id():
 	return sidequest_connection.get("user_id",-1)	
@@ -214,6 +214,7 @@ func check_shortcode_response(body):
 		sidequest_connection["scopes"] = decoded.get("scopes","")
 		sidequest_connection["access_token_expires"] = decoded.get("access_token_expires","")
 		sidequest_connection["refresh_token_expires"] = decoded.get("refresh_token_expires","")		
+		token_valid = true
 		print ("Auth: %s"%str(decoded))
 		current_api_state = API_STATE.SQ_LINK_REQUEST_FINISHED
 	else:
@@ -232,6 +233,7 @@ func api_request_shortcode():
 func api_check_shortcode():
 	if not request_inprocess:
 		current_api_state = API_STATE.SQ_LINK_REQUEST_4
+		token_valid = false
 		request_inprocess = true
 		request_type = SQ_API.CHECK_SHORTCODE
 		var data = {"code": sidequest_connection.get("code",""), "device_id": sidequest_connection.get("device_id","")}	
@@ -240,11 +242,13 @@ func api_check_shortcode():
 			print ("Could not send request %s"%str(ret))
 
 func sidequest_link():
-	print ("Clear sidequest connection. Start linking")
-	sidequest_connection = {}
-	
+	print ("Clear sidequest connection. Start linking")	
 	if current_api_state == API_STATE.IDLE:
+		sidequest_connection = {}
 		current_api_state = API_STATE.SQ_LINK_REQUEST_1
+
+func sidequest_api_idle():
+	return (current_api_state == API_STATE.IDLE)
 
 ##############################################################
 ###### SideQuest Token
@@ -254,6 +258,7 @@ func sidequest_link():
 func sidequest_token():
 	print ("Start Token Request")
 	if current_api_state == API_STATE.IDLE:
+		token_valid = false
 		current_api_state = API_STATE.SQ_TOKEN_REQUEST_1
 	
 func get_token_response(body):
@@ -287,13 +292,14 @@ func wait_until_token_is_valid():
 	if not sidequest_token_valid():
 		api_request_token()	
 	while max_retries > 0:
-		if sidequest_token_valid():
+		if sidequest_token_valid() and current_api_state == API_STATE.IDLE:
 			success = true
 			break
 		elif not request_inprocess:
 			#API request has finished without success
 			break
 		yield(get_tree().create_timer(0.1),"timeout")	
+		max_retries -= 1
 	return success
 	
 ##############################################################
