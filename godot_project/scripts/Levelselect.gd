@@ -92,6 +92,7 @@ func _ready():
 	#show_settings("switchboard")
 	yield(get_tree().create_timer(1.0),"timeout")
 	show_settings("exercises")
+
 	
 
 

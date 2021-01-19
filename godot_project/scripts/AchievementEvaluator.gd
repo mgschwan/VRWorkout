@@ -28,8 +28,9 @@ func evaluate_achievements(game_state):
 		var name = a.get("achievement","UNKNOWN")
 		var result = false
 		if a.get("type",-1) == ACHIEVEMENT_TYPES.SCORE:
-			result = finished and score > a.get("limit",0)
-		elif a.get("type",-1) == ACHIEVEMENT_TYPES.DURATION	:
+			#deactivated for now until the end of the fitness week# result = finished and score > a.get("limit",0)
+			result = score > a.get("limit",0)
+		elif a.get("type",-1) == ACHIEVEMENT_TYPES.DURATION:
 			result = time > a.get("limit",0)
 
 		if a.get("partial",false):

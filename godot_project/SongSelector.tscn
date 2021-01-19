@@ -144,7 +144,7 @@ margin_top = 250.0
 margin_right = 480.0
 margin_bottom = 340.0
 theme = ExtResource( 9 )
-text = "-"
+text = "Delete"
 
 [node name="Songs" type="Tree" parent="Viewport/CanvasLayer"]
 margin_left = 10.0
