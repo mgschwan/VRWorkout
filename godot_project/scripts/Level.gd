@@ -245,11 +245,11 @@ func _ready():
 	get_tree().get_current_scene().get_node("HeartRateReceiver").connect("heart_rate_received", self,"_on_HeartRateData")	
 	
 	#Set up the safe pushup view
-	var mat = SpatialMaterial.new()
-	mat.albedo_texture = get_tree().get_current_scene().get_node("PushupViewport").get_texture()
-	mat.albedo_texture.flags = Texture.FLAG_FILTER
-	mat.flags_unshaded = true
-	get_node("PushupView").set_surface_material(0,mat)
+	#var mat = SpatialMaterial.new()
+	#mat.albedo_texture = get_tree().get_current_scene().get_node("PushupViewport").get_texture()
+	#mat.albedo_texture.flags = Texture.FLAG_FILTER
+	#mat.flags_unshaded = true
+	#get_node("PushupView").set_surface_material(0,mat)
 
 	if not ProjectSettings.get("game/equalizer"):
 		self.remove_child(get_node("SpectrumDisplay"))

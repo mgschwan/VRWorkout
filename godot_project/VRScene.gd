@@ -254,7 +254,7 @@ func initialize():
 
 	GameVariables.vr_mode = false
 	cam = get_node("ARVROrigin/ARVRCamera")
-
+	GameVariables.player_camera = cam
 
 	ProjectSettings.set("game/external_songs", ProjectSettings.get("application/config/pc_music_directory"))
 	print (ProjectSettings.get("game/external_songs"))
@@ -651,7 +651,8 @@ func _on_Area_level_selected(filename, diff, num):
 		level.connect("level_finished",self,"_on_level_finished")
 		level.connect("level_finished_manually",self,"_on_level_finished_manually")
 		levelselect.queue_free()
-		add_child(level)	
+		level.name = "Level"
+		add_child(level,true)	
 	
 		if not GameVariables.vr_mode:
 			demo_mode_player_height = GameVariables.player_height

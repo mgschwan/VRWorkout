@@ -27,6 +27,7 @@ var ar_mode = false
 
 var multiplayer_server = ProjectSettings.get("application/config/room_server")
 
+var player_camera = null
 
 var player_height = 1.8
 
@@ -191,7 +192,7 @@ var exercise_collections = [
 		},
 		{"setting":"game/exercise/strength_focus",
 		 "value": false,
-		 "description": "Cardio Focus"
+		 "description": "Strength	 Focus"
 		},
 	],
 	[
@@ -229,7 +230,7 @@ var exercise_collections = [
 		},
 		{"setting":"game/exercise/strength_focus",
 		 "value": false,
-		 "description": "Cardio Focus"
+		 "description": "Strength Focus"
 		},
 	],
 	[
@@ -251,7 +252,7 @@ var exercise_collections = [
 		},
 		{"setting":"game/exercise/strength_focus",
 		 "value": false,
-		 "description": "Cardio Focus"
+		 "description": "Strength Focus"
 		},
 	], [
 		{"setting":"game/exercise/squat",
@@ -293,10 +294,10 @@ var exercise_model = {
 	"cardio": {
 		"exercise_state_model": { CueState.STAND: { CueState.SQUAT: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.JUMP: 10, CueState.BURPEE: 10, CueState.SPRINT: 10},
 						CueState.SQUAT: { CueState.STAND: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.SPRINT: 10},
-						CueState.PUSHUP: { CueState.STAND: 10, CueState.SQUAT: 10, CueState.BURPEE: 10},
-						CueState.CRUNCH: { CueState.STAND: 10, CueState.SQUAT: 10},
-						CueState.JUMP: {CueState.STAND: 50, CueState.BURPEE: 10}, 
-						CueState.BURPEE: {CueState.STAND: 50}, 
+						CueState.PUSHUP: { CueState.STAND: 10, CueState.SQUAT: 10, CueState.BURPEE: 10, CueState.SPRINT: 10},
+						CueState.CRUNCH: { CueState.STAND: 10, CueState.SQUAT: 10, CueState.SPRINT: 10, CueState.JUMP: 5},
+						CueState.JUMP: {CueState.STAND: 50, CueState.BURPEE: 10, CueState.SQUAT: 10, CueState.CRUNCH: 10}, 
+						CueState.BURPEE: {CueState.STAND: 50, CueState.CRUNCH: 10, CueState.SQUAT: 10, CueState.PUSHUP: 10}, 
 						CueState.SPRINT: {CueState.STAND: 50, CueState.JUMP: 10, CueState.SQUAT: 10}, 
 						CueState.YOGA: { CueState.STAND: 50 },
 						},
@@ -326,9 +327,9 @@ var exercise_model = {
 		"exercise_state_model": { CueState.STAND: { CueState.SQUAT: 20, CueState.PUSHUP: 20, CueState.CRUNCH: 5, CueState.JUMP: 1, CueState.BURPEE: 20, CueState.SPRINT: 1},
 						CueState.SQUAT: { CueState.STAND: 10, CueState.PUSHUP: 50, CueState.CRUNCH: 5, CueState.BURPEE: 10},
 						CueState.PUSHUP: { CueState.STAND: 10, CueState.SQUAT: 35, CueState.BURPEE: 10, CueState.CRUNCH: 10},
-						CueState.CRUNCH: { CueState.PUSHUP: 25, CueState.SQUAT: 25},
-						CueState.JUMP: {CueState.SQUAT: 50, CueState.PUSHUP: 25, CueState.BURPEE: 10}, 
-						CueState.BURPEE: {CueState.SQUAT: 50, CueState.STAND: 45, CueState.PUSHUP: 5 }, 
+						CueState.CRUNCH: { CueState.PUSHUP: 25, CueState.SQUAT: 25, CueState.JUMP: 10},
+						CueState.JUMP: {CueState.SQUAT: 50, CueState.PUSHUP: 25, CueState.BURPEE: 10, CueState.CRUNCH: 10}, 
+						CueState.BURPEE: {CueState.SQUAT: 50, CueState.STAND: 45, CueState.PUSHUP: 5, CueState.CRUNCH: 1 }, 
 						CueState.SPRINT: {CueState.SQUAT: 20, CueState.PUSHUP: 20, CueState.CRUNCH: 5, CueState.JUMP: 1, CueState.BURPEE: 20}, 
 						CueState.YOGA: { CueState.STAND: 50 },
 						},

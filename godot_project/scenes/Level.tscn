@@ -8,6 +8,7 @@
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scripts/DelayedButton.gd" type="Script" id=7]
 [ext_resource path="res://spawn_timer.gd" type="Script" id=8]
+[ext_resource path="res://scenes/PushupViewport.tscn" type="PackedScene" id=9]
 [ext_resource path="res://assets/vrworkout_logo_cracked_noise.jpg" type="Texture" id=11]
 [ext_resource path="res://PointIndicatorOrigin.tscn" type="PackedScene" id=13]
 [ext_resource path="res://RetractableMat.tscn" type="PackedScene" id=14]
@@ -76,9 +77,6 @@ extents = Vector3( 0.311419, 0.0926839, 0.161588 )
 [sub_resource type="SpatialMaterial" id=13]
 albedo_color = Color( 0.94902, 0.937255, 0.937255, 1 )
 albedo_texture = ExtResource( 11 )
-
-[sub_resource type="PlaneMesh" id=14]
-size = Vector2( 0.22, 0.13 )
 
 [node name="Main" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0225873, -0.0546217, 0.0125537 )
@@ -226,10 +224,8 @@ visible = false
 [node name="SpectrumDisplay" parent="." instance=ExtResource( 3 )]
 transform = Transform( 0.2, 0, 0, 0, -0.168573, -0.107625, 0, 0.107625, -0.168573, -2.18058, 3.36426, -11.4019 )
 
-[node name="PushupView" type="MeshInstance" parent="."]
-transform = Transform( 10, 0, 0, 0, 8.50029, -5.53584, 0, 5.07871, 8.45678, -0.019583, -0.28405, -0.772499 )
-mesh = SubResource( 14 )
-material/0 = null
+[node name="PushupView" parent="." instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.313975, -0.77 )
 
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="streak_changed" from="cue_emitter" to="." method="_on_cue_emitter_streak_changed"]
