@@ -207,3 +207,7 @@ func _on_PauseButton_pressed():
 	if not complete:
 		playlist.append(-10)
 	update_songs()
+
+
+func _on_RemoveButton_button_up():
+	print ("Remove Button UP")

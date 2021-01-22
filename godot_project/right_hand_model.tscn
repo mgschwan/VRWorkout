@@ -1,12 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://hand_skeleton.gd" type="Script" id=1]
 [ext_resource path="res://right_hand_model.glb" type="PackedScene" id=2]
 [ext_resource path="res://extendable_claws.tscn" type="PackedScene" id=3]
-[ext_resource path="res://green_ball.tscn" type="PackedScene" id=4]
-
-[sub_resource type="SphereShape" id=1]
-radius = 9.22
+[ext_resource path="res://materials/tron_blue_material.tres" type="Material" id=5]
 
 [node name="right_hand_model" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
@@ -61,23 +58,14 @@ transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0 )
 
 [node name="r_handMeshNode" parent="ArmatureRight/Skeleton" index="16"]
 visible = false
+material/0 = ExtResource( 5 )
 
 [node name="middle_root_bone" type="BoneAttachment" parent="ArmatureRight/Skeleton" index="17"]
-transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0 )
-bone_name = "b_r_wrist"
+transform = Transform( 0.989329, -0.102457, -0.103592, 0.101712, -0.023419, 0.994538, -0.104323, -0.994462, -0.012748, -9.56466, 0.172591, 0.254316 )
+bone_name = "b_r_middle_1"
 
 [node name="claws" parent="ArmatureRight/Skeleton/middle_root_bone" index="0" instance=ExtResource( 3 )]
-transform = Transform( -3.25841e-07, -0.174311, -1.49429, 0, 1.99239, -0.130734, 2, -2.83989e-08, -2.43451e-07, -7, 0, 0 )
+transform = Transform( -2.93832e-07, -0.174311, -1.49429, 1.86265e-09, 1.99239, -0.130734, 2, -4.84288e-08, -2.72878e-07, -2, 0.422, 0 )
 
 [node name="ball_attachment" type="Spatial" parent="ArmatureRight/Skeleton/middle_root_bone" index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.327, 0, 0 )
-
-[node name="Area" type="Area" parent="ArmatureRight/Skeleton/middle_root_bone/ball_attachment" index="0"]
-
-[node name="CollisionShape" type="CollisionShape" parent="ArmatureRight/Skeleton/middle_root_bone/ball_attachment/Area" index="0"]
-shape = SubResource( 1 )
-
-[node name="green_ball" parent="ArmatureRight/Skeleton/middle_root_bone/ball_attachment" index="1" instance=ExtResource( 4 )]
-transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0 )
-[connection signal="body_entered" from="ArmatureRight/Skeleton/middle_root_bone/ball_attachment/Area" to="." method="_on_Area_body_entered"]
-[connection signal="body_exited" from="ArmatureRight/Skeleton/middle_root_bone/ball_attachment/Area" to="." method="_on_Area_body_exited"]
+transform = Transform( 10, 1.49012e-07, -1.96742e-07, -1.49012e-07, 10, 3.72529e-08, 1.96742e-07, -3.72529e-08, 10, 0, 0, 0 )

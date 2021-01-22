@@ -186,6 +186,12 @@ func insert_cue_sorted(ts, cue_data, cue_emitter_list):
 		selected_idx = cidx + 1
 	cue_emitter_list.insert(selected_idx, [ts, cue_data])
 
+#Disconnect all connections for a certain signal
+func disconnect_all_connections(node, signal_):
+	print ("Disconnect: %s -> %s"%[str(node), str(signal_)])
+	var connections = node.get_signal_connection_list(signal_)
+	for s in connections:
+		 node.disconnect(s["signal"], s["target"], s["method"])
 
 
 

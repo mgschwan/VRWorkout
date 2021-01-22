@@ -20,40 +20,6 @@ func _process(delta):
 			 get_node("Viewport/CanvasLayer/Code").text = multiplayer_room.room
 	frame_count = (frame_count + 1)%20
 
-
-#func release_event():
-#	if is_pressed:
-#		is_pressed = false
-#		print ("Release event")
-#		var ev = InputEventMouseButton.new()
-#		ev.button_index=BUTTON_LEFT
-#		ev.pressed = false
-#		ev.position = last_position
-#		get_node("Viewport").input(ev)
-#	else:
-#		print ("Release without click not possible")
-#
-#func click_event(position):
-#	var viewport = get_node("Viewport")
-#	var ev = InputEventMouseButton.new()
-#
-#	if is_pressed:
-#		#We don't want a release/click event so it's either release
-#		#or click not both
-#		print ("Is clicked. Release first")
-#		release_event()
-#	else:
-#		ev.button_index=BUTTON_LEFT
-#		ev.pressed = true
-#		ev.position = Vector2(viewport.size[0]*position[0], viewport.size[1]*position[1])
-#		last_position = ev.position
-#		is_pressed = true
-#
-#		print ("P: %s"%str(ev.position))
-#		viewport.input(ev)
-
-
-
 func _on_Button_button_down(character):
 	get_node("Viewport/CanvasLayer/Code").text += character
 

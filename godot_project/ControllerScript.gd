@@ -7,6 +7,10 @@ var tracking_lost = false
 var collision_root = null
 var model = null
 
+var hand_mode = false
+
+
+
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -32,23 +36,32 @@ func fix_global_transform(fix):
 		get_node("CenterMarker").hide()
 
 
+
+
 func set_hand_mode(hand_tracking):
 	if hand_tracking:
-		get_node("Area/hand_model").set_hand_active(true)
-		gu.deactivate_node(get_node("Area/CollisionShape"))
-		gu.deactivate_node(get_node("Area/handle_ball"))
+		pass
+		#get_node("Area/hand_model").set_hand_active(true)
+		#gu.disconnect_all_connections(get_node("Area"),"body_entered")
+		#gu.disconnect_all_connections(get_node("Area"),"body_exited")
+		#gu.deactivate_node(get_node("Area/CollisionShape"))
+		#gu.deactivate_node(get_node("Area/handle_ball"))
 	else:
-		get_node("Area/hand_model").set_hand_active(false)
-		gu.activate_node(get_node("Area/CollisionShape"))
-		gu.activate_node(get_node("Area/handle_ball"))
+		pass
+		#get_node("Area/hand_model").set_hand_active(false)
+		#gu.disconnect_all_connections(get_node("Area/hand_model"),"body_entered")
+		#gu.disconnect_all_connections(get_node("Area/hand_model"),"body_exited")
+		#gu.activate_node(get_node("Area/CollisionShape"))
+		#gu.activate_node(get_node("Area/handle_ball"))
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	set_hand_mode(false)
-	
+	set_hand_mode(hand_mode)
+
 	collision_root = get_node("Area")
-	model = get_node("Area/handle_ball")
+	model = get_node("Area/CollisionShape/handle_ball")
+				
 	if ProjectSettings.get("game/is_oculusquest"):
 		get_node("Area/hand_model").hand_tracking = true
 
@@ -64,8 +77,19 @@ func set_beast_mode(enabled):
 	else:
 		get_node("Area/hand_model").beast_mode = false
 
+var update_helper = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	update_helper += delta
+	if update_helper > 0.5:
+		update_helper = 0
+		if hand_mode:
+			var source = get_node("Area/hand_model").get_ball_attachment()
+			var target = get_node("Area/CollisionShape")
+			var scale = target.scale
+			target.global_transform = source.global_transform
+			target.scale = scale
+			
 	if fixed_global_transform:
 		get_node("Area").global_transform = saved_global_transform
 	
@@ -110,16 +134,23 @@ func set_visible(value):
 		
 #Resize the collision area to make menu selection easier
 func set_detail_select(value):
-	get_node("Area/hand_model").set_detail_select(value)
 	var main_area = get_node("Area/CollisionShape")
 	if value:
 		print ("Set detail mode")
-		main_area.scale = Vector3(0.05,0.05,0.05)
+		get_node("Area/CollisionShape").shape.radius = 0.5
+		#main_area.scale = Vector3(0.05,0.05,0.05)
 	else:
-		main_area.scale = Vector3(0.1,0.1,0.1)
+		get_node("Area/CollisionShape").shape.radius = 1.0
+		#main_area.scale = Vector3(0.1,0.1,0.1)
 
 
 
+
+func show_hand(value):
+	if value:
+		get_node("Area/hand_model").show_hands()
+	else:
+		get_node("Area/hand_model").hide_hands()
 
 func _on_Area_body_exited(area):
 	pass # Replace with function body.

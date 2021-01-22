@@ -113,8 +113,7 @@ func _ready():
 		mesh = get_node("ArmatureLeft/Skeleton/l_handMeshNode")
 	claws = skel.get_node("middle_root_bone/claws")
 
-	_vrapi_bone_orientations.resize(24);
-	_clear_bone_rest(skel);
+	_vrapi_bone_orientations.resize(24)
 	_clear_bone_rest(skel)
 	
 
@@ -189,32 +188,14 @@ func is_fist():
 
 var gu = GameUtilities.new()
 func set_hand_active(value):
-	if value:
-		if has_node("ArmatureRight"):
-			gu.activate_node(get_node("ArmatureRight/Skeleton/middle_root_bone/ball_attachment"))
-		else:
-			gu.activate_node(get_node("ArmatureLeft/Skeleton/middle_root_bone/ball_attachment"))
-	else:
-		if has_node("ArmatureRight"):
-			gu.deactivate_node(get_node("ArmatureRight/Skeleton/middle_root_bone/ball_attachment"))
-		else:
-			gu.deactivate_node(get_node("ArmatureLeft/Skeleton/middle_root_bone/ball_attachment"))
-
-func _on_Area_body_entered(body):
-	emit_signal("body_entered",body)
-
-func _on_Area_body_exited(body):
-	emit_signal("body_exited",body)
-
-
+	#Deprecated
+	pass
 		
-#Resize the collision area to make menu selection easier
-func set_detail_select(value):
-	var main_area = skel.get_node("middle_root_bone/ball_attachment/Area")
-	if value:
-		print ("Set detail mode")
-		main_area.scale = Vector3(0.05,0.05,0.05)
+func get_ball_attachment():		
+	if has_node("ArmatureRight"):
+		return get_node("ArmatureRight/Skeleton/middle_root_bone/ball_attachment")
 	else:
-		main_area.scale = Vector3(0.1,0.1,0.1)
+		return get_node("ArmatureLeft/Skeleton/middle_root_bone/ball_attachment")
+		
 
 

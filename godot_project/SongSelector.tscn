@@ -15,6 +15,7 @@
 extents = Vector3( 1, 0.0477028, 0.534034 )
 
 [sub_resource type="BoxShape" id=2]
+margin = 0.001
 extents = Vector3( 1, 0.0325357, 0.999178 )
 
 [sub_resource type="PlaneMesh" id=3]
@@ -120,6 +121,7 @@ margin_top = 30.0
 margin_right = 480.0
 margin_bottom = 120.0
 theme = ExtResource( 9 )
+action_mode = 0
 text = "Start"
 
 [node name="FreeplayButton" type="Button" parent="Viewport/CanvasLayer"]
@@ -128,6 +130,7 @@ margin_top = 360.0
 margin_right = 480.0
 margin_bottom = 450.0
 theme = ExtResource( 9 )
+action_mode = 0
 text = "Freeplay"
 
 [node name="PauseButton" type="Button" parent="Viewport/CanvasLayer"]
@@ -136,6 +139,7 @@ margin_top = 140.0
 margin_right = 480.0
 margin_bottom = 230.0
 theme = ExtResource( 9 )
+action_mode = 0
 text = "Rest"
 
 [node name="RemoveButton" type="Button" parent="Viewport/CanvasLayer"]
@@ -144,6 +148,7 @@ margin_top = 250.0
 margin_right = 480.0
 margin_bottom = 340.0
 theme = ExtResource( 9 )
+action_mode = 0
 text = "Delete"
 
 [node name="Songs" type="Tree" parent="Viewport/CanvasLayer"]
@@ -162,12 +167,16 @@ margin_bottom = 495.0
 theme = ExtResource( 9 )
 text = "Add Songs before starting"
 
+[node name="Mark" type="ColorRect" parent="Viewport/CanvasLayer"]
+margin_right = 4.0
+margin_bottom = 4.0
+
 [node name="StaticBody" type="StaticBody" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.441766, 0 )
 script = ExtResource( 7 )
 
 [node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0345452, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0552993, 0 )
 shape = SubResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
@@ -195,9 +204,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1 )
 [connection signal="selected" from="SongBlocks/Element5" to="." method="_on_level_block_selected"]
 [connection signal="touched" from="NextPage/StaticBody" to="." method="_on_NextPage_touched"]
 [connection signal="difficulty_selected" from="DifficultyButtons" to="." method="_on_DifficultyButtons_difficulty_selected"]
-[connection signal="pressed" from="Viewport/CanvasLayer/StartButton" to="." method="_on_Button_pressed"]
-[connection signal="pressed" from="Viewport/CanvasLayer/FreeplayButton" to="." method="_on_FreeplayButton_pressed"]
-[connection signal="pressed" from="Viewport/CanvasLayer/PauseButton" to="." method="_on_PauseButton_pressed"]
-[connection signal="pressed" from="Viewport/CanvasLayer/RemoveButton" to="." method="_on_RemoveButton_pressed"]
+[connection signal="button_down" from="Viewport/CanvasLayer/StartButton" to="." method="_on_Button_pressed"]
+[connection signal="button_down" from="Viewport/CanvasLayer/FreeplayButton" to="." method="_on_FreeplayButton_pressed"]
+[connection signal="button_down" from="Viewport/CanvasLayer/PauseButton" to="." method="_on_PauseButton_pressed"]
+[connection signal="button_down" from="Viewport/CanvasLayer/RemoveButton" to="." method="_on_RemoveButton_pressed"]
+[connection signal="button_up" from="Viewport/CanvasLayer/RemoveButton" to="." method="_on_RemoveButton_button_up"]
 [connection signal="interface_release" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_release"]
 [connection signal="interface_touch" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_touch"]

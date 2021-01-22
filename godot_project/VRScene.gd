@@ -217,9 +217,10 @@ func _on_Tracker_added(tracker_name, type, id):
 			right_controller = new_controller
 
 		new_controller.controller_id = id
-		new_controller.set_hand_mode(is_hand(tracker_name))
+		new_controller.hand_mode = is_hand(tracker_name)
 		get_node("ARVROrigin").add_child(new_controller)
 		new_controller.set_detail_select(GameVariables.detail_selection_mode)
+		new_controller.show_hand(GameVariables.hands_visible)
 		new_controller.get_node("RemoteSpatial").multiplayer_room = get_node("MultiplayerRoom")
 		GameVariables.trackers.append(new_controller)
 

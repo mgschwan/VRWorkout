@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://assets/vrworkout_godot.jpg" type="Texture" id=1]
 [ext_resource path="res://fonts/bebas.ttf" type="DynamicFontData" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=5]
 [ext_resource path="res://TextElement.tscn" type="PackedScene" id=6]
 [ext_resource path="res://models/Berzerker.material" type="Material" id=7]
+[ext_resource path="res://assets/side_nodding_instruction.png" type="Texture" id=8]
 
 [sub_resource type="PlaneMesh" id=1]
 
@@ -16,7 +17,7 @@ params_blend_mode = 1
 albedo_texture = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]
-size = 20
+size = 18
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
 use_filter = true
@@ -61,7 +62,7 @@ mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
 [node name="Viewport" type="Viewport" parent="."]
-size = Vector2( 512, 256 )
+size = Vector2( 512, 384 )
 msaa = 6
 disable_3d = true
 render_target_v_flip = true
@@ -69,32 +70,50 @@ render_target_update_mode = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Viewport"]
 
-[node name="MarginContainer" type="MarginContainer" parent="Viewport/CanvasLayer"]
+[node name="TextureRect" type="TextureRect" parent="Viewport/CanvasLayer"]
+margin_left = 280.0
+margin_top = 148.0
+margin_right = 508.0
+margin_bottom = 376.0
+texture = ExtResource( 8 )
+expand = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Viewport/CanvasLayer"]
 margin_left = 5.0
 margin_top = 5.0
 margin_right = 512.0
-margin_bottom = 256.0
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Viewport/CanvasLayer/MarginContainer"]
-margin_right = 507.0
-margin_bottom = 251.0
+margin_bottom = 384.0
 custom_fonts/normal_font = SubResource( 3 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "DISCLAIMER: Use at your own risk!
 This game does not check if you bump into your surroundings. 
-This is a physical workout game with a lot of movement which can have the risk of injury. 
-Always use common sense when performing the movements inside the game. 
-If you feel that some exercises are too dangerous DO NOT PERFORM them. You acknowledge that this software is free and you are using it at your own risk
+This is a physical workout game with a lot of movement
+which can have the risk of injury. 
 
-Nod 5x to confirm that you have read and agree to this disclaimer"
+Always use common sense when performing the movements inside the game. 
+If you feel that some exercises are too dangerous 
+DO NOT PERFORM them. 
+
+You acknowledge that this software is free
+and you are using it at your own risk
+
+Nod 5x to confirm that you have read 
+and agree to this disclaimer"
 text = "DISCLAIMER: Use at your own risk!
 This game does not check if you bump into your surroundings. 
-This is a physical workout game with a lot of movement which can have the risk of injury. 
-Always use common sense when performing the movements inside the game. 
-If you feel that some exercises are too dangerous DO NOT PERFORM them. You acknowledge that this software is free and you are using it at your own risk
+This is a physical workout game with a lot of movement
+which can have the risk of injury. 
 
-Nod 5x to confirm that you have read and agree to this disclaimer"
+Always use common sense when performing the movements inside the game. 
+If you feel that some exercises are too dangerous 
+DO NOT PERFORM them. 
+
+You acknowledge that this software is free
+and you are using it at your own risk
+
+Nod 5x to confirm that you have read 
+and agree to this disclaimer"
 scroll_active = false
 
 [node name="Text" type="MeshInstance" parent="."]

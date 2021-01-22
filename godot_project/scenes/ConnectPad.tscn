@@ -42,6 +42,7 @@ color = Color( 0, 0, 0, 1 )
 [node name="Button0_1" type="Button" parent="Viewport/CanvasLayer"]
 margin_right = 92.0
 margin_bottom = 92.0
+focus_mode = 0
 theme = ExtResource( 5 )
 action_mode = 0
 text = "[ 1 ]"
@@ -259,6 +260,10 @@ margin_bottom = 40.0
 theme = ExtResource( 5 )
 readonly = true
 
+[node name="Mark" type="ColorRect" parent="Viewport/CanvasLayer"]
+margin_right = 4.0
+margin_bottom = 4.0
+
 [node name="ConnectPadInput" type="StaticBody" parent="."]
 transform = Transform( -1, 0, -3.25842e-07, 0, 1, 0, 3.25842e-07, 0, -1, 0, 0, 0 )
 script = ExtResource( 2 )
@@ -275,25 +280,25 @@ material/0 = SubResource( 4 )
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 
-[connection signal="pressed" from="Viewport/CanvasLayer/Button0_1" to="." method="_on_Button_button_down" binds= [ "1" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button1_1" to="." method="_on_Button_button_down" binds= [ "6" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button2_1" to="." method="_on_Button_button_down" binds= [ "G" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button3_1" to="." method="_on_Button_button_down" binds= [ "R" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button3_2" to="." method="_on_Button_button_down" binds= [ "U" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button3_3" to="." method="_on_Button_button_down" binds= [ "W" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button3_4" to="." method="_on_Button_button_down" binds= [ "X" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button2_2" to="." method="_on_Button_button_down" binds= [ "I" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button2_3" to="." method="_on_Button_button_down" binds= [ "K" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button2_4" to="." method="_on_Button_button_down" binds= [ "L" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button1_2" to="." method="_on_Button_button_down" binds= [ "7" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button1_3" to="." method="_on_Button_button_down" binds= [ "9" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button1_4" to="." method="_on_Button_button_down" binds= [ "E" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button0_2" to="." method="_on_Button_button_down" binds= [ "2" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button0_3" to="." method="_on_Button_button_down" binds= [ "3" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Button0_4" to="." method="_on_Button_button_down" binds= [ "4" ]]
-[connection signal="pressed" from="Viewport/CanvasLayer/Enter Room" to="." method="_on_Enter_Room_pressed"]
-[connection signal="pressed" from="Viewport/CanvasLayer/Clear" to="." method="_on_Clear_button_down"]
-[connection signal="pressed" from="Viewport/CanvasLayer/CreateRoom" to="." method="_on_CreateRoom_button_down"]
-[connection signal="pressed" from="Viewport/CanvasLayer/ExitRoom" to="." method="_on_ExitRoom_button_down"]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button0_1" to="." method="_on_Button_button_down" binds= [ "1" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button1_1" to="." method="_on_Button_button_down" binds= [ "6" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button2_1" to="." method="_on_Button_button_down" binds= [ "G" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button3_1" to="." method="_on_Button_button_down" binds= [ "R" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button3_2" to="." method="_on_Button_button_down" binds= [ "U" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button3_3" to="." method="_on_Button_button_down" binds= [ "W" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button3_4" to="." method="_on_Button_button_down" binds= [ "X" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button2_2" to="." method="_on_Button_button_down" binds= [ "I" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button2_3" to="." method="_on_Button_button_down" binds= [ "K" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button2_4" to="." method="_on_Button_button_down" binds= [ "L" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button1_2" to="." method="_on_Button_button_down" binds= [ "7" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button1_3" to="." method="_on_Button_button_down" binds= [ "9" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button1_4" to="." method="_on_Button_button_down" binds= [ "E" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button0_2" to="." method="_on_Button_button_down" binds= [ "2" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button0_3" to="." method="_on_Button_button_down" binds= [ "3" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Button0_4" to="." method="_on_Button_button_down" binds= [ "4" ]]
+[connection signal="button_down" from="Viewport/CanvasLayer/Enter Room" to="." method="_on_Enter_Room_pressed"]
+[connection signal="button_down" from="Viewport/CanvasLayer/Clear" to="." method="_on_Clear_button_down"]
+[connection signal="button_down" from="Viewport/CanvasLayer/CreateRoom" to="." method="_on_CreateRoom_button_down"]
+[connection signal="button_down" from="Viewport/CanvasLayer/ExitRoom" to="." method="_on_ExitRoom_button_down"]
 [connection signal="interface_release" from="ConnectPadInput" to="Viewport" method="_on_ConnectPadInput_interface_release"]
 [connection signal="interface_touch" from="ConnectPadInput" to="Viewport" method="_on_ConnectPadInput_interface_touch"]

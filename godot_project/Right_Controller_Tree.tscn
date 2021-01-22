@@ -13,6 +13,7 @@
 [ext_resource path="res://MultiplayerRoom/RemoteSpatial.gd" type="Script" id=11]
 
 [sub_resource type="SphereShape" id=1]
+margin = 0.001
 
 [sub_resource type="SphereMesh" id=2]
 
@@ -38,6 +39,9 @@ script = ExtResource( 2 )
 transform = Transform( 0.1, 3.72529e-09, 0, -3.72529e-09, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
 shape = SubResource( 1 )
 
+[node name="handle_ball" parent="Area/CollisionShape" instance=ExtResource( 8 )]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+
 [node name="Spatial" parent="Area" instance=ExtResource( 1 )]
 transform = Transform( -0.2, 0, -6.51683e-08, 0, 0.2, 0, 6.51683e-08, 0, -0.2, 0, 0.022, 0.09 )
 visible = false
@@ -45,9 +49,6 @@ visible = false
 [node name="hit_player" type="AudioStreamPlayer" parent="Area"]
 stream = ExtResource( 6 )
 volume_db = -2.5
-
-[node name="handle_ball" parent="Area" instance=ExtResource( 8 )]
-transform = Transform( 0.05, 1.86265e-09, 0, -1.86265e-09, 0.05, 0, 0, 0, 0.05, 0, 0, 0 )
 
 [node name="good_hit" type="MeshInstance" parent="Area"]
 transform = Transform( 0.05, -0.0866026, 0, 0.0866026, 0.05, 0, 0, 0, 0.1, 0, 0, 0 )
@@ -78,6 +79,7 @@ script = ExtResource( 11 )
 is_local = true
 transform_parent = true
 node_type = "controller"
+
 [connection signal="timeout" from="RumbleTimer" to="." method="_on_RumbleTimer_timeout"]
 [connection signal="body_entered" from="Area" to="Area" method="_on_Area_body_entered"]
 [connection signal="body_exited" from="Area" to="Area" method="_on_Area_body_exited"]

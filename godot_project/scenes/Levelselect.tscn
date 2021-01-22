@@ -642,7 +642,7 @@ mesh = SubResource( 15 )
 material/0 = ExtResource( 7 )
 
 [node name="StoredSlot1" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.22181, 1.73148, -0.748508 )
+transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.22181, 1.73148, -0.748508 )
 slot_number = 1
 active_marker = "WorkoutMarker"
 
@@ -651,7 +651,7 @@ transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.
 ontext = "Save"
 
 [node name="StoredSlot2" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.22181, 1.73148, -0.377992 )
+transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.22181, 1.73148, -0.377992 )
 slot_number = 2
 active_marker = "WorkoutMarker"
 
@@ -660,7 +660,7 @@ transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.
 ontext = "Save"
 
 [node name="StoredSlot3" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.22181, 1.73148, 0.00243878 )
+transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.22181, 1.73148, 0.00243878 )
 slot_number = 3
 active_marker = "WorkoutMarker"
 
@@ -669,7 +669,7 @@ transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.
 ontext = "Save"
 
 [node name="StoredSlot4" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.22181, 1.73148, 0.374507 )
+transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.22181, 1.73148, 0.374507 )
 slot_number = 4
 active_marker = "WorkoutMarker"
 
@@ -678,7 +678,7 @@ transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.
 ontext = "Save"
 
 [node name="ChallengeSlot1" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.222, 1.95209, -0.749 )
+transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.222, 1.95209, -0.749 )
 type = 1
 save_button_active = false
 slot_number = 1
@@ -690,7 +690,7 @@ visible = false
 ontext = "Save"
 
 [node name="ChallengeSlot2" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.222, 1.95209, -0.378 )
+transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.222, 1.95209, -0.378 )
 type = 1
 save_button_active = false
 slot_number = 2
@@ -702,7 +702,7 @@ visible = false
 ontext = "Save"
 
 [node name="ChallengeSlot3" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.222, 1.95209, 0 )
+transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.222, 1.95209, 0 )
 type = 1
 save_button_active = false
 slot_number = 3
@@ -714,7 +714,7 @@ visible = false
 ontext = "Save"
 
 [node name="ChallengeSlot4" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -0.066, -4.37114e-09, 0, -2.88495e-09, 0.1, -0.1, 1.07528e-08, 7.12149e-16, -1.222, 1.95209, 0.375 )
+transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.222, 1.95209, 0.375 )
 type = 1
 slot_number = 4
 active_marker = "WorkoutMarker"
@@ -732,22 +732,22 @@ ontext = "Create\\nChallenge"
 [node name="Opponents" type="Spatial" parent="SettingsCarousel/Battle"]
 
 [node name="NoEnemy" parent="SettingsCarousel/Battle/Opponents" instance=ExtResource( 10 )]
-transform = Transform( -2.8213e-08, -0.1, 4.37114e-09, 0, -4.37114e-09, -0.1, 0.1, -2.8213e-08, 1.23323e-15, -1.23036, 1.34471, -0.337731 )
+transform = Transform( -2.8213e-08, -1, 4.37114e-09, 0, -4.37114e-08, -0.1, 0.1, -2.8213e-07, 1.23323e-15, -1.23036, 1.34471, -0.337731 )
 image = ExtResource( 34 )
 active_marker = "WorkoutMarker"
 
 [node name="EasyEnemy" parent="SettingsCarousel/Battle/Opponents" instance=ExtResource( 10 )]
-transform = Transform( -2.8213e-08, -0.1, 4.37114e-09, 0, -4.37114e-09, -0.1, 0.1, -2.8213e-08, 1.23323e-15, -1.23036, 1.34471, -0.101524 )
+transform = Transform( -2.8213e-08, -1, 4.37114e-09, 0, -4.37114e-08, -0.1, 0.1, -2.8213e-07, 1.23323e-15, -1.23036, 1.34471, -0.101524 )
 image = ExtResource( 32 )
 active_marker = "WorkoutMarker"
 
 [node name="MediumEnemy" parent="SettingsCarousel/Battle/Opponents" instance=ExtResource( 10 )]
-transform = Transform( -2.8213e-08, -0.1, 4.37114e-09, 0, -4.37114e-09, -0.1, 0.1, -2.8213e-08, 1.23323e-15, -1.23036, 1.34471, 0.136019 )
+transform = Transform( -2.8213e-08, -1, 4.37114e-09, 0, -4.37114e-08, -0.1, 0.1, -2.8213e-07, 1.23323e-15, -1.23036, 1.34471, 0.136019 )
 image = ExtResource( 19 )
 active_marker = "WorkoutMarker"
 
 [node name="HardEnemy" parent="SettingsCarousel/Battle/Opponents" instance=ExtResource( 10 )]
-transform = Transform( -2.8213e-08, -0.1, 4.37114e-09, 0, -4.37114e-09, -0.1, 0.1, -2.8213e-08, 1.23323e-15, -1.23036, 1.34471, 0.367736 )
+transform = Transform( -2.8213e-08, -1, 4.37114e-09, 0, -4.37114e-08, -0.1, 0.1, -2.8213e-07, 1.23323e-15, -1.23036, 1.34471, 0.367736 )
 image = ExtResource( 33 )
 active_marker = "WorkoutMarker"
 

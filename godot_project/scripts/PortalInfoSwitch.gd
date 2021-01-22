@@ -12,3 +12,4 @@ func _on_CheckButton_pressed():
 	var new_state = not get_node("Viewport/CanvasLayer/CheckButton").pressed
 	set_state(new_state)
 	emit_signal("toggled",new_state)
+	get_node("Viewport/CanvasLayer/CheckButton").release_focus()
