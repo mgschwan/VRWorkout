@@ -40,10 +40,10 @@ func get_touch_position(body):
 
 func touched_by_controller(body, root):
 	print ("Touched by %s"%str(body))
-	var touch_position = get_touch_position(body)
+	var touch_position = get_touch_position(body.get_touch_object())
 	emit_signal("interface_touch",touch_position[0],touch_position[1])
 
 func released_by_controller(body, root):
 	print ("Released by %s"%str(body))
-	var touch_position = get_touch_position(body)
+	var touch_position = get_touch_position(body.get_touch_object())
 	emit_signal("interface_release",touch_position[0],touch_position[1])

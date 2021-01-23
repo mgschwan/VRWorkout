@@ -269,12 +269,13 @@ transform = Transform( -1.74846e-08, 0, -0.4, 0, 0.4, 0, 0.4, 0, -1.74846e-08, 0
 [node name="MainText" parent="." instance=ExtResource( 17 )]
 transform = Transform( -1.54463e-07, -0.974043, 0.226362, -7.37582e-08, -0.226362, -0.974043, 1, -1.6715e-07, -3.68791e-08, 2.17868, 2.30847, 3.54952e-07 )
 default_text = "VRWorkout"
+bbtext = true
 
 [node name="text_panel" parent="MainText" instance=ExtResource( 18 )]
 transform = Transform( 1.1, 0, -9.32587e-16, 0, 1, 0, 1.70974e-15, 0, 0.6, 6.68336e-11, -0.00769687, 0.00178862 )
 
 [node name="Tutorial" parent="." instance=ExtResource( 17 )]
-transform = Transform( 0.384669, -0.854052, 0.158781, -7.05189e-08, -0.226362, -0.779235, 0.701449, 0.468355, -0.0870744, 1.57591, 2.58036, -2.13026 )
+transform = Transform( -0.800001, -4.41957e-07, 2.15876e-08, 5.90066e-08, -0.226362, -0.779235, 3.49275e-07, -0.974044, 0.18109, -0.268867, 2.308, 3.26218 )
 
 [node name="text_panel" parent="Tutorial" instance=ExtResource( 18 )]
 transform = Transform( 1.2, 0, 0, 0, 1, 9.9729e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )

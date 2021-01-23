@@ -7,6 +7,8 @@ var tracking_lost = false
 var collision_root = null
 var model = null
 
+
+
 var hand_mode = false
 
 
@@ -109,6 +111,10 @@ func get_hit_velocity():
 	var velocity = distance/timedelta
 	get_parent().get_parent().level.infolayer.print_info("Velocity %.2f"%velocity, "debug")
 	return velocity
+
+func get_touch_object():
+	#If we add different touch shapes that would have to be return here
+	return model
 
 
 func do_rumble(good = true):

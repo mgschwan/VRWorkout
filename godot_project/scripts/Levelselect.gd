@@ -81,9 +81,9 @@ func _ready():
 	if GameVariables.current_song:
 		get_node("SongSelector").playlist_from_song_files(GameVariables.current_song)
 	
-	get_node("MainText").print_info("VRWorkout\nSelect song by touching a block\nBest played hands only - no controllers\nPosition yourself between the green poles\nRun in place to get multipliers\n")
+	get_node("MainText").print_info("[img]res://assets/vrworkout_logo.png[/img]\nBuild a playlist with the songs to your right and press start.\n\nTip:\n- Play with hand tracking (no controllers)\n- Connect a heart rate sensor for dynamic difficulty\n- Join the discord for help")
 	
-	get_node("Tutorial").print_info("How to play\n- Hit the hand cues to the beat of the music\n- Head cues should only be touched no headbutts\n- Run in place to receive point multipliers!\nThe optimal time to hit the cues is when the\nrotating marker meets the static one")	
+	get_node("Tutorial").print_info("How to play\n-Position yourself between the green poles\n- Hit the hand cues to the beat of the music\n- Head cues should only be touched no headbutts\n- Run in place to receive point multipliers!\nThe optimal time to hit the cues is when the\nrotating marker meets the static one")	
 	
 	update_widget()
 	get_node("SongSelector").select_difficulty(GameVariables.difficulty)
