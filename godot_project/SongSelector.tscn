@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://SongSelector.gd" type="Script" id=1]
 [ext_resource path="res://SongLevelBlock.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scripts/TouchableViewport.gd" type="Script" id=8]
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=9]
 [ext_resource path="res://scripts/PlaylistView.gd" type="Script" id=10]
+[ext_resource path="res://assets/arrow_right.png" type="Texture" id=11]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 1, 0.0477028, 0.534034 )
@@ -159,7 +160,18 @@ margin_bottom = 460.0
 theme = ExtResource( 9 )
 script = ExtResource( 10 )
 
-[node name="Instruction" type="Label" parent="Viewport/CanvasLayer"]
+[node name="Mark" type="ColorRect" parent="Viewport/CanvasLayer"]
+margin_right = 4.0
+margin_bottom = 4.0
+
+[node name="Instruction" type="TextureRect" parent="Viewport/CanvasLayer"]
+anchor_left = 0.209
+anchor_right = 0.36
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 11 )
+
+[node name="AddSongsLabel" type="Label" parent="Viewport/CanvasLayer/Instruction"]
 margin_left = 120.0
 margin_top = 460.0
 margin_right = 384.0
@@ -167,9 +179,20 @@ margin_bottom = 495.0
 theme = ExtResource( 9 )
 text = "Add Songs before starting"
 
-[node name="Mark" type="ColorRect" parent="Viewport/CanvasLayer"]
-margin_right = 4.0
-margin_bottom = 4.0
+[node name="Label" type="Label" parent="Viewport/CanvasLayer/Instruction"]
+anchor_left = 0.138
+anchor_top = 0.388
+anchor_right = 0.25
+anchor_bottom = 0.438
+margin_right = 112.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Look to your right and add
+songs by touching the song
+blocks
+
+Touch the \"Page\" block
+to skip through the list"
 
 [node name="StaticBody" type="StaticBody" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.441766, 0 )

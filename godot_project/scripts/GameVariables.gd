@@ -39,6 +39,8 @@ var auto_difficulty = false
 var current_song = ""
 var current_challenge = null
 var current_hr = 0
+var hr_active = false
+
 
 var config_file_location = "user://settings.json"
 

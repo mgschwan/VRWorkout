@@ -85,6 +85,15 @@ func _process(delta):
 	update_helper += delta
 	if update_helper > 0.5:
 		update_helper = 0
+		
+		if is_left:
+			if GameVariables.hr_active:
+				model.set_info("HR %d"%(GameVariables.current_hr))
+			else:
+				model.set_info("")
+		else:
+			model.set_info(gu.get_wall_time_str())
+		
 		if hand_mode:
 			var source = get_node("Area/hand_model").get_ball_attachment()
 			var target = get_node("Area/CollisionShape")

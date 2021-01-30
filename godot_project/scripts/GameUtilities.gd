@@ -194,5 +194,9 @@ func disconnect_all_connections(node, signal_):
 		 node.disconnect(s["signal"], s["target"], s["method"])
 
 
+func get_wall_time_str():
+	var t = OS.get_time()
+	return "%02d:%02d"%[t["hour"],t["minute"]]
+
 
 

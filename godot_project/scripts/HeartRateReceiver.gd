@@ -9,6 +9,7 @@ var server = WebSocketServer.new()
 var peer = null
 var last_received = 0
 var message_interval_limit = 1000
+var deadman_timeout = 10000
 var hr_active = false
 
 #Check if script exists and if it does load it
@@ -36,8 +37,18 @@ func _ready():
 #func _process(delta):
 #	pass
 
+
+var throttle_counter = 0
 func _process(delta):
 	server.poll()
+	
+	throttle_counter += 1
+	if throttle_counter > 20:
+		throttle_counter = 0
+		var now = OS.get_ticks_msec()
+		if now > last_received + deadman_timeout:
+			GameVariables.hr_active = false
+	
 	
 func _connected(id, protocol):
 	print ("Client connected")
@@ -59,6 +70,7 @@ func process_heartrate(hr):
 		emit_signal("heart_rate_received",hr)
 		last_received = now
 		GameVariables.current_hr = hr
+		GameVariables.hr_active = true
 	else:
 		print ("Limit heart rate interval")
 	

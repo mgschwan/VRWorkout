@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://materials/absolute_black.tres" type="Material" id=1]
+[ext_resource path="res://models/ball_model.gltf" type="PackedScene" id=2]
+[ext_resource path="res://fonts/Droid_Sans_Bold_Big.tres" type="DynamicFont" id=3]
+[ext_resource path="res://scenes/AdvancedBallModel.gd" type="Script" id=4]
+
+[sub_resource type="ViewportTexture" id=1]
+flags = 12
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="SpatialMaterial" id=2]
+resource_local_to_scene = true
+flags_unshaded = true
+albedo_texture = SubResource( 1 )
+
+[node name="ball_model" instance=ExtResource( 2 )]
+script = ExtResource( 4 )
+
+[node name="Viewport" type="Viewport" parent="." index="0"]
+size = Vector2( 256, 256 )
+msaa = 6
+render_target_v_flip = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Viewport" index="0"]
+
+[node name="ColorRect" type="ColorRect" parent="Viewport/CanvasLayer" index="0"]
+margin_right = 256.0
+margin_bottom = 256.0
+color = Color( 0.815686, 0, 0, 1 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Viewport/CanvasLayer" index="1"]
+anchor_top = 0.388
+anchor_bottom = 0.475
+margin_right = 256.0
+margin_bottom = 256.0
+custom_fonts/normal_font = ExtResource( 3 )
+bbcode_enabled = true
+bbcode_text = "[center]HR 100[/center]
+"
+text = "HR 100
+"
+
+[node name="Icosphere" parent="." index="1"]
+material/0 = ExtResource( 1 )
+material/1 = SubResource( 2 )

@@ -37,6 +37,7 @@ func release_event(position = null):
 	else:
 		print ("Release without click not possible")
 
+
 func click_event(position):
 	var viewport = self
 	var ev = InputEventMouseButton.new()
@@ -72,5 +73,7 @@ func _on_ConnectPadInput_interface_touch(u, v):
 #		print ("Debounce block")
 
 
-func _on_ConnectPadInput_interface_release(u, v):
+func _on_ConnectPadInput_interface_release(u, v):	
 	release_event() #Vector2(v,u))
+
+		
