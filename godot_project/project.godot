@@ -71,7 +71,7 @@ GameVariables="*res://scenes/GameVariables.tscn"
 
 [gdnative]
 
-singletons=[ "res://addons/godot_ovrmobile/godot_ovrmobile.gdnlib" ]
+singletons=[  ]
 singletons_disabled=[  ]
 
 [logging]

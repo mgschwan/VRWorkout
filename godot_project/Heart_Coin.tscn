@@ -27,36 +27,36 @@ tracks/0/keys = {
 flags_unshaded = true
 albedo_color = Color( 0.835294, 0.905882, 0, 1 )
 
-[sub_resource type="PrismMesh" id=8]
+[sub_resource type="PrismMesh" id=4]
 size = Vector3( 0.2, 0.2, 0.2 )
 
-[sub_resource type="SpatialMaterial" id=11]
+[sub_resource type="SpatialMaterial" id=5]
 flags_unshaded = true
 albedo_color = Color( 0.254902, 0, 0.705882, 1 )
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=6]
 flags_unshaded = true
 albedo_color = Color( 0.0392157, 0.74902, 0, 1 )
 
-[sub_resource type="SpatialMaterial" id=10]
+[sub_resource type="SpatialMaterial" id=7]
 flags_unshaded = true
 albedo_color = Color( 0.596078, 0.207843, 0.207843, 1 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=8]
 size = 92
 font_data = ExtResource( 4 )
 
-[sub_resource type="PlaneMesh" id=5]
+[sub_resource type="PlaneMesh" id=9]
 size = Vector2( 0.5, 0.5 )
 
-[sub_resource type="ViewportTexture" id=6]
+[sub_resource type="ViewportTexture" id=10]
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=11]
 resource_local_to_scene = true
 flags_transparent = true
 flags_unshaded = true
-albedo_texture = SubResource( 6 )
+albedo_texture = SubResource( 10 )
 
 [node name="heart_coin" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -75,22 +75,22 @@ material/1 = SubResource( 3 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Circle/actual" index="0"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -3.06809e-09, -0.940703 )
-mesh = SubResource( 8 )
-material/0 = SubResource( 11 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
 
 [node name="low" type="Spatial" parent="Circle" index="1"]
 
 [node name="MeshInstance" type="MeshInstance" parent="Circle/low" index="0"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -3.06809e-09, -0.940703 )
-mesh = SubResource( 8 )
-material/0 = SubResource( 9 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 6 )
 
 [node name="high" type="Spatial" parent="Circle" index="2"]
 
 [node name="MeshInstance" type="MeshInstance" parent="Circle/high" index="0"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -3.06809e-09, -0.940703 )
-mesh = SubResource( 8 )
-material/0 = SubResource( 10 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 7 )
 
 [node name="Viewport" type="Viewport" parent="." index="3"]
 size = Vector2( 256, 256 )
@@ -111,10 +111,10 @@ margin_bottom = 40.0
 [node name="Label" type="Label" parent="Viewport/CanvasLayer/CenterContainer" index="0"]
 margin_right = 102.0
 margin_bottom = 108.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 8 )
 text = "60"
 
 [node name="HR" type="MeshInstance" parent="." index="4"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.018057, 0.0154107, 0.255465 )
-mesh = SubResource( 5 )
-material/0 = SubResource( 7 )
+mesh = SubResource( 9 )
+material/0 = SubResource( 11 )

@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
+[ext_resource path="res://scripts/NightScoutDisplay.gd" type="Script" id=2]
+[ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://fonts/droid-sans/DroidSans-Bold.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=2]
+size = 25
+outline_color = Color( 0.839216, 0.839216, 0.839216, 1 )
+use_filter = true
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 10
+use_filter = true
+font_data = ExtResource( 3 )
+
+[node name="NightScoutDisplay" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 529.0
+margin_bottom = 289.0
+color = Color( 0.133333, 0, 0.611765, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 10.0
+margin_right = 57.0
+margin_bottom = 35.0
+theme = ExtResource( 1 )
+text = "SGV"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SGV" type="RichTextLabel" parent="."]
+margin_left = 2.0
+margin_top = 25.0
+margin_right = 62.0
+margin_bottom = 58.0
+theme = ExtResource( 1 )
+custom_fonts/normal_font = SubResource( 2 )
+bbcode_enabled = true
+bbcode_text = "[center]0[/center]"
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BGDELTA" type="Label" parent="."]
+margin_left = 28.6434
+margin_top = 48.6974
+margin_right = 37.6434
+margin_bottom = 62.6974
+custom_fonts/font = SubResource( 1 )
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}

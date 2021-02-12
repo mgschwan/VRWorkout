@@ -129,7 +129,6 @@ func _process(delta):
 	
 	if not GameVariables.vr_mode:
 		manual_position_update(delta)
-
 	
 	
 func tint_screen(duration):

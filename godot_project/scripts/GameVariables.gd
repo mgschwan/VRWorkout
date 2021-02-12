@@ -16,7 +16,18 @@ var hit_player = null
 ############################ Activated features #############################
 var FEATURE_MULTIPLAYER = false
 
+#Deactivate certain features to meet Oculus Store requirements
+var FEATURE_STORE_COMPATIBILITY = true 
+
+
 #############################################################################
+######### Plugins should put their data into the Dictionary #################
+
+var plugin_data = Dictionary()
+
+#############################################################################
+
+
 
 var app_name = "VRWorkout"
 var api_version = 1
@@ -40,6 +51,9 @@ var current_song = ""
 var current_challenge = null
 var current_hr = 0
 var hr_active = false
+
+
+
 
 
 var config_file_location = "user://settings.json"
@@ -158,7 +172,14 @@ var predefined_exercises = {
 		["jump",20],["squat",20],["crunch",20],["squat",20],
 		["pushup",20],["stand",30],["sprint",20],["squat",30],
 		["crunch",30],["sprint",25],["pushup",20]	
+	],
+	"VAL Winter Games": [
+		["stand",10],["jump",20],["squat",30],["crunch",30],
+		["sprint",30],["squat",40],["pushup",35],["stand",20],
+		["pushup",30],["jump",30],["squat",20],["sprint",30],
+		["crunch",40]
 	]
+
 }
 
 
@@ -174,6 +195,73 @@ var predefined_achievements = {
 				 "achievement": "SIDEQUESTFITNESSWEEK21",
 				 "partial": true
 				}
+			],
+		"valwintergames" : [
+				#Rank C
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.SCORE,
+				 "limit": 75,
+				 "achievement": "VALWINTERGAMESRANKC",
+				 "partial": true
+				},
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.DURATION,
+				 "limit": 600,
+				 "achievement": "VALWINTERGAMESRANKC",
+				 "partial": true
+				},
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.START_TIME,
+				 "limit": 1613050277,
+				 "achievement": "VALWINTERGAMESRANKC",
+				 "partial": true
+				},
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.END_TIME,
+				 "limit": 1613051277,
+				 "achievement": "VALWINTERGAMESRANKC",
+				 "partial": true
+				},
+				#Rank B
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.SCORE,
+				 "limit": 85,
+				 "achievement": "VALWINTERGAMESRANKB",
+				 "partial": true
+				},
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.DURATION,
+				 "limit": 600,
+				 "achievement": "VALWINTERGAMESRANKB",
+				 "partial": true
+				},
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.START_TIME,
+				 "limit": 1613050277,
+				 "achievement": "VALWINTERGAMESRANKB",
+				 "partial": true
+				},
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.END_TIME,
+				 "limit": 1613051277,
+				 "achievement": "VALWINTERGAMESRANKB",
+				 "partial": true
+				},
+				#RANK A
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.SCORE,
+				 "limit": 75,
+				 "achievement": "VALWINTERGAMESRANKA",
+				 "partial": true
+				},
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.DURATION,
+				 "limit": 600,
+				 "achievement": "VALWINTERGAMESRANKA",
+				 "partial": true
+				},
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.START_TIME,
+				 "limit": 1613050277,
+				 "achievement": "VALWINTERGAMESRANKA",
+				 "partial": true
+				},
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.END_TIME,
+				 "limit": 1613051277,
+				 "achievement": "VALWINTERGAMESRANKA",
+				 "partial": true
+				}
+
+
 			]
 	}
 

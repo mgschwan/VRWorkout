@@ -198,5 +198,49 @@ func get_wall_time_str():
 	var t = OS.get_time()
 	return "%02d:%02d"%[t["hour"],t["minute"]]
 
+func build_workout_statistic(data):
+	var statistic = {}
+	var heartrate = []
+	var hr_total = 0
+	var hr_max = 0
+	var hr_avg = 0
+	
+	for id in data:
+		var exercise = data[id].get("e","unknown/").split("/")[0]
+		print ("Exercise %s"%exercise)
+		var type = data[id].get("t","unknown")
+		var tmp = data[id].get("h",false)
+		var max_hit = data[id].get("mh",1.0)
+		var hit = 0
+		
+		if typeof(tmp) == TYPE_REAL:
+			hit = tmp
+		elif tmp == true:
+			hit = max_hit
+		elif tmp == false:
+			hit = 0.0
 
+		if "avoid" in type:
+			if hit > 0:
+				hit = 0.0
+			else:
+				hit = max_hit
+		var hr = data[id].get("hr",0)
+		hr_total += hr
+		hr_max = max(hr_max, hr)
 
+		var starttime = data[id].get("st",0)
+		statistic[exercise] = statistic.get(exercise, {"good": 0, "total": 0})
+		if hit:
+			statistic[exercise]["good"] += hit
+		statistic[exercise]["total"] += max_hit
+		heartrate.append([starttime, hr])
+
+	if len(data) > 0:
+		hr_avg = hr_total/float(len(data))
+
+	return {"statistic": statistic,
+			"heartrate": heartrate,
+			"hr_max": hr_max, "hr_avg": hr_avg,
+			"calories": 0}
+			

@@ -34,9 +34,7 @@ var right_collision_root
 
 var in_hand_mode = false #auto detect hand_mode, can't revert back automatically
 
-
 var tracking_data = []
-
 
 var total_points = 0
 var last_points = 0
@@ -64,9 +62,12 @@ var arvr_open_vr_interface = null;
 var arvr_webxr_interface = null;
 
 func _initialize_OVR_API():
+	# for the types we need to assume it is always available
+	var ovrVrApiTypes = load("res://addons/godot_ovrmobile/OvrVrApiTypes.gd").new();
 	# load the .gdns classes.
-	ovr_display_refresh_rate = load("res://addons/godot_ovrmobile/OvrDisplayRefreshRate.gdns");
+	ovr_display_refresh_rate = load("res://addons/godot_ovrmobile/OvrDisplay.gdns");
 	ovr_guardian_system = load("res://addons/godot_ovrmobile/OvrGuardianSystem.gdns");
+	ovr_init_config = load("res://addons/godot_ovrmobile/OvrInitConfig.gdns");
 	ovr_performance = load("res://addons/godot_ovrmobile/OvrPerformance.gdns");
 	ovr_tracking_transform = load("res://addons/godot_ovrmobile/OvrTrackingTransform.gdns");
 	ovr_utilities = load("res://addons/godot_ovrmobile/OvrUtilities.gdns");
@@ -76,9 +77,12 @@ func _initialize_OVR_API():
 	# and now instance the .gdns classes for use if load was successfull
 	if (ovr_display_refresh_rate): ovr_display_refresh_rate = ovr_display_refresh_rate.new()
 	if (ovr_guardian_system): ovr_guardian_system = ovr_guardian_system.new()
+	if (ovr_init_config): ovr_init_config = ovr_init_config.new()
 	if (ovr_performance): ovr_performance = ovr_performance.new()
 	if (ovr_tracking_transform): ovr_tracking_transform = ovr_tracking_transform.new()
 	if (ovr_utilities): ovr_utilities = ovr_utilities.new()
+	if (ovr_hand_tracking): ovr_hand_tracking = ovr_hand_tracking.new()
+	if (ovr_vr_api_proxy): ovr_vr_api_proxy = ovr_vr_api_proxy.new()
 
 func handle_mobile_permissions():
 	print ("Checking permissions")
@@ -245,13 +249,18 @@ func _enter_tree():
 
 
 func initialize():
-	arvr_ovr_mobile_interface = ARVRServer.find_interface("OVRMobile");
-	arvr_oculus_interface = ARVRServer.find_interface("Oculus");
-	arvr_open_vr_interface = ARVRServer.find_interface("OpenVR");
-	arvr_webxr_interface = ARVRServer.find_interface("WebXR");
+	var available_interfaces = ARVRServer.get_interfaces();
+	for interface in available_interfaces:
+		match interface.name:
+			"OVRMobile":
+				arvr_ovr_mobile_interface = ARVRServer.find_interface("OVRMobile");
+			"Oculus":
+				arvr_oculus_interface = ARVRServer.find_interface("Oculus");
+			"OpenVR":
+					arvr_open_vr_interface = ARVRServer.find_interface("OpenVR");
+			"WebXR":
+					arvr_webxr_interface = ARVRServer.find_interface("WebXR");
 
-	ARVRServer.connect("tracker_added",self,"_on_Tracker_added")
-	ARVRServer.connect("tracker_removed",self, "_on_Tracker_removed")
 
 	GameVariables.vr_mode = false
 	cam = get_node("ARVROrigin/ARVRCamera")
@@ -260,15 +269,13 @@ func initialize():
 	ProjectSettings.set("game/external_songs", ProjectSettings.get("application/config/pc_music_directory"))
 	print (ProjectSettings.get("game/external_songs"))
 
+	print ("Initializing VR Interface")
 	if arvr_ovr_mobile_interface:
+		print ("Oculus Mobile")
 		ProjectSettings.set("game/is_oculusquest", true)
 		ProjectSettings.set("game/external_songs", ProjectSettings.get("application/config/music_directory"))
 		
-
-		handle_mobile_permissions()
-
 		# the init config needs to be done before arvr_interface.initialize()
-		ovr_init_config = load("res://addons/godot_ovrmobile/OvrInitConfig.gdns");
 		if (ovr_init_config):
 			ovr_init_config = ovr_init_config.new()
 			ovr_init_config.set_render_target_size_multiplier(1) # setting to 1 here is the default
@@ -292,14 +299,25 @@ func initialize():
 
 			GameVariables.vr_mode = true
 		
+		print ("Check and setup permissions")
+		print ("Request permissions")
+		handle_mobile_permissions()
+		print ("Check and setup permissions ... finished")
+
+		$PauseHandler.connect_to_signals()
+		print ("Oculus Mobile ... done")
+		
 	elif arvr_oculus_interface:
+		print ("Oculus PC")
 		if arvr_oculus_interface.initialize():
 			arvr_interface = arvr_oculus_interface
 			GameVariables.vr_mode = true
 			get_viewport().arvr = true;
 			Engine.target_fps = 80 # TODO: this is headset dependent (RiftS == 80)=> figure out how to get this info at runtime
 			OS.vsync_enabled = false;
+		print ("Oculus PC ... done")
 	elif arvr_open_vr_interface:
+		print ("OpenVR")
 		if arvr_open_vr_interface.initialize():
 			arvr_interface = arvr_open_vr_interface
 			get_viewport().arvr = true;
@@ -307,6 +325,7 @@ func initialize():
 			OS.vsync_enabled = false;
 			GameVariables.vr_mode = true;	
 			get_viewport().keep_3d_linear = true
+		print ("OpenVR ... done")
 	elif arvr_webxr_interface:
 			print("  Found WebXR Interface.");
 			arvr_webxr_interface.connect("session_supported", self, "_webxr_cb_session_supported")
@@ -317,11 +336,19 @@ func initialize():
 			arvr_webxr_interface.requested_reference_space_types = 'bounded-floor, local-floor, local'
 			arvr_webxr_interface.is_session_supported("immersive-vr")
 			_webxr_create_entervr_buttons();
+			print ("WebXR done")
 	else:
+		print ("No VR interface found")
 		#Not running in VR / Demo mode
 		cam.translation.y = demo_mode_player_height
 		cam.rotation.x = -0.4
 	
+	if GameVariables.vr_mode:
+		ARVRServer.connect("tracker_added",self,"_on_Tracker_added")
+		ARVRServer.connect("tracker_removed",self, "_on_Tracker_removed")
+
+	print ("Initializing VR Interface ... done")
+
 
 func check_ar_mode():
 	var isar = false
@@ -333,39 +360,50 @@ func check_ar_mode():
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
 	GameVariables.device_id = str(gu.get_device_id())
 	GameVariables.vr_camera = get_node("ARVROrigin/ARVRCamera")
 	GameVariables.hit_player = get_node("HitPlayer")
-	
 	print ("Unique device id %s"%GameVariables.device_id)
 	GameVariables.setup_globals()
+
+	print ("Initialize VR")
+	initialize() #VR specific initialization
+	print ("Initialize VR ... done")
 	
 	# !! Beware that any functions that rely on config parameters don't
 	# !! work properly before those two lines
+	print ("Load config")
 	var config = gu.load_persistent_config(GameVariables.config_file_location)
 	gu.apply_config_parameters(config)
+	print ("Load config ... finished")	
 	# -- Now it's safe to access the config parameters
-	
 
+	print ("Activate RemoteInterface")
 	get_node("RemoteInterface").request_profile(GameVariables.device_id)
+	print ("Activate RemoteInterface ... finished")
+
 	get_node("ARVROrigin/ARVRCamera/RemoteSpatial").multiplayer_room = get_node("MultiplayerRoom")
 	connect("recenter_scene",self,"on_recenter_scene")
 
-	initialize() #VR specific initialization
+	print ("Setup skybox")
 	get_node("ARVROrigin/SkyBox/AnimationPlayer").play("starfield_rotation",-1,0.05)
+	print ("Setup skybox ... finished")
 
 	screen_tint_node = get_node("ARVROrigin/ARVRCamera/ScreenTint")
+
+	print ("Setup splashscreen")
 	splashscreen.head_node = get_node("ARVROrigin/ARVRCamera")
 	splashscreen.connect("splash_screen_finished", self,"_on_Splashscreen_finished")
 	add_child(splashscreen)
-	
-	
-	if ovr_hand_tracking: 
-		ovr_hand_tracking = ovr_hand_tracking.new()
-	
+	print ("Setup splashscreen ... finished")
+
+	print ("Preload Level")
 	level_blueprint = preload("res://scenes/Level.tscn")
+	print ("Preload Level ... finished")
+	print ("Preload levelselect")
 	levelselect_blueprint = preload("res://scenes/Levelselect.tscn")
+	print ("Preload levelselect ... finished")
+	print ("Game initialization complete")
 
 var xrot = 0.0
 var yrot = 0.0
@@ -578,7 +616,6 @@ func on_recenter_scene():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-
 	if not GameVariables.vr_mode:
 		if Input.is_key_pressed(KEY_P):
 			# start screen capture
@@ -600,6 +637,7 @@ func _process(delta):
 
 	if record_tracker_data and left_controller and right_controller:
 		tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
+
 
 #Return the config parameters that should be stored in the config file
 func get_persisting_parameters():

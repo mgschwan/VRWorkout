@@ -5,7 +5,12 @@ var api
 func _ready():
 	api = get_tree().current_scene.get_node("RemoteInterface")
 	api.connect("registration_initialized", self, "connect_vrworkout_complete")
-	get_node("VRWorkoutPanel").print_info("This is for Patreon members and beta testers\n\nTo register your device with the portal push all buttons. You will receive a onetime code that you have to enter in the register device page of the VRWorkout portal dashboard\n\nhttps://portal.vrworkout.at")
+
+	if GameVariables.FEATURE_STORE_COMPATIBILITY:
+		#Hide the VRWorkout Connection for now
+		get_node("VRWorkoutPanel").print_info("Online Features under construction")
+	else:
+		get_node("VRWorkoutPanel").print_info("This is for Patreon members and beta testers\n\nTo register your device with the portal push all buttons. You will receive a onetime code that you have to enter in the register device page of the VRWorkout portal dashboard\n\nhttps://portal.vrworkout.at")
 
 func disable_all_connect_switches():
 		get_node("VRWorkoutPanel/ConnectSwitch").set_state(false)

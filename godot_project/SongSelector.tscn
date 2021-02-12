@@ -230,6 +230,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1 )
 [connection signal="button_down" from="Viewport/CanvasLayer/StartButton" to="." method="_on_Button_pressed"]
 [connection signal="button_down" from="Viewport/CanvasLayer/FreeplayButton" to="." method="_on_FreeplayButton_pressed"]
 [connection signal="button_down" from="Viewport/CanvasLayer/PauseButton" to="." method="_on_PauseButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/PauseButton" to="." method="_on_PauseButton_pressed"]
 [connection signal="button_down" from="Viewport/CanvasLayer/RemoveButton" to="." method="_on_RemoveButton_pressed"]
 [connection signal="button_up" from="Viewport/CanvasLayer/RemoveButton" to="." method="_on_RemoveButton_button_up"]
 [connection signal="interface_release" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_release"]

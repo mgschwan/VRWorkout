@@ -16,7 +16,7 @@ func update_panel():
 	if $SideQuestAPI.sidequest_is_connected():
 		var username = profile.get("name", "SideQuest Player")
 		text_node.bbcode_text = "Welcome %s"%username
-		text_node.bbcode_text += "\nTo take part in the SideQuest Fitness Week select the SideQuest Workout to your right and add songs of at least 6 minutes. Achieve a score of at least 60"	
+		text_node.bbcode_text += "\n\nThis panel shows your achievements"
 	else:
 		text_node.bbcode_text = "You are not connected to SideQuest\n\nGo to the Connections Settings"
 	achievements_node.bbcode_text = "[center]Your achievements[/center]\n\n"

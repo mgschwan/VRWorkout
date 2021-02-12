@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=2]
+[gd_scene load_steps=66 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -21,6 +21,7 @@
 [ext_resource path="res://assets/enemy_medium.jpg" type="Texture" id=19]
 [ext_resource path="res://audio/snare_hit.wav" type="AudioStream" id=20]
 [ext_resource path="res://scenes/PortalInfoSwitch.tscn" type="PackedScene" id=21]
+[ext_resource path="res://scenes/StatisticsPanel.tscn" type="PackedScene" id=22]
 [ext_resource path="res://SongSelector.tscn" type="PackedScene" id=23]
 [ext_resource path="res://scenes/Button.tscn" type="PackedScene" id=24]
 [ext_resource path="res://ExerciseCollection.tscn" type="PackedScene" id=25]
@@ -50,23 +51,35 @@ height = 0.1
 [sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.0823529, 0, 0.654902, 1 )
 
-[sub_resource type="BoxShape" id=4]
-extents = Vector3( 0.0951286, 0.110867, 0.00811744 )
+[sub_resource type="PlaneMesh" id=4]
+size = Vector2( 2, 1 )
 
-[sub_resource type="CubeMesh" id=5]
-size = Vector3( 0.2, 0.1, 0.02 )
+[sub_resource type="ViewportTexture" id=5]
+flags = 12
+viewport_path = NodePath("Stats/Viewport")
 
 [sub_resource type="SpatialMaterial" id=6]
+resource_local_to_scene = true
+flags_unshaded = true
+albedo_texture = SubResource( 5 )
+
+[sub_resource type="BoxShape" id=7]
+extents = Vector3( 0.0951286, 0.110867, 0.00811744 )
+
+[sub_resource type="CubeMesh" id=8]
+size = Vector3( 0.2, 0.1, 0.02 )
+
+[sub_resource type="SpatialMaterial" id=9]
 albedo_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="SphereShape" id=7]
+[sub_resource type="SphereShape" id=10]
 radius = 0.1
 
-[sub_resource type="SphereMesh" id=8]
+[sub_resource type="SphereMesh" id=11]
 radius = 0.1
 height = 0.2
 
-[sub_resource type="GDScript" id=9]
+[sub_resource type="GDScript" id=12]
 script/source = "extends Spatial
 
 export(String) var text = \"default\"
@@ -122,30 +135,30 @@ func print_info(t):
 
 "
 
-[sub_resource type="StyleBoxFlat" id=10]
+[sub_resource type="StyleBoxFlat" id=13]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="DynamicFont" id=11]
+[sub_resource type="DynamicFont" id=14]
 size = 32
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="PlaneMesh" id=12]
+[sub_resource type="PlaneMesh" id=15]
 size = Vector2( 2, 0.5 )
 
-[sub_resource type="ViewportTexture" id=13]
+[sub_resource type="ViewportTexture" id=16]
 flags = 4
 viewport_path = NodePath("SettingsCarousel/Switchboard/ControllerAdjuster/TextElement/Viewport")
 
-[sub_resource type="SpatialMaterial" id=14]
+[sub_resource type="SpatialMaterial" id=17]
 resource_local_to_scene = true
 flags_unshaded = true
-albedo_texture = SubResource( 13 )
+albedo_texture = SubResource( 16 )
 
-[sub_resource type="PrismMesh" id=15]
+[sub_resource type="PrismMesh" id=18]
 size = Vector3( 0.03, 0.03, 0.03 )
 
-[sub_resource type="GDScript" id=16]
+[sub_resource type="GDScript" id=19]
 script/source = "extends Spatial
 
 export(String) var text = \"default\"
@@ -196,36 +209,36 @@ func print_info(t):
 
 "
 
-[sub_resource type="Theme" id=17]
+[sub_resource type="Theme" id=20]
 default_font = ExtResource( 30 )
 
-[sub_resource type="StyleBoxFlat" id=18]
+[sub_resource type="StyleBoxFlat" id=21]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="DynamicFont" id=19]
+[sub_resource type="DynamicFont" id=22]
 size = 32
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="PlaneMesh" id=20]
+[sub_resource type="PlaneMesh" id=23]
 size = Vector2( 2, 0.5 )
 
-[sub_resource type="ViewportTexture" id=21]
+[sub_resource type="ViewportTexture" id=24]
 flags = 4
 viewport_path = NodePath("SettingsCarousel/Exercises/Header/Viewport")
 
-[sub_resource type="SpatialMaterial" id=22]
+[sub_resource type="SpatialMaterial" id=25]
 resource_local_to_scene = true
 flags_unshaded = true
-albedo_texture = SubResource( 21 )
+albedo_texture = SubResource( 24 )
 
-[sub_resource type="ViewportTexture" id=23]
+[sub_resource type="ViewportTexture" id=26]
 viewport_path = NodePath("SettingsCarousel/Battle/Header/Viewport")
 
-[sub_resource type="SpatialMaterial" id=24]
+[sub_resource type="SpatialMaterial" id=27]
 resource_local_to_scene = true
 flags_unshaded = true
-albedo_texture = SubResource( 23 )
+albedo_texture = SubResource( 26 )
 
 [node name="Spatial" type="Spatial"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
@@ -291,6 +304,19 @@ visible = false
 [node name="text_panel" parent="Stats" instance=ExtResource( 18 )]
 transform = Transform( 1.2, 0, 0, 0, 1, 9.9729e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
 
+[node name="Viewport" type="Viewport" parent="Stats"]
+size = Vector2( 512, 256 )
+msaa = 6
+render_target_v_flip = true
+
+[node name="StatisticsPanel" parent="Stats/Viewport" instance=ExtResource( 22 )]
+scale = Vector2( 0.75, 0.75 )
+
+[node name="Display" type="MeshInstance" parent="Stats"]
+transform = Transform( 1, -5.96046e-08, 0, 0, 1, 2.98023e-08, 0, 2.98023e-08, 1, -0.0226345, -0.0291336, 1.13608 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 6 )
+
 [node name="SettingsCarousel" type="Spatial" parent="."]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, -3, -2.3 )
 
@@ -321,12 +347,12 @@ script = ExtResource( 3 )
 
 [node name="onshape" type="CollisionShape" parent="SettingsCarousel/Switchboard/BeastModeSelector"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000761986, -0.0341799 )
-shape = SubResource( 4 )
+shape = SubResource( 7 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="SettingsCarousel/Switchboard/BeastModeSelector"]
 transform = Transform( 1, 0, 0, 0, 2.32633, 0, 0, 0, 1, 0, 0, -0.0505549 )
-mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
+mesh = SubResource( 8 )
+material/0 = SubResource( 9 )
 
 [node name="claws" parent="SettingsCarousel/Switchboard/BeastModeSelector" instance=ExtResource( 12 )]
 transform = Transform( -0.00642908, 0.0032691, -0.00692675, -0.0072954, 0.000141297, 0.00683792, 0.00233326, 0.0094495, 0.0022941, 0.0630277, 0.148197, 5.96046e-08 )
@@ -437,16 +463,16 @@ transform = Transform( 0.925256, 0, 0.379343, 0, 1, 0, -0.379343, 0, 0.925256, -
 script = ExtResource( 5 )
 
 [node name="CollisionShape" type="CollisionShape" parent="SettingsCarousel/Switchboard/ControllerAdjuster"]
-shape = SubResource( 7 )
+shape = SubResource( 10 )
 
 [node name="Sphere" type="MeshInstance" parent="SettingsCarousel/Switchboard/ControllerAdjuster"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.19209e-07 )
-mesh = SubResource( 8 )
+mesh = SubResource( 11 )
 material/0 = ExtResource( 14 )
 
 [node name="TextElement" type="Spatial" parent="SettingsCarousel/Switchboard/ControllerAdjuster"]
 transform = Transform( 0.0864364, 2.98023e-08, -1.11022e-16, 0, -4.37114e-08, -0.0864362, -5.58794e-09, 1, -3.77825e-09, 1.19209e-07, 0, 0.110089 )
-script = SubResource( 9 )
+script = SubResource( 12 )
 viewport_height = 128
 
 [node name="Viewport" type="Viewport" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement"]
@@ -459,7 +485,7 @@ render_target_v_flip = true
 [node name="Panel" type="Panel" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement/Viewport/CanvasLayer"]
 margin_right = 256.0
 margin_bottom = 256.0
-custom_styles/panel = SubResource( 10 )
+custom_styles/panel = SubResource( 13 )
 
 [node name="Container" type="MarginContainer" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement/Viewport/CanvasLayer/Panel"]
 margin_left = 5.0
@@ -471,13 +497,13 @@ theme = ExtResource( 2 )
 [node name="Label" type="Label" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement/Viewport/CanvasLayer/Panel/Container"]
 margin_right = 165.0
 margin_bottom = 46.0
-custom_fonts/font = SubResource( 11 )
+custom_fonts/font = SubResource( 14 )
 text = "defaulttext"
 
 [node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement"]
 transform = Transform( 1, 4.76837e-07, 0, -1.86265e-09, 1, -3.33067e-16, -5.32907e-15, 2.13163e-14, 1, 0, 0, -1.41491 )
-mesh = SubResource( 12 )
-material/0 = SubResource( 14 )
+mesh = SubResource( 15 )
+material/0 = SubResource( 17 )
 
 [node name="Exercises" type="Spatial" parent="SettingsCarousel"]
 transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, -1.19209e-07, 0, -0.225055 )
@@ -495,10 +521,10 @@ active_marker = "WorkoutMarker"
 
 [node name="PresetCollector4" parent="SettingsCarousel/Exercises" instance=ExtResource( 27 )]
 transform = Transform( -6.24658e-08, -1, -5.24537e-09, 0, -4.37114e-08, 0.12, -0.12, 5.20549e-07, 2.73047e-15, -1.05, 1.77784, -0.602097 )
-header_logo = "res://assets/sidequest_logo_alpha.png"
-exercise_name = "SideQuest Fitness"
+header_logo = "res://assets/winter_games_header.png"
+exercise_name = "VAL Winter Games"
 active_marker = "WorkoutMarker"
-achievements = "sidequest"
+achievements = "valwintergames"
 
 [node name="PresetCollector2" parent="SettingsCarousel/Exercises" instance=ExtResource( 27 )]
 transform = Transform( -6.24658e-08, -1, -5.24537e-09, 0, -4.37114e-08, 0.12, -0.12, 5.20549e-07, 2.73047e-15, -1.0504, 1.778, -0.0921719 )
@@ -542,12 +568,12 @@ visible = false
 
 [node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Exercises/WorkoutMarker"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0 )
-mesh = SubResource( 15 )
+mesh = SubResource( 18 )
 material/0 = ExtResource( 7 )
 
 [node name="Header" type="Spatial" parent="SettingsCarousel/Exercises"]
 transform = Transform( 2.93257e-07, -1, 3.18518e-14, 9.77524e-08, 2.65431e-14, -0.6, 0.6, 4.88762e-07, 9.77524e-08, -1.06915, 2.11855, -0.111982 )
-script = SubResource( 16 )
+script = SubResource( 19 )
 text = "Step 1: Select workout or exercises\\nStep 2: Select song(s) behind you or Freeplay\\nStep 3: Press Start"
 font_size = 18
 viewport_width = 512
@@ -566,8 +592,8 @@ render_target_update_mode = 0
 [node name="Panel" type="Panel" parent="SettingsCarousel/Exercises/Header/Viewport/CanvasLayer"]
 margin_right = 256.0
 margin_bottom = 48.0
-theme = SubResource( 17 )
-custom_styles/panel = SubResource( 18 )
+theme = SubResource( 20 )
+custom_styles/panel = SubResource( 21 )
 
 [node name="Container" type="MarginContainer" parent="SettingsCarousel/Exercises/Header/Viewport/CanvasLayer/Panel"]
 margin_right = 256.0
@@ -578,12 +604,12 @@ theme = ExtResource( 2 )
 margin_top = 1.0
 margin_right = 256.0
 margin_bottom = 47.0
-custom_fonts/font = SubResource( 19 )
+custom_fonts/font = SubResource( 22 )
 text = "defaulttext"
 
 [node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Exercises/Header"]
-mesh = SubResource( 20 )
-material/0 = SubResource( 22 )
+mesh = SubResource( 23 )
+material/0 = SubResource( 25 )
 
 [node name="text_panel" parent="SettingsCarousel/Exercises/Header" instance=ExtResource( 18 )]
 transform = Transform( 1.1, -1.13687e-13, 6.88809e-21, -5.68434e-14, 1, 0, 1.42109e-14, -6.77626e-21, 0.25, 0, -0.00774515, 0 )
@@ -592,7 +618,7 @@ transform = Transform( 1.1, -1.13687e-13, 6.88809e-21, -5.68434e-14, 1, 0, 1.421
 
 [node name="Header" type="Spatial" parent="SettingsCarousel/Battle"]
 transform = Transform( 3.26639e-07, -1, 3.72904e-14, 9.77524e-08, 2.65431e-14, -0.6, 0.6, 5.44398e-07, 9.77524e-08, -1.18034, 2.33154, -0.250625 )
-script = SubResource( 16 )
+script = SubResource( 19 )
 text = "Save: Play any workout, afterwards press save\\nLoad: Select a slot and then the songs\\nChallenges: Play any workout then press 'Create Challenge'\\nChallenge is uploaded and can be shared with a link"
 font_size = 16
 viewport_width = 512
@@ -611,8 +637,8 @@ render_target_update_mode = 0
 [node name="Panel" type="Panel" parent="SettingsCarousel/Battle/Header/Viewport/CanvasLayer"]
 margin_right = 256.0
 margin_bottom = 48.0
-theme = SubResource( 17 )
-custom_styles/panel = SubResource( 18 )
+theme = SubResource( 20 )
+custom_styles/panel = SubResource( 21 )
 
 [node name="Container" type="MarginContainer" parent="SettingsCarousel/Battle/Header/Viewport/CanvasLayer/Panel"]
 margin_right = 256.0
@@ -623,12 +649,12 @@ theme = ExtResource( 2 )
 margin_top = 1.0
 margin_right = 256.0
 margin_bottom = 47.0
-custom_fonts/font = SubResource( 19 )
+custom_fonts/font = SubResource( 22 )
 text = "defaulttext"
 
 [node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Battle/Header"]
-mesh = SubResource( 20 )
-material/0 = SubResource( 24 )
+mesh = SubResource( 23 )
+material/0 = SubResource( 27 )
 
 [node name="text_panel" parent="SettingsCarousel/Battle/Header" instance=ExtResource( 18 )]
 transform = Transform( 1.1, -1.13687e-13, 6.88809e-21, -5.68434e-14, 1, 0, 1.42109e-14, -6.77626e-21, 0.25, 0, -0.00774515, 0 )
@@ -639,7 +665,7 @@ visible = false
 
 [node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Battle/WorkoutMarker"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0872474, 0 )
-mesh = SubResource( 15 )
+mesh = SubResource( 18 )
 material/0 = ExtResource( 7 )
 
 [node name="StoredSlot1" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
@@ -758,7 +784,7 @@ visible = false
 
 [node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Battle/Opponents/WorkoutMarker"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0872474, 0 )
-mesh = SubResource( 15 )
+mesh = SubResource( 18 )
 material/0 = ExtResource( 7 )
 
 [node name="SettingsButton" parent="." instance=ExtResource( 24 )]

@@ -364,6 +364,15 @@ func setup_cue_parameters(difficulty, ph):
 
 	stand_state = StandState.REGULAR
 	
+	
+func eval_running_speed(speed):
+	if speed < 7.0:
+		return 0.0
+	elif speed < 10.0:
+		return 0.5
+	elif speed < 12:
+		return 0.75
+	return 1.0
 
 func state_string(state):
 	if state == CueState.STAND:

@@ -5,4 +5,4 @@
 override.cfg
 godot_project/audio/nonfree_songs/*
 godot_project/scripts/3rdparty/*
-
+godot_project/android
