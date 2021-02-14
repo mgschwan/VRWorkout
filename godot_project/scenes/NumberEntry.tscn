@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
+[ext_resource path="res://scripts/NumberEntry.gd" type="Script" id=2]
+
+[node name="NumberEntry" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 168.0
+margin_bottom = 315.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Plus" type="Button" parent="."]
+margin_right = 64.0
+margin_bottom = 92.0
+theme = ExtResource( 1 )
+text = "+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Minus" type="Button" parent="."]
+margin_top = 164.0
+margin_right = 64.0
+margin_bottom = 256.0
+theme = ExtResource( 1 )
+text = "-"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_left = 11.0
+margin_top = 114.0
+margin_right = 51.0
+margin_bottom = 142.0
+theme = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center]20[/center]"
+text = "20"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Plus" to="." method="_on_Plus_pressed"]
+[connection signal="pressed" from="Minus" to="." method="_on_Minus_pressed"]

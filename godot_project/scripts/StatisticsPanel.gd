@@ -60,10 +60,11 @@ func update_statistics():
 	$BurpeeValue.value = perc
 	$BurpeeValue/Percent.text = "%.1f"%perc
 
-	
-	
-	
-
+	var val = result["statistic"].get("difficulty_avg",0)
+	total = 2.0
+	perc = get_percent(val,total)	
+	$DifficultyValue.value = perc
+	$DifficultyValue/Percent.text = "%.1f"%perc
 
 func _ready():
 	update_statistics()

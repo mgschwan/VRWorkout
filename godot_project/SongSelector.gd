@@ -52,7 +52,12 @@ func update_song_list():
 		else:
 			element.is_set = false
 			element.set_song_info("empty",null)
-	get_node("NextPage").print_info("[b]\n  Page %d/%d[b]"%[page+1,pages])
+
+	get_node("NextPage").print_info("[b]Next Page\n\n  Current: %d/%d[b]"%[page+1,pages])
+
+
+
+
 
 func get_song_infos(songs):
 	var infos = {}
@@ -133,6 +138,16 @@ func next_page():
 	print ("Next page: %d"%page)
 	update_song_list()
 
+func previous_page():
+	print ("Page: %d, Songs: %d, Pages: %d"%[page, len(song_list), int(ceil(len(song_list)/6.0))])
+	page -= 1
+	if page < 0:
+		page = max(0,int(ceil(len(song_list)/6.0))-1)
+		
+	print ("Previous page: %d"%page)
+	update_song_list()
+
+
 
 var frame_idx = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -153,6 +168,11 @@ func _on_level_block_selected(filename, difficulty, level_number):
 
 func _on_NextPage_touched():
 	next_page()
+
+func _on_PreviousPage_touched():
+	previous_page()
+
+
 
 var difficulties = {"easy":0,"medium": 1, "hard": 2, "ultra": 3, "auto": -1,}
 func _on_DifficultyButtons_difficulty_selected(difficulty):
@@ -211,3 +231,5 @@ func _on_PauseButton_pressed():
 
 func _on_RemoveButton_button_up():
 	print ("Remove Button UP")
+
+

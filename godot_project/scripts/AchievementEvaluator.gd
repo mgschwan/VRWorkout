@@ -6,7 +6,8 @@ enum ACHIEVEMENT_TYPES {
 	SCORE,
 	DURATION,
 	START_TIME,
-	END_TIME
+	END_TIME,
+	MIN_DIFFICULTY
 	}
 
 var available_achievements = Array()
@@ -25,6 +26,7 @@ func evaluate_achievements(game_state):
 	var points = game_state.get("points",0)
 	var time = game_state.get("time",0)
 	var score = game_state.get("vrw_score",0)
+	var difficulty_avg = game_state.get("difficulty_avg",0)
 	var now = OS.get_unix_time_from_datetime(OS.get_datetime(true)) # Get the UTC datetime in unix time
 	
 	for a in available_achievements:
@@ -39,6 +41,8 @@ func evaluate_achievements(game_state):
 			result = now >= a.get("limit",0)
 		elif a.get("type",-1) == ACHIEVEMENT_TYPES.END_TIME:
 			result = now < a.get("limit",0)
+		elif a.get("type",-1) == ACHIEVEMENT_TYPES.MIN_DIFFICULTY:
+			result = difficulty_avg >= a.get("limit",0)
 
 		if a.get("partial",false):
 			achieved[name] = achieved.get(name,true) and result

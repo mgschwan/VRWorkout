@@ -458,9 +458,18 @@ func _on_level_finished_actual(valid_end):
 	GameVariables.override_beatmap = false
 	
 	print ("Level is finished ... remove from scene")
-	GameVariables.game_result = level.get_points()
-	GameVariables.game_result["level_finished"] = valid_end
 	
+	GameVariables.game_result = gu.build_workout_statistic(GameVariables.level_statistics_data)
+	GameVariables.game_result["level_finished"] = valid_end
+
+	#merge the data from the level
+	var tmp_points = level.get_points()
+	GameVariables.game_result["points"] =  tmp_points["points"]
+	GameVariables.game_result["vrw_score"] =  tmp_points["vrw_score"]
+	GameVariables.game_result["hits"] =  tmp_points["hits"]
+	GameVariables.game_result["max_hits"] =  tmp_points["max_hits"]
+	GameVariables.game_result["time"] =  tmp_points["time"]
+		
 	last_points = GameVariables.game_result["points"]
 	total_points += GameVariables.game_result["points"]
 	last_played = GameVariables.game_result["time"]
@@ -490,11 +499,15 @@ func _on_level_finished_actual(valid_end):
 	level = null 
 	
 	var evaluator = AchievementEvaluator.new(GameVariables.achievement_checks)
-	var achievements = evaluator.evaluate_achievements(GameVariables.game_result)
-	print ("Player achieved: %s"%str(achievements))
-	GameVariables.game_result["achievements"] = achievements
+	var achievement_list = evaluator.evaluate_achievements(GameVariables.game_result)
+	GameVariables.game_result["achievements"] = achievement_list
+	print ("Player achieved: %s"%str(achievement_list))
+	var achievements = gu.load_persistent_config(GameVariables.achievement_file_location)
+	for a in achievement_list:
+		achievements[a["achievement_identifier"]] = {}
+	gu.store_persistent_config(GameVariables.achievement_file_location, achievements)
 	
-	
+		
 	levelselect = levelselect_blueprint.instance()
 	
 	levelselect.translation = Vector3(0,0,0)
@@ -650,13 +663,15 @@ func get_persisting_parameters():
 			"game/override_beats": ProjectSettings.get("game/override_beats"),
 			"game/bpm": ProjectSettings.get("game/bpm"),
 			"game/exercise/stand/windmill" : ProjectSettings.get("game/exercise/stand/windmill"),
-			"game/default_playlist" : GameVariables.current_song
-	}
-	
+			"game/default_playlist" : GameVariables.current_song,
+			"game/exercise_duration_avg" :ProjectSettings.get("game/exercise_duration_avg")
+		}
+		
 var game_statistics = {}
 func _on_Area_level_selected(filename, diff, num):
 	if level == null:
 		GameVariables.current_song = filename
+		GameVariables.exercise_duration_avg = ProjectSettings.get("game/exercise_duration_avg")
 		#Store the parameters that should survive a restart
 		gu.store_persistent_config(GameVariables.config_file_location, get_persisting_parameters())
 		

@@ -193,6 +193,13 @@ func disconnect_all_connections(node, signal_):
 	for s in connections:
 		 node.disconnect(s["signal"], s["target"], s["method"])
 
+func merge_dicts(a,b):
+	var result = Dictionary()
+	for key in a:
+		result[key] = a[key]
+	for key in b:
+		result[key] = b[key]
+	return result
 
 func get_wall_time_str():
 	var t = OS.get_time()
@@ -204,6 +211,8 @@ func build_workout_statistic(data):
 	var hr_total = 0
 	var hr_max = 0
 	var hr_avg = 0
+	var difficulty_avg = 0
+	var difficulty_sum = 0
 	
 	for id in data:
 		var exercise = data[id].get("e","unknown/").split("/")[0]
@@ -211,6 +220,7 @@ func build_workout_statistic(data):
 		var type = data[id].get("t","unknown")
 		var tmp = data[id].get("h",false)
 		var max_hit = data[id].get("mh",1.0)
+		var difficulty = data[id].get("d",0.0)
 		var hit = 0
 		
 		if typeof(tmp) == TYPE_REAL:
@@ -228,7 +238,8 @@ func build_workout_statistic(data):
 		var hr = data[id].get("hr",0)
 		hr_total += hr
 		hr_max = max(hr_max, hr)
-
+		difficulty_sum += difficulty
+		
 		var starttime = data[id].get("st",0)
 		statistic[exercise] = statistic.get(exercise, {"good": 0, "total": 0})
 		if hit:
@@ -238,9 +249,12 @@ func build_workout_statistic(data):
 
 	if len(data) > 0:
 		hr_avg = hr_total/float(len(data))
+		difficulty_avg = difficulty_sum/float(len(data))
+
 
 	return {"statistic": statistic,
 			"heartrate": heartrate,
 			"hr_max": hr_max, "hr_avg": hr_avg,
+			"difficulty_avg": difficulty_avg,
 			"calories": 0}
 			

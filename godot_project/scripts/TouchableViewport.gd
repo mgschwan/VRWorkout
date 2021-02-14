@@ -76,4 +76,4 @@ func _on_ConnectPadInput_interface_touch(u, v):
 func _on_ConnectPadInput_interface_release(u, v):	
 	release_event() #Vector2(v,u))
 
-		
+	

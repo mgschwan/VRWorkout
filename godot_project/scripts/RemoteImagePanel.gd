@@ -60,7 +60,11 @@ func get_image_from_url(url):
 
 func get_image_texture():
 	var retVal = ImageTexture.new()
-	var filename = get_cache_filename(get_filename_from_url(http_download_url))
+	var filename
+	if http_download_url.find("res://") == 0:
+		filename = http_download_url
+	else:
+		filename = get_cache_filename(get_filename_from_url(http_download_url))
 
 	var f = File.new()
 	
@@ -78,12 +82,13 @@ func get_image_texture():
 
 func _ready():
 	print ("Get image texture")
-	var co = get_image_texture()
-	if co is GDScriptFunctionState and co.is_valid():
-		yield(co,"completed")
-	print ("Set material")
-	var mat = get_node("MeshInstance").get_surface_material(0)
-	mat.albedo_texture = image_texture
+	if http_download_url:
+		var co = get_image_texture()
+		if co is GDScriptFunctionState and co.is_valid():
+			yield(co,"completed")
+		print ("Set material")
+		var mat = get_node("MeshInstance").get_surface_material(0)
+		mat.albedo_texture = image_texture
 	
 	
 		

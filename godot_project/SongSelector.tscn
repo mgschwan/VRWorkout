@@ -90,6 +90,17 @@ script = ExtResource( 4 )
 transform = Transform( 1, 5.68434e-14, 0, 0, 1, 0, 0, 2.84217e-14, 1, 0, -0.0374871, -8.19306e-09 )
 shape = SubResource( 1 )
 
+[node name="PreviousPage" parent="." instance=ExtResource( 3 )]
+transform = Transform( -0.216506, -0.5, -5.4639e-09, 0, -4.37114e-08, 0.25, -0.125, 0.866025, 9.46375e-09, 1.7626, -0.563472, 0.123467 )
+defaultext = "[b][i]Previous page[/i][/b]"
+
+[node name="StaticBody" type="StaticBody" parent="PreviousPage"]
+script = ExtResource( 4 )
+
+[node name="CollisionShape" type="CollisionShape" parent="PreviousPage/StaticBody"]
+transform = Transform( 1, 5.68434e-14, 0, 0, 1, 0, 0, 2.84217e-14, 1, 0, -0.0374871, -8.19306e-09 )
+shape = SubResource( 1 )
+
 [node name="DifficultyButtons" parent="." instance=ExtResource( 5 )]
 transform = Transform( -8.40732e-08, 0, 1.92337, 0, 1.92337, 0, -1, 0, -4.37114e-08, -1.64334, -0.15069, 0.0439329 )
 
@@ -226,6 +237,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1 )
 [connection signal="selected" from="SongBlocks/Element3" to="." method="_on_level_block_selected"]
 [connection signal="selected" from="SongBlocks/Element5" to="." method="_on_level_block_selected"]
 [connection signal="touched" from="NextPage/StaticBody" to="." method="_on_NextPage_touched"]
+[connection signal="touched" from="PreviousPage/StaticBody" to="." method="_on_PreviousPage_touched"]
 [connection signal="difficulty_selected" from="DifficultyButtons" to="." method="_on_DifficultyButtons_difficulty_selected"]
 [connection signal="button_down" from="Viewport/CanvasLayer/StartButton" to="." method="_on_Button_pressed"]
 [connection signal="button_down" from="Viewport/CanvasLayer/FreeplayButton" to="." method="_on_FreeplayButton_pressed"]

@@ -66,6 +66,8 @@ func update_widget():
 	get_node("BPM/OverrideBeats").value = ProjectSettings.get("game/override_beats")
 	get_node("BPM/OverrideBeats").update_switch()
 
+	get_node("SettingsCarousel/Switchboard/ExerciseDuration").set_value(ProjectSettings.get("game/exercise_duration_avg"))
+
 
 	GameVariables.exercise_state_list = []
 	
@@ -349,3 +351,7 @@ func _on_TrackerRecorderButton_selected():
 
 func _on_AudioStreamPlayer_finished():
 	get_node("AudioStreamPlayer").play(0)
+
+
+func _on_ExerciseDuration_value_changed(value):
+	ProjectSettings.set("game/exercise_duration_avg", value)

@@ -476,7 +476,7 @@ func create_and_attach_cue_actual(cue_data):
 				cue_node.extended = true
 	if cue_type in ["right_hold", "left_hold"]:
 		cue_node.is_hold_cue = true
-		cue_node.hold_time = 0.5
+		cue_node.hold_time = 0.35
 	cue_node.target_time = target_time
 	cue_node.start_time = cue_emitter.current_playback_time
 	var actual_flytime = fly_time
@@ -682,7 +682,7 @@ func setup_multiplier(running_speed):
 func get_points():
 	var vrw_score = 0
 	if cue_emitter.max_hits > 0:
-		vrw_score = 100.0 *cue_emitter.hits/cue_emitter.max_hits
+		vrw_score = 100.0 *cue_emitter.hits/cue_emitter.max_hits	
 	return {"points": cue_emitter.points, "vrw_score": vrw_score, "hits": cue_emitter.hits, "max_hits": cue_emitter.max_hits,"time": last_playback_time}
 
 var last_grooove_update = 0

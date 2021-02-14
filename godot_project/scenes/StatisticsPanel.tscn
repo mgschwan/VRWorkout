@@ -267,3 +267,40 @@ text = "0%"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="DifficultyValue" type="TextureProgress" parent="."]
+margin_left = 132.0
+margin_top = 335.0
+margin_right = 555.0
+margin_bottom = 374.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_under = ExtResource( 3 )
+texture_progress = ExtResource( 2 )
+nine_patch_stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="DifficultyValue"]
+margin_left = -123.0
+margin_top = 1.0
+margin_right = 139.0
+margin_bottom = 36.0
+theme = ExtResource( 1 )
+text = "Difficulty"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Percent" type="Label" parent="DifficultyValue"]
+visible = false
+margin_left = 437.0
+margin_top = 1.0
+margin_right = 570.0
+margin_bottom = 37.0
+theme = ExtResource( 1 )
+text = "0%"
+__meta__ = {
+"_edit_use_anchors_": false
+}

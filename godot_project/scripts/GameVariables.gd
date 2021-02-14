@@ -52,11 +52,13 @@ var current_challenge = null
 var current_hr = 0
 var hr_active = false
 
+var exercise_duration_avg = 20.0
 
 
 
 
 var config_file_location = "user://settings.json"
+var achievement_file_location = "user://achievements.json"
 
 var game_result = Dictionary()
 var challenge_slots = Dictionary()
@@ -119,6 +121,8 @@ enum PushupState {
 	RIGHT_HAND = 2,
 	LEFT_SIDEPLANK = 3,
 	RIGHT_SIDEPLANK = 4,
+	LEFT_HAND_HOLD = 5,
+	RIGHT_HAND_HOLD = 6,
 };	
 
 enum CrunchState {
@@ -182,6 +186,20 @@ var predefined_exercises = {
 
 }
 
+var achievement_displays = {
+	"VALWINTERGAMESRANKC": {
+		"image_url": "res://assets/achievements/wintergames_rank_c.png",
+		"name": "VAL Winter Games RANK C"
+	},
+	"VALWINTERGAMESRANKB": {
+		"image_url": "res://assets/achievements/wintergames_rank_b.png",
+		"name": "VAL Winter Games RANK B"
+	},
+	"VALWINTERGAMESRANKA": {
+		"image_url": "res://assets/achievements/wintergames_rank_a.png",
+		"name": "VAL Winter Games RANK A"
+	}
+}
 
 var predefined_achievements = {
 		"sidequest" : [
@@ -209,12 +227,12 @@ var predefined_achievements = {
 				 "partial": true
 				},
 				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.START_TIME,
-				 "limit": 1613050277,
+				 "limit": 1613689201,
 				 "achievement": "VALWINTERGAMESRANKC",
 				 "partial": true
 				},
 				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.END_TIME,
-				 "limit": 1613051277,
+				 "limit": 1616281199,
 				 "achievement": "VALWINTERGAMESRANKC",
 				 "partial": true
 				},
@@ -230,18 +248,18 @@ var predefined_achievements = {
 				 "partial": true
 				},
 				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.START_TIME,
-				 "limit": 1613050277,
+				 "limit": 1613689201,
 				 "achievement": "VALWINTERGAMESRANKB",
 				 "partial": true
 				},
 				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.END_TIME,
-				 "limit": 1613051277,
+				 "limit": 1616281199,
 				 "achievement": "VALWINTERGAMESRANKB",
 				 "partial": true
 				},
 				#RANK A
 				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.SCORE,
-				 "limit": 75,
+				 "limit": 95,
 				 "achievement": "VALWINTERGAMESRANKA",
 				 "partial": true
 				},
@@ -251,12 +269,17 @@ var predefined_achievements = {
 				 "partial": true
 				},
 				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.START_TIME,
-				 "limit": 1613050277,
+				 "limit": 1613689201,
 				 "achievement": "VALWINTERGAMESRANKA",
 				 "partial": true
 				},
 				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.END_TIME,
-				 "limit": 1613051277,
+				 "limit": 1616281199,
+				 "achievement": "VALWINTERGAMESRANKA",
+				 "partial": true
+				},
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.MIN_DIFFICULTY,
+				 "limit": 1.5,
 				 "achievement": "VALWINTERGAMESRANKA",
 				 "partial": true
 				}
@@ -391,10 +414,12 @@ var exercise_model = {
 						CueState.YOGA: { CueState.STAND: 50 },
 						},
 		"pushup_state_model": { PushupState.REGULAR : { PushupState.LEFT_HAND : 15, PushupState.RIGHT_HAND: 15, PushupState.LEFT_SIDEPLANK: 10, PushupState.RIGHT_SIDEPLANK: 10},
-						PushupState.LEFT_HAND : { PushupState.REGULAR: 25, PushupState.RIGHT_HAND: 5, PushupState.RIGHT_SIDEPLANK: 10},
-						PushupState.RIGHT_HAND : { PushupState.REGULAR: 25, PushupState.LEFT_HAND: 5, PushupState.LEFT_SIDEPLANK: 10},
-						PushupState.LEFT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.RIGHT_HAND: 10},
-						PushupState.RIGHT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.LEFT_HAND: 10},
+						PushupState.LEFT_HAND : { PushupState.REGULAR: 25, PushupState.RIGHT_HAND: 5, PushupState.LEFT_HAND_HOLD: 5, PushupState.RIGHT_SIDEPLANK: 10},
+						PushupState.RIGHT_HAND : { PushupState.REGULAR: 25, PushupState.LEFT_HAND: 5, PushupState.RIGHT_HAND_HOLD: 5, PushupState.LEFT_SIDEPLANK: 10},
+						PushupState.LEFT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.RIGHT_HAND: 10,  PushupState.RIGHT_HAND_HOLD: 10},
+						PushupState.RIGHT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.LEFT_HAND: 10, PushupState.LEFT_HAND_HOLD: 10},
+						PushupState.LEFT_HAND_HOLD : { PushupState.REGULAR: 25, PushupState.RIGHT_HAND: 5, PushupState.RIGHT_HAND_HOLD: 5, PushupState.RIGHT_SIDEPLANK: 10},
+						PushupState.RIGHT_HAND_HOLD : { PushupState.REGULAR: 25, PushupState.LEFT_HAND: 5, PushupState.LEFT_HAND_HOLD: 5,PushupState.LEFT_SIDEPLANK: 10},
 						},
 		"squat_state_model": { SquatState.HEAD : { SquatState.LEFT_HAND : 13, SquatState.RIGHT_HAND : 13, SquatState.DOUBLE_SWING : 25,  SquatState.CROSS_CUT : 25},
 								SquatState.LEFT_HAND  : { SquatState.HEAD: 30,  SquatState.RIGHT_HAND: 30, SquatState.DOUBLE_SWING : 25},
@@ -527,6 +552,7 @@ func setup_globals_demo():
 
 	ProjectSettings.set("game/target_hr", 140)
 	ProjectSettings.set("game/player_height", 1.8)
+	ProjectSettings.set("game/exercise_duration_avg", 20.0)
 	ProjectSettings.set("game/external_songs", null)
 	ProjectSettings.set("game/equalizerr", true)
 	ProjectSettings.set("game/portal_connection", true)
@@ -562,6 +588,7 @@ func setup_globals_regular():
 
 	ProjectSettings.set("game/target_hr", 140)
 	ProjectSettings.set("game/player_height", 1.8)
+	ProjectSettings.set("game/exercise_duration_avg", 20.0)
 	ProjectSettings.set("game/external_songs", null)
 	ProjectSettings.set("game/portal_connection", false)
 	ProjectSettings.set("game/instructor", true)

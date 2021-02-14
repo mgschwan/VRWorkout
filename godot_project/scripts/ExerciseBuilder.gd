@@ -244,7 +244,7 @@ func setup_difficulty(diff, auto_difficulty = false, avg_hr=0, target_hr=0):
 	if len(state_list) > 0:
 		level_min_state_duration = get_current_duration_from_list()
 	else:		
-		level_min_state_duration = 20 - d * 2.5 
+		level_min_state_duration = GameVariables.exercise_duration_avg - d * 2.5 
 	
 	beast_chance = 0.1 + d/10.0
 	level_min_cue_space = 1.5 - d*0.6
@@ -641,6 +641,12 @@ func handle_pushup_cues(current_time, target_time, cue_emitter_state):
 			var n = create_and_attach_cue(current_time, "left", -x,y_hand, target_time, -hand_cue_offset,0,"onehanded")
 	elif pushup_state == PushupState.RIGHT_HAND:
 			var n = create_and_attach_cue(current_time,"right", x,y_hand, target_time, -hand_cue_offset,0,"onehanded")
+	elif pushup_state == PushupState.LEFT_HAND_HOLD:
+		create_and_attach_cue(current_time,"left_hold", -x, y_hand, target_time, -hand_cue_offset, 0,"onehanded")
+		temporary_cue_space_extension += 0.3
+	elif pushup_state == PushupState.RIGHT_HAND_HOLD:
+		create_and_attach_cue(current_time,"right_hold", x, y_hand, target_time, -hand_cue_offset, 0,"onehanded")
+	
 	elif pushup_state == PushupState.LEFT_SIDEPLANK or pushup_state == PushupState.RIGHT_SIDEPLANK:
 		#side plank
 		x_head = 0
