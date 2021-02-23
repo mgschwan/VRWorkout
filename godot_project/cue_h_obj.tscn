@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://models/Bezergreen.material" type="Material" id=1]
 [ext_resource path="res://models/fist_right.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://cue_v_obj.gd" type="Script" id=3]
+[ext_resource path="res://audio/dull_hit.wav" type="AudioStream" id=4]
 [ext_resource path="res://TargetTimer.tscn" type="PackedScene" id=5]
 [ext_resource path="res://models/black.material" type="Material" id=6]
 [ext_resource path="res://models/green_ball_mat.material" type="Material" id=7]
@@ -285,4 +286,9 @@ transform = Transform( 0.03, 0, 0, 0, 0.03, 1.88745e-09, 0, -8.4639e-09, 0.05, 0
 visible = false
 mesh = SubResource( 10 )
 material/0 = ExtResource( 9 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = 0.2
+
 [connection signal="animation_finished" from="Circle/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

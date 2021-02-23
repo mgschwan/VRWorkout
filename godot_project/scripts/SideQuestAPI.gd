@@ -344,7 +344,7 @@ var generic_post_result = {}
 
 
 func sidequest_generic_post_request(endpoint, parameters):
-	print ("Start Generic POST Request")
+	#print ("Start Generic POST Request")
 	if current_api_state == API_STATE.IDLE:
 		generic_post_endpoint = endpoint
 		generic_post_parameters = parameters
@@ -361,7 +361,7 @@ func api_generic_post_request():
 		request_inprocess = true
 		request_type = SQ_API.GENERIC_POST_REQUEST
 		var url = "%s%s"%[api_endpoint,generic_post_endpoint]
-		print ("Posting to: %s  (%s)"%[url,str(generic_post_parameters)])
+		#print ("Posting to: %s  (%s)"%[url,str(generic_post_parameters)])
 		var ret = http_req.request(url, ["Authorization: Bearer %s"%sidequest_connection.get("access_token",""),"Content-Type: application/json"], true, HTTPClient.METHOD_POST, to_json(generic_post_parameters))
 		if ret != OK:		
 			print ("Could not send request %s"%str(ret))
@@ -371,7 +371,7 @@ func api_generic_post_request():
 
 #Disconnect all connections for a certain signal
 func disconnect_all_connections(node, signal_):
-	print ("Disconnect: %s -> %s"%[str(node), str(signal_)])
+	#print ("Disconnect: %s -> %s"%[str(node), str(signal_)])
 	var connections = node.get_signal_connection_list(signal_)
 	for s in connections:
 		 node.disconnect(s["signal"], s["target"], s["method"])
@@ -387,7 +387,6 @@ func store_persistent_config(location, parameters):
 				print ("Config saved")
 		else:
 				print ("Could not save config")
-
 
 func load_persistent_config(location):
 		var config_file = File.new()

@@ -17,7 +17,9 @@ var hit_player = null
 var FEATURE_MULTIPLAYER = false
 
 #Deactivate certain features to meet Oculus Store requirements
-var FEATURE_STORE_COMPATIBILITY = true 
+var FEATURE_STORE_COMPATIBILITY = false 
+
+var FEATURE_FOVEATED_RENDERING = true
 
 
 #############################################################################
@@ -257,6 +259,11 @@ var predefined_achievements = {
 				 "achievement": "VALWINTERGAMESRANKB",
 				 "partial": true
 				},
+				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.MIN_DIFFICULTY,
+				 "limit": 0.5,
+				 "achievement": "VALWINTERGAMESRANKB",
+				 "partial": true
+				},
 				#RANK A
 				{"type": AchievementEvaluator.ACHIEVEMENT_TYPES.SCORE,
 				 "limit": 95,
@@ -413,7 +420,13 @@ var exercise_model = {
 						CueState.SPRINT: {CueState.STAND: 50, CueState.JUMP: 10, CueState.SQUAT: 10}, 
 						CueState.YOGA: { CueState.STAND: 50 },
 						},
-		"pushup_state_model": { PushupState.REGULAR : { PushupState.LEFT_HAND : 15, PushupState.RIGHT_HAND: 15, PushupState.LEFT_SIDEPLANK: 10, PushupState.RIGHT_SIDEPLANK: 10},
+#		"pushup_state_model": { PushupState.REGULAR : { PushupState.LEFT_HAND : 15, PushupState.RIGHT_HAND: 15, PushupState.LEFT_SIDEPLANK: 10, PushupState.RIGHT_SIDEPLANK: 10},
+#						PushupState.LEFT_HAND : { PushupState.REGULAR: 25, PushupState.RIGHT_HAND: 5, PushupState.RIGHT_SIDEPLANK: 10},
+#						PushupState.RIGHT_HAND : { PushupState.REGULAR: 25, PushupState.LEFT_HAND: 5, PushupState.LEFT_SIDEPLANK: 10},
+#						PushupState.LEFT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.RIGHT_HAND: 10},
+#						PushupState.RIGHT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.LEFT_HAND: 10},
+#						},
+		"pushup_state_model": { PushupState.REGULAR : { PushupState.LEFT_HAND : 15, PushupState.RIGHT_HAND: 15, PushupState.LEFT_SIDEPLANK: 10, PushupState.RIGHT_SIDEPLANK: 10,PushupState.LEFT_HAND_HOLD: 15,PushupState.RIGHT_HAND_HOLD: 5},
 						PushupState.LEFT_HAND : { PushupState.REGULAR: 25, PushupState.RIGHT_HAND: 5, PushupState.LEFT_HAND_HOLD: 5, PushupState.RIGHT_SIDEPLANK: 10},
 						PushupState.RIGHT_HAND : { PushupState.REGULAR: 25, PushupState.LEFT_HAND: 5, PushupState.RIGHT_HAND_HOLD: 5, PushupState.LEFT_SIDEPLANK: 10},
 						PushupState.LEFT_SIDEPLANK : { PushupState.REGULAR: 20, PushupState.RIGHT_HAND: 10,  PushupState.RIGHT_HAND_HOLD: 10},

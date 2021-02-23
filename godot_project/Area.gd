@@ -51,5 +51,6 @@ func _on_Area_body_exited(body):
 			if controller.is_left:
 				hand = "left"
 			body.end_hold(hand)		
+			
 	elif body.has_method("released_by_controller"):
 		body.released_by_controller(get_parent(), get_parent().get_parent().get_parent())

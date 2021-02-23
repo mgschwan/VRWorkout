@@ -60,7 +60,9 @@ func create_path_dot():
 	node.mesh.radial_segments = 6
 	return node
 
-
+func hold_time_complete ():
+	return 1000.0 * hold_time < OS.get_ticks_msec() - hold_start
+	
 var path_calculated = false
 func _process(delta):
 	if not hit and is_hold_cue and holding:
@@ -69,12 +71,16 @@ func _process(delta):
 		if hold_time:
 			var angle = 2*PI * rd/1000.0*hold_time
 			hold_node.rotation.y = angle
-		if 1000.0 * hold_time < now - hold_start:
+		if hold_time_complete():
 			var hand = "right"
 			if cue_left:
 				hand = "left"
 			has_been_hit(hand)
-	
+	if is_hold_cue:
+		var a = self.global_transform.origin
+		var b = GameVariables.vr_camera.global_transform.origin
+		var r = PI + atan2(a.x-b.x,a.z-b.z)
+		self.rotation.y = r	
 	
 	if not path_calculated and coupled_node:
 		var tw = get_node("tween")
@@ -97,6 +103,9 @@ func has_been_hit(hand = "unknown"):
 	if not has_node(hand):
 		points = -1
 	elif not hit:
+		if is_hold_cue and emit_sound:
+			emit_sound = false
+			$AudioStreamPlayer.play()
 		get_node("tween").stop_all()
 		var delta = abs(target_time - parent.current_playback_time)
 		points = parent.score_hit(delta, self)
@@ -116,7 +125,8 @@ func begin_hold(hand = "unknown"):
 		holding = true
 		hold_start = OS.get_ticks_msec()+hold_time_offset
 		hold_ring_player.play("ring",	-1 , 1/hold_time)
-		
+		return true
+	return false
 
 func end_hold(hand = "unknown"):
 	if has_node(hand):

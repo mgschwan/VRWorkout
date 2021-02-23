@@ -1,9 +1,10 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://cue_v_obj.gd" type="Script" id=1]
 [ext_resource path="res://models/Berzerker.material" type="Material" id=2]
 [ext_resource path="res://models/fist_left.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://TargetTimer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://audio/dull_hit.wav" type="AudioStream" id=5]
 [ext_resource path="res://models/black.material" type="Material" id=6]
 [ext_resource path="res://Hold_Ring.tscn" type="PackedScene" id=7]
 [ext_resource path="res://models/super_white.material" type="Material" id=8]
@@ -286,4 +287,9 @@ transform = Transform( 0.03, -8.08722e-16, 4.37114e-09, 0, 0.006, -2.78182e-10, 
 visible = false
 mesh = SubResource( 11 )
 material/0 = ExtResource( 8 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = 0.2
+
 [connection signal="animation_finished" from="Circle/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

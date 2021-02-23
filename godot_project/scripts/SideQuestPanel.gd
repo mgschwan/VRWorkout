@@ -40,12 +40,12 @@ func upload_achievement(parameters):
 	if $SideQuestAPI.sidequest_is_connected():
 		if $SideQuestAPI.sidequest_token_valid():
 			achievement_upload_inprogress = true
-			print ("Upload achievement")
+			#print ("Upload achievement")
 			var user_id = $SideQuestAPI.sidequest_user_id()
 			var app_id = $SideQuestAPI.sidequest_app_id()
 			var endpoint = "/users/%s/apps/%s/achievements"%[str(user_id),str(app_id)]
-			print ("Endpoint: %s"%endpoint)
-			print ("Parameters: %s"%parameters)
+			#print ("Endpoint: %s"%endpoint)
+			#print ("Parameters: %s"%parameters)
 			$SideQuestAPI.disconnect_all_connections($SideQuestAPI,"api_call_complete")
 			$SideQuestAPI.connect("api_call_complete",self,"_on_achievement_upload_complete")
 			$SideQuestAPI.sidequest_generic_post_request(endpoint, parameters)
@@ -70,7 +70,7 @@ func get_sidequest_profile():
 	if not profile_call_inprogress:
 		profile_call_inprogress = true
 		if $SideQuestAPI.sidequest_is_connected():
-			print ("Get profile actual")
+			#print ("Get profile actual")
 			var user_id = $SideQuestAPI.sidequest_user_id()
 			var endpoint = "/users/%s"%str(user_id)
 			$SideQuestAPI.disconnect_all_connections($SideQuestAPI,"api_call_complete")
@@ -78,7 +78,7 @@ func get_sidequest_profile():
 			$SideQuestAPI.sidequest_generic_get_request(endpoint)
 			while profile_call_inprogress:
 				yield(get_tree().create_timer(0.1),"timeout")
-	print ("Get profile finished")
+	#print ("Get profile finished")
 
 ############################################################
 
@@ -95,11 +95,11 @@ var get_achievement_inprocess = false
 
 func _achievement_result(status,data):
 	if status == $SideQuestAPI.API_CALL_STATUS.SUCCESS:
-		print ("Get achievements finished")
+		#print ("Get achievements finished")
 		achievements.clear()
 		if len(data) > 0:
 			for entry in data:
-				print ("Achievement: %s"%(entry.get("name","")))
+				#print ("Achievement: %s"%(entry.get("name","")))
 				var achievement = {"name":"","image_url":"","achievement_identifier":""}
 				achievement["image_url"] = entry.get("image", "")
 				achievement["name"] = entry.get("name", "")
@@ -136,40 +136,41 @@ func get_sidequest_achievements():
 
 var achievement_upload_list = []
 func set_achievements(value):
-	print ("Initiate achievements %s"%str(value))
+	#print ("Initiate achievements %s"%str(value))
 	achievement_upload_list = value
 	var co = panel_update()
 	if co is GDScriptFunctionState && co.is_valid():
-		print ("Achievement yield until panel finished")
+		#print ("Achievement yield until panel finished")
 		yield(co, "completed")
 	
 	
 func panel_update():
-	print ("Panel update")
+	#print ("Panel update")
 	var co = $SideQuestAPI.wait_until_token_is_valid()
 	if co is GDScriptFunctionState && co.is_valid():
-		print ("Yield until token finished")
+		#print ("Yield until token finished")
 		yield(co, "completed")
 	else:
-		print ("Token not refreshed")
-	print ("Token refresh complete?")
+		#print ("Token not refreshed")
+		pass
+	#print ("Token refresh complete?")
 	if $SideQuestAPI.sidequest_token_valid():
-		print ("Get profile")
+		#print ("Get profile")
 		co = get_sidequest_profile()
 		if co is GDScriptFunctionState && co.is_valid():
 			yield(co, "completed")
-		print ("Upload achievements")
+		#print ("Upload achievements")
 		achievement_upload_list.append({"achievement_identifier":"SIDEQUESTUSER","achieved": true})
 		for a in achievement_upload_list:
 			co = upload_achievement(a)
 			if co is GDScriptFunctionState && co.is_valid():
 				yield(co, "completed")
 		achievement_upload_list.clear()
-		print ("Get achievements")
+		#print ("Get achievements")
 		co = get_sidequest_achievements()
 		if co is GDScriptFunctionState && co.is_valid():
 			yield(co, "completed")
-		print ("Current achievements: %s"%str(achievements))
+		#print ("Current achievements: %s"%str(achievements))
 		#download_achievement_images()
 	else:
 		print ("Token is not valid")
@@ -188,7 +189,7 @@ func _ready():
 	for achievement in achievements:
 		var tmp = image_panel.instance()
 		tmp.http_download_url = achievement.get("image_url","")
-		print ("Set download url: %s"%(tmp.http_download_url))
+		#print ("Set download url: %s"%(tmp.http_download_url))
 		add_child(tmp)
 		tmp.scale.x = 0.25
 		tmp.scale.z = 0.25

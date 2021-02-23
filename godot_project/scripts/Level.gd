@@ -476,7 +476,14 @@ func create_and_attach_cue_actual(cue_data):
 				cue_node.extended = true
 	if cue_type in ["right_hold", "left_hold"]:
 		cue_node.is_hold_cue = true
-		cue_node.hold_time = 0.35
+		cue_node.hold_time = 0.25
+		var  dd_dt = fly_distance/fly_time
+		if dd_dt > 0:
+			#Calculate the hold time based on the assumed arm length
+			cue_node.hold_time = 0.35*GameVariables.player_height / dd_dt  
+		print ("Hold time %.4f %.f"%[cue_node.hold_time, GameVariables.player_height])		
+		
+		
 	cue_node.target_time = target_time
 	cue_node.start_time = cue_emitter.current_playback_time
 	var actual_flytime = fly_time

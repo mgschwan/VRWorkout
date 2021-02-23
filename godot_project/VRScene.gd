@@ -248,6 +248,12 @@ func _enter_tree():
 		ProjectSettings.set("application/config/backend_server", "http://127.0.0.1:5000")
 
 
+func connect_tracker_callbacks():
+	ARVRServer.connect("tracker_added",self,"_on_Tracker_added")
+	ARVRServer.connect("tracker_removed",self, "_on_Tracker_removed")
+
+
+
 func initialize():
 	var available_interfaces = ARVRServer.get_interfaces();
 	for interface in available_interfaces:
@@ -274,7 +280,8 @@ func initialize():
 		print ("Oculus Mobile")
 		ProjectSettings.set("game/is_oculusquest", true)
 		ProjectSettings.set("game/external_songs", ProjectSettings.get("application/config/music_directory"))
-		
+		connect_tracker_callbacks()
+
 		# the init config needs to be done before arvr_interface.initialize()
 		if (ovr_init_config):
 			ovr_init_config = ovr_init_config.new()
@@ -291,9 +298,12 @@ func initialize():
 			_initialize_OVR_API()
 
 			if ovr_performance:
-				print ("Set foveation performance level")
-				ovr_performance.set_foveation_level(4)
-				ovr_performance.set_enable_dynamic_foveation(true)
+				if GameVariables.FEATURE_FOVEATED_RENDERING:
+					ovr_performance.set_foveation_level(4)
+					ovr_performance.set_enable_dynamic_foveation(true)
+				else:
+					ovr_performance.set_foveation_level(0)
+					ovr_performance.set_enable_dynamic_foveation(false)
 			else:
 				print ("Can't set dynamic foveation")
 
@@ -309,6 +319,8 @@ func initialize():
 		
 	elif arvr_oculus_interface:
 		print ("Oculus PC")
+		connect_tracker_callbacks()
+		
 		if arvr_oculus_interface.initialize():
 			arvr_interface = arvr_oculus_interface
 			GameVariables.vr_mode = true
@@ -318,6 +330,8 @@ func initialize():
 		print ("Oculus PC ... done")
 	elif arvr_open_vr_interface:
 		print ("OpenVR")
+		connect_tracker_callbacks()
+
 		if arvr_open_vr_interface.initialize():
 			arvr_interface = arvr_open_vr_interface
 			get_viewport().arvr = true;
@@ -328,6 +342,8 @@ func initialize():
 		print ("OpenVR ... done")
 	elif arvr_webxr_interface:
 			print("  Found WebXR Interface.");
+			connect_tracker_callbacks()
+
 			arvr_webxr_interface.connect("session_supported", self, "_webxr_cb_session_supported")
 			arvr_webxr_interface.connect("session_started", self, "_webxr_cb_session_started")
 			arvr_webxr_interface.session_mode = 'immersive-vr'
@@ -343,9 +359,6 @@ func initialize():
 		cam.translation.y = demo_mode_player_height
 		cam.rotation.x = -0.4
 	
-	if GameVariables.vr_mode:
-		ARVRServer.connect("tracker_added",self,"_on_Tracker_added")
-		ARVRServer.connect("tracker_removed",self, "_on_Tracker_removed")
 
 	print ("Initializing VR Interface ... done")
 

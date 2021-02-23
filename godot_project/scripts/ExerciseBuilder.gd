@@ -634,6 +634,7 @@ func handle_pushup_cues(current_time, target_time, cue_emitter_state):
 	var x = 0.3 + rng.randf() * 0.25
 	var x_head = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
 	var y_hand = 0.3 + rng.randf() * 0.4
+	var y_hold_hand = "0.3+%f*(0.5*ph-0.3)"%(rng.randf())
 	
 	if pushup_state == PushupState.REGULAR:
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
@@ -642,18 +643,17 @@ func handle_pushup_cues(current_time, target_time, cue_emitter_state):
 	elif pushup_state == PushupState.RIGHT_HAND:
 			var n = create_and_attach_cue(current_time,"right", x,y_hand, target_time, -hand_cue_offset,0,"onehanded")
 	elif pushup_state == PushupState.LEFT_HAND_HOLD:
-		create_and_attach_cue(current_time,"left_hold", -x, y_hand, target_time, -hand_cue_offset, 0,"onehanded")
-		temporary_cue_space_extension += 0.3
+		create_and_attach_cue(current_time,"left_hold", "-ph*0.33", y_hold_hand, target_time, -hand_cue_offset, 0,"onehanded")
+		temporary_cue_space_extension += 0.5
 	elif pushup_state == PushupState.RIGHT_HAND_HOLD:
-		create_and_attach_cue(current_time,"right_hold", x, y_hand, target_time, -hand_cue_offset, 0,"onehanded")
-	
+		create_and_attach_cue(current_time,"right_hold", "ph*0.33", y_hold_hand, target_time, -hand_cue_offset, 0,"onehanded")
+		temporary_cue_space_extension += 0.5
 	elif pushup_state == PushupState.LEFT_SIDEPLANK or pushup_state == PushupState.RIGHT_SIDEPLANK:
 		#side plank
 		x_head = 0
 		x = 0
 		y_head = "ph*0.5"
 		y_hand = "ph*0.84"
-
 		var hand_delay = 0.15
 		var dd_df = fly_distance/fly_time				
 

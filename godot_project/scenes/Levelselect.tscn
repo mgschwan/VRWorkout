@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=2]
+[gd_scene load_steps=70 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -41,6 +41,7 @@
 [ext_resource path="res://scenes/AchievementDisplay.tscn" type="PackedScene" id=39]
 [ext_resource path="res://scenes/NumberEntryWidget.tscn" type="PackedScene" id=40]
 [ext_resource path="res://scenes/SimpleText.tscn" type="PackedScene" id=41]
+[ext_resource path="res://scenes/WelcomePanel.tscn" type="PackedScene" id=42]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.2
@@ -832,6 +833,10 @@ volume_db = -9.0
 
 [node name="SideQuestPanel" parent="." instance=ExtResource( 38 )]
 transform = Transform( 2.84861e-14, 1, -1.62921e-07, -1, 1.91069e-15, -2.06632e-07, -2.06632e-07, 1.62921e-07, 1, -3.31028, 1.9648, 0.0695851 )
+
+[node name="WelcomePanel" parent="." instance=ExtResource( 42 )]
+transform = Transform( -1.30337e-07, -0.767281, -0.226449, 0, 0.226449, -0.767281, 0.8, -1.25006e-07, -3.68932e-08, 0.787944, 0.445045, 0.00432485 )
+server_url = "https://portal.vrworkout.at/fast/welcome.msg"
 
 [connection signal="selected" from="Recenter" to="." method="_on_Recenter_selected"]
 [connection signal="toggled" from="BPM/OverrideBeats" to="." method="_on_OverrideBeats_toggled"]
