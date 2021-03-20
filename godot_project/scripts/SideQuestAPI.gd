@@ -133,7 +133,7 @@ func _process(delta):
 		emit_signal("api_call_complete",API_CALL_STATUS.FAILED, {})
 	elif current_api_state == API_STATE.SQ_GET_REQUEST_FINISHED:
 		current_api_state = API_STATE.IDLE
-		print ("Generic GET request finished\n%s"%(str(generic_get_result)))
+		#print ("Generic GET request finished\n%s"%(str(generic_get_result)))
 		emit_signal("api_call_complete",API_CALL_STATUS.SUCCESS, generic_get_result)
 	elif current_api_state == API_STATE.SQ_POST_REQUEST_1:
 		api_generic_post_request()
@@ -144,7 +144,7 @@ func _process(delta):
 		current_api_state = API_STATE.IDLE
 		emit_signal("api_call_complete",API_CALL_STATUS.FAILED, {})		
 	elif current_api_state == API_STATE.SQ_POST_REQUEST_FINISHED:
-		print ("Generic POST request finished\n%s"%(str(generic_post_result)))
+		#print ("Generic POST request finished\n%s"%(str(generic_post_result)))
 		current_api_state = API_STATE.IDLE
 		emit_signal("api_call_complete",API_CALL_STATUS.SUCCESS, generic_post_result)
 	elif current_api_state == API_STATE.TIMEOUT:
@@ -155,7 +155,7 @@ func _process(delta):
 		emit_signal("api_call_complete",API_CALL_STATUS.FAILED, {})
 			
 func _http_request_completed(result, response_code, headers, body):
-	print ("Request completed %s"%(str(response_code)))
+	#print ("Request completed %s"%(str(response_code)))
 	request_inprocess = false
 	if response_code >= 200 and response_code < 300:
 		if request_type == SQ_API.GET_SHORTCODE:
@@ -176,7 +176,7 @@ func _http_request_completed(result, response_code, headers, body):
 		#That happens if an achievement is uploaded that already exists
 		generic_post_response(body)
 	else:
-		print ("Request failed\n%s"%body.get_string_from_utf8())
+		#print ("Request failed\n%s"%body.get_string_from_utf8())
 		request_type = SQ_API.FAILED
 	
 func sidequest_user_id():
@@ -310,7 +310,7 @@ var generic_get_endpoint = ""
 var generic_get_result = {}
 
 func sidequest_generic_get_request(endpoint):
-	print ("Start Generic GET Request")
+	#print ("Start Generic GET Request")
 	if current_api_state == API_STATE.IDLE:
 		generic_get_endpoint = endpoint
 		current_api_state = API_STATE.SQ_GET_REQUEST_1

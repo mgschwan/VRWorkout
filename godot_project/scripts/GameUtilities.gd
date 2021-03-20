@@ -99,6 +99,40 @@ func load_audio_resource(filename):
 
 	return resource
 
+
+func update_current_headset_energy(meters_per_second):
+	var energy_adjustment_factor = 1.0
+	if GameVariables.player_exercise_state == GameVariables.CueState.BURPEE or \
+		GameVariables.player_exercise_state == GameVariables.CueState.PUSHUP or \
+		GameVariables.player_exercise_state == GameVariables.CueState.CRUNCH:
+			energy_adjustment_factor = 3.0
+	elif GameVariables.player_exercise_state == GameVariables.CueState.SQUAT:
+		energy_adjustment_factor = 2.0
+	elif GameVariables.player_exercise_state == GameVariables.CueState.JUMP:
+		energy_adjustment_factor = 2.5
+	elif GameVariables.player_exercise_state == GameVariables.CueState.SPRINT:
+		energy_adjustment_factor = 2.0
+
+	GameVariables.current_headset_energy = GameVariables.current_headset_energy*0.4 + 0.6 * energy_adjustment_factor * meters_per_second
+
+func update_current_controller_energy(meters_per_second):
+	var energy_adjustment_factor = 1.0
+	if GameVariables.player_exercise_state == GameVariables.CueState.BURPEE or \
+		GameVariables.player_exercise_state == GameVariables.CueState.PUSHUP or \
+		GameVariables.player_exercise_state == GameVariables.CueState.CRUNCH:
+			energy_adjustment_factor = 3.0
+	elif GameVariables.player_exercise_state == GameVariables.CueState.SQUAT:
+		energy_adjustment_factor = 1.0
+	elif GameVariables.player_exercise_state == GameVariables.CueState.JUMP:
+		energy_adjustment_factor = 2.5
+	elif GameVariables.player_exercise_state == GameVariables.CueState.SPRINT:
+		energy_adjustment_factor = 0.2
+
+	GameVariables.current_controller_energy = GameVariables.current_controller_energy*0.4 + 0.6 * energy_adjustment_factor * meters_per_second
+
+func get_current_energy():
+	return(GameVariables.current_headset_energy*GameVariables.headset_energy_factor + GameVariables.current_controller_energy*GameVariables.controller_energy_factor)
+
 #Keep track of each debounced button and return true if the click should be
 #valid
 var tracked_objects = Dictionary()
@@ -164,19 +198,6 @@ func readable_song_list(value):
 	for i in value:
 		song_names += get_song_name(i) + " "
 	return song_names
-
-func upload_challenge(remoteinterface):
-	
-	var challenge = {
-		"cue_list": GameVariables.cue_list,
-		"song": readable_song_list(GameVariables.current_song),
-		"duration": GameVariables.game_result.get("time", 0),
-		"score": GameVariables.game_result.get("vrw_score",0),
-		"points": GameVariables.game_result.get("points",0)
-	}
-	print ("Current song: %s"%(readable_song_list(GameVariables.current_song)))
-	remoteinterface.send_data(GameVariables.device_id,"challenge",challenge )
-
 
 func insert_cue_sorted(ts, cue_data, cue_emitter_list):
 	var selected_idx = 0

@@ -79,6 +79,22 @@ func set_beast_mode(enabled):
 	else:
 		get_node("Area/hand_model").beast_mode = false
 
+
+var distance_travelled = 0
+var time_elapsed = 0
+var energy_calc_last_pos = Vector3(0,0,0)
+
+func _physics_process(delta):
+	distance_travelled += (self.translation.distance_to(energy_calc_last_pos))
+	time_elapsed += delta
+	energy_calc_last_pos = self.translation
+	if time_elapsed > 1.0:
+		var meters_per_sec = distance_travelled/time_elapsed
+		gu.update_current_controller_energy(meters_per_sec)
+		distance_travelled = 0
+		time_elapsed = 0
+
+
 var update_helper = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -103,7 +119,7 @@ func _process(delta):
 			
 	if fixed_global_transform:
 		get_node("Area").global_transform = saved_global_transform
-	
+		
 	last_pos[2] = last_pos[1]
 	last_pos[1] = last_pos[0]
 	last_pos[0] = self.translation

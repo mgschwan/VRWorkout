@@ -38,6 +38,11 @@ _global_script_classes=[ {
 "class": "SongDatabase",
 "language": "GDScript",
 "path": "res://scripts/SongDatabase.gd"
+}, {
+"base": "Spatial",
+"class": "YoutubeStreamInterface",
+"language": "GDScript",
+"path": "res://scripts/YoutubeAudioStreamPlayer.gd"
 } ]
 _global_script_class_icons={
 "AchievementEvaluator": "",
@@ -45,7 +50,8 @@ _global_script_class_icons={
 "DummyAudioStream": "",
 "GameUtilities": "",
 "SideQuestAPI": "",
-"SongDatabase": ""
+"SongDatabase": "",
+"YoutubeStreamInterface": ""
 }
 
 [application]
@@ -60,6 +66,7 @@ config/backend_server="http://backend.vrworkout.at:8080"
 config/room_server="ws://backend.vrworkout.at:33105"
 config/sidequest_client_id="client_0ce3bebc49e33ccf9e8a62cc"
 config/sidequest_api_endpoint="https://api.sidequestvr.com/v2"
+config/youtube_link="https://vrworkout.at/play.html"
 
 [audio]
 

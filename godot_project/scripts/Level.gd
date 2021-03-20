@@ -64,6 +64,7 @@ var cue_vert = preload("res://cue_v_obj.tscn")
 var cue_head = preload("res://cue_head_obj.tscn")
 var cue_head_avoid = preload("res://cue_head_obj_avoid.tscn")
 var cue_squat_avoid = preload("res://scenes/SquatAvoidCue.tscn")
+var cue_avoid_bar = preload("res://scenes/ParcourAvoidCue.tscn")
 var cue_highlight = preload("res://scenes/highlight_ring.tscn")
 var infolayer
 
@@ -134,14 +135,14 @@ func setup_game_data():
 	
 	if ProjectSettings.get("game/exercise/strength_focus"):
 		exercise_state_model_template = GameVariables.exercise_model["strength"]["exercise_state_model"]
-		exercise_builder.pushup_state_model = GameVariables.exercise_model["strength"]["pushup_state_model"]
+		exercise_builder.pushup_state_model_template = GameVariables.exercise_model["strength"]["pushup_state_model"]
 		exercise_builder.squat_state_model_template = GameVariables.exercise_model["strength"]["squat_state_model"]
 		exercise_builder.stand_state_model_template = GameVariables.exercise_model["strength"]["stand_state_model"]
 		exercise_builder.crunch_state_model  = GameVariables.exercise_model["strength"]["crunch_state_model"]
 		exercise_builder.rebalance_exercises = GameVariables.exercise_model["strength"]["rebalance_exercises"]
 	else:
 		exercise_state_model_template = GameVariables.exercise_model["cardio"]["exercise_state_model"]
-		exercise_builder.pushup_state_model = GameVariables.exercise_model["cardio"]["pushup_state_model"]
+		exercise_builder.pushup_state_model_template = GameVariables.exercise_model["cardio"]["pushup_state_model"]
 		exercise_builder.squat_state_model_template = GameVariables.exercise_model["cardio"]["squat_state_model"]
 		exercise_builder.stand_state_model_template = GameVariables.exercise_model["cardio"]["stand_state_model"]
 		exercise_builder.crunch_state_model  = GameVariables.exercise_model["cardio"]["crunch_state_model"]
@@ -275,7 +276,7 @@ func _ready():
 	infolayer.print_info("Player height: %.2f Difficulty: %.2f/%.2f"%[GameVariables.player_height, exercise_builder.min_cue_space, exercise_builder.min_state_duration], "debug")
 	infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
 	
-	stream = AudioStreamPlaylist.new(audio_filename)
+	stream = AudioStreamPlaylist.new(audio_filename,get_tree().current_scene)
 	stream.connect("stream_finished",self,"_on_AudioStreamPlayer_finished")
 	add_child(stream)
 	beats = stream.playlist_beats		
@@ -463,6 +464,10 @@ func create_and_attach_cue_actual(cue_data):
 		is_head = true
 		is_avoid = true
 		cue_node = cue_squat_avoid.instance()
+	elif cue_type == "head_avoid_bar":
+		is_head = true
+		is_avoid = true
+		cue_node = cue_avoid_bar.instance()
 	else:
 		head_y_pos = y
 		if cue_type == "head_avoid":
@@ -612,6 +617,8 @@ func internal_state_change():
 			update_safe_pushup()	
 		
 	emit_signal("set_exercise", actual_game_state)	
+
+	GameVariables.player_exercise_state = actual_game_state
 		
 	infolayer.print_info(exercise_builder.state_string(actual_game_state).to_upper(), "main")
 	infolayer.get_parent().render_target_update_mode = Viewport.UPDATE_ONCE
@@ -657,6 +664,8 @@ func switch_boxman(state, name):
 
 
 func _on_exit_button_pressed():
+	if stream:
+		stream.stop()
 	emit_signal("level_finished_manually")
 
 var last_run_update = 0		

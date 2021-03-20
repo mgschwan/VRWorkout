@@ -15,8 +15,24 @@ var point_multiplier = 1.0
 export var avoid = false
 
 var emit_sound = true
+var stars = 0
+
 
 var hit_score = 1.0
+
+func update_stars():
+	$Stars.show()
+	$Stars/star1.hide()
+	$Stars/star2.hide()
+	$Stars/star3.hide()
+
+	if stars > 0:
+		$Stars.show()
+		$Stars/star1.show()
+	if stars > 1:
+		$Stars/star2.show()
+	if stars > 2:
+		$Stars/star3.show()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -26,7 +42,8 @@ func _ready():
 	else:
 		get_node("CollisionShapeExtended").hide()
 		get_node("CollisionShapeExtended").disabled = true
-		
+
+	update_stars()		
 	get_node("head_cue/TargetTimer").animate_timer(target_time-start_time)
 
 	

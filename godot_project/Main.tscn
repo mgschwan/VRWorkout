@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -18,6 +18,8 @@
 [ext_resource path="res://audio/head_hit.wav" type="AudioStream" id=16]
 [ext_resource path="res://scripts/PauseHandler.gd" type="Script" id=17]
 [ext_resource path="res://RemoteInterface.gd" type="Script" id=18]
+[ext_resource path="res://scripts/VisualRayCast.gd" type="Script" id=19]
+[ext_resource path="res://scenes/YoutubeInterface.tscn" type="PackedScene" id=20]
 
 [sub_resource type="SphereShape" id=1]
 radius = 0.2
@@ -64,6 +66,11 @@ script = ExtResource( 1 )
 pause_mode = 2
 far = 300.0
 script = ExtResource( 2 )
+
+[node name="RayCast" type="RayCast" parent="ARVROrigin/ARVRCamera"]
+enabled = true
+cast_to = Vector3( 0, 0, -5 )
+script = ExtResource( 19 )
 
 [node name="RemoteSpatial" type="Spatial" parent="ARVROrigin/ARVRCamera"]
 script = ExtResource( 14 )
@@ -153,7 +160,7 @@ light_indirect_energy = 0.1
 light_specular = 0.2
 
 [node name="SkyBox" parent="ARVROrigin" instance=ExtResource( 11 )]
-transform = Transform( -0.41324, -0.910622, 0, -0.376306, 0.170768, -0.910622, 0.829232, -0.376306, -0.41324, 0, 0, 0 )
+transform = Transform( 0.998396, 0.0566011, 0, -0.0565104, 0.996796, 0.0566011, 0.00320369, -0.0565104, 0.998397, 0, 0, 0 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="ARVROrigin/SkyBox"]
 anims/starfield_rotation = SubResource( 6 )
@@ -184,6 +191,9 @@ script = ExtResource( 15 )
 
 [node name="PauseHandler" type="Spatial" parent="."]
 script = ExtResource( 17 )
+
+[node name="YoutubeInterface" parent="." instance=ExtResource( 20 )]
+pause_mode = 2
 
 [connection signal="body_entered" from="ARVROrigin/ARVRCamera/AreaHead" to="ARVROrigin/ARVRCamera/AreaHead" method="_on_AreaHead_body_entered"]
 [connection signal="timeout" from="ARVROrigin/ARVRCamera/HUDHideTimer" to="ARVROrigin/ARVRCamera" method="_on_HUDHideTimer_timeout"]

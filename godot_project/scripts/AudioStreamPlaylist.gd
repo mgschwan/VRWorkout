@@ -32,6 +32,8 @@ var finished_signal_emitted = false
 
 var is_dummy_stream = false
 
+var root
+
 func play_current_song():
 	var song_file = playlist[current_index]
 
@@ -51,6 +53,13 @@ func play_current_song():
 		is_dummy_stream = true
 		dummy_audio_stream.play()
 		print ("Dummy stream: %.2f"%song_file)
+	elif song_file.find("youtube://") == 0:
+		current_audio_resource = DummyAudioStream.DummyStream.new( root.get_node("YoutubeInterface").default_length)
+		dummy_audio_stream = YoutubeStreamInterface.new()
+		dummy_audio_stream.stream = current_audio_resource
+		add_child(dummy_audio_stream)
+		is_dummy_stream = true
+		dummy_audio_stream.play()		
 	else:
 		current_audio_resource = gu.load_audio_resource(song_file)
 		current_audio_resource.loop = false
@@ -127,8 +136,9 @@ func load_beatlist (song, offset = 0, duration = 0):
 	return beats
 		
 	
-func _init(songs):
+func _init(songs, r):
 	var duration = 0
+	root = r
 	for s in songs:
 		var offset = duration
 		var song_length = 0
@@ -139,8 +149,12 @@ func _init(songs):
 			if s <= 0:
 				has_beats = false
 		else:
-			var audio = gu.load_audio_resource(s)
-			song_length = audio.get_length()
+			if s.find("youtube://") == 0:
+				# audio = YoutubeInterface.stream
+				song_length = root.get_node("YoutubeInterface").default_length
+			else:
+				var audio = gu.load_audio_resource(s)
+				song_length = audio.get_length()
 		
 		duration += song_length
 		
@@ -163,6 +177,8 @@ func stop():
 	print ("Stop called")
 	if actual_audio_stream:
 		actual_audio_stream.stop()
+	if dummy_audio_stream:
+		dummy_audio_stream.stop()
 	playing = false
 
 func get_playback_position():

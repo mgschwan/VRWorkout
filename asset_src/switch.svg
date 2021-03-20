@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="172.54065"
+   height="172.42236"
+   viewBox="0 0 45.651379 45.620085"
+   version="1.1"
+   id="svg2415"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="switch.svg"
+   inkscape:export-filename="/home/developer/Development/godot_workspace/VRWorkout/godot_project/assets/toggle_switch_on.png"
+   inkscape:export-xdpi="142.44"
+   inkscape:export-ydpi="142.44">
+  <defs
+     id="defs2409" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="42.020014"
+     inkscape:cy="107.14498"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     fit-margin-top="2.3"
+     fit-margin-left="11"
+     fit-margin-right="11"
+     fit-margin-bottom="2.3"
+     inkscape:window-width="1889"
+     inkscape:window-height="1056"
+     inkscape:window-x="31"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata2412">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-1.9004344,-4.8004034)">
+    <rect
+       style="fill:#808080;fill-opacity:1;stroke:none;stroke-width:3.47578144;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect2960"
+       width="39.830547"
+       height="21.648832"
+       x="4.8108511"
+       y="5.4089451"
+       ry="3.195282" />
+    <rect
+       ry="2.7831154"
+       y="6.7651658"
+       x="6.2093635"
+       height="18.856302"
+       width="17.933918"
+       id="rect2962"
+       style="fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:2.1766715;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       ry="3.195282"
+       y="28.163113"
+       x="4.8108511"
+       height="21.648832"
+       width="39.830547"
+       id="rect2983"
+       style="fill:#00b900;fill-opacity:1;stroke:none;stroke-width:3.47578144;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       style="fill:#cccccc;fill-opacity:1;stroke:none;stroke-width:2.1766715;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect2985"
+       width="17.933918"
+       height="18.856302"
+       x="25.259359"
+       y="29.519335"
+       ry="2.7831154" />
+  </g>
+</svg>

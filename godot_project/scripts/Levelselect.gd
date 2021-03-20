@@ -76,6 +76,9 @@ func update_widget():
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var environment = ProjectSettings.get("game/environment")
+	if environment:
+		get_tree().current_scene.change_environment(environment)
 	show_settings("empty")
 	update_online_features()
 	
@@ -83,7 +86,7 @@ func _ready():
 	if GameVariables.current_song:
 		get_node("SongSelector").playlist_from_song_files(GameVariables.current_song)
 	
-	get_node("MainText").print_info("[img]res://assets/vrworkout_logo.png[/img]\nBuild a playlist with the songs to your right and press start.\n\nTip:\n- Play with hand tracking (no controllers)\n- Connect a heart rate sensor for dynamic difficulty\n- Join the discord for help")
+	get_node("MainText").print_info("[img]res://assets/vrworkout_logo.png[/img]\nBuild a playlist with the songs to your right and press start.\n[center][b]Tips[/b][/center]\n- Play with hand tracking (no controllers)\n- Connect a heart rate sensor for dynamic difficulty\n- Support is at [b]https://chat.vrworkout.at[/b]\n- Early access! Please judge mechanics not graphics")
 	
 	get_node("Tutorial").print_info("How to play\n-Position yourself between the green poles\n- Hit the hand cues to the beat of the music\n- Head cues should only be touched no headbutts\n- Run in place to receive point multipliers!\nThe optimal time to hit the cues is when the\nrotating marker meets the static one")	
 	
@@ -94,9 +97,17 @@ func _ready():
 	#show_settings("switchboard")
 	yield(get_tree().create_timer(1.0),"timeout")
 	show_settings("exercises")
-
 	
-
+	print ("GET ROOM SERVER")
+	var value_container = Dictionary()
+	var co = get_tree().current_scene.get_node("RemoteInterface").generic_get_request("/room_server/%s/"%GameVariables.device_id, value_container)
+	if co is GDScriptFunctionState && co.is_valid():
+		#print ("Achievement yield until panel finished")
+		yield(co, "completed")
+	var result = value_container.get("result",{})
+	print ("Room server result: %s"%str(result))
+	GameVariables.multiplayer_server = result.get("server", GameVariables.multiplayer_server)
+	print ("Room Server: %s"%str(GameVariables.multiplayer_server))
 
 func set_main_text(text):
 	get_node("MainText").print_info(text)

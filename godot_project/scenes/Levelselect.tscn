@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=2]
+[gd_scene load_steps=72 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -42,6 +42,8 @@
 [ext_resource path="res://scenes/NumberEntryWidget.tscn" type="PackedScene" id=40]
 [ext_resource path="res://scenes/SimpleText.tscn" type="PackedScene" id=41]
 [ext_resource path="res://scenes/WelcomePanel.tscn" type="PackedScene" id=42]
+[ext_resource path="res://scenes/EnvironmentSelectionPanel.tscn" type="PackedScene" id=43]
+[ext_resource path="res://scenes/SettingsGUIPanel.tscn" type="PackedScene" id=44]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.2
@@ -349,6 +351,9 @@ transform = Transform( 1, 0, -2.38419e-07, 0, 1, 0, 2.38419e-07, 0, 1, 1.27542, 
 
 [node name="Switchboard" type="Spatial" parent="SettingsCarousel"]
 
+[node name="SettingsGUI" parent="SettingsCarousel/Switchboard" instance=ExtResource( 44 )]
+transform = Transform( 7.84791e-08, 1, -1.09278e-08, 0, -4.37114e-08, -0.25, -0.25, 3.13916e-07, -3.43043e-15, -0.711538, 1.28553, 2.41365 )
+
 [node name="BeastModeSelector" type="StaticBody" parent="SettingsCarousel/Switchboard"]
 transform = Transform( 0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.0833833, 1.523, 1.277 )
 script = ExtResource( 3 )
@@ -523,6 +528,9 @@ text = "[center]Average exercise duration in seconds[/center]"
 
 [node name="Exercises" type="Spatial" parent="SettingsCarousel"]
 transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, -1.19209e-07, 0, -0.225055 )
+
+[node name="EnvironmentSelectionPanel" parent="SettingsCarousel/Exercises" instance=ExtResource( 43 )]
+transform = Transform( -8.02679e-08, -1, 8.74228e-09, 0, -4.37114e-08, -0.2, 0.2, -4.01339e-07, 3.50862e-15, -1.05373, 1.14977, 0.249988 )
 
 [node name="ExerciseCollection" parent="SettingsCarousel/Exercises" instance=ExtResource( 25 )]
 transform = Transform( -6.24658e-08, -1, -5.24537e-09, 0, -4.37114e-08, 0.12, -0.12, 5.20549e-07, 2.73047e-15, -1.05, 1.435, -0.598759 )

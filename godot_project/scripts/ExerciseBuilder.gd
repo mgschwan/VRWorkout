@@ -349,6 +349,8 @@ func setup_cue_parameters(difficulty, ph):
 	}
 	if kneesaver_mode:
 		cue_parameters[CueState.SQUAT][CueSelector.HEAD]["yoffset"] = "ph*0.18"
+
+
 	
 	#Easy difficulties don't have double swings
 	if difficulty < 1.0:
@@ -358,6 +360,17 @@ func setup_cue_parameters(difficulty, ph):
 	else:
 		stand_state_model = stand_state_model_template.duplicate(true)
 		squat_state_model = squat_state_model_template.duplicate(true)
+
+	#Parcour is only part of hard and ultra
+	if difficulty < 2.0:
+		stand_state_model = model_without_state(stand_state_model_template, StandState.PARCOUR)
+
+	pushup_state_model = pushup_state_model_template.duplicate(true)
+	#Parcour is only part of hard and ultra
+	if not ProjectSettings.get("game/hold_cues"):
+		pushup_state_model = model_without_state(pushup_state_model, StandState.PARCOUR)
+
+
 
 	if not cue_parameters[CueState.STAND][CueSelector.HAND]["windmill"]:
 		stand_state_model = model_without_state(stand_state_model_template, StandState.WINDMILL_TOE)
@@ -618,6 +631,7 @@ func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 
 var pushup_state = PushupState.REGULAR
 var pushup_distribution = {}
+var pushup_state_model_template
 var pushup_state_model
 
 func handle_pushup_cues(current_time, target_time, cue_emitter_state):
@@ -788,6 +802,8 @@ func handle_stand_cues(current_time,target_time,cue_emitter_state):
 		handle_double_swing_cues(current_time, target_time, "ph*0.8", cue_emitter_state, stand_state_model_changed)
 	elif stand_state == StandState.WINDMILL_TOE:
 		handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, stand_state_model_changed)
+	elif stand_state == StandState.PARCOUR:
+		handle_parcour_cues(current_time, target_time, cue_emitter_state, stand_state_model_changed)
 	else:
 		handle_stand_cues_regular(current_time, target_time, cue_emitter_state)
 
@@ -831,6 +847,11 @@ func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitte
 		create_and_attach_cue(current_time+double_punch_delay,"right", "-(%s)+0.1"%x_hand, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
 	else:
 		last_double_swing_left = not last_double_swing_left
+	
+func handle_parcour_cues(current_time, target_time, cue_emitter_state, state_change):
+	create_and_attach_cue(current_time,"head_avoid_bar", 0, "1.0", target_time)		
+	temporary_cue_space_extension = 2.0
+	
 	
 var windmill_left = true
 var windmill_high = true

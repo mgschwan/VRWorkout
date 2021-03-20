@@ -1,5 +1,7 @@
 extends ARVRCamera
 
+var gu = GameUtilities.new()
+
 var last_signifficant_amplitude = 0
 var last_signifficant_ts = 0
 var average_interval = 0
@@ -112,6 +114,22 @@ func calculate_height_warning_level(height):
 	elif height < 0.25:
 		retVal = 1
 	return retVal
+
+
+var distance_travelled = 0
+var time_elapsed = 0
+var energy_calc_last_pos = Vector3(0,0,0)
+
+func _physics_process(delta):
+	distance_travelled += (self.translation.distance_to(energy_calc_last_pos))
+	time_elapsed += delta
+	energy_calc_last_pos = self.translation
+	if time_elapsed > 1.0:
+		var meters_per_sec = distance_travelled/time_elapsed
+		gu.update_current_headset_energy(meters_per_sec)
+		distance_travelled = 0
+		time_elapsed = 0
+
 
 func _process(delta):
 	update_positions(self.translation)	

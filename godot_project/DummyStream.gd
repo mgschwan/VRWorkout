@@ -4,7 +4,6 @@ signal stream_finished
 
 class_name DummyAudioStream
 
-
 class DummyStream:
 	var stream_duration
 	func _init(duration):

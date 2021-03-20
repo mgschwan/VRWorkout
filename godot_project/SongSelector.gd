@@ -92,6 +92,7 @@ func set_songs(songs):
 
 
 var hrr #Heart rate receiver
+var youtube #Youtube interface
 
 func update_automatic():
 	if hrr and hrr.hr_active:
@@ -105,11 +106,15 @@ func update_automatic():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	hrr = get_tree().current_scene.get_node("HeartRateReceiver")
+	youtube = get_tree().current_scene.get_node("YoutubeInterface")
+
 	update_automatic()
 	update_song_list()
 	update_hr_selectors()
 	update_songs()
 	select_difficulty(current_difficulty)
+	
+	
 
 func update_songs():
 	var t = ""
@@ -148,14 +153,23 @@ func previous_page():
 	update_song_list()
 
 
-
 var frame_idx = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	frame_idx += 1
 	if frame_idx > 20:
 		update_automatic()
+		if youtube.is_youtube_available() and not $Viewport/CanvasLayer/YoutubeButton.visible:
+			print ("Youtube available")
+			$Viewport/CanvasLayer/YoutubeButton.show()
+			$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
+		elif not youtube.is_youtube_available() and $Viewport/CanvasLayer/YoutubeButton.visible:
+			print ("Youtube not available")
+			$Viewport/CanvasLayer/YoutubeButton.hide()
+			$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
 		frame_idx = 0
+		
+
 
 func select_difficulty(d):
 	current_difficulty = d
@@ -178,10 +192,12 @@ var difficulties = {"easy":0,"medium": 1, "hard": 2, "ultra": 3, "auto": -1,}
 func _on_DifficultyButtons_difficulty_selected(difficulty):
 	if difficulty in difficulties:
 		current_difficulty = difficulties[difficulty]
-		if current_difficulty > 1:
-			get_tree().current_scene.change_environment("angry")
-		else:
-			get_tree().current_scene.change_environment("calm")
+#		if current_difficulty > 1:
+#			get_tree().current_scene.change_environment("angry")
+#		elif current_difficulty > 0:
+#			get_tree().current_scene.change_environment("bright")
+#		else:
+#			get_tree().current_scene.change_environment("calm")
 
 func update_hr_selectors():
 	var hr = ProjectSettings.get("game/target_hr")
@@ -232,4 +248,12 @@ func _on_PauseButton_pressed():
 func _on_RemoveButton_button_up():
 	print ("Remove Button UP")
 
+func _on_YoutubeButton_pressed():
+	playlist.clear()
+	playlist.append("youtube://")
+	emit_signal("level_selected", playlist, current_difficulty, 0)
 
+#	update_songs()
+#
+#	if youtube.is_youtube_available():
+#		youtube.play()

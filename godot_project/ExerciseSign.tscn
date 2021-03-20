@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://stick-figure.png" type="Texture" id=1]
 [ext_resource path="res://ExerciseSign.gd" type="Script" id=2]
@@ -11,9 +11,9 @@ flags_transparent = true
 flags_unshaded = true
 albedo_texture = ExtResource( 1 )
 uv1_scale = Vector3( 0.25, 0.25, 1 )
-uv1_offset = Vector3( 0.5, 0.25, 0 )
+uv1_offset = Vector3( 0.75, 0.25, 0 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:material/0:uv1_scale")
 tracks/0/interp = 1
@@ -39,7 +39,7 @@ tracks/1/keys = {
 "values": [ Vector3( 0.5, 0.25, 0 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:material/0:uv1_offset")
 tracks/0/interp = 1
@@ -65,7 +65,7 @@ tracks/1/keys = {
 "values": [ Vector3( 0.25, 0.25, 1 ) ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:material/0:uv1_scale")
 tracks/0/interp = 1
@@ -89,6 +89,33 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( 0.5, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "parcour"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.75, 0.25, 0 ) ]
 }
 
 [sub_resource type="Animation" id=7]
@@ -117,8 +144,7 @@ tracks/1/keys = {
 "values": [ Vector3( 0, 0.25, 0 ) ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "sprint"
+[sub_resource type="Animation" id=8]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:material/0:uv1_scale")
 tracks/0/interp = 1
@@ -144,7 +170,7 @@ tracks/1/keys = {
 "values": [ Vector3( 0.75, 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=9]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:material/0:uv1_scale")
 tracks/0/interp = 1
@@ -170,7 +196,7 @@ tracks/1/keys = {
 "values": [ Vector3( 0.25, 0.25, 0 ) ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=10]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:material/0:uv1_scale")
 tracks/0/interp = 1
@@ -202,10 +228,11 @@ material/0 = SubResource( 2 )
 script = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/burpee = SubResource( 4 )
-anims/crunch = SubResource( 5 )
-anims/jump = SubResource( 6 )
+anims/burpee = SubResource( 3 )
+anims/crunch = SubResource( 4 )
+anims/jump = SubResource( 5 )
+anims/parcour = SubResource( 6 )
 anims/pushup = SubResource( 7 )
-anims/sprint = SubResource( 3 )
-anims/squat = SubResource( 8 )
-anims/stand = SubResource( 9 )
+anims/sprint = SubResource( 8 )
+anims/squat = SubResource( 9 )
+anims/stand = SubResource( 10 )

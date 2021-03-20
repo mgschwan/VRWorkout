@@ -12,6 +12,9 @@ var network_peer = null
 var request = null
 var api_url = null
 
+var generic_request = null
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	api_url = ProjectSettings.get("application/config/backend_server")
@@ -20,6 +23,12 @@ func _ready():
 	request = HTTPRequest.new()
 	add_child(request)
 	request.connect("request_completed", self,"_http_connect_request_completed")
+
+	generic_request = HTTPRequest.new()
+	add_child(generic_request)
+	generic_request.connect("request_completed", self,"_generic_http_connect_request_completed")
+
+
 
 func send_data(reference, type, data):
 	var error = ERR_UNAVAILABLE
@@ -61,6 +70,7 @@ func _http_connect_request_completed(result, response_code, headers, body):
 		else:
 			#Handle other messages
 			pass
+			
 func registration_response(response):
 	emit_signal("registration_initialized",response["onetime_code"])
 
@@ -98,9 +108,7 @@ func get_public_dataobject(handle, result):
 	retVal = data_object_query_result
 	data_object_query_result = null
 	data_object_query_active = false
-	result["dataobject"] = retVal
-	
-	
+	result["dataobject"] = retVal	
 	
 func request_profile(device_id):
 	print ("Request profile for: %s"%device_id)
@@ -114,6 +122,33 @@ func profile_response(response):
 func dataobject_response(response):
 	data_object_query_result = JSON.parse(response.get("value","{}")).result
 	print ("Dataobject result: %s"%str(data_object_query_result))
+
+
+
+func _generic_http_connect_request_completed(result, response_code, headers, body):
+	var decoded = parse_json(body.get_string_from_utf8())
+	if response_code >= 200 and response_code < 300 and body and decoded:
+		generic_get_result = decoded
+	generic_get_inprocess = false
+
+var generic_get_result = {}
+var generic_get_inprocess = false
+
+func generic_get_request(path, value_container):
+	value_container["result"] = {}
+	if not generic_get_inprocess:
+		generic_get_inprocess = true
+		var ret = generic_request.request("%s%s"%[api_url,path], [], true, HTTPClient.METHOD_GET)
+		if ret != OK:		
+			print ("Could not send request %s"%str(ret))
+		else:
+			while generic_get_inprocess:
+				yield(get_tree().create_timer(0.1),"timeout")
+		print ("### Get Request finished")
+		value_container["result"] = generic_get_result
+
+
+
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

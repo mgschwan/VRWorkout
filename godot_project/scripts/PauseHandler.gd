@@ -1,5 +1,8 @@
 extends Spatial
 
+signal game_pause()
+signal game_resume()
+
 func _ready():
 	#This script needs to have the pause mode set to process so it can keep
 	#receiving events even if the whole game is paused
@@ -12,8 +15,10 @@ func set_pause(value):
 	if value and not is_pause:
 		is_pause = true
 		get_tree().paused = true
+		emit_signal("game_pause")
 	elif not value and is_pause:
 		get_tree().paused = false
+		emit_signal("game_resume")
 		is_pause = false
 	else:
 		print ("State already set")

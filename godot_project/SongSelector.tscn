@@ -171,6 +171,15 @@ margin_bottom = 460.0
 theme = ExtResource( 9 )
 script = ExtResource( 10 )
 
+[node name="YoutubeButton" type="Button" parent="Viewport/CanvasLayer"]
+margin_left = 20.0
+margin_top = 440.0
+margin_right = 140.0
+margin_bottom = 485.0
+theme = ExtResource( 9 )
+action_mode = 0
+text = "Youtube"
+
 [node name="Mark" type="ColorRect" parent="Viewport/CanvasLayer"]
 margin_right = 4.0
 margin_bottom = 4.0
@@ -245,5 +254,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1 )
 [connection signal="pressed" from="Viewport/CanvasLayer/PauseButton" to="." method="_on_PauseButton_pressed"]
 [connection signal="button_down" from="Viewport/CanvasLayer/RemoveButton" to="." method="_on_RemoveButton_pressed"]
 [connection signal="button_up" from="Viewport/CanvasLayer/RemoveButton" to="." method="_on_RemoveButton_button_up"]
+[connection signal="pressed" from="Viewport/CanvasLayer/YoutubeButton" to="." method="_on_YoutubeButton_pressed"]
 [connection signal="interface_release" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_release"]
 [connection signal="interface_touch" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_touch"]

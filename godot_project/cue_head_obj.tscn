@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://models/head_model.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://cue_head_obj.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://models/blue_transparent.material" type="Material" id=5]
 [ext_resource path="res://models/super_white.material" type="Material" id=6]
 [ext_resource path="res://models/green_material.tres" type="Material" id=7]
+[ext_resource path="res://scenes/Star.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Animation" id=1]
 length = 0.6
@@ -146,4 +147,17 @@ spread = 180.0
 flatness = 0.5
 gravity = Vector3( 0, -1, 0 )
 initial_velocity = 1.0
+
+[node name="Stars" type="Spatial" parent="."]
+visible = false
+
+[node name="star1" parent="Stars" instance=ExtResource( 8 )]
+transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.35, 0, 0.5, -5.70222e-08, 1.4331, 0, 0 )
+
+[node name="star2" parent="Stars" instance=ExtResource( 8 )]
+transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.35, 0, 0.5, -5.70222e-08, -1.43, 0, 0 )
+
+[node name="star3" parent="Stars" instance=ExtResource( 8 )]
+transform = Transform( 0.5, 0, 0, 0, -8.14603e-08, -0.35, 0, 0.5, -5.70222e-08, 0, 1.02576, 0 )
+
 [connection signal="animation_finished" from="head_cue/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

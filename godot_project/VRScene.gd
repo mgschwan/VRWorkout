@@ -2,14 +2,12 @@ extends Spatial
 
 signal recenter_scene()
 
+
 var level_blueprint = null 
 var levelselect_blueprint = null  
 var splashscreen = preload("res://Splashscreen.tscn").instance()
 var left_controller_blueprint = preload("res://Left_Controller_Tree.tscn")
 var right_controller_blueprint = preload("res://Right_Controller_Tree.tscn")
-var blue_environment = null 
-var red_environment = null 
-
 
 
 var gu = GameUtilities.new()
@@ -246,7 +244,8 @@ func _enter_tree():
 	
 	if GameVariables.demo_mode:
 		ProjectSettings.set("application/config/backend_server", "http://127.0.0.1:5000")
-
+		GameVariables.multiplayer_server = "ws://127.0.0.1:33105"
+		
 
 func connect_tracker_callbacks():
 	ARVRServer.connect("tracker_added",self,"_on_Tracker_added")
@@ -314,7 +313,6 @@ func initialize():
 		handle_mobile_permissions()
 		print ("Check and setup permissions ... finished")
 
-		$PauseHandler.connect_to_signals()
 		print ("Oculus Mobile ... done")
 		
 	elif arvr_oculus_interface:
@@ -399,7 +397,8 @@ func _ready():
 	connect("recenter_scene",self,"on_recenter_scene")
 
 	print ("Setup skybox")
-	get_node("ARVROrigin/SkyBox/AnimationPlayer").play("starfield_rotation",-1,0.05)
+	#change_environment("calm")
+	#get_node("ARVROrigin/SkyBox/AnimationPlayer").play("starfield_rotation",-1,0.05)
 	print ("Setup skybox ... finished")
 
 	screen_tint_node = get_node("ARVROrigin/ARVRCamera/ScreenTint")
@@ -417,6 +416,12 @@ func _ready():
 	levelselect_blueprint = preload("res://scenes/Levelselect.tscn")
 	print ("Preload levelselect ... finished")
 	print ("Game initialization complete")
+	
+	$PauseHandler.connect("game_pause",$YoutubeInterface,"_on_game_pause")
+	$PauseHandler.connect("game_resume",$YoutubeInterface,"_on_game_unpause")
+
+	
+	
 
 var xrot = 0.0
 var yrot = 0.0
@@ -437,6 +442,11 @@ func _input(event):
 			update_controllers = true
 		elif event is InputEventKey:
 			update_controllers = true	
+			if event is InputEventKey:
+				if event.scancode == KEY_L and event.pressed:
+					OS.shell_open("https://vrworkout.at/play.html")
+
+	
 	
 		if update_controllers:			
 			var arm_length = min(0.6,demo_mode_player_height/2.0)
@@ -640,6 +650,8 @@ func on_recenter_scene():
 	print("P: %s   O: %s   D:%s"%[str(pos), str(origin_pos),str(delta)])
 	origin.set_translation(delta)
 	
+var update_rate_limiter = 0	
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if not GameVariables.vr_mode:
@@ -664,6 +676,10 @@ func _process(delta):
 	if record_tracker_data and left_controller and right_controller:
 		tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
 
+	update_rate_limiter += 1
+	if update_rate_limiter > 50:
+		update_rate_limiter = 0
+		print ("Total energy: %.2f"%gu.get_current_energy())
 
 #Return the config parameters that should be stored in the config file
 func get_persisting_parameters():
@@ -677,7 +693,9 @@ func get_persisting_parameters():
 			"game/bpm": ProjectSettings.get("game/bpm"),
 			"game/exercise/stand/windmill" : ProjectSettings.get("game/exercise/stand/windmill"),
 			"game/default_playlist" : GameVariables.current_song,
-			"game/exercise_duration_avg" :ProjectSettings.get("game/exercise_duration_avg")
+			"game/exercise_duration_avg" :ProjectSettings.get("game/exercise_duration_avg"),
+			"game/environment" :ProjectSettings.get("game/environment"),
+			"game/hold_cues" :ProjectSettings.get("game/hold_cues")
 		}
 		
 var game_statistics = {}
@@ -767,8 +785,6 @@ func _on_Splashscreen_finished():
 	if default_playlist:
 		GameVariables.current_song = default_playlist	
 	
-	red_environment = load("res://default_env_red.tres")
-	blue_environment = load("res://default_env.tres")
 
 	levelselect = levelselect_blueprint.instance()
 	levelselect.translation = Vector3(0,0,0)
@@ -789,12 +805,17 @@ func _on_Splashscreen_finished():
 
 
 func change_environment(value):
+	print ("CHANGE ENV\n\n\n\n\n%s"%value)
 	if value == "angry":
-		get_viewport().get_camera().environment = red_environment
 		get_node("ARVROrigin/SkyBox").switch("angry")
+		ProjectSettings.set("game/environment",value)
+	elif value == "bright":
+		get_node("ARVROrigin/SkyBox").switch("bright")
+		ProjectSettings.set("game/environment",value)
 	else:
-		get_viewport().get_camera().environment = blue_environment
 		get_node("ARVROrigin/SkyBox").switch("calm")
+		ProjectSettings.set("game/environment",value)
+	
 
 
 

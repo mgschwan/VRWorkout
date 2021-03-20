@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/weights.tscn" type="PackedScene" id=1]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="weights" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+
+[node name="weights2" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.922666, 8.55974e-08, -0.3856, 1.50996e-07, -1, 1.39319e-07, -0.3856, -1.86769e-07, -0.922666, -8.55974e-08, -1, -4.17215e-07 )

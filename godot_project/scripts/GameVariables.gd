@@ -9,12 +9,12 @@ var hands_visible = false
 
 #############################################################################
 
-var vr_camera = true
+var vr_camera = null
 var hit_player = null
 
 #############################################################################
 ############################ Activated features #############################
-var FEATURE_MULTIPLAYER = false
+var FEATURE_MULTIPLAYER = true
 
 #Deactivate certain features to meet Oculus Store requirements
 var FEATURE_STORE_COMPATIBILITY = false 
@@ -43,6 +43,8 @@ var player_camera = null
 
 var player_height = 1.8
 
+var player_exercise_state = CueState.STAND
+
 var detail_selection_mode = true
 var trackers = null
 var difficulty = 0
@@ -54,7 +56,18 @@ var current_challenge = null
 var current_hr = 0
 var hr_active = false
 
+var current_headset_energy = 0.0
+var current_controller_energy = 0.0
+var controller_energy_factor = 0.2
+var headset_energy_factor = 1.0
+
+var energy_level_low = 1.0
+var energy_level_medium = 1.66
+var energy_level_high = 2.33
+var energy_level_max = 3.0
+
 var exercise_duration_avg = 20.0
+
 
 
 
@@ -110,6 +123,7 @@ enum CueState {
 	BURPEE = 5,
 	SPRINT = 6,
 	YOGA = 7,
+	PARCOUR = 8,	
 };
 
 enum CueSelector {
@@ -148,6 +162,7 @@ enum StandState {
 	REGULAR = 0,
 	DOUBLE_SWING = 1,
 	WINDMILL_TOE = 2,
+	PARCOUR = 3,
 };	
 
 
@@ -440,9 +455,10 @@ var exercise_model = {
 								SquatState.DOUBLE_SWING  : { SquatState.HEAD: 40},
 								SquatState.CROSS_CUT  : { SquatState.HEAD: 30},
 						},
-		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 15, StandState.WINDMILL_TOE: 15},
-						StandState.DOUBLE_SWING : { StandState.REGULAR: 27, StandState.WINDMILL_TOE: 15},
-						StandState.WINDMILL_TOE : { StandState.REGULAR: 27, StandState.DOUBLE_SWING: 15},
+		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 15, StandState.WINDMILL_TOE: 15,  StandState.PARCOUR: 5},
+						StandState.DOUBLE_SWING : { StandState.REGULAR: 27, StandState.WINDMILL_TOE: 15,  StandState.PARCOUR: 5},
+						StandState.WINDMILL_TOE : { StandState.REGULAR: 27, StandState.DOUBLE_SWING: 15,  StandState.PARCOUR: 5},
+						StandState.PARCOUR : { StandState.DOUBLE_SWING: 30, StandState.WINDMILL_TOE: 30, StandState.REGULAR: 40},
 		},
 		"crunch_state_model" : { CrunchState.HEAD : { CrunchState.HAND: 70, CrunchState.MEDIUM_HOLD: 10},
 						CrunchState.HAND : { CrunchState.HEAD: 70, CrunchState.MEDIUM_HOLD: 10},
@@ -491,7 +507,8 @@ var difficulty_weight_adjustments = {
 		CueState.JUMP: 1.5,
 		CueState.BURPEE: 0.0,
 		CueState.SPRINT: 1.0,
-		CueState.YOGA: 1.0
+		CueState.YOGA: 1.0,
+		CueState.PARCOUR: 1.0
 		},
 	"medium" : {
 		CueState.STAND: 0.8,
@@ -501,7 +518,8 @@ var difficulty_weight_adjustments = {
 		CueState.JUMP: 0.7,
 		CueState.BURPEE: 0.3,
 		CueState.SPRINT: 1.0,
-		CueState.YOGA: 1.0
+		CueState.YOGA: 1.0,
+		CueState.PARCOUR: 1.0
 		},
 	"hard" : {
 		CueState.STAND: 0.1,
@@ -511,7 +529,8 @@ var difficulty_weight_adjustments = {
 		CueState.JUMP: 0.5,
 		CueState.BURPEE: 1.3,
 		CueState.SPRINT: 1.0,
-		CueState.YOGA: 1.0
+		CueState.YOGA: 1.0,
+		CueState.PARCOUR: 1.0
 	},
 }	
 	
@@ -554,11 +573,13 @@ func setup_globals_demo():
 	ProjectSettings.set("game/exercise/pushup", true)
 	ProjectSettings.set("game/exercise/crunch", true)
 	ProjectSettings.set("game/exercise/burpees", true)
+	ProjectSettings.set("game/exercise/parcour", false)
 	ProjectSettings.set("game/exercise/duck", true)
 	ProjectSettings.set("game/exercise/sprint", true)
 	ProjectSettings.set("game/exercise/kneesaver", false)
 	ProjectSettings.set("game/exercise/stand/windmill", true)
 	ProjectSettings.set("game/exercise/yoga", false)
+	ProjectSettings.set("game/exercise/hold_cues", false)
 	ProjectSettings.set("game/exercise/strength_focus", false)
 	ProjectSettings.set("game/is_oculusquest", false)
 	ProjectSettings.set("game/hud_enabled", true)
@@ -575,6 +596,7 @@ func setup_globals_demo():
 	
 	ProjectSettings.set("game/override_beats", false)
 	ProjectSettings.set("game/record_tracker", true)
+	ProjectSettings.set("game/environment", "calm")
 
 
 	
@@ -588,12 +610,15 @@ func setup_globals_regular():
 	ProjectSettings.set("game/exercise/pushup", true)
 	ProjectSettings.set("game/exercise/crunch", true)
 	ProjectSettings.set("game/exercise/burpees", false)
+	ProjectSettings.set("game/exercise/parcour", false)
 	ProjectSettings.set("game/exercise/duck", true)
 	ProjectSettings.set("game/exercise/sprint", true)
 	ProjectSettings.set("game/exercise/stand/windmill", true)
 	ProjectSettings.set("game/exercise/kneesaver", false)
 	ProjectSettings.set("game/exercise/strength_focus", false)
 	ProjectSettings.set("game/exercise/yoga", false)
+	ProjectSettings.set("game/exercise/hold_cues", false)
+
 
 	ProjectSettings.set("game/is_oculusquest", false)
 	ProjectSettings.set("game/hud_enabled", false)
@@ -608,6 +633,7 @@ func setup_globals_regular():
 	ProjectSettings.set("game/easy_transition", true)
 	ProjectSettings.set("game/override_beats", false)
 	ProjectSettings.set("game/record_tracker", false)
+	ProjectSettings.set("game/environment", "calm")
 
 
 
@@ -619,4 +645,7 @@ func _ready():
 	trackers = []
 	exercise_state_list = []
 	pass
-	
+
+
+func click_audio():
+	$Click.play()	

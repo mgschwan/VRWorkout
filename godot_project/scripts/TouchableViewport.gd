@@ -37,10 +37,27 @@ func release_event(position = null):
 	else:
 		print ("Release without click not possible")
 
+func scroll_event(up):
+	print ("Scroll event")
+	var viewport = self
+	var ev = InputEventMouseButton.new()
+	ev.pressed = true
+	ev.position = last_position
+	if up:
+		ev.button_index=BUTTON_WHEEL_UP
+	else:
+		ev.button_index=BUTTON_WHEEL_DOWN
+	viewport.input(ev)
+	ev.pressed = false
+	viewport.input(ev)
+	
+
 
 func click_event(position):
 	var viewport = self
 	var ev = InputEventMouseButton.new()
+	
+	GameVariables.click_audio()
 
 	if is_pressed:
 		#We don't want a release/click event so it's either release
