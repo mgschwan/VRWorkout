@@ -38,6 +38,7 @@ viewport_path = NodePath("Viewport")
 
 [sub_resource type="SpatialMaterial" id=3]
 resource_local_to_scene = true
+flags_unshaded = true
 albedo_texture = SubResource( 2 )
 
 [sub_resource type="BoxShape" id=4]

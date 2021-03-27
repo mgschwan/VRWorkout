@@ -28,7 +28,8 @@ margin_top = 6.0
 margin_right = 152.0
 margin_bottom = 41.0
 theme = ExtResource( 1 )
-text = "Starfield One"
+text = "Starfield
+"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -51,7 +52,7 @@ margin_top = 6.0
 margin_right = 152.0
 margin_bottom = 41.0
 theme = ExtResource( 1 )
-text = "Starfield Two"
+text = "Terra"
 __meta__ = {
 "_edit_use_anchors_": false
 }

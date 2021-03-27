@@ -278,4 +278,43 @@ func build_workout_statistic(data):
 			"hr_max": hr_max, "hr_avg": hr_avg,
 			"difficulty_avg": difficulty_avg,
 			"calories": 0}
+		
+func upload_challenge(remoteinterface):    
+       var challenge = {
+               "cue_list": GameVariables.cue_list,
+               "song": readable_song_list(GameVariables.current_song),
+               "duration": GameVariables.game_result.get("time", 0),
+               "score": GameVariables.game_result.get("vrw_score",0),
+               "points": GameVariables.game_result.get("points",0)
+       }
+       print ("Current song: %s"%(readable_song_list(GameVariables.current_song)))
+       remoteinterface.send_data(GameVariables.device_id,"challenge",challenge )
+
+func hardness_level():
+	var retVal = 0
+	var e = get_current_energy()
+	if e >= GameVariables.energy_level_low:
+		retVal = 1
+	if e >= GameVariables.energy_level_medium:
+		retVal = 2
+	if e >= GameVariables.energy_level_max:
+		retVal = 3
+	return retVal
+	
+func get_workout_collection(exercise_name):
+	var collection = []
+	if GameVariables.predefined_exercises.has(exercise_name):
+		collection = GameVariables.predefined_exercises[exercise_name]
+	return collection
 			
+func get_possible_workout_achievements(achievements):
+	var achievements_list = []
+	if GameVariables.predefined_achievements.has(achievements):
+		achievements_list = GameVariables.predefined_achievements[achievements]
+	return achievements_list	
+	
+	
+	
+	
+	
+		

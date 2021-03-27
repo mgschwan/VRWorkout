@@ -405,8 +405,8 @@ func switch_floor_sign_actual(type):
 		sign_node.show_hands(false)
 		sign_node.show_feet(false)
 		
-func add_statistics_element(ingame_id, state_string, cue_type, difficulty, points, hit, starttime, targettime, hr,max_hit_score):
-	var statistics_element = {"e": state_string, "t": cue_type, "d": difficulty, "p": points, "h": hit, "st": starttime,"tt": targettime, "hr": hr,"mh":max_hit_score}
+func add_statistics_element(ingame_id, state_string, cue_type, difficulty, points, hit, starttime, targettime, hr,max_hit_score, hardness):
+	var statistics_element = {"e": state_string, "t": cue_type, "d": difficulty, "p": points, "h": hit, "st": starttime,"tt": targettime, "hr": hr,"mh":max_hit_score, "hd":hardness}
 	GameVariables.level_statistics_data [ingame_id] = statistics_element
 	return ingame_id	
 
@@ -452,6 +452,8 @@ func create_and_attach_cue_actual(cue_data):
 	var hit_velocity = cue_data["hit_velocity"]
 	var hit_score = cue_data["hit_score"]
 	var fly_distance = cue_data.get("fly_distance", exercise_builder.fly_distance)
+	var hardness = cue_data.get("hardness", 0)
+	
 	
 	var is_head = false
 	var is_avoid = false
@@ -477,6 +479,7 @@ func create_and_attach_cue_actual(cue_data):
 		else:
 			is_head = true
 			cue_node = cue_head.instance()
+			cue_node.stars = hardness
 			if cue_type == "head_extended":
 				cue_node.extended = true
 	if cue_type in ["right_hold", "left_hold"]:
@@ -529,7 +532,7 @@ func create_and_attach_cue_actual(cue_data):
 		cue_node.velocity_required = hit_velocity
 
 	#Heartrate is stored with the start of the cue because that's the only definitive timestamp we know
-	add_statistics_element(ingame_id, exercise_builder.state_string(actual_game_state)+"/%s"%cue_subtype, cue_type, exercise_builder.current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr, hit_score)
+	add_statistics_element(ingame_id, exercise_builder.state_string(actual_game_state)+"/%s"%cue_subtype, cue_type, exercise_builder.current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr, hit_score, hardness)
 	cue_node.ingame_id = ingame_id
 	
 	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
@@ -601,7 +604,7 @@ func handle_sprint_cues_actual(target_time):
 	last_sprint_update = now
 	var max_hit_score = 1.0
 	var actual_hit_score = exercise_builder.eval_running_speed(running_speed)
-	var ingame_id = add_statistics_element(GameVariables.get_next_ingame_id(), exercise_builder.state_string(exercise_builder.cue_emitter_state), "", exercise_builder.current_difficulty, points, actual_hit_score, cue_emitter.current_playback_time, cue_emitter.current_playback_time, GameVariables.current_hr, max_hit_score)
+	var ingame_id = add_statistics_element(GameVariables.get_next_ingame_id(), exercise_builder.state_string(exercise_builder.cue_emitter_state), "", exercise_builder.current_difficulty, points, actual_hit_score, cue_emitter.current_playback_time, cue_emitter.current_playback_time, GameVariables.current_hr, max_hit_score, 0)
 	cue_emitter.score_points(points)
 	if GameVariables.battle_mode != GameVariables.BattleMode.NO:
 		battle_module.hit_scored_opponent(null)

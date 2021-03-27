@@ -12,18 +12,17 @@
 [ext_resource path="res://audio/instruction_sprint.wav" type="AudioStream" id=10]
 
 [sub_resource type="CubeMesh" id=1]
-size = Vector3( 2, 0.2, 2 )
+size = Vector3( 1.5, 0.2, 1.5 )
 
 [sub_resource type="SpatialMaterial" id=2]
-params_blend_mode = 1
-params_use_alpha_scissor = true
-params_alpha_scissor_threshold = 0.0
-albedo_color = Color( 0.341176, 0.227451, 1, 0.298039 )
+flags_unshaded = true
+albedo_color = Color( 0, 0.00784314, 0.458824, 1 )
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 2 )
 
 [node name="ExerciseSign" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0155925, 0 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.165942, 0, 0, 0, 1, 0, -0.0141001, 0 )
@@ -69,6 +68,7 @@ bus = "Voice"
 stream = ExtResource( 10 )
 volume_db = 5.0
 bus = "Voice"
+
 [connection signal="finished" from="player_squat" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_crunch" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_stand" to="." method="_on_sfx_finished"]

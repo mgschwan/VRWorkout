@@ -66,7 +66,7 @@ config/backend_server="http://backend.vrworkout.at:8080"
 config/room_server="ws://backend.vrworkout.at:33105"
 config/sidequest_client_id="client_0ce3bebc49e33ccf9e8a62cc"
 config/sidequest_api_endpoint="https://api.sidequestvr.com/v2"
-config/youtube_link="https://vrworkout.at/play.html"
+config/youtube_link="https://vrworkout.at/player/"
 
 [audio]
 

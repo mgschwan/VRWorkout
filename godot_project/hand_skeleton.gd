@@ -197,5 +197,11 @@ func get_ball_attachment():
 	else:
 		return get_node("ArmatureLeft/Skeleton/middle_root_bone/ball_attachment")
 		
+func get_root():
+	if has_node("ArmatureRight"):
+		return get_node("ArmatureRight/Skeleton/wrist")
+	else:
+		return get_node("ArmatureLeft/Skeleton/wrist")
+	
 
 

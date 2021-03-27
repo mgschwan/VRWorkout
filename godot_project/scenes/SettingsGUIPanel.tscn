@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://scripts/ConnectPadInput.gd" type="Script" id=1]
 [ext_resource path="res://scripts/TouchableViewport.gd" type="Script" id=2]
@@ -6,6 +6,43 @@
 [ext_resource path="res://assets/toggle_switch_on.png" type="Texture" id=4]
 [ext_resource path="res://assets/toggle_switch_off.png" type="Texture" id=5]
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=6]
+[ext_resource path="res://assets/rounded_panel_1024_512.png" type="Texture" id=7]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+[sub_resource type="StyleBoxEmpty" id=11]
+
+[sub_resource type="StyleBoxEmpty" id=12]
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+[sub_resource type="StyleBoxEmpty" id=14]
+
+[sub_resource type="StyleBoxEmpty" id=15]
+
+[sub_resource type="StyleBoxEmpty" id=16]
+
+[sub_resource type="StyleBoxEmpty" id=17]
+
+[sub_resource type="StyleBoxEmpty" id=18]
+
+[sub_resource type="StyleBoxEmpty" id=19]
+
+[sub_resource type="StyleBoxEmpty" id=20]
+
+[sub_resource type="StyleBoxEmpty" id=21]
+
+[sub_resource type="StyleBoxEmpty" id=22]
+
+[sub_resource type="StyleBoxEmpty" id=5]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 2, 0.05, 1 )
@@ -19,6 +56,8 @@ viewport_path = NodePath("Viewport")
 [sub_resource type="SpatialMaterial" id=4]
 resource_local_to_scene = true
 flags_unshaded = true
+params_use_alpha_scissor = true
+params_alpha_scissor_threshold = 0.93
 albedo_texture = SubResource( 3 )
 
 [node name="Spatial" type="Spatial"]
@@ -26,13 +65,20 @@ script = ExtResource( 3 )
 
 [node name="Viewport" type="Viewport" parent="."]
 size = Vector2( 1024, 512 )
+transparent_bg = true
 msaa = 6
 render_target_v_flip = true
 script = ExtResource( 2 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Viewport"]
 
+[node name="TextureRect" type="TextureRect" parent="Viewport/CanvasLayer"]
+margin_right = 1024.0
+margin_bottom = 512.0
+texture = ExtResource( 7 )
+
 [node name="ColorRect" type="ColorRect" parent="Viewport/CanvasLayer"]
+visible = false
 margin_right = 1024.0
 margin_bottom = 512.0
 color = Color( 0, 0, 0, 1 )
@@ -53,6 +99,7 @@ rect_scale = Vector2( 0.5, 0.5 )
 theme = ExtResource( 6 )
 custom_icons/off = ExtResource( 5 )
 custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 6 )
 
 [node name="Parcour" type="Label" parent="Viewport/CanvasLayer"]
 margin_left = 64.0
@@ -71,14 +118,324 @@ rect_scale = Vector2( 0.5, 0.5 )
 theme = ExtResource( 6 )
 custom_icons/off = ExtResource( 5 )
 custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 7 )
+
+[node name="Equalizer" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 64.0
+margin_top = 200.0
+margin_right = 173.0
+margin_bottom = 267.0
+theme = ExtResource( 6 )
+text = "Equalizer"
+
+[node name="EqualizerButton" type="CheckButton" parent="Viewport/CanvasLayer/Equalizer"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 8 )
+
+[node name="ExtendedTransition" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 64.0
+margin_top = 300.0
+margin_right = 219.0
+margin_bottom = 367.0
+theme = ExtResource( 6 )
+text = "Easy transition"
+
+[node name="ExtendedTransitionButton" type="CheckButton" parent="Viewport/CanvasLayer/ExtendedTransition"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 9 )
+
+[node name="Instructor" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 64.0
+margin_top = 400.0
+margin_right = 234.0
+margin_bottom = 467.0
+theme = ExtResource( 6 )
+text = "Audio Instructor"
+
+[node name="InstructorButton" type="CheckButton" parent="Viewport/CanvasLayer/Instructor"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 10 )
+
+[node name="Pushup" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 220.0
+margin_right = 329.0
+margin_bottom = 67.0
+theme = ExtResource( 6 )
+text = "Pushups"
+
+[node name="PushupButton" type="CheckButton" parent="Viewport/CanvasLayer/Pushup"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 11 )
+
+[node name="SafePushups" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 220.0
+margin_top = 100.0
+margin_right = 361.0
+margin_bottom = 167.0
+theme = ExtResource( 6 )
+text = "Safe Pushups"
+
+[node name="SafePushupsButton" type="CheckButton" parent="Viewport/CanvasLayer/SafePushups"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 12 )
+
+[node name="Burpee" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 220.0
+margin_top = 200.0
+margin_right = 361.0
+margin_bottom = 267.0
+theme = ExtResource( 6 )
+text = "Burpees"
+
+[node name="BurpeeButton" type="CheckButton" parent="Viewport/CanvasLayer/Burpee"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 13 )
+
+[node name="Stand" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 370.0
+margin_right = 479.0
+margin_bottom = 67.0
+theme = ExtResource( 6 )
+text = "Standing"
+
+[node name="StandButton" type="CheckButton" parent="Viewport/CanvasLayer/Stand"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 14 )
+
+[node name="Squat" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 520.0
+margin_right = 629.0
+margin_bottom = 67.0
+theme = ExtResource( 6 )
+text = "Squats"
+
+[node name="SquatButton" type="CheckButton" parent="Viewport/CanvasLayer/Squat"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 15 )
+
+[node name="Crunches" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 670.0
+margin_right = 779.0
+margin_bottom = 67.0
+theme = ExtResource( 6 )
+text = "Crunches"
+
+[node name="CrunchesButton" type="CheckButton" parent="Viewport/CanvasLayer/Crunches"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 16 )
+
+[node name="BeastMode" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 820.0
+margin_right = 929.0
+margin_bottom = 67.0
+theme = ExtResource( 6 )
+text = "Beast mode"
+
+[node name="BeastModeButton" type="CheckButton" parent="Viewport/CanvasLayer/BeastMode"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 17 )
+
+[node name="StrengthMode" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 820.0
+margin_top = 100.0
+margin_right = 970.0
+margin_bottom = 167.0
+theme = ExtResource( 6 )
+text = "Strength focus"
+
+[node name="StrengthModeButton" type="CheckButton" parent="Viewport/CanvasLayer/StrengthMode"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 18 )
+
+[node name="Kneesaver" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 520.0
+margin_top = 100.0
+margin_right = 638.0
+margin_bottom = 167.0
+theme = ExtResource( 6 )
+text = "Easier Squats"
+
+[node name="KneesaverButton" type="CheckButton" parent="Viewport/CanvasLayer/Kneesaver"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 19 )
+
+[node name="Ducking" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 370.0
+margin_top = 100.0
+margin_right = 479.0
+margin_bottom = 167.0
+theme = ExtResource( 6 )
+text = "Ducking"
+
+[node name="DuckButton" type="CheckButton" parent="Viewport/CanvasLayer/Ducking"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 20 )
+
+[node name="Windmill" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 370.0
+margin_top = 200.0
+margin_right = 479.0
+margin_bottom = 267.0
+theme = ExtResource( 6 )
+text = "Windmill"
+
+[node name="WindmillButton" type="CheckButton" parent="Viewport/CanvasLayer/Windmill"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 21 )
+
+[node name="Jump" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 370.0
+margin_top = 300.0
+margin_right = 479.0
+margin_bottom = 367.0
+theme = ExtResource( 6 )
+text = "Jumping"
+
+[node name="JumpButton" type="CheckButton" parent="Viewport/CanvasLayer/Jump"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 22 )
+
+[node name="Sprint" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 370.0
+margin_top = 400.0
+margin_right = 479.0
+margin_bottom = 467.0
+theme = ExtResource( 6 )
+text = "Sprinting"
+
+[node name="SprintButton" type="CheckButton" parent="Viewport/CanvasLayer/Sprint"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 5 )
 
 [node name="Youtube" type="Button" parent="Viewport/CanvasLayer"]
-margin_left = 840.0
-margin_top = 440.0
-margin_right = 1011.0
-margin_bottom = 504.0
+margin_left = 800.0
+margin_top = 240.0
+margin_right = 971.0
+margin_bottom = 304.0
 theme = ExtResource( 6 )
 text = "Activate Youtube"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Viewport/CanvasLayer/Youtube"]
+margin_top = 100.0
+margin_right = 200.0
+margin_bottom = 420.0
+bbcode_enabled = true
+bbcode_text = "This will open the browser
+Click play and then go back into the game"
+text = "This will open the browser
+Click play and then go back into the game"
 
 [node name="StaticBody" type="StaticBody" parent="."]
 script = ExtResource( 1 )
@@ -102,6 +459,22 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -1 )
 
 [connection signal="pressed" from="Viewport/CanvasLayer/HoldCue/HoldCueButton" to="." method="_on_HoldCueButton_pressed"]
 [connection signal="pressed" from="Viewport/CanvasLayer/Parcour/ParcourButton" to="." method="_on_ParcourButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/Equalizer/EqualizerButton" to="." method="_on_EqualizerButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/ExtendedTransition/ExtendedTransitionButton" to="." method="_on_ExtendedTransitionButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/Instructor/InstructorButton" to="." method="_on_InstructorButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/Pushup/PushupButton" to="." method="_on_PushupButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/SafePushups/SafePushupsButton" to="." method="_on_SafePushupsButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/Burpee/BurpeeButton" to="." method="_on_BurpeeButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/Stand/StandButton" to="." method="_on_StandButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/Squat/SquatButton" to="." method="_on_SquatButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/Crunches/CrunchesButton" to="." method="_on_CrunchesButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/BeastMode/BeastModeButton" to="." method="_on_BeastModeButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/StrengthMode/StrengthModeButton" to="." method="_on_StrengthModeButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/Kneesaver/KneesaverButton" to="." method="_on_KneesaverButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/Ducking/DuckButton" to="." method="_on_DuckingButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/Windmill/WindmillButton" to="." method="_on_WindmillButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/Jump/JumpButton" to="." method="_on_JumpButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/Sprint/SprintButton" to="." method="_onSprintButton_pressed"]
 [connection signal="pressed" from="Viewport/CanvasLayer/Youtube" to="." method="_on_Youtube_pressed"]
 [connection signal="interface_release" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_release"]
 [connection signal="interface_touch" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_touch"]

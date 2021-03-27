@@ -65,7 +65,9 @@ transform = Transform( 0.989329, -0.102457, -0.103592, 0.101712, -0.023419, 0.99
 bone_name = "b_r_middle_1"
 
 [node name="claws" parent="ArmatureRight/Skeleton/middle_root_bone" index="0" instance=ExtResource( 3 )]
-transform = Transform( -2.93832e-07, -0.174311, -1.49429, 1.86265e-09, 1.99239, -0.130734, 2, -4.84288e-08, -2.72878e-07, -2, 0.422, 0 )
+transform = Transform( -3.25841e-07, 1.41421, -1.06066, 0, 1.41421, 1.06066, 2, 2.30405e-07, -1.72803e-07, -2, 0.422, -1.19209e-07 )
 
 [node name="ball_attachment" type="Spatial" parent="ArmatureRight/Skeleton/middle_root_bone" index="1"]
 transform = Transform( 10, 1.49012e-07, -1.96742e-07, -1.49012e-07, 10, 3.72529e-08, 1.96742e-07, -3.72529e-08, 10, 0, 0, 0 )
+
+[node name="wrist" type="BoneAttachment" parent="ArmatureRight/Skeleton" index="18"]

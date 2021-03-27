@@ -34,6 +34,9 @@ func update_stars():
 	if stars > 2:
 		$Stars/star3.show()
 
+func hard_enough(value):
+	return value >= stars
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if extended:

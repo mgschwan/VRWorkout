@@ -9,59 +9,7 @@ var gu = GameUtilities.new()
 # var b = "text"
 	
 func update_widget():
-	get_node("SettingsCarousel/Switchboard/BeastModeSelector").beast_mode = ProjectSettings.get("game/beast_mode")
-	get_node("SettingsCarousel/Switchboard/BeastModeSelector").update_switch()
-	
-	get_node("SettingsCarousel/Switchboard/JumpSwitch").value = ProjectSettings.get("game/exercise/jump")
-	get_node("SettingsCarousel/Switchboard/JumpSwitch").update_switch()
-	
-	get_node("SettingsCarousel/Switchboard/StandSwitch").value = ProjectSettings.get("game/exercise/stand")
-	get_node("SettingsCarousel/Switchboard/StandSwitch").update_switch()
-
-	get_node("SettingsCarousel/Switchboard/WindmillSwitch").value = ProjectSettings.get("game/exercise/stand/windmill")
-	get_node("SettingsCarousel/Switchboard/WindmillSwitch").update_switch()
-	
-	get_node("SettingsCarousel/Switchboard/SquatSwitch").value = ProjectSettings.get("game/exercise/squat")
-	get_node("SettingsCarousel/Switchboard/SquatSwitch").update_switch()
-	
-	get_node("SettingsCarousel/Switchboard/PushupSwitch").value = ProjectSettings.get("game/exercise/pushup")
-	get_node("SettingsCarousel/Switchboard/PushupSwitch").update_switch()
-	
-	get_node("SettingsCarousel/Switchboard/SafePushupSwitch").value = ProjectSettings.get("game/hud_enabled")
-	get_node("SettingsCarousel/Switchboard/SafePushupSwitch").update_switch()
-
-	get_node("SettingsCarousel/Switchboard/CrunchSwitch").value = ProjectSettings.get("game/exercise/crunch")
-	get_node("SettingsCarousel/Switchboard/CrunchSwitch").update_switch()
-
-	get_node("SettingsCarousel/Switchboard/BurpeeSwitch").value = ProjectSettings.get("game/exercise/burpees")
-	get_node("SettingsCarousel/Switchboard/BurpeeSwitch").update_switch()
-
-	get_node("SettingsCarousel/Switchboard/DuckSwitch").value = ProjectSettings.get("game/exercise/duck")
-	get_node("SettingsCarousel/Switchboard/DuckSwitch").update_switch()
-
-	get_node("SettingsCarousel/Switchboard/YogaSwitch").value = ProjectSettings.get("game/exercise/yoga")
-	get_node("SettingsCarousel/Switchboard/YogaSwitch").update_switch()
-
-	get_node("SettingsCarousel/Switchboard/SprintSwitch").value = ProjectSettings.get("game/exercise/sprint")
-	get_node("SettingsCarousel/Switchboard/SprintSwitch").update_switch()
-
-	get_node("SettingsCarousel/Switchboard/EqualizerSwitch").value = ProjectSettings.get("game/equalizer")
-	get_node("SettingsCarousel/Switchboard/EqualizerSwitch").update_switch()
-
-
-	get_node("SettingsCarousel/Switchboard/KneesaverSwitch").value = ProjectSettings.get("game/exercise/kneesaver")
-	get_node("SettingsCarousel/Switchboard/KneesaverSwitch").update_switch()
-
-	get_node("SettingsCarousel/Switchboard/StrengthCardioSwitch").value = ProjectSettings.get("game/exercise/strength_focus")
-	get_node("SettingsCarousel/Switchboard/StrengthCardioSwitch").update_switch()
-
 	get_node("SettingsCarousel/Connections/VRWorkoutConnection/PortalInfo").set_state(ProjectSettings.get("game/portal_connection"))
-
-	get_node("SettingsCarousel/Switchboard/InstructorSwitch").value = ProjectSettings.get("game/instructor")
-	get_node("SettingsCarousel/Switchboard/InstructorSwitch").update_switch()
-
-	get_node("SettingsCarousel/Switchboard/ExtendedSwitch").value = ProjectSettings.get("game/easy_transition")
-	get_node("SettingsCarousel/Switchboard/ExtendedSwitch").update_switch()
 
 	get_node("BPM/OverrideBeats").value = ProjectSettings.get("game/override_beats")
 	get_node("BPM/OverrideBeats").update_switch()
@@ -136,51 +84,6 @@ func _process(delta):
 		controller_detail_set = true
 	
 
-
-func _on_JumpSwitch_toggled(value):
-	ProjectSettings.set("game/exercise/jump", value)
-	
-func _on_StandSwitch_toggled(value):
-	ProjectSettings.set("game/exercise/stand", value)
-
-func _on_WindmillSwitch_toggled(value):
-	ProjectSettings.set("game/exercise/stand/windmill", value)
-
-func _on_CrunchSwitch_toggled(value):
-	ProjectSettings.set("game/exercise/crunch", value)
-
-
-func _on_SquatSwitch_toggled(value):
-	ProjectSettings.set("game/exercise/squat", value)
-
-
-func _on_PushupSwitch_toggled(value):
-	ProjectSettings.set("game/exercise/pushup", value)
-
-
-func _on_BurpeeSwitch_toggled(value):
-	ProjectSettings.set("game/exercise/burpees", value)
-
-
-func _on_DuckSwitch_toggled(value):
-	ProjectSettings.set("game/exercise/duck", value)
-
-
-func _on_SprintSwitch_toggled(value):
-	ProjectSettings.set("game/exercise/sprint", value)
-
-func _on_KneesaverSwitch_toggled(value):
-	ProjectSettings.set("game/exercise/kneesaver", value)
-
-func _on_SafePushupSwitch_toggled(value):
-	ProjectSettings.set("game/hud_enabled", value)
-
-func _on_StrengthCardioSwitch_toggled(value):
-	ProjectSettings.set("game/exercise/strength_focus", value)
-
-func _on_EqualizerSwitch_toggled(value):
-	ProjectSettings.set("game/equalizer", value)
-	
 func _on_OverrideBeats_toggled(value):
 	ProjectSettings.set("game/override_beats", value)
 
@@ -297,17 +200,9 @@ func _on_PortalSwitch_toggled(value):
 	ProjectSettings.set("game/portal_connection", value)
 	update_online_features()
 
-func _on_InstructorSwitch_toggled(value):
-	ProjectSettings.set("game/instructor", value)
-
 
 func _on_Recenter_selected():
 	get_tree().current_scene.start_countdown(5,"recenter_screen")
-
-
-func _on_ExtendedSwitch_toggled(value):
-	ProjectSettings.set("game/easy_transition", value)
-
 
 func _on_StoredSlot_selected(exercise_list, slot_number):
 	if len(exercise_list) > 0:

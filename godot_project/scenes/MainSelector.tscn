@@ -1,0 +1,169 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
+[ext_resource path="res://scripts/MainGamemodeSelector.gd" type="Script" id=2]
+
+[node name="main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -88.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TabContainer" type="TabContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Exercise sets" type="Tabs" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 42.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="Info" type="RichTextLabel" parent="TabContainer/Exercise sets"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 471.0
+margin_top = 10.0
+margin_bottom = -106.0
+bbcode_enabled = true
+bbcode_text = "Description:"
+text = "Description:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Header" type="RichTextLabel" parent="TabContainer/Exercise sets"]
+margin_left = 471.0
+margin_top = 368.0
+margin_right = 1001.0
+margin_bottom = 455.0
+bbcode_enabled = true
+bbcode_text = "Exercise sets are a selection of exercises in no particular order. The game decides for you which exercise comes next"
+text = "Exercise sets are a selection of exercises in no particular order. The game decides for you which exercise comes next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemList" type="ItemList" parent="TabContainer/Exercise sets"]
+anchor_left = 0.005
+anchor_top = 0.005
+anchor_right = 0.443
+anchor_bottom = 0.995
+theme = ExtResource( 1 )
+items = [ "Leg day", null, false, "Ground work", null, false, "Developers choice", null, false, "Strength workout", null, false, "Default", null, false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Workouts" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 42.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="Info" type="RichTextLabel" parent="TabContainer/Workouts"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 471.0
+margin_top = 10.0
+margin_bottom = -118.0
+bbcode_enabled = true
+bbcode_text = "Description:"
+text = "Description:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemList" type="ItemList" parent="TabContainer/Workouts"]
+anchor_left = 0.005
+anchor_top = 0.005
+anchor_right = 0.443
+anchor_bottom = 0.995
+theme = ExtResource( 1 )
+items = [ "Winter game contest", null, false, "High pyramid", null, false, "Low pyramid", null, false, "VRWorkout challenge", null, false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Header" type="RichTextLabel" parent="TabContainer/Workouts"]
+margin_left = 471.0
+margin_top = 368.0
+margin_right = 1001.0
+margin_bottom = 455.0
+bbcode_enabled = true
+bbcode_text = "Workouts are a predefined sequence of exercises. The cues within each exercise are random to keep it interesting."
+text = "Workouts are a predefined sequence of exercises. The cues within each exercise are random to keep it interesting."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Challenges" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 42.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="Header" type="RichTextLabel" parent="TabContainer/Challenges"]
+margin_left = 471.0
+margin_top = 368.0
+margin_right = 1001.0
+margin_bottom = 455.0
+bbcode_enabled = true
+bbcode_text = "Challenges are an exact sequence of cues. Perfect for tracking your progress and for challenging other players."
+text = "Challenges are an exact sequence of cues. Perfect for tracking your progress and for challenging other players."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Info" type="RichTextLabel" parent="TabContainer/Challenges"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 471.0
+margin_top = 10.0
+margin_bottom = -117.0
+bbcode_enabled = true
+bbcode_text = "Description:
+
+
+
+UNDER CONSTRUCTION
+
+PLEASE USE THE BATTLE MENU FOR CHALLENGES FOR NOW"
+text = "Description:
+
+
+
+UNDER CONSTRUCTION
+
+PLEASE USE THE BATTLE MENU FOR CHALLENGES FOR NOW"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemList" type="ItemList" parent="TabContainer/Challenges"]
+anchor_left = 0.005
+anchor_top = 0.005
+anchor_right = 0.443
+anchor_bottom = 0.995
+items = [ "Local challenge 1", null, false, "Local challenge 2", null, false, "Local challenge 3", null, false, "Local challenge 4", null, false, "Online challenge 1", null, false, "Online challenge 2", null, false, "Online challenge 3", null, false, "Online challenge 4", null, false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="item_selected" from="TabContainer/Exercise sets/ItemList" to="." method="_on_ExerciseSets_item_selected"]
+[connection signal="item_selected" from="TabContainer/Workouts/ItemList" to="." method="_on_Workout_item_selected"]

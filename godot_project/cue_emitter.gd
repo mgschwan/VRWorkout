@@ -1,8 +1,7 @@
 extends Spatial
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var gu = GameUtilities.new()
+
 var current_playback_time = 0
 var points = 0
 var hits = 0
@@ -115,22 +114,27 @@ func score_points(hit_points):
 	return hit_points
 
 func score_hit(delta, obj = null):
-	var multiplier = get_parent().run_point_multiplier
-	if obj and "point_multiplier" in obj:
-		multiplier = multiplier * obj.point_multiplier
-	var p = int(200 - min(delta*1000, 200))
-	
-	var hit_points = p * multiplier
-	points += hit_points
-	update_hits(obj.hit_score, true)
-	var pts_color = "green"
-	if multiplier > 1.0:
-		pts_color = "white"
-	point_indicator.emit_text("+%d"%hit_points,pts_color)
+	var p = 0
+	if obj.has_method("hard_enough") and not obj.hard_enough(gu.hardness_level()):
+		score_negative_hits(1)
+	else:	
+		var multiplier = get_parent().run_point_multiplier
+		if obj and "point_multiplier" in obj:
+			multiplier = multiplier * obj.point_multiplier
+			
+		p = int(200 - min(delta*1000, 200))
+		
+		var hit_points = p * multiplier
+		points += hit_points
+		update_hits(obj.hit_score, true)
+		var pts_color = "green"
+		if multiplier > 1.0:
+			pts_color = "white"
+		point_indicator.emit_text("+%d"%hit_points,pts_color)
 
-	update_statistics_element(obj, true, hit_points)
+		update_statistics_element(obj, true, hit_points)
 
-	get_parent().update_info(hits,max_hits,points) 
+		get_parent().update_info(hits,max_hits,points) 
 	return p
 
 

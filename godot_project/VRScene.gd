@@ -175,7 +175,9 @@ func _on_Tracker_removed(tracker_name, type, id):
 			break
 
 func is_hand(name):
-	return (name.to_lower().find("tracked") >= 0 and name.to_lower().find("hand") >= 0)
+	print ("Is hand? %s"%name)
+	var retVal = (name.to_lower().find("tracked") >= 0 and name.to_lower().find("hand") >= 0)
+	return retVal
 			
 func _on_Tracker_added(tracker_name, type, id):
 	print ("Tracker added: %s / %d / %d"%[tracker_name, type, id])	
@@ -220,6 +222,7 @@ func _on_Tracker_added(tracker_name, type, id):
 
 		new_controller.controller_id = id
 		new_controller.hand_mode = is_hand(tracker_name)
+		print ("Controller: Hand mode: %s"%str(new_controller.hand_mode))
 		get_node("ARVROrigin").add_child(new_controller)
 		new_controller.set_detail_select(GameVariables.detail_selection_mode)
 		new_controller.show_hand(GameVariables.hands_visible)
@@ -670,7 +673,7 @@ func _process(delta):
 					t.set_beast_mode(tmp)
 	
 	for t in GameVariables.trackers:
-		if t:	
+		if t and t.hand_mode:	
 			_update_hand_model(t, t.collision_root, t.model, t.last_controller);
 
 	if record_tracker_data and left_controller and right_controller:

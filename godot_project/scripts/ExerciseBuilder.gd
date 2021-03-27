@@ -92,7 +92,7 @@ func adjust_cue_spacing():
 			pass
 
 
-func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", target_cue = null, hit_velocity = null, hit_score = 1.0):
+func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", target_cue = null, hit_velocity = null, hit_score = 1.0, hardness = 0):
 	#Cue IDs have to be generated when they are added to the list so others can reference it
 	if fly_time == 0:
 		fly_time = self.fly_time
@@ -110,7 +110,8 @@ func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_ti
 		"target_cue": target_cue,
 		"hit_velocity": hit_velocity,
 		"hit_score": hit_score,
-		"fly_distance": fly_distance
+		"fly_distance": fly_distance,
+		"hardness": hardness
 		}
 	#print (str(cue_data))
 	gu.insert_cue_sorted(ts, cue_data, cue_emitter_list)
@@ -297,9 +298,9 @@ func setup_cue_parameters(difficulty, ph):
 			"sideplank_cue_space": 2.5 - difficulty/2.0,
 			"sideplank_has_pushup": difficulty > 0.9,
 			CueSelector.HEAD : {
-				"xrange" : 0.4,
-				"yoffset" : 0.25,
-				"yrange" : 0.55
+				"xrange" : "0.4",
+				"yoffset" : "0.13*ph",
+				"yrange" : "0.296*ph"
 			},
 			CueSelector.HAND : {
 			}
@@ -351,29 +352,26 @@ func setup_cue_parameters(difficulty, ph):
 		cue_parameters[CueState.SQUAT][CueSelector.HEAD]["yoffset"] = "ph*0.18"
 
 
+
+	if not cue_parameters[CueState.STAND][CueSelector.HAND]["windmill"]:
+		stand_state_model = model_without_state(stand_state_model_template, StandState.WINDMILL_TOE)
+
+	if not ProjectSettings.get("game/exercise/parcour"):
+		stand_state_model = model_without_state(stand_state_model_template, StandState.PARCOUR)
 	
 	#Easy difficulties don't have double swings
 	if difficulty < 1.0:
-		stand_state_model = model_without_state(stand_state_model_template, StandState.DOUBLE_SWING)
+		stand_state_model = model_without_state(stand_state_model, StandState.DOUBLE_SWING)
 		squat_state_model = model_without_state(squat_state_model_template, SquatState.DOUBLE_SWING)
 		squat_state_model = model_without_state(squat_state_model, SquatState.CROSS_CUT)
 	else:
 		stand_state_model = stand_state_model_template.duplicate(true)
 		squat_state_model = squat_state_model_template.duplicate(true)
 
-	#Parcour is only part of hard and ultra
-	if difficulty < 2.0:
-		stand_state_model = model_without_state(stand_state_model_template, StandState.PARCOUR)
-
 	pushup_state_model = pushup_state_model_template.duplicate(true)
-	#Parcour is only part of hard and ultra
 	if not ProjectSettings.get("game/hold_cues"):
-		pushup_state_model = model_without_state(pushup_state_model, StandState.PARCOUR)
-
-
-
-	if not cue_parameters[CueState.STAND][CueSelector.HAND]["windmill"]:
-		stand_state_model = model_without_state(stand_state_model_template, StandState.WINDMILL_TOE)
+		pushup_state_model = model_without_state(pushup_state_model, PushupState.LEFT_HAND_HOLD)
+		pushup_state_model = model_without_state(pushup_state_model, PushupState.RIGHT_HAND_HOLD)
 
 	stand_state = StandState.REGULAR
 	
@@ -644,9 +642,9 @@ func handle_pushup_cues(current_time, target_time, cue_emitter_state):
 		
 	var node_selector = rng.randi()%100
 
-	var y_head = cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"] + rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"]
+	var y_head = "%s+%f*%s"%[cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"], rng.randf(), cue_parameters[cue_emitter_state][CueSelector.HEAD]["yrange"]]
 	var x = 0.3 + rng.randf() * 0.25
-	var x_head = rng.randf() * cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"] - cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"]/2
+	var x_head = "%f*%s-%s/2"%[rng.randf(), cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"], cue_parameters[cue_emitter_state][CueSelector.HEAD]["xrange"]]
 	var y_hand = 0.3 + rng.randf() * 0.4
 	var y_hold_hand = "0.3+%f*(0.5*ph-0.3)"%(rng.randf())
 	
@@ -849,8 +847,10 @@ func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitte
 		last_double_swing_left = not last_double_swing_left
 	
 func handle_parcour_cues(current_time, target_time, cue_emitter_state, state_change):
-	create_and_attach_cue(current_time,"head_avoid_bar", 0, "1.0", target_time)		
-	temporary_cue_space_extension = 2.0
+	var y_head = "ph/1.071+%f"%cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
+	create_and_attach_cue(current_time,"head", 0, y_head, target_time, 0, 0, "", null, null, 1.0, clamp(int(current_difficulty+1.0),0,3))
+	create_and_attach_cue(current_time+1.0,"head_avoid_bar", 0, "0.8", target_time)		
+	temporary_cue_space_extension = 2.5
 	
 	
 var windmill_left = true

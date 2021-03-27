@@ -14,7 +14,7 @@ var hit_player = null
 
 #############################################################################
 ############################ Activated features #############################
-var FEATURE_MULTIPLAYER = true
+var FEATURE_MULTIPLAYER = false
 
 #Deactivate certain features to meet Oculus Store requirements
 var FEATURE_STORE_COMPATIBILITY = false 
@@ -309,6 +309,8 @@ var predefined_achievements = {
 
 			]
 	}
+	
+var exercise_collection_names = ["Leg work", "Developers choice","Ground work","Strength workout", "Standard"]
 
 var exercise_collections = [
 	[
@@ -422,6 +424,7 @@ var exercise_collections = [
 		 "description": "Strength Focus"
 		},
 	],
+	[],
 ]
 
 var exercise_model = {
