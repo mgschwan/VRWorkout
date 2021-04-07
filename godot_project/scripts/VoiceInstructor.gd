@@ -22,6 +22,8 @@ func say(text):
 			play_sfx("thats_the_spirit")
 		elif text == "you are on a roll":
 			play_sfx("you_are_on_a_roll")
+		elif text == "i want to see those knees higher":
+			play_sfx("i_want_to_see_those_knees_higher")
 		
 
 func play_sfx(name):

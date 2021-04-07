@@ -62,9 +62,9 @@ var controller_energy_factor = 0.2
 var headset_energy_factor = 1.0
 
 var energy_level_low = 1.0
-var energy_level_medium = 1.5
-var energy_level_high = 2.0
-var energy_level_max = 3.5
+var energy_level_medium = 2.0
+var energy_level_high = 3.0
+var energy_level_max = 4.5
 
 var exercise_duration_avg = 20.0
 

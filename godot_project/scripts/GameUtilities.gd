@@ -118,13 +118,16 @@ func update_current_headset_energy(meters_per_second, meters_per_second_vert, me
 	elif GameVariables.player_exercise_state == GameVariables.CueState.CRUNCH:
 		energy = 3.0 * meters_per_second
 	elif GameVariables.player_exercise_state == GameVariables.CueState.SQUAT:
-		energy = 2.0 * (meters_per_second_vert*1.5 + meters_per_second_horiz*0.5)
+		var energy2 = 0
+		if GameVariables.player_height > 0:
+			energy2 = 2.0*clamp ((GameVariables.player_height - current_pos.y)/GameVariables.player_height, 0.0, 1.0)
+		energy = 1.5 * energy2 + meters_per_second_vert*2.0 + meters_per_second_horiz*1.0
 	elif GameVariables.player_exercise_state == GameVariables.CueState.JUMP:
 		energy = 2.5 * meters_per_second
 	elif GameVariables.player_exercise_state == GameVariables.CueState.SPRINT:
 		energy = 3.0 * meters_per_second
 	else:
-		energy = 2.0 * (meters_per_second_vert*1.5 + meters_per_second_horiz*0.5)
+		energy = meters_per_second_vert*2.0 + meters_per_second_horiz*0.5
 
 	GameVariables.current_headset_energy = GameVariables.current_headset_energy*0.4 + 0.6 * energy
 

@@ -93,11 +93,11 @@ func _physics_process(delta):
 	
 	var vert_pos = Vector3(0,self.translation.y,0)
 	var vert_last_pos = Vector3(0,energy_calc_last_pos.y,0)
-	distance_vert_travelled = (vert_pos.distance_to(vert_last_pos))
+	distance_vert_travelled += (vert_pos.distance_to(vert_last_pos))
 	
 	var horiz_pos = Vector3(self.translation.x,0,self.translation.z)
-	var horiz_last_pos = Vector3(energy_calc_last_pos.y,0,energy_calc_last_pos.z)
-	distance_horiz_travelled = (horiz_pos.distance_to(horiz_last_pos))
+	var horiz_last_pos = Vector3(energy_calc_last_pos.x,0,energy_calc_last_pos.z)
+	distance_horiz_travelled += (horiz_pos.distance_to(horiz_last_pos))
 
 	
 	time_elapsed += delta

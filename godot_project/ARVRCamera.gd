@@ -123,18 +123,16 @@ var energy_calc_last_pos = Vector3(0,0,0)
 
 func _physics_process(delta):
 	distance_travelled += (self.translation.distance_to(energy_calc_last_pos))
-
 	var vert_pos = Vector3(0,self.translation.y,0)
 	var vert_last_pos = Vector3(0,energy_calc_last_pos.y,0)
-	distance_vert_travelled = (vert_pos.distance_to(vert_last_pos))
+	distance_vert_travelled += (vert_pos.distance_to(vert_last_pos))
 	
 	var horiz_pos = Vector3(self.translation.x,0,self.translation.z)
-	var horiz_last_pos = Vector3(energy_calc_last_pos.y,0,energy_calc_last_pos.z)
-	distance_horiz_travelled = (horiz_pos.distance_to(horiz_last_pos))
-
+	var horiz_last_pos = Vector3(energy_calc_last_pos.x,0,energy_calc_last_pos.z)
+	distance_horiz_travelled += (horiz_pos.distance_to(horiz_last_pos))
 	time_elapsed += delta
 	energy_calc_last_pos = self.translation
-	if time_elapsed > 1.0:
+	if time_elapsed > 0.5:
 		var meters_per_sec = distance_travelled/time_elapsed
 		var meters_per_sec_horiz = distance_horiz_travelled/time_elapsed
 		var meters_per_sec_vert = distance_vert_travelled/time_elapsed

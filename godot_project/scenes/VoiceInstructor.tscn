@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scripts/VoiceInstructor.gd" type="Script" id=1]
 [ext_resource path="res://audio/instruction_keep_it_up.wav" type="AudioStream" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://audio/instruction_faster.wav" type="AudioStream" id=5]
 [ext_resource path="res://audio/instruction_thats_the_spirit.wav" type="AudioStream" id=6]
 [ext_resource path="res://audio/instruction_you_are_on_a_roll.wav" type="AudioStream" id=7]
+[ext_resource path="res://audio/instruction_knees_higher.wav" type="AudioStream" id=8]
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
@@ -33,4 +34,8 @@ bus = "Voice"
 
 [node name="faster" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
+bus = "Voice"
+
+[node name="i_want_to_see_those_knees_higher" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
 bus = "Voice"

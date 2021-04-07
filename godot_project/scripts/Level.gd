@@ -816,13 +816,21 @@ func play_encouragement():
 		get_node("VoiceInstructor").say("you are on a roll")
 	
 
+var knee_high_ok = true
 func _on_cue_emitter_streak_changed(count):
+	if gu.hardness_level() >= 2:
+		knee_high_ok = true
 	if count > 0 and count % 15 == 0:
 		cue_streak = true
 	if count == 15:
 		if actual_game_state == CueState.SPRINT:
 			if run_point_multiplier >= 3:
-				play_encouragement()
+				if knee_high_ok and gu.hardness_level() < 2:
+					#Player is running fast enough but not using a high knee running
+					$VoiceInstructor.say("i want to see those knees higher")
+					knee_high_ok = false
+				else:
+					play_encouragement()
 			else:
 				get_node("VoiceInstructor").say("faster")
 		else:					
