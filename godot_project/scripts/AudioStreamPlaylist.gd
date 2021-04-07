@@ -54,8 +54,9 @@ func play_current_song():
 		dummy_audio_stream.play()
 		print ("Dummy stream: %.2f"%song_file)
 	elif song_file.find("youtube://") == 0:
-		current_audio_resource = DummyAudioStream.DummyStream.new( root.get_node("YoutubeInterface").default_length)
+		current_audio_resource = DummyAudioStream.DummyStream.new( root.get_node("YoutubeInterface").total_duration)
 		dummy_audio_stream = YoutubeStreamInterface.new()
+		dummy_audio_stream.connect("stream_finished",self,"_on_item_finished")
 		dummy_audio_stream.stream = current_audio_resource
 		add_child(dummy_audio_stream)
 		is_dummy_stream = true
@@ -126,12 +127,12 @@ func load_beatlist (song, offset = 0, duration = 0):
 			beats.append(pos)
 			pos += delta
 
-	print ("Beats pre adjust: %s"%str(beats))
+	#print ("Beats pre adjust: %s"%str(beats))
 
 	for idx in range(len(beats)):
 		beats[idx] = beats[idx] + offset
 
-	print ("Beats post adjust: %s"%str(beats))
+	#print ("Beats post adjust: %s"%str(beats))
 	
 	return beats
 		
@@ -151,7 +152,7 @@ func _init(songs, r):
 		else:
 			if s.find("youtube://") == 0:
 				# audio = YoutubeInterface.stream
-				song_length = root.get_node("YoutubeInterface").default_length
+				song_length = root.get_node("YoutubeInterface").total_duration
 			else:
 				var audio = gu.load_audio_resource(s)
 				song_length = audio.get_length()

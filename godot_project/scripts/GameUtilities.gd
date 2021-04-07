@@ -100,35 +100,58 @@ func load_audio_resource(filename):
 	return resource
 
 
-func update_current_headset_energy(meters_per_second):
-	var energy_adjustment_factor = 1.0
-	if GameVariables.player_exercise_state == GameVariables.CueState.BURPEE or \
-		GameVariables.player_exercise_state == GameVariables.CueState.PUSHUP or \
-		GameVariables.player_exercise_state == GameVariables.CueState.CRUNCH:
-			energy_adjustment_factor = 3.0
+func update_current_headset_energy(meters_per_second, meters_per_second_vert, meters_per_second_horiz, current_pos):
+	var height_adjustment_factor = 1.0
+	if GameVariables.player_height > 0:
+		height_adjustment_factor = 1.8 / GameVariables.player_height
+
+	meters_per_second *= height_adjustment_factor
+	meters_per_second_vert *= height_adjustment_factor
+	meters_per_second_horiz *= height_adjustment_factor
+
+	var energy = 0.0
+	if GameVariables.player_exercise_state == GameVariables.CueState.BURPEE:
+		energy = 2.0 * meters_per_second_vert
+	elif GameVariables.player_exercise_state == GameVariables.CueState.PUSHUP:
+		var energy2 = 2.0*clamp (GameVariables.player_height / 3.0 - current_pos.y, 0.0, 1.0)
+		energy = 2.0 * (meters_per_second_vert + energy2)
+	elif GameVariables.player_exercise_state == GameVariables.CueState.CRUNCH:
+		energy = 3.0 * meters_per_second
 	elif GameVariables.player_exercise_state == GameVariables.CueState.SQUAT:
-		energy_adjustment_factor = 2.0
+		energy = 2.0 * (meters_per_second_vert*1.5 + meters_per_second_horiz*0.5)
 	elif GameVariables.player_exercise_state == GameVariables.CueState.JUMP:
-		energy_adjustment_factor = 2.5
+		energy = 2.5 * meters_per_second
 	elif GameVariables.player_exercise_state == GameVariables.CueState.SPRINT:
-		energy_adjustment_factor = 2.0
+		energy = 3.0 * meters_per_second
+	else:
+		energy = 2.0 * (meters_per_second_vert*1.5 + meters_per_second_horiz*0.5)
 
-	GameVariables.current_headset_energy = GameVariables.current_headset_energy*0.4 + 0.6 * energy_adjustment_factor * meters_per_second
+	GameVariables.current_headset_energy = GameVariables.current_headset_energy*0.4 + 0.6 * energy
 
-func update_current_controller_energy(meters_per_second):
-	var energy_adjustment_factor = 1.0
-	if GameVariables.player_exercise_state == GameVariables.CueState.BURPEE or \
-		GameVariables.player_exercise_state == GameVariables.CueState.PUSHUP or \
+func update_current_controller_energy(meters_per_second, meters_per_second_vert, meters_per_second_horiz, current_pos):
+	var height_adjustment_factor = 1.0
+	if GameVariables.player_height > 0:
+		height_adjustment_factor = 1.8 / GameVariables.player_height
+
+	meters_per_second *= height_adjustment_factor
+	meters_per_second_vert *= height_adjustment_factor
+	meters_per_second_horiz *= height_adjustment_factor
+
+	var energy = 0.0
+	if GameVariables.player_exercise_state == GameVariables.CueState.BURPEE:
+		energy = 1.0 * meters_per_second
+	elif GameVariables.player_exercise_state == GameVariables.CueState.PUSHUP or \
 		GameVariables.player_exercise_state == GameVariables.CueState.CRUNCH:
-			energy_adjustment_factor = 3.0
+		energy = 1.5 * meters_per_second
 	elif GameVariables.player_exercise_state == GameVariables.CueState.SQUAT:
-		energy_adjustment_factor = 1.0
+		energy = 1.0 * meters_per_second
 	elif GameVariables.player_exercise_state == GameVariables.CueState.JUMP:
-		energy_adjustment_factor = 2.5
+		energy = 1.5 * meters_per_second
 	elif GameVariables.player_exercise_state == GameVariables.CueState.SPRINT:
-		energy_adjustment_factor = 0.2
-
-	GameVariables.current_controller_energy = GameVariables.current_controller_energy*0.4 + 0.6 * energy_adjustment_factor * meters_per_second
+		energy = 0
+	else:
+		energy = meters_per_second
+	GameVariables.current_controller_energy = GameVariables.current_controller_energy*0.4 + 0.6 * energy
 
 func get_current_energy():
 	return(GameVariables.current_headset_energy*GameVariables.headset_energy_factor + GameVariables.current_controller_energy*GameVariables.controller_energy_factor)

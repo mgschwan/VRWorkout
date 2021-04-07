@@ -60,8 +60,13 @@ var arvr_open_vr_interface = null;
 var arvr_webxr_interface = null;
 
 func _initialize_OVR_API():
+	print ("Load oculus mobile plugins")
 	# for the types we need to assume it is always available
-	var ovrVrApiTypes = load("res://addons/godot_ovrmobile/OvrVrApiTypes.gd").new();
+	var ovrVrApiTypes = load("res://addons/godot_ovrmobile/OvrVrApiTypes.gd")
+	
+	if (ovrVrApiTypes):
+		print ("OvrVrApiTypes.gd loaded")
+		ovrVrApiTypes = ovrVrApiTypes.new();
 	# load the .gdns classes.
 	ovr_display_refresh_rate = load("res://addons/godot_ovrmobile/OvrDisplay.gdns");
 	ovr_guardian_system = load("res://addons/godot_ovrmobile/OvrGuardianSystem.gdns");
@@ -72,15 +77,36 @@ func _initialize_OVR_API():
 	ovr_hand_tracking = load("res://addons/godot_ovrmobile/OvrHandTracking.gdns");
 	ovr_vr_api_proxy = load("res://addons/godot_ovrmobile/OvrVrApiProxy.gdns");
 
+
+
 	# and now instance the .gdns classes for use if load was successfull
-	if (ovr_display_refresh_rate): ovr_display_refresh_rate = ovr_display_refresh_rate.new()
-	if (ovr_guardian_system): ovr_guardian_system = ovr_guardian_system.new()
-	if (ovr_init_config): ovr_init_config = ovr_init_config.new()
-	if (ovr_performance): ovr_performance = ovr_performance.new()
-	if (ovr_tracking_transform): ovr_tracking_transform = ovr_tracking_transform.new()
-	if (ovr_utilities): ovr_utilities = ovr_utilities.new()
-	if (ovr_hand_tracking): ovr_hand_tracking = ovr_hand_tracking.new()
-	if (ovr_vr_api_proxy): ovr_vr_api_proxy = ovr_vr_api_proxy.new()
+	if (ovr_display_refresh_rate): 
+		print ("OvrDisplay.gdns loaded")
+		ovr_display_refresh_rate = ovr_display_refresh_rate.new()
+	if (ovr_guardian_system): 
+		print ("OvrGuardianSystem.gdns loaded")
+		ovr_guardian_system = ovr_guardian_system.new()
+	if (ovr_init_config): 
+		print ("OvrInitConfig.gdns loaded")
+		ovr_init_config = ovr_init_config.new()
+	if (ovr_performance): 
+		print ("OvrPerformance.gdns loaded")
+		ovr_performance = ovr_performance.new()
+	if (ovr_tracking_transform): 
+		print ("OvrTrackingTransform.gdns loaded")
+		ovr_tracking_transform = ovr_tracking_transform.new()
+	if (ovr_utilities): 
+		print ("OvrUtilities.gdns loaded")
+		ovr_utilities = ovr_utilities.new()
+	if (ovr_hand_tracking): 
+		print ("OvrHandTracking.gdns loaded")
+		ovr_hand_tracking = ovr_hand_tracking.new()
+	if (ovr_vr_api_proxy): 
+		print ("OvrVrApiProxy.gdns loaded")
+		ovr_vr_api_proxy = ovr_vr_api_proxy.new()
+	print ("Load oculus mobile plugins ... done")
+
+
 
 func handle_mobile_permissions():
 	print ("Checking permissions")
@@ -680,7 +706,7 @@ func _process(delta):
 		tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
 
 	update_rate_limiter += 1
-	if update_rate_limiter > 50:
+	if update_rate_limiter > 100:
 		update_rate_limiter = 0
 		print ("Total energy: %.2f"%gu.get_current_energy())
 

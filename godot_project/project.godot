@@ -83,7 +83,8 @@ singletons_disabled=[  ]
 
 [logging]
 
-file_logging/log_path="user://vrworkout_log.txt"
+file_logging/enable_file_logging=true
+file_logging/log_path="/sdcard/vrworkout_log.txt"
 
 [rendering]
 

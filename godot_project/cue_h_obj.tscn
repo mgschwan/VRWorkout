@@ -20,74 +20,66 @@ tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = PoolRealArray(  )
 tracks/1/type = "bezier"
-tracks/1/path = NodePath("../Circle:scale:x")
+tracks/1/path = NodePath("../Circle:rotation_degrees:x")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"points": PoolRealArray( 0.05, -0.25, 0, 0.25, 0, 0.01, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.401 )
+"points": PoolRealArray( 90, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
 }
 tracks/2/type = "bezier"
-tracks/2/path = NodePath("../Circle:scale:y")
+tracks/2/path = NodePath("../Circle:rotation_degrees:y")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"points": PoolRealArray( 0.1, -0.25, 0, 0.25, 0, 0.01, -0.25, 0, 0.25, 0, 0.01, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.4, 0.401 )
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
 }
 tracks/3/type = "bezier"
-tracks/3/path = NodePath("../Circle:rotation_degrees:x")
+tracks/3/path = NodePath("../Circle:rotation_degrees:z")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"points": PoolRealArray( 90, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
+"points": PoolRealArray( 0, -0.25, 0, 0.15, 123.744, 335.251, -0.06, -93.312, 0.25, 0, 360, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.4, 0.401 )
 }
-tracks/4/type = "bezier"
-tracks/4/path = NodePath("../Circle:rotation_degrees:y")
+tracks/4/type = "value"
+tracks/4/path = NodePath("../Circle:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
-}
-tracks/5/type = "bezier"
-tracks/5/path = NodePath("../Circle:rotation_degrees:z")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.15, 123.744, 335.251, -0.06, -93.312, 0.25, 0, 360, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.4, 0.401 )
-}
-tracks/6/type = "value"
-tracks/6/path = NodePath("../Circle:visible")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/keys = {
 "times": PoolRealArray( 0, 0.3, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ true, true, false ]
 }
-tracks/7/type = "transform"
-tracks/7/path = NodePath("../Circle")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = PoolRealArray(  )
+tracks/5/type = "transform"
+tracks/5/path = NodePath("../Circle")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = PoolRealArray(  )
+tracks/6/type = "value"
+tracks/6/path = NodePath(".:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.05, 0.05, 0.05 ), Vector3( 0.0100002, 0.01, 0.01 ) ]
+}
 
 [sub_resource type="Animation" id=2]
 length = 0.1
@@ -206,7 +198,7 @@ script = ExtResource( 3 )
 cue_left = false
 
 [node name="Circle" type="MeshInstance" parent="."]
-transform = Transform( 0.038, 0, 0, 0, -2.18557e-09, -0.038, 0, 0.05, -1.66103e-09, 0, 0, 0 )
+transform = Transform( 0.05, 0, 0, 0, -2.18557e-09, -0.05, 0, 0.05, -2.18557e-09, 0, 0, 0 )
 
 [node name="TargetTimer" parent="Circle" instance=ExtResource( 5 )]
 transform = Transform( 20, 0, 0, 0, -4.37114e-07, 10, 0, -20, -8.74228e-07, 0, 0, 0 )
@@ -235,6 +227,7 @@ transform = Transform( 1, 0, 0, 0, -2.14369e-07, -0.76, 0, 1.31579, -1.2382e-07,
 
 [node name="hold_indicator" type="MeshInstance" parent="Circle/hold"]
 transform = Transform( 1, 0, 0, 0, 1, -2.84217e-14, 0, 0, 1, 0, -2.01948, -2.19544e-07 )
+visible = false
 mesh = SubResource( 5 )
 material/0 = null
 

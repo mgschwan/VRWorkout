@@ -1,0 +1,131 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
+[ext_resource path="res://fonts/Droid_Sans_Bold_Big.tres" type="DynamicFont" id=2]
+[ext_resource path="res://fonts/Droid_Sans_Bold_medium.tres" type="DynamicFont" id=3]
+[ext_resource path="res://fonts/Droid_Sans_Regular_medium.tres" type="DynamicFont" id=4]
+[ext_resource path="res://fonts/Droid_Sans_Regular_big.tres" type="DynamicFont" id=5]
+[ext_resource path="res://scripts/Onboarding.gd" type="Script" id=6]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 6 )
+
+[node name="TabContainer" type="TabContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1024.0
+margin_bottom = 604.0
+theme = ExtResource( 1 )
+tabs_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Onboarding1" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="Next" type="Button" parent="TabContainer/Onboarding1"]
+anchor_right = 0.099
+margin_left = 641.0
+margin_top = 511.898
+margin_right = 809.614
+margin_bottom = 572.898
+custom_fonts/font = ExtResource( 5 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Onboarding1"]
+anchor_left = 0.009
+anchor_top = 0.019
+anchor_right = 0.953
+anchor_bottom = 0.785
+margin_left = 16.7661
+margin_top = 183.714
+margin_right = 22.5501
+margin_bottom = -93.29
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[i][b]We are very happy to have you in our VR workout app called VRWorkout[/b][/i]   [img]res://assets/winking_smiley.png[/img]
+"
+text = "We are very happy to have you in our VR workout app called VRWorkout   
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SkipIntro" type="Button" parent="TabContainer/Onboarding1"]
+anchor_right = 0.099
+margin_left = 81.0
+margin_top = 511.898
+margin_right = 249.614
+margin_bottom = 572.898
+custom_fonts/font = ExtResource( 5 )
+text = "Skip Intro"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Onboarding2" type="Tabs" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Onboarding2"]
+anchor_left = 0.009
+anchor_top = 0.019
+anchor_right = 0.953
+anchor_bottom = 0.785
+margin_left = 16.874
+margin_top = 15.714
+margin_right = 22.658
+margin_bottom = 9.70999
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 5 )
+bbcode_enabled = true
+bbcode_text = "This app is full of interesting and innovative features. We would like a few moments to explaing them to you"
+text = "This app is full of interesting and innovative features. We would like a few moments to explain them to you.
+
+You can always skip this, but you will miss some pretty important knowledge, so please take the time to go through it"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SkipIntro" type="Button" parent="TabContainer/Onboarding2"]
+anchor_right = 0.099
+margin_left = 81.0
+margin_top = 511.898
+margin_right = 249.614
+margin_bottom = 572.898
+custom_fonts/font = ExtResource( 5 )
+text = "Skip Intro"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Next" type="Button" parent="TabContainer/Onboarding2"]
+anchor_right = 0.099
+margin_left = 641.0
+margin_top = 511.898
+margin_right = 809.614
+margin_bottom = 572.898
+custom_fonts/font = ExtResource( 5 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="TabContainer/Onboarding1/Next" to="." method="_on_Next_pressed" binds= [ 1 ]]

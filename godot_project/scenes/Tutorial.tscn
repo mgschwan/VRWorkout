@@ -1,0 +1,438 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://themes/plain_readable_theme.theme" type="Theme" id=1]
+[ext_resource path="res://assets/tutorial/hand_cue.png" type="Texture" id=2]
+[ext_resource path="res://scripts/Tutorial.gd" type="Script" id=3]
+[ext_resource path="res://assets/tutorial/head_cue.png" type="Texture" id=4]
+[ext_resource path="res://assets/tutorial/head_avoid.png" type="Texture" id=5]
+[ext_resource path="res://assets/tutorial/squat_avoid.png" type="Texture" id=6]
+[ext_resource path="res://assets/tutorial/hold_cue.png" type="Texture" id=7]
+[ext_resource path="res://assets/tutorial/head_stars.png" type="Texture" id=8]
+[ext_resource path="res://assets/tutorial/parcour_avoid.png" type="Texture" id=9]
+[ext_resource path="res://assets/tutorial/sprint_cue.png" type="Texture" id=10]
+[ext_resource path="res://assets/tutorial/avatars.png" type="Texture" id=11]
+[ext_resource path="res://assets/tutorial/main_position.png" type="Texture" id=12]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[node name="Tutorial" type="Control"]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TabContainer" type="TabContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 512.0
+margin_bottom = 512.0
+theme = ExtResource( 1 )
+custom_styles/panel = SubResource( 1 )
+tabs_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Page10" type="Tabs" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Description" type="RichTextLabel" parent="TabContainer/Page10"]
+margin_right = 380.0
+margin_bottom = 392.0
+bbcode_enabled = true
+bbcode_text = "[center]Position yourself between the green poles during exercise
+
+Always keep track of your position to avoid drifting into real world obstacles
+
+Enable the \"safe pushups\" option in the settings to get a monitor in the floor showing the view from the top of your head. This minimzes the time you need to strain your neck while looking for new cues[center]"
+text = "Position yourself between the green poles during exercise
+
+Always keep track of your position to avoid drifting into real world obstacles
+
+Enable the \"safe pushups\" option in the settings to get a monitor in the floor showing the view from the top of your head. This minimzes the time you need to strain your neck while looking for new cues"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="TextureRect" parent="TabContainer/Page10"]
+margin_left = 391.735
+margin_top = 1.51472
+margin_right = 491.735
+margin_bottom = 101.515
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Page9" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Description" type="RichTextLabel" parent="TabContainer/Page9"]
+margin_right = 384.0
+margin_bottom = 392.0
+bbcode_enabled = true
+bbcode_text = "[center]The avatars are meant to keep you company
+
+They don't show the actual exercises but only a rough approximation of the position you should be in
+
+Standing or Running - Squats - Jumping - Situps - Pushups - Burpees
+
+Where possible you can always run instead of standing to get point multipliers[center]"
+text = "The avatars are meant to keep you company
+
+They don't show the actual exercises but only a rough approximation of the position you should be in
+
+Standing or Running - Squats - Jumping - Situps - Pushups - Burpees
+
+Where possible you can always run instead of standing to get point multipliers"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="TextureRect" parent="TabContainer/Page9"]
+margin_left = 391.735
+margin_top = 1.51472
+margin_right = 491.735
+margin_bottom = 101.515
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Page1" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Description" type="RichTextLabel" parent="TabContainer/Page1"]
+margin_right = 380.0
+margin_bottom = 380.0
+bbcode_enabled = true
+bbcode_text = "[center]Hand cues are the most basic element in VRWorkout
+
+Tap them with your hands to get points
+
+You don't need to hit them hard, a slight tap is enough but simply holding your hand in place is not
+
+To get the maximum score try to hit the cue when the rotating bracket has completed it's circle[/center]"
+text = "Hand cues are the most basic element in VRWorkout
+
+Tap them with your hands to get points
+
+You don't need to hit them hard, a slight tap is enough but simply holding your hand in place is not
+
+To get the maximum score try to hit the cue when the rotating bracket has completed it's circle"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="TextureRect" parent="TabContainer/Page1"]
+margin_left = 391.735
+margin_top = 1.51472
+margin_right = 491.735
+margin_bottom = 101.515
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Page2" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Description" type="RichTextLabel" parent="TabContainer/Page2"]
+margin_right = 380.0
+margin_bottom = 380.0
+bbcode_enabled = true
+bbcode_text = "[center]This guides your head into the correct position
+
+Touch the object with your head but don't hit it (no headbutts)
+
+The colored spikes show the intended position of your body (below or rotated to the side)
+
+This cue is very forgiving, you don't need to actually look through it, just get close enough to score[/center]"
+text = "This guides your head into the correct position
+
+Touch the object with your head but don't hit it (no headbutts)
+
+The colored spikes show the intended position of your body (below or rotated to the side)
+
+This cue is very forgiving, you don't need to actually look through it, just get close enough to score"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="TextureRect" parent="TabContainer/Page2"]
+margin_left = 391.735
+margin_top = 1.51472
+margin_right = 491.735
+margin_bottom = 101.515
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Page3" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Description" type="RichTextLabel" parent="TabContainer/Page3"]
+margin_right = 380.0
+margin_bottom = 380.0
+bbcode_enabled = true
+bbcode_text = "[center]Those cues have to be avoided by your head
+
+They are mostly used for ducking, with a regular head cue following immediately after
+
+So duck under them and touch the following head cue with your head
+
+They don't interact with your hands so it's safe to move your hands through them[/center]"
+text = "Those cues have to be avoided by your head
+
+They are mostly used for ducking, with a regular head cue following immediately after
+
+So duck under them and touch the following head cue with your head
+
+They don't interact with your hands so it's safe to move your hands through them"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="TextureRect" parent="TabContainer/Page3"]
+margin_left = 391.735
+margin_top = 1.51472
+margin_right = 491.735
+margin_bottom = 101.515
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Page8" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Description" type="RichTextLabel" parent="TabContainer/Page8"]
+margin_right = 380.0
+margin_bottom = 392.0
+bbcode_enabled = true
+bbcode_text = "[center]Run in place as fast as you can.
+
+The speedometer shows your running speed
+
+The faster you run the more points you will get
+
+Make sure that you run at least at a pace of 7 ( seven )
+[center]"
+text = "Run in place as fast as you can.
+
+The speedometer shows your running speed
+
+The faster you run the more points you will get
+
+Make sure that you run at least at a pace of 7 ( seven )
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="TextureRect" parent="TabContainer/Page8"]
+margin_left = 391.735
+margin_top = 1.51472
+margin_right = 491.735
+margin_bottom = 101.515
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Page4" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Description" type="RichTextLabel" parent="TabContainer/Page4"]
+margin_right = 380.0
+margin_bottom = 380.0
+bbcode_enabled = true
+bbcode_text = "[center]This limits your standing height during squat exercises
+
+Keep your head below those cues
+
+If your head touches the block you will lose points
+
+They do not interact with your hands so it's safe to move your hands through them[center]"
+text = "This limits your standing height during squat exercises
+
+Keep your head below those cues
+
+If your head touches the block you will lose points
+
+They do not interact with your hands so it's safe to move your hands through them"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="TextureRect" parent="TabContainer/Page4"]
+margin_left = 391.735
+margin_top = 1.51472
+margin_right = 491.735
+margin_bottom = 101.515
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Page5" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Description" type="RichTextLabel" parent="TabContainer/Page5"]
+margin_right = 380.0
+margin_bottom = 392.0
+bbcode_enabled = true
+bbcode_text = "[center]Touch and hold with your hand
+
+They are meant to guide your body into a slight rotational movement
+
+Once you start touching them the outer rings will rotate from \"hold\" to \"done\" and it will make a \"pop\" sound once it's complete
+
+They are hard to get right at first but keep trying. You will need about one arms length to complete[center]"
+text = "Touch and hold with your hand
+
+They are meant to guide your body into a slight rotational movement
+
+Once you start touching them the outer rings will rotate from \"hold\" to \"done\" and it will make a \"pop\" sound once it's complete
+
+They are hard to get right at first but keep trying. You will need about one arms length to complete"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="TextureRect" parent="TabContainer/Page5"]
+margin_left = 391.735
+margin_top = 1.51472
+margin_right = 491.735
+margin_bottom = 101.515
+texture = ExtResource( 7 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Page6" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Description" type="RichTextLabel" parent="TabContainer/Page6"]
+margin_right = 380.0
+margin_bottom = 392.0
+bbcode_enabled = true
+bbcode_text = "[center]High energy head cues require the energy gauge to have at least as many stars as the head cue shows
+
+If you see such a queue try to move as much as possible before hitting them
+
+If you don't have enough energy when hitting them you will lose points[center]"
+text = "High energy head cues require the energy gauge to have at least as many stars as the head cue shows
+
+If you see such a queue try to move as much as possible before hitting them
+
+If you don't have enough energy when hitting them you will lose points"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="TextureRect" parent="TabContainer/Page6"]
+margin_left = 391.735
+margin_top = 1.51472
+margin_right = 491.735
+margin_bottom = 101.515
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Page7" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Description" type="RichTextLabel" parent="TabContainer/Page7"]
+margin_right = 380.0
+margin_bottom = 392.0
+bbcode_enabled = true
+bbcode_text = "[center]Parcour cues show you the space where it's safe to pass
+
+Always try to keep your body on the side the arrows are pointing to
+
+If they are close to the floor you have to hit the deck as quickly as possible to get by them[center]"
+text = "Parcour cues show you the space where it's safe to pass
+
+Always try to keep your body on the side the arrows are pointing to
+
+If they are close to the floor you have to hit the deck as quickly as possible to get by them"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Image" type="TextureRect" parent="TabContainer/Page7"]
+margin_left = 391.735
+margin_top = 1.51472
+margin_right = 491.735
+margin_bottom = 101.515
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NextButton" type="Button" parent="."]
+margin_left = 365.0
+margin_top = 396.0
+margin_right = 496.0
+margin_bottom = 455.0
+theme = ExtResource( 1 )
+text = "NEXT"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PreviousButton" type="Button" parent="."]
+margin_left = 14.0
+margin_top = 396.0
+margin_right = 145.0
+margin_bottom = 455.0
+theme = ExtResource( 1 )
+text = "PREVIOUS"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="NextButton" to="." method="_on_NextButton_pressed"]
+[connection signal="pressed" from="PreviousButton" to="." method="_on_PreviousButton_pressed"]

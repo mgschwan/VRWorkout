@@ -248,7 +248,7 @@ func setup_difficulty(diff, auto_difficulty = false, avg_hr=0, target_hr=0):
 		level_min_state_duration = GameVariables.exercise_duration_avg - d * 2.5 
 	
 	beast_chance = 0.1 + d/10.0
-	level_min_cue_space = 1.5 - d*0.6
+	level_min_cue_space = 1.2 - d*0.45
 	fly_time = 3.5-(d/2	)
 	
 			
@@ -312,7 +312,7 @@ func setup_cue_parameters(difficulty, ph):
 				"yrange": 0.1
 			},
 			CueSelector.HAND : {
-				"rotation_range": difficulty*35, #increase core rotation with difficulty
+				"rotation_range": difficulty*60, #increase core rotation with difficulty
 				"xrange" : 0.1,
 				"xspread" : max(0.1, 0.2 - difficulty/10.0), #If core rotation increases, decrease spread
 				"yoffset" : "ph*0.526+%f*ph/20.0"%difficulty,
@@ -351,8 +351,6 @@ func setup_cue_parameters(difficulty, ph):
 	if kneesaver_mode:
 		cue_parameters[CueState.SQUAT][CueSelector.HEAD]["yoffset"] = "ph*0.18"
 
-
-
 	if not cue_parameters[CueState.STAND][CueSelector.HAND]["windmill"]:
 		stand_state_model = model_without_state(stand_state_model_template, StandState.WINDMILL_TOE)
 
@@ -365,13 +363,14 @@ func setup_cue_parameters(difficulty, ph):
 		squat_state_model = model_without_state(squat_state_model_template, SquatState.DOUBLE_SWING)
 		squat_state_model = model_without_state(squat_state_model, SquatState.CROSS_CUT)
 	else:
-		stand_state_model = stand_state_model_template.duplicate(true)
+		stand_state_model = stand_state_model.duplicate(true)
 		squat_state_model = squat_state_model_template.duplicate(true)
 
 	pushup_state_model = pushup_state_model_template.duplicate(true)
-	if not ProjectSettings.get("game/hold_cues"):
+	if not ProjectSettings.get("game/exercise/hold_cues"):
 		pushup_state_model = model_without_state(pushup_state_model, PushupState.LEFT_HAND_HOLD)
 		pushup_state_model = model_without_state(pushup_state_model, PushupState.RIGHT_HAND_HOLD)
+		stand_state_model = model_without_state(stand_state_model, StandState.HOLD_CUE)
 
 	stand_state = StandState.REGULAR
 	
@@ -651,9 +650,9 @@ func handle_pushup_cues(current_time, target_time, cue_emitter_state):
 	if pushup_state == PushupState.REGULAR:
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time)
 	elif pushup_state == PushupState.LEFT_HAND:
-			var n = create_and_attach_cue(current_time, "left", -x,y_hand, target_time, -hand_cue_offset,0,"onehanded")
+			var n = create_and_attach_cue(current_time, "left", -x,y_hand, target_time, -hand_cue_offset,0,"onehanded",null,-1.0)
 	elif pushup_state == PushupState.RIGHT_HAND:
-			var n = create_and_attach_cue(current_time,"right", x,y_hand, target_time, -hand_cue_offset,0,"onehanded")
+			var n = create_and_attach_cue(current_time,"right", x,y_hand, target_time, -hand_cue_offset,0,"onehanded", null, -1.0)
 	elif pushup_state == PushupState.LEFT_HAND_HOLD:
 		create_and_attach_cue(current_time,"left_hold", "-ph*0.33", y_hold_hand, target_time, -hand_cue_offset, 0,"onehanded")
 		temporary_cue_space_extension += 0.5
@@ -673,10 +672,10 @@ func handle_pushup_cues(current_time, target_time, cue_emitter_state):
 				
 		if pushup_state == PushupState.LEFT_SIDEPLANK:
 			create_and_attach_cue(current_time,"head_left", "%s-0.3"%str(x_head), y_head, target_time,0,0,"sideplank")
-			create_and_attach_cue(current_time,"right", x, y_hand, target_time+hand_delay, -hand_delay * dd_df,0,"sideplank")
+			create_and_attach_cue(current_time,"right", x, y_hand, target_time+hand_delay, -hand_delay * dd_df,0,"sideplank", null, -1.0)
 		else:
 			create_and_attach_cue(current_time,"head_right", "%s+0.3"%str(x_head), y_head, target_time,0,0,"sideplank")
-			create_and_attach_cue(current_time,"left", x, y_hand, target_time + hand_delay, -hand_delay * dd_df,0,"sideplank")
+			create_and_attach_cue(current_time,"left", x, y_hand, target_time + hand_delay, -hand_delay * dd_df,0,"sideplank", null, -1.0)
 		if cue_parameters[cue_emitter_state]["sideplank_has_pushup"]:
 			var tmp = 3*temporary_cue_space_extension / 4.0
 			create_and_attach_cue(current_time + tmp,"head", 0, cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"], target_time+tmp,0,0,"sideplank")
@@ -802,10 +801,22 @@ func handle_stand_cues(current_time,target_time,cue_emitter_state):
 		handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, stand_state_model_changed)
 	elif stand_state == StandState.PARCOUR:
 		handle_parcour_cues(current_time, target_time, cue_emitter_state, stand_state_model_changed)
+	elif stand_state == StandState.HOLD_CUE:
+		handle_hold_cues(current_time, target_time, "ph*0.8", cue_emitter_state, stand_state_model_changed)
 	else:
 		handle_stand_cues_regular(current_time, target_time, cue_emitter_state)
 
 	stand_state_model_changed = false
+
+var stand_hold_left = true
+func handle_hold_cues(current_time, target_time, y_hold_hand, cue_emitter_state, stand_state_model_changed):
+	stand_hold_left = not stand_hold_left
+	if stand_hold_left:
+		create_and_attach_cue(current_time,"right_hold", "ph*0.33", y_hold_hand, target_time, -hand_cue_offset, 0,"onehanded")
+	else:
+		create_and_attach_cue(current_time,"left_hold", "-ph*0.33", y_hold_hand, target_time, -hand_cue_offset, 0,"onehanded")
+	temporary_cue_space_extension += 0.5 - current_difficulty/10.0
+
 
 func get_double_swing_y(y_hand_base, high):
 	var y_hand
@@ -848,7 +859,7 @@ func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitte
 	
 func handle_parcour_cues(current_time, target_time, cue_emitter_state, state_change):
 	var y_head = "ph/1.071+%f"%cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
-	create_and_attach_cue(current_time,"head", 0, y_head, target_time, 0, 0, "", null, null, 1.0, clamp(int(current_difficulty+1.0),0,3))
+	create_and_attach_cue(current_time,"head", 0, y_head, target_time, 0, 0, "", null, null, 1.0, clamp(int(current_difficulty),0,3))
 	create_and_attach_cue(current_time+1.0,"head_avoid_bar", 0, "0.8", target_time)		
 	temporary_cue_space_extension = 2.5
 	
@@ -865,11 +876,13 @@ func handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, st
 
 	var y_hand1 = "ph"
 	var y_hand2 = "ph*1.13"
+	var y_head2 = "ph*1.13-0.3"
 	var y_hand3 = "ph*0.6"
 	
 	if not windmill_high:
 		y_hand1 = "ph*0.8"
 		y_hand2 = "ph*0.6"
+		y_head2 = "ph*0.6+0.3"
 		y_hand3 = "ph"
 	
 	var x_hand = "ph*0.4"
@@ -881,11 +894,16 @@ func handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, st
 		var n_id = create_and_attach_cue(current_time,"left", "-%s"%x_hand,y_hand1, target_time, -hand_cue_offset)
 		var n2_id = create_and_attach_cue(current_time+double_punch_delay*0.4,"left", "0.1666*%s"%x_hand, y_hand2, target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
 		var n3_id = create_and_attach_cue(current_time+double_punch_delay,"left", x_hand, y_hand3, target_time+double_punch_delay , -hand_cue_offset,0,"",n2_id)
+		if current_difficulty >= 1.5:
+			create_and_attach_cue(current_time+double_punch_delay*0.4,"head", "0.1666*%s"%x_hand, y_head2, target_time+double_punch_delay)
 	else:
 		var n_id = create_and_attach_cue(current_time,"right", x_hand,y_hand1, target_time, -hand_cue_offset)
 		var n2_id = create_and_attach_cue(current_time+double_punch_delay*0.4,"right", "-0.1666*%s"%x_hand, y_hand2, target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
 		var n3_id = create_and_attach_cue(current_time+double_punch_delay,"right", "-%s"%x_hand, y_hand3, target_time+double_punch_delay , -hand_cue_offset,0,"",n2_id)
-
+		if current_difficulty >= 1.5:
+			create_and_attach_cue(current_time+double_punch_delay*0.4,"head", "-0.1666*%s"%x_hand, y_head2, target_time+double_punch_delay)	
+		
+		
 	windmill_left = not windmill_left
 	windmill_high = not windmill_high
 	temporary_cue_space_extension = double_punch_delay + 0.25

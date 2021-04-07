@@ -104,7 +104,9 @@ func _physics_process(delta):
 	energy_calc_last_pos = self.translation
 	if time_elapsed > 1.0:
 		var meters_per_sec = distance_travelled/time_elapsed
-		gu.update_current_controller_energy(meters_per_sec)
+		var meters_per_sec_horiz = distance_horiz_travelled/time_elapsed
+		var meters_per_sec_vert = distance_vert_travelled/time_elapsed
+		gu.update_current_controller_energy(meters_per_sec, meters_per_sec_vert, meters_per_sec_horiz, self.translation)
 		distance_travelled = 0
 		distance_vert_travelled = 0
 		distance_horiz_travelled = 0
@@ -125,8 +127,7 @@ func _process(delta):
 				model.set_info("")
 		else:
 			model.set_info(gu.get_wall_time_str())
-		
-		
+				
 		if hand_mode:
 			var source = get_node("Area/hand_model").get_ball_attachment()
 			var source_root = get_node("Area/hand_model").get_root()

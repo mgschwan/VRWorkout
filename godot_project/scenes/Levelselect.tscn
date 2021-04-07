@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=2]
+[gd_scene load_steps=64 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -21,9 +21,7 @@
 [ext_resource path="res://scenes/StatisticsPanel.tscn" type="PackedScene" id=22]
 [ext_resource path="res://SongSelector.tscn" type="PackedScene" id=23]
 [ext_resource path="res://scenes/Button.tscn" type="PackedScene" id=24]
-[ext_resource path="res://ExerciseCollection.tscn" type="PackedScene" id=25]
 [ext_resource path="res://scenes/PlayerHeightAdjuster.tscn" type="PackedScene" id=26]
-[ext_resource path="res://scenes/PresetCollection.tscn" type="PackedScene" id=27]
 [ext_resource path="res://scenes/VRWorkoutConnection.tscn" type="PackedScene" id=28]
 [ext_resource path="res://CircularGauge.tscn" type="PackedScene" id=29]
 [ext_resource path="res://fonts/Droid_Sans_Regular.tres" type="DynamicFont" id=30]
@@ -149,9 +147,6 @@ resource_local_to_scene = true
 flags_unshaded = true
 albedo_texture = SubResource( 16 )
 
-[sub_resource type="PrismMesh" id=18]
-size = Vector3( 0.03, 0.03, 0.03 )
-
 [sub_resource type="GDScript" id=19]
 script/source = "extends Spatial
 
@@ -233,6 +228,9 @@ viewport_path = NodePath("SettingsCarousel/Battle/Header/Viewport")
 resource_local_to_scene = true
 flags_unshaded = true
 albedo_texture = SubResource( 26 )
+
+[sub_resource type="PrismMesh" id=18]
+size = Vector3( 0.03, 0.03, 0.03 )
 
 [node name="Spatial" type="Spatial"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 1.6 )
@@ -400,71 +398,11 @@ text = "[center]Average exercise duration in seconds[/center]"
 [node name="Exercises" type="Spatial" parent="SettingsCarousel"]
 transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, -1.19209e-07, 0, -0.225055 )
 
+[node name="GamePanel" parent="SettingsCarousel/Exercises" instance=ExtResource( 3 )]
+transform = Transform( -9.77524e-08, -1, 2.62268e-08, 0, -4.37114e-08, -0.6, 0.6, -1.62921e-07, 4.27289e-15, -1.06927, 1.47353, -0.147542 )
+
 [node name="EnvironmentSelectionPanel" parent="SettingsCarousel/Exercises" instance=ExtResource( 43 )]
-transform = Transform( -8.02679e-08, -1, 8.74228e-09, 0, -4.37114e-08, -0.2, 0.2, -4.01339e-07, 3.50862e-15, -1.05373, 1.14977, 0.249988 )
-
-[node name="ExerciseCollection" parent="SettingsCarousel/Exercises" instance=ExtResource( 25 )]
-transform = Transform( -6.24658e-08, -1, -5.24537e-09, 0, -4.37114e-08, 0.12, -0.12, 5.20549e-07, 2.73047e-15, -1.05, 1.435, -0.598759 )
-exercise_name = "Leg day"
-active_marker = "WorkoutMarker"
-
-[node name="PresetCollector" parent="SettingsCarousel/Exercises" instance=ExtResource( 27 )]
-transform = Transform( -6.24658e-08, -1, -5.24537e-09, 0, -4.37114e-08, 0.12, -0.12, 5.20549e-07, 2.73047e-15, -1.05, 1.77784, -0.346438 )
-header_logo = "res://assets/vrworkout_logo.png"
-exercise_name = "High pyramid"
-active_marker = "WorkoutMarker"
-
-[node name="PresetCollector4" parent="SettingsCarousel/Exercises" instance=ExtResource( 27 )]
-transform = Transform( -6.24658e-08, -1, -5.24537e-09, 0, -4.37114e-08, 0.12, -0.12, 5.20549e-07, 2.73047e-15, -1.05, 1.77784, -0.602097 )
-header_logo = "res://assets/winter_games_header.png"
-exercise_name = "VAL Winter Games"
-active_marker = "WorkoutMarker"
-achievements = "valwintergames"
-
-[node name="PresetCollector2" parent="SettingsCarousel/Exercises" instance=ExtResource( 27 )]
-transform = Transform( -6.24658e-08, -1, -5.24537e-09, 0, -4.37114e-08, 0.12, -0.12, 5.20549e-07, 2.73047e-15, -1.0504, 1.778, -0.0921719 )
-header_logo = "res://assets/vrworkout_logo.png"
-exercise_name = "Low pyramid"
-active_marker = "WorkoutMarker"
-
-[node name="PresetCollector3" parent="SettingsCarousel/Exercises" instance=ExtResource( 27 )]
-transform = Transform( -6.24658e-08, -1, -5.24537e-09, 0, -4.37114e-08, 0.12, -0.12, 5.20549e-07, 2.73047e-15, -1.05, 1.778, 0.163898 )
-header_logo = "res://assets/vrworkout_logo.png"
-exercise_name = "VRWorkout challenge"
-active_marker = "WorkoutMarker"
-
-[node name="StandardWorkout" parent="SettingsCarousel/Exercises" instance=ExtResource( 27 )]
-transform = Transform( -6.24658e-08, -1, -5.24537e-09, 0, -4.37114e-08, 0.12, -0.12, 5.20549e-07, 2.73047e-15, -1.0504, 1.778, 0.416365 )
-header_logo = "res://assets/vrworkout_logo.png"
-exercise_name = "Regular workout"
-active_marker = "WorkoutMarker"
-
-[node name="ExerciseCollection2" parent="SettingsCarousel/Exercises" instance=ExtResource( 25 )]
-transform = Transform( -6.24658e-08, -1, -5.24537e-09, 0, -4.37114e-08, 0.12, -0.12, 5.20549e-07, 2.73047e-15, -1.0504, 1.435, -0.261176 )
-exercise_nr = 1
-exercise_name = "Developers choice"
-active_marker = "WorkoutMarker"
-
-[node name="ExerciseCollection3" parent="SettingsCarousel/Exercises" instance=ExtResource( 25 )]
-transform = Transform( -6.24658e-08, -1, -5.24537e-09, 0, -4.37114e-08, 0.12, -0.12, 5.20549e-07, 2.73047e-15, -1.05, 1.43492, 0.0789957 )
-exercise_nr = 2
-exercise_name = "Ground work"
-active_marker = "WorkoutMarker"
-
-[node name="ExerciseCollection4" parent="SettingsCarousel/Exercises" instance=ExtResource( 25 )]
-transform = Transform( -6.24658e-08, -1, -5.24537e-09, 0, -4.37114e-08, 0.12, -0.12, 5.20549e-07, 2.73047e-15, -1.05, 1.43492, 0.425958 )
-exercise_nr = 3
-exercise_name = "Strength workout"
-active_marker = "WorkoutMarker"
-
-[node name="WorkoutMarker" type="Spatial" parent="SettingsCarousel/Exercises"]
-transform = Transform( 1.19249e-08, 0, 1, 0, 1, 0, -1, 0, 1.19249e-08, 0, 0, 0 )
-visible = false
-
-[node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Exercises/WorkoutMarker"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0 )
-mesh = SubResource( 18 )
-material/0 = ExtResource( 7 )
+transform = Transform( -8.02679e-08, -1, 8.74228e-09, 0, -4.37114e-08, -0.2, 0.2, -4.01339e-07, 3.50862e-15, -1.03859, 1.02028, 0.249988 )
 
 [node name="Header" type="Spatial" parent="SettingsCarousel/Exercises"]
 transform = Transform( 2.93257e-07, -1, 3.18518e-14, 9.77524e-08, 2.65431e-14, -0.6, 0.6, 4.88762e-07, 9.77524e-08, -1.06915, 2.11855, -0.111982 )
@@ -717,23 +655,13 @@ transform = Transform( 2.84861e-14, 1, -1.62921e-07, -1, 1.91069e-15, -2.06632e-
 transform = Transform( -1.30337e-07, -0.767281, -0.226449, 0, 0.226449, -0.767281, 0.8, -1.25006e-07, -3.68932e-08, 0.787944, 0.445045, 0.00432485 )
 server_url = "https://portal.vrworkout.at/fast/welcome.msg"
 
-[node name="GamePanel" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1.1921e-07, 1, 4.37114e-08, 7.54982e-08, 4.37114e-08, -1, -1, 1.1921e-07, -7.54982e-08, -1.31983, 1.11886, -0.339955 )
-
 [connection signal="selected" from="Recenter" to="." method="_on_Recenter_selected"]
 [connection signal="toggled" from="BPM/OverrideBeats" to="." method="_on_OverrideBeats_toggled"]
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
 [connection signal="toggled" from="SettingsCarousel/Connections/VRWorkoutConnection/PortalInfo" to="." method="_on_PortalSwitch_toggled"]
 [connection signal="value_changed" from="SettingsCarousel/Switchboard/ExerciseDuration" to="." method="_on_ExerciseDuration_value_changed"]
-[connection signal="selected" from="SettingsCarousel/Exercises/ExerciseCollection" to="." method="_on_ExerciseCollection_selected"]
-[connection signal="selected" from="SettingsCarousel/Exercises/PresetCollector" to="." method="_on_PresetCollector_selected"]
-[connection signal="selected" from="SettingsCarousel/Exercises/PresetCollector4" to="." method="_on_PresetCollector_selected"]
-[connection signal="selected" from="SettingsCarousel/Exercises/PresetCollector2" to="." method="_on_PresetCollector_selected"]
-[connection signal="selected" from="SettingsCarousel/Exercises/PresetCollector3" to="." method="_on_PresetCollector_selected"]
-[connection signal="selected" from="SettingsCarousel/Exercises/StandardWorkout" to="." method="_on_PresetCollector_selected"]
-[connection signal="selected" from="SettingsCarousel/Exercises/ExerciseCollection2" to="." method="_on_ExerciseCollection_selected"]
-[connection signal="selected" from="SettingsCarousel/Exercises/ExerciseCollection3" to="." method="_on_ExerciseCollection_selected"]
-[connection signal="selected" from="SettingsCarousel/Exercises/ExerciseCollection4" to="." method="_on_ExerciseCollection_selected"]
+[connection signal="exercise_set_selected" from="SettingsCarousel/Exercises/GamePanel" to="." method="_on_ExerciseCollection_selected"]
+[connection signal="workout_selected" from="SettingsCarousel/Exercises/GamePanel" to="." method="_on_PresetCollector_selected"]
 [connection signal="selected" from="SettingsCarousel/Battle/StoredSlot1" to="." method="_on_StoredSlot_selected"]
 [connection signal="selected" from="SettingsCarousel/Battle/StoredSlot1/SaveButton" to="SettingsCarousel/Battle/StoredSlot1" method="_on_SaveButton_selected"]
 [connection signal="selected" from="SettingsCarousel/Battle/StoredSlot2" to="." method="_on_StoredSlot_selected"]

@@ -62,9 +62,9 @@ var controller_energy_factor = 0.2
 var headset_energy_factor = 1.0
 
 var energy_level_low = 1.0
-var energy_level_medium = 1.66
-var energy_level_high = 2.33
-var energy_level_max = 3.0
+var energy_level_medium = 1.5
+var energy_level_high = 2.0
+var energy_level_max = 3.5
 
 var exercise_duration_avg = 20.0
 
@@ -163,6 +163,7 @@ enum StandState {
 	DOUBLE_SWING = 1,
 	WINDMILL_TOE = 2,
 	PARCOUR = 3,
+	HOLD_CUE = 4,
 };	
 
 
@@ -181,7 +182,6 @@ var predefined_exercises = {
 		["crunch",20],["pushup",20],["squat",20],["burpee",20],
 		["crunch",10],["pushup",10],["squat",10],["burpee",10],
 		],	
-	"Regular workout": [],
 	"VRWorkout challenge": [
 		["stand",30],["sprint",20],["crunch",20],["squat",20],
 		["pushup",25],["jump",30],["squat",20],["burpee",25],
@@ -310,7 +310,7 @@ var predefined_achievements = {
 			]
 	}
 	
-var exercise_collection_names = ["Leg work", "Developers choice","Ground work","Strength workout", "Standard"]
+var exercise_collection_names = ["Leg work", "Developers choice","Ground work","Strength workout", "All but Burpees"]
 
 var exercise_collections = [
 	[
@@ -423,8 +423,53 @@ var exercise_collections = [
 		 "value": true,
 		 "description": "Strength Focus"
 		},
+	],		
+		[
+		{"setting":"game/exercise/squat",
+		 "value": true,
+		 "description": "Squats"
+		},
+		{"setting":"game/exercise/stand",
+		 "value": true,
+		 "description": "Standing"
+		},
+		{"setting":"game/exercise/stand/windmill",
+		 "value": true,
+		 "description": "Windmill"
+		},
+		{"setting":"game/exercise/duck",
+		 "value": true,
+		 "description": "Ducking"
+		},
+		{"setting":"game/exercise/jump",
+		 "value": true,
+		 "description": "Jumping"
+		},
+		{"setting":"game/exercise/pushup",
+		 "value": true,
+		 "description": "Pushups"
+		},
+		{"setting":"game/exercise/crunch",
+		 "value": true,
+		 "description": "Crunches"
+		},
+		{"setting":"game/exercise/parcour",
+		 "value": true,
+		 "description": "Parcour"
+		},
+		{"setting":"game/exercise/hold_cues",
+		 "value": true,
+		 "description": "Hold and follow"
+		},
+		{"setting":"game/exercise/sprint",
+		 "value": true,
+		 "description": "Sprinting"
+		},
+		{"setting":"game/exercise/strength_focus",
+		 "value": false,
+		 "description": "Strength Focus"
+		},	
 	],
-	[],
 ]
 
 var exercise_model = {
@@ -458,10 +503,11 @@ var exercise_model = {
 								SquatState.DOUBLE_SWING  : { SquatState.HEAD: 40},
 								SquatState.CROSS_CUT  : { SquatState.HEAD: 30},
 						},
-		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 15, StandState.WINDMILL_TOE: 15,  StandState.PARCOUR: 5},
-						StandState.DOUBLE_SWING : { StandState.REGULAR: 27, StandState.WINDMILL_TOE: 15,  StandState.PARCOUR: 5},
+		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 15, StandState.WINDMILL_TOE: 15,  StandState.PARCOUR: 5, StandState.HOLD_CUE: 15},
+						StandState.DOUBLE_SWING : { StandState.REGULAR: 27, StandState.WINDMILL_TOE: 15,  StandState.PARCOUR: 5, StandState.HOLD_CUE: 15},
 						StandState.WINDMILL_TOE : { StandState.REGULAR: 27, StandState.DOUBLE_SWING: 15,  StandState.PARCOUR: 5},
 						StandState.PARCOUR : { StandState.DOUBLE_SWING: 30, StandState.WINDMILL_TOE: 30, StandState.REGULAR: 40},
+						StandState.HOLD_CUE : { StandState.DOUBLE_SWING: 25, StandState.REGULAR: 25},
 		},
 		"crunch_state_model" : { CrunchState.HEAD : { CrunchState.HAND: 70, CrunchState.MEDIUM_HOLD: 10},
 						CrunchState.HAND : { CrunchState.HEAD: 70, CrunchState.MEDIUM_HOLD: 10},
@@ -589,7 +635,7 @@ func setup_globals_demo():
 
 	ProjectSettings.set("game/target_hr", 140)
 	ProjectSettings.set("game/player_height", 1.8)
-	ProjectSettings.set("game/exercise_duration_avg", 20.0)
+	ProjectSettings.set("game/exercise_duration_avg", 25.0)
 	ProjectSettings.set("game/external_songs", null)
 	ProjectSettings.set("game/equalizerr", true)
 	ProjectSettings.set("game/portal_connection", true)
@@ -629,7 +675,7 @@ func setup_globals_regular():
 
 	ProjectSettings.set("game/target_hr", 140)
 	ProjectSettings.set("game/player_height", 1.8)
-	ProjectSettings.set("game/exercise_duration_avg", 20.0)
+	ProjectSettings.set("game/exercise_duration_avg", 25.0)
 	ProjectSettings.set("game/external_songs", null)
 	ProjectSettings.set("game/portal_connection", false)
 	ProjectSettings.set("game/instructor", true)

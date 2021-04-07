@@ -61,21 +61,16 @@ render_target_v_flip = true
 render_target_update_mode = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Viewport" index="0"]
-offset = Vector2( 50, 50 )
-scale = Vector2( 1.2, 1.2 )
-transform = Transform2D( 1.2, 0, 0, 1.2, 50, 50 )
 
-[node name="CenterContainer" type="CenterContainer" parent="Viewport/CanvasLayer" index="0"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="Label" type="Label" parent="Viewport/CanvasLayer/CenterContainer" index="0"]
-margin_right = 102.0
-margin_bottom = 108.0
+[node name="Label" type="Label" parent="Viewport/CanvasLayer" index="0"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 custom_fonts/font = SubResource( 6 )
 text = "60"
+align = 1
+valign = 1
 
 [node name="value" type="MeshInstance" parent="." index="3"]
-transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.0574054, 0.0154107, 0.0460544 )
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.015, 0 )
 mesh = SubResource( 7 )
 material/0 = SubResource( 9 )

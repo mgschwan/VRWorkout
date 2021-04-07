@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://RemoteInterface.gd" type="Script" id=18]
 [ext_resource path="res://scripts/VisualRayCast.gd" type="Script" id=19]
 [ext_resource path="res://scenes/YoutubeInterface.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scenes/GASTWebView.tscn" type="PackedScene" id=21]
 
 [sub_resource type="SphereShape" id=1]
 radius = 0.2
@@ -194,6 +195,9 @@ script = ExtResource( 17 )
 
 [node name="YoutubeInterface" parent="." instance=ExtResource( 20 )]
 pause_mode = 2
+
+[node name="WebView" parent="." instance=ExtResource( 21 )]
+script = null
 
 [connection signal="body_entered" from="ARVROrigin/ARVRCamera/AreaHead" to="ARVROrigin/ARVRCamera/AreaHead" method="_on_AreaHead_body_entered"]
 [connection signal="timeout" from="ARVROrigin/ARVRCamera/HUDHideTimer" to="ARVROrigin/ARVRCamera" method="_on_HUDHideTimer_timeout"]

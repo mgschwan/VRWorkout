@@ -51,6 +51,8 @@ func _notification(what):
                 #_need_settings_refresh = true;
                 set_pause(false)
 
+
+#This is only for testing
 func _input(ev):
 	if not GameVariables.vr_mode:
 		if ev is InputEventKey:

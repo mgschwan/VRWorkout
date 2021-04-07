@@ -1,8 +1,7 @@
 extends StaticBody
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var move_tween
+
 var ingame_id = 0
 
 var velocity_required = 1.25

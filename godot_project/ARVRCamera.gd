@@ -115,19 +115,33 @@ func calculate_height_warning_level(height):
 		retVal = 1
 	return retVal
 
-
 var distance_travelled = 0
+var distance_vert_travelled = 0
+var distance_horiz_travelled = 0
 var time_elapsed = 0
 var energy_calc_last_pos = Vector3(0,0,0)
 
 func _physics_process(delta):
 	distance_travelled += (self.translation.distance_to(energy_calc_last_pos))
+
+	var vert_pos = Vector3(0,self.translation.y,0)
+	var vert_last_pos = Vector3(0,energy_calc_last_pos.y,0)
+	distance_vert_travelled = (vert_pos.distance_to(vert_last_pos))
+	
+	var horiz_pos = Vector3(self.translation.x,0,self.translation.z)
+	var horiz_last_pos = Vector3(energy_calc_last_pos.y,0,energy_calc_last_pos.z)
+	distance_horiz_travelled = (horiz_pos.distance_to(horiz_last_pos))
+
 	time_elapsed += delta
 	energy_calc_last_pos = self.translation
 	if time_elapsed > 1.0:
 		var meters_per_sec = distance_travelled/time_elapsed
-		gu.update_current_headset_energy(meters_per_sec)
+		var meters_per_sec_horiz = distance_horiz_travelled/time_elapsed
+		var meters_per_sec_vert = distance_vert_travelled/time_elapsed
+		gu.update_current_headset_energy(meters_per_sec, meters_per_sec_vert, meters_per_sec_horiz, self.translation )
 		distance_travelled = 0
+		distance_vert_travelled = 0
+		distance_horiz_travelled = 0
 		time_elapsed = 0
 
 

@@ -119,13 +119,13 @@ func _ready():
 func update_songs():
 	var t = ""
 	var duration = 0
-	var songs_tree = get_node("Viewport/CanvasLayer/Songs")
+	var songs_tree = get_node("Viewport/CanvasLayer/TabContainer/Playlist/Songs")
 	songs_tree.clear()
 	var root = songs_tree.create_item()
 	if len(playlist) > 0:
-		get_node("Viewport/CanvasLayer/Instruction").hide()
+		get_node("Viewport/CanvasLayer/TabContainer/Playlist/Instruction").hide()
 	else:
-		get_node("Viewport/CanvasLayer/Instruction").show()
+		get_node("Viewport/CanvasLayer/TabContainer/Playlist/Instruction").show()
 		
 	for song in playlist:
 		var tmp = songs_tree.create_item()
@@ -134,7 +134,7 @@ func update_songs():
 
 	root.set_text(0,"Your Playlist %s"%(gu.seconds_to_timestring(duration)))
 
-	get_node("Viewport").render_target_update_mode = Viewport.UPDATE_ONCE
+	#get_node("Viewport").render_target_update_mode = Viewport.UPDATE_ONCE
 		
 func next_page():
 	print ("Page: %d, Songs: %d, Pages: %d"%[page, len(song_list), int(ceil(len(song_list)/6.0))])
@@ -159,18 +159,18 @@ func _process(delta):
 	frame_idx += 1
 	if frame_idx > 20:
 		update_automatic()
-		if youtube.is_youtube_available() and not $Viewport/CanvasLayer/YoutubeButton.visible:
-			print ("Youtube available")
-			$Viewport/CanvasLayer/YoutubeButton.show()
-			$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
-		elif not youtube.is_youtube_available() and $Viewport/CanvasLayer/YoutubeButton.visible:
-			print ("Youtube not available")
-			$Viewport/CanvasLayer/YoutubeButton.hide()
-			$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
+		if youtube.is_youtube_available(): #and not $Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.visible:
+			#print ("Youtube available")
+			$Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.show()
+			$Viewport/CanvasLayer/TabContainer/Youtube/ActivateYoutube.hide()
+			#$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
+		elif not youtube.is_youtube_available(): # and $Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.visible:
+			#print ("Youtube not available")
+			$Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.hide()
+			$Viewport/CanvasLayer/TabContainer/Youtube/ActivateYoutube.show()
+			#$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
 		frame_idx = 0
 		
-
-
 func select_difficulty(d):
 	current_difficulty = d
 	get_node("DifficultyButtons").select_difficulty(d)
@@ -253,7 +253,6 @@ func _on_YoutubeButton_pressed():
 	playlist.append("youtube://")
 	emit_signal("level_selected", playlist, current_difficulty, 0)
 
-#	update_songs()
-#
-#	if youtube.is_youtube_available():
-#		youtube.play()
+func _on_ActivateYoutube_pressed():
+	var link = "%s%d"%[ProjectSettings.get("application/config/youtube_link"),OS.get_unix_time()]
+	OS.shell_open(link)

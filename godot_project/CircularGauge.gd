@@ -8,7 +8,7 @@ var actual = 0
 var value_text = null
 
 func _ready():
-	value_text = get_node("Viewport/CanvasLayer/CenterContainer/Label") 
+	value_text = get_node("Viewport/CanvasLayer/Label") 
 
 func set_value(value):
 	actual = value

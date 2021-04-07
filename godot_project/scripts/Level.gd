@@ -503,6 +503,7 @@ func create_and_attach_cue_actual(cue_data):
 	var main_node = get_node("cue_emitter")
 	var move_modifier = Tween.new()
 	move_modifier.set_name("tween")
+	cue_node.set_meta("move_tween", move_modifier)
 	
 	#If the player hits a streak of cues the next one will be special
 	if cue_streak and not is_avoid:
@@ -525,6 +526,7 @@ func create_and_attach_cue_actual(cue_data):
 		cue_node.set_transform( cue_node.get_transform().rotated(Vector3(0,0,1), 3*3.1415926/2))
 	
 	if cue_type in ["left", "right", "left_hold", "right_hold"]:
+		cue_node.move_tween = move_modifier
 		var alpha = atan2(x,y-head_y_pos)
 		cue_node.set_transform(cue_node.get_transform().rotated(Vector3(0,0,1),-alpha))
 		
@@ -536,6 +538,13 @@ func create_and_attach_cue_actual(cue_data):
 	cue_node.ingame_id = ingame_id
 	
 	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+
+	var xdir = 1
+	if x < 0:
+		xdir = -1
+
+	#move_modifier.interpolate_property(cue_node,"translation:x",x,xdir*2.0,actual_flytime*0.75,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	#move_modifier.interpolate_property(cue_node,"translation:x",xdir*2.0,0,actual_flytime*0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,actual_flytime*0.75)
 	move_modifier.connect("tween_completed",self,"_on_tween_completed")
 	move_modifier.start()
 	return cue_node

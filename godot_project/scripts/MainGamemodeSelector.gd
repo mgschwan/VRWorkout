@@ -1,5 +1,8 @@
 extends Control
 
+signal workout_selected(collection, achievements)
+signal exercise_set_selected(collection)
+
 var gu = GameUtilities.new()
 
 var exercise_sets = GameVariables.exercise_collections
@@ -54,8 +57,9 @@ func _ready():
 func _on_ExerciseSets_item_selected(index):
 	var description = get_exercise_set_description(index)
 	$"TabContainer/Exercise sets/Info".bbcode_text = "Description:\n\n%s"%description
-
+	emit_signal("exercise_set_selected",exercise_sets[index])
 
 func _on_Workout_item_selected(index):
 	var description = get_workout_description(index)
 	$"TabContainer/Workouts/Info".bbcode_text = "Description:\n\n%s"%description
+	emit_signal("workout_selected",workouts[workout_names[index]], gu.get_possible_workout_achievements(workout_names[index]))
