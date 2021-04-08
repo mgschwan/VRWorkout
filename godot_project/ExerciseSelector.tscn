@@ -449,6 +449,7 @@ anims/sprint = SubResource( 18 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0 )
 mesh = SubResource( 19 )
 material/0 = ExtResource( 4 )
+
 [connection signal="selected" from="Standsign/SignBody" to="." method="_on_SignBody_selected"]
 [connection signal="selected" from="Squatsign/SignBody" to="." method="_on_SignBody_selected"]
 [connection signal="selected" from="Pushupsign/SignBody" to="." method="_on_SignBody_selected"]

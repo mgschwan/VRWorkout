@@ -1,40 +1,152 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://scenes/Button.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/DifficultyButtons.gd" type="Script" id=2]
 [ext_resource path="res://audio/select_button_hard.wav" type="AudioStream" id=3]
 [ext_resource path="res://audio/select_button_medium.wav" type="AudioStream" id=4]
 [ext_resource path="res://audio/select_button_easy.wav" type="AudioStream" id=5]
 [ext_resource path="res://audio/select_button_ultra.wav" type="AudioStream" id=6]
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=7]
+[ext_resource path="res://scripts/ConnectPadInput.gd" type="Script" id=8]
+[ext_resource path="res://scripts/TouchableViewport.gd" type="Script" id=9]
+
+[sub_resource type="PlaneMesh" id=1]
+size = Vector2( 1, 4 )
+
+[sub_resource type="ViewportTexture" id=2]
+flags = 12
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="SpatialMaterial" id=3]
+resource_local_to_scene = true
+flags_transparent = true
+flags_unshaded = true
+params_use_alpha_scissor = true
+params_alpha_scissor_threshold = 0.98
+albedo_texture = SubResource( 2 )
+
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 0.5, 0.05, 2 )
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 2 )
 
-[node name="Easy" parent="." instance=ExtResource( 1 )]
-transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, 0, 0.335657, 0 )
-ontext = "Easy"
-select_sound = ExtResource( 5 )
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 92, 368 )
+transparent_bg = true
+msaa = 6
+render_target_v_flip = true
+script = ExtResource( 9 )
 
-[node name="Medium" parent="." instance=ExtResource( 1 )]
-transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, 0, 0.20861, 0 )
-ontext = "Medium"
-select_sound = ExtResource( 4 )
+[node name="CanvasLayer" type="CanvasLayer" parent="Viewport"]
 
-[node name="Hard" parent="." instance=ExtResource( 1 )]
-transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, 0, 0.0787834, 0 )
-ontext = "Hard"
-select_sound = ExtResource( 3 )
+[node name="Easy" type="Button" parent="Viewport/CanvasLayer"]
+margin_right = 92.0
+margin_bottom = 50.0
+theme = ExtResource( 7 )
+text = "Easy"
 
-[node name="Ultra" parent="." instance=ExtResource( 1 )]
-transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, 0, -0.263317, 0 )
-ontext = "Ultra"
-select_sound = ExtResource( 6 )
+[node name="Active" type="ColorRect" parent="Viewport/CanvasLayer/Easy"]
+margin_left = 6.0
+margin_top = 40.0
+margin_right = 86.0
+margin_bottom = 45.0
+color = Color( 0.94902, 1, 0.0745098, 1 )
 
-[node name="Auto" parent="." instance=ExtResource( 1 )]
-transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, 0, -0.0492956, 0 )
-ontext = "Auto"
-[connection signal="selected" from="Easy" to="." method="_on_Button_selected" binds= [ "easy" ]]
-[connection signal="selected" from="Medium" to="." method="_on_Button_selected" binds= [ "medium" ]]
-[connection signal="selected" from="Hard" to="." method="_on_Button_selected" binds= [ "hard" ]]
-[connection signal="selected" from="Ultra" to="." method="_on_Button_selected" binds= [ "ultra" ]]
-[connection signal="selected" from="Auto" to="." method="_on_Button_selected" binds= [ "auto" ]]
+[node name="Medium" type="Button" parent="Viewport/CanvasLayer"]
+margin_top = 70.0
+margin_right = 92.0
+margin_bottom = 120.0
+theme = ExtResource( 7 )
+text = "Medium"
+
+[node name="Active" type="ColorRect" parent="Viewport/CanvasLayer/Medium"]
+margin_left = 6.0
+margin_top = 40.0
+margin_right = 86.0
+margin_bottom = 45.0
+color = Color( 0.94902, 1, 0.0745098, 1 )
+
+[node name="Hard" type="Button" parent="Viewport/CanvasLayer"]
+margin_top = 140.0
+margin_right = 92.0
+margin_bottom = 190.0
+theme = ExtResource( 7 )
+text = "Hard"
+
+[node name="Active" type="ColorRect" parent="Viewport/CanvasLayer/Hard"]
+margin_left = 6.0
+margin_top = 40.0
+margin_right = 86.0
+margin_bottom = 45.0
+color = Color( 0.94902, 1, 0.0745098, 1 )
+
+[node name="Auto" type="Button" parent="Viewport/CanvasLayer"]
+margin_top = 210.0
+margin_right = 92.0
+margin_bottom = 260.0
+theme = ExtResource( 7 )
+text = "Auto"
+
+[node name="Active" type="ColorRect" parent="Viewport/CanvasLayer/Auto"]
+margin_left = 6.0
+margin_top = 40.0
+margin_right = 86.0
+margin_bottom = 45.0
+color = Color( 0.94902, 1, 0.0745098, 1 )
+
+[node name="Ultra" type="Button" parent="Viewport/CanvasLayer"]
+margin_top = 280.0
+margin_right = 92.0
+margin_bottom = 330.0
+theme = ExtResource( 7 )
+text = "Ultra"
+
+[node name="Active" type="ColorRect" parent="Viewport/CanvasLayer/Ultra"]
+margin_left = 6.0
+margin_top = 40.0
+margin_right = 86.0
+margin_bottom = 45.0
+color = Color( 0.94902, 1, 0.0745098, 1 )
+
+[node name="StaticBody" type="StaticBody" parent="."]
+script = ExtResource( 8 )
+
+[node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
+mesh = SubResource( 1 )
+material/0 = SubResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0339105, 0 )
+shape = SubResource( 4 )
+
+[node name="tl_marker" type="Spatial" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -2 )
+
+[node name="bl_marker" type="Spatial" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 2 )
+
+[node name="tr_marker" type="Spatial" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -2 )
+
+[node name="SoundEasy" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[node name="SoundMedium" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="SoundHard" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="SoundUltra" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="SoundAuto" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[connection signal="pressed" from="Viewport/CanvasLayer/Easy" to="." method="_on_Easy_pressed" binds= [ "easy" ]]
+[connection signal="pressed" from="Viewport/CanvasLayer/Medium" to="." method="_on_Medium_pressed" binds= [ "medium" ]]
+[connection signal="pressed" from="Viewport/CanvasLayer/Hard" to="." method="_on_Hard_pressed" binds= [ "hard" ]]
+[connection signal="pressed" from="Viewport/CanvasLayer/Auto" to="." method="_on_Auto_pressed" binds= [ "auto" ]]
+[connection signal="pressed" from="Viewport/CanvasLayer/Ultra" to="." method="_on_Ultra_pressed" binds= [ "ultra" ]]
+[connection signal="interface_release" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_release"]
+[connection signal="interface_touch" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_touch"]

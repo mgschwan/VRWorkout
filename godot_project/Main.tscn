@@ -23,7 +23,7 @@
 [ext_resource path="res://scenes/GASTWebView.tscn" type="PackedScene" id=21]
 
 [sub_resource type="SphereShape" id=1]
-radius = 0.2
+radius = 0.12
 
 [sub_resource type="CubeMesh" id=2]
 

@@ -105,7 +105,7 @@ transform = Transform( 1, 5.68434e-14, 0, 0, 1, 0, 0, 2.84217e-14, 1, 0, -0.0374
 shape = SubResource( 1 )
 
 [node name="DifficultyButtons" parent="." instance=ExtResource( 5 )]
-transform = Transform( -8.40732e-08, 0, 1.92337, 0, 1.92337, 0, -1, 0, -4.37114e-08, -1.64334, -0.15069, 0.0439329 )
+transform = Transform( 0.3, 0, 0, 0, -1.31134e-08, -0.3, 0, 0.3, -1.31134e-08, -1.27414, -0.206276, -0.000524152 )
 
 [node name="Viewport" type="Viewport" parent="."]
 size = Vector2( 512, 512 )
@@ -127,7 +127,6 @@ anchor_bottom = 1.0
 theme = ExtResource( 9 )
 
 [node name="Playlist" type="Tabs" parent="Viewport/CanvasLayer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
@@ -257,6 +256,7 @@ If the game progress stops while doing your workout,  you will have to exit the 
 "
 
 [node name="Tutorial" type="Tabs" parent="Viewport/CanvasLayer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
