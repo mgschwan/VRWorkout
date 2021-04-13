@@ -165,5 +165,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Save" type="Button" parent="TabContainer/Challenges"]
+margin_left = 823.0
+margin_top = 7.0
+margin_right = 1003.0
+margin_bottom = 48.0
+text = "Save challenge"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="item_selected" from="TabContainer/Exercise sets/ItemList" to="." method="_on_ExerciseSets_item_selected"]
 [connection signal="item_selected" from="TabContainer/Workouts/ItemList" to="." method="_on_Workout_item_selected"]
+[connection signal="item_selected" from="TabContainer/Challenges/ItemList" to="." method="_on_Challenge_item_selected"]
+[connection signal="pressed" from="TabContainer/Challenges/Save" to="." method="_on_Save_pressed"]

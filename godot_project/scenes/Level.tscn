@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://blue_outdoor_stage.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://spawn_timer.gd" type="Script" id=8]
 [ext_resource path="res://scenes/PushupViewport.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/EnergyMeter.tscn" type="PackedScene" id=10]
+[ext_resource path="res://TextElement.tscn" type="PackedScene" id=11]
 [ext_resource path="res://PointIndicatorOrigin.tscn" type="PackedScene" id=13]
 [ext_resource path="res://RetractableMat.tscn" type="PackedScene" id=14]
 [ext_resource path="res://CircularGauge.tscn" type="PackedScene" id=15]
@@ -83,6 +84,10 @@ albedo_texture = ExtResource( 6 )
 [node name="Main" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0225873, -0.0546217, 0.0125537 )
 script = ExtResource( 20 )
+
+[node name="SafePushup" parent="." instance=ExtResource( 11 )]
+transform = Transform( 0.12, 0, 2.86102e-08, 0, 0.15, 0, -2.86102e-08, 0, 0.12, -0.00348109, 0.101025, -0.363828 )
+font_size = 20
 
 [node name="VoiceInstructor" parent="." instance=ExtResource( 25 )]
 

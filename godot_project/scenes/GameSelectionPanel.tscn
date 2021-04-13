@@ -57,6 +57,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0.5 )
 [node name="tr_marker" type="Spatial" parent="StaticBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -0.5 )
 
+[connection signal="challenge_selected" from="Viewport/CanvasLayer/main" to="." method="_on_main_challenge_selected"]
 [connection signal="exercise_set_selected" from="Viewport/CanvasLayer/main" to="." method="_on_main_exercise_set_selected"]
 [connection signal="workout_selected" from="Viewport/CanvasLayer/main" to="." method="_on_main_workout_selected"]
 [connection signal="interface_release" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_release"]

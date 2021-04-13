@@ -644,6 +644,7 @@ func internal_state_change():
 		
 func update_safe_pushup():
 	if hud_enabled:
+		$SafePushup.hide()
 		var main_camera = GameVariables.vr_camera
 		if actual_game_state == CueState.BURPEE or actual_game_state == CueState.PUSHUP:
 			main_camera.show_hud(true)
@@ -653,6 +654,9 @@ func update_safe_pushup():
 			get_node("MainStage/mat").close_mat()
 			gu.deactivate_node(get_node("PushupView"))
 			main_camera.show_hud(false)
+	else:
+		$SafePushup.print_info("Safe pushups not enabled!\ngo to settings to change")
+		$SafePushup.show()
 		
 func switch_boxman(state, name):
 	var boxman = get_node(name)
@@ -825,7 +829,8 @@ func _on_cue_emitter_streak_changed(count):
 	if count == 15:
 		if actual_game_state == CueState.SPRINT:
 			if run_point_multiplier >= 3:
-				if knee_high_ok and gu.hardness_level() < 2:
+				var e = gu.get_current_energy()
+				if knee_high_ok and e < (GameVariables.energy_level_medium + GameVariables.energy_level_high)/2.0:
 					#Player is running fast enough but not using a high knee running
 					$VoiceInstructor.say("i want to see those knees higher")
 					knee_high_ok = false
@@ -835,8 +840,6 @@ func _on_cue_emitter_streak_changed(count):
 				get_node("VoiceInstructor").say("faster")
 		else:					
 			play_encouragement()
-
-
 
 func _on_BattleDisplay_player_won(player):
 	end_level()

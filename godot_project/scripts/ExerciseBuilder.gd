@@ -615,14 +615,16 @@ func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 	elif crunch_state == CrunchState.MEDIUM_HOLD:
 		x_head = 0
 		if medium_hold_high:
-			y_head = "ph/1.8"
+			y_head = "ph/2.2"
+			y_hand = "ph/2.7"
 		else:
 			y_head = "ph/3.1"
+			y_hand = "ph/2.7"
 		medium_hold_high = not medium_hold_high
 			
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time, 0,0,"", null,null, 0.4)
-		create_and_attach_cue(current_time + 0.1,"right", "%s+ph/5,0"%str(x_head), y_head, target_time+0.1,0,0,"",null,null,0.3)
-		create_and_attach_cue(current_time + 0.1,"left", "%s-ph/5.0"%str(x_head), y_head, target_time+0.1,0,0,"",null,null,0.3)	
+		create_and_attach_cue(current_time + 0.1,"right", "%s+ph/5,0"%str(x_head), y_hand, target_time+0.1,0,0,"",null,null,0.3)
+		create_and_attach_cue(current_time + 0.1,"left", "%s-ph/5.0"%str(x_head), y_hand, target_time+0.1,0,0,"",null,null,0.3)	
 
 ############################# PUSHUP ######################################
 
@@ -859,7 +861,7 @@ func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitte
 	
 func handle_parcour_cues(current_time, target_time, cue_emitter_state, state_change):
 	var y_head = "ph/1.071+%f"%cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
-	create_and_attach_cue(current_time,"head", 0, y_head, target_time, 0, 0, "", null, null, 1.0, clamp(int(current_difficulty),0,3))
+	create_and_attach_cue(current_time,"head", 0, y_head, target_time, 0, 0, "", null, null, 1.0, clamp(int(current_difficulty),0,1)) #TODO: Change the difficulty back to a real value once the energy is calculated better
 	create_and_attach_cue(current_time+1.0,"head_avoid_bar", 0, "0.8", target_time)		
 	temporary_cue_space_extension = 2.5
 	

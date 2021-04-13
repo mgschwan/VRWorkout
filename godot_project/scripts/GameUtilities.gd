@@ -125,7 +125,7 @@ func update_current_headset_energy(meters_per_second, meters_per_second_vert, me
 	elif GameVariables.player_exercise_state == GameVariables.CueState.JUMP:
 		energy = 2.5 * meters_per_second
 	elif GameVariables.player_exercise_state == GameVariables.CueState.SPRINT:
-		energy = 3.0 * meters_per_second
+		energy = 3.5 * meters_per_second
 	else:
 		energy = meters_per_second_vert*2.0 + meters_per_second_horiz*0.5
 
@@ -338,6 +338,41 @@ func get_possible_workout_achievements(achievements):
 	if GameVariables.predefined_achievements.has(achievements):
 		achievements_list = GameVariables.predefined_achievements[achievements]
 	return achievements_list	
+
+var challenge_database = "user://challenges.json"	
+func save_challenge(id, cue_list, duration, challenge_handle, additional_data, score, is_local = true):
+	var challenges = load_persistent_config(challenge_database)
+	var t = OS.get_datetime()
+	print ("Saving exercise")
+		
+	var tmp = {"timestamp": "%02d.%02d.%04d %02d:%02d:%02d"%[t["day"],t["month"],t["year"],t["hour"],t["minute"],t["second"]],
+			   "id": id,
+			   "cue_list": cue_list,
+			   "is_local": is_local, 
+			   "duration": duration,
+			   "handle": challenge_handle,	
+			   "additional_data": additional_data,
+			   "score_best": {"points": score.get("points",0), "score": score.get("score",0)}}
+	challenges[id] = tmp
+	store_persistent_config(challenge_database, challenges)
+
+func load_challenges():
+	var challenges = load_persistent_config(challenge_database)		
+	return challenges
+	
+	
+func update_challenge(id, result):	
+	if GameVariables.game_mode == GameVariables.GameMode.STORED:
+		GameVariables.game_mode = GameVariables.GameMode.STANDARD
+		var challenges = load_challenges()
+		var challenge = challenges.get(id,Dictionary())
+		var score = challenge.get("score_best", Dictionary())
+		print ("Saving game slot")
+		if score.get("points",0) < result.get("points",0):
+			score["points"] = result.get("points",0)
+			score["score"] = result.get("vrw_score",0)
+			var duration = result.get("time",0)
+			save_challenge(id, GameVariables.cue_list, duration, "", Dictionary(), score, challenge.get("is_local",true))	
 	
 	
 	

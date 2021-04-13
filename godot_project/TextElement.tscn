@@ -13,7 +13,7 @@ font_data = ExtResource( 3 )
 size = Vector2( 2, 0.5 )
 
 [sub_resource type="ViewportTexture" id=3]
-flags = 4
+flags = 12
 viewport_path = NodePath("Viewport")
 
 [sub_resource type="SpatialMaterial" id=4]
@@ -39,18 +39,19 @@ render_target_update_mode = 0
 margin_right = 256.0
 margin_bottom = 64.0
 
-[node name="Container" type="MarginContainer" parent="Viewport/CanvasLayer/Panel"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 82.0
-margin_bottom = 27.0
+[node name="Container" type="Container" parent="Viewport/CanvasLayer/Panel"]
+margin_right = 256.0
+margin_bottom = 64.0
 theme = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="Viewport/CanvasLayer/Panel/Container"]
-margin_right = 165.0
-margin_bottom = 46.0
+margin_right = 265.0
+margin_bottom = 64.0
 custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "defaulttext"
+align = 1
+valign = 1
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 mesh = SubResource( 2 )

@@ -534,6 +534,9 @@ func _on_level_finished_actual(valid_end):
 	game_statistics["vrw_score"] = GameVariables.game_result["vrw_score"]
 	game_statistics["duration"] =  GameVariables.game_result["time"]
 	game_statistics["data"] = GameVariables.level_statistics_data
+	
+	gu.update_challenge(GameVariables.selected_game_slot, GameVariables.game_result)	
+	
 	if GameVariables.current_challenge and valid_end:
 		#Do not send as challenge entry if the player exited manually
 		game_statistics["challenge"] = GameVariables.current_challenge

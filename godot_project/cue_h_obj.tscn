@@ -1,7 +1,7 @@
 [gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://models/Bezergreen.material" type="Material" id=1]
-[ext_resource path="res://models/fist_right.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://models/hand_palm.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://cue_v_obj.gd" type="Script" id=3]
 [ext_resource path="res://audio/dull_hit.wav" type="AudioStream" id=4]
 [ext_resource path="res://TargetTimer.tscn" type="PackedScene" id=5]
@@ -208,7 +208,7 @@ anims/explode = SubResource( 1 )
 anims/idle = SubResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Circle"]
-transform = Transform( 0.6, 0, 0, 0, -9.77524e-08, 0.5, 0, -0.6, -8.14603e-08, 0, -0.196525, 1.13032e-08 )
+transform = Transform( 3, 0, 0, 0, 3, 3.57628e-07, 0, -3.57628e-07, 3, 0.064494, -0.399911, -0.429825 )
 mesh = ExtResource( 2 )
 material/0 = ExtResource( 1 )
 

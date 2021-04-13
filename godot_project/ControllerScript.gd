@@ -7,8 +7,6 @@ var tracking_lost = false
 var collision_root = null
 var model = null
 
-
-
 var hand_mode = false
 
 
@@ -87,8 +85,6 @@ var time_elapsed = 0
 var energy_calc_last_pos = Vector3(0,0,0)
 
 func _physics_process(delta):
-	
-	
 	distance_travelled += (self.translation.distance_to(energy_calc_last_pos))
 	
 	var vert_pos = Vector3(0,self.translation.y,0)

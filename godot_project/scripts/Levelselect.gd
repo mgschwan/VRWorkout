@@ -86,8 +86,6 @@ func _process(delta):
 func _on_OverrideBeats_toggled(value):
 	ProjectSettings.set("game/override_beats", value)
 
-
-
 func _on_SongSelector_level_selected(filename, difficulty, level_number):
 	emit_signal("level_selected", filename, difficulty, level_number)
 
@@ -176,19 +174,11 @@ func update_online_features():
 	if enabled:
 		if has_node("SettingsCarousel/Connections/ConnectPad"):
 			gu.activate_node(get_node("SettingsCarousel/Connections/ConnectPad"))
-		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot1"))
-		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot2"))
-		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot3"))
-		gu.activate_node(get_node("SettingsCarousel/Battle/ChallengeSlot4"))
-		gu.activate_node(get_node("SettingsCarousel/Battle/CreateChallengeButton"))		
+		#gu.activate_node(get_node("SettingsCarousel/Battle/CreateChallengeButton"))		
 	else:
 		if has_node("SettingsCarousel/Connections/ConnectPad"):
 			gu.deactivate_node(get_node("SettingsCarousel/Connections/ConnectPad"))
-		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot1"))
-		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot2"))
-		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot3"))
-		gu.deactivate_node(get_node("SettingsCarousel/Battle/ChallengeSlot4"))
-		gu.deactivate_node(get_node("SettingsCarousel/Battle/CreateChallengeButton"))		
+		#gu.deactivate_node(get_node("SettingsCarousel/Battle/CreateChallengeButton"))		
 
 
 	#Connect Pad Deactivated for now
@@ -214,12 +204,15 @@ func _on_StoredSlot_selected(exercise_list, slot_number):
 
 var challenge_upload_possible = true
 func _on_CreateChallengeButton_selected():
-	if challenge_upload_possible:
-		challenge_upload_possible = false
-		gu.upload_challenge(get_tree().current_scene.get_node("RemoteInterface"))
-		#Prevent double uploads from spurious button events
-		yield(get_tree().create_timer(2.0),"timeout")
-	challenge_upload_possible = true
+	#DISABLED on 04/13/21 until challenge upload is properly integrated into the new menu
+	#TODO	
+	pass
+#	if challenge_upload_possible:
+#		challenge_upload_possible = false
+#		gu.upload_challenge(get_tree().current_scene.get_node("RemoteInterface"))
+#		#Prevent double uploads from spurious button events
+#		yield(get_tree().create_timer(2.0),"timeout")
+#	challenge_upload_possible = true
 
 func update_battle_mode():
 	if GameVariables.battle_mode == GameVariables.BattleMode.NO:

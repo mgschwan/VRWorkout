@@ -108,6 +108,12 @@ func _ready():
 	hrr = get_tree().current_scene.get_node("HeartRateReceiver")
 	youtube = get_tree().current_scene.get_node("YoutubeInterface")
 
+	var external_dir = ProjectSettings.get("game/external_songs")
+	
+	if external_dir:
+		get_node("MusicDirectory").print_info("Place custom OGG or MP3 files\n in: %s"%external_dir)
+
+
 	update_automatic()
 	update_song_list()
 	update_hr_selectors()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=2]
+[gd_scene load_steps=63 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -25,7 +25,6 @@
 [ext_resource path="res://scenes/VRWorkoutConnection.tscn" type="PackedScene" id=28]
 [ext_resource path="res://CircularGauge.tscn" type="PackedScene" id=29]
 [ext_resource path="res://fonts/Droid_Sans_Regular.tres" type="DynamicFont" id=30]
-[ext_resource path="res://scenes/StoredSlot.tscn" type="PackedScene" id=31]
 [ext_resource path="res://assets/enemy_easy.jpg" type="Texture" id=32]
 [ext_resource path="res://assets/enemy_hard.jpg" type="Texture" id=33]
 [ext_resource path="res://assets/enemy_none.jpg" type="Texture" id=34]
@@ -451,6 +450,7 @@ transform = Transform( 1.1, -1.13687e-13, 6.88809e-21, -5.68434e-14, 1, 0, 1.421
 
 [node name="Header" type="Spatial" parent="SettingsCarousel/Battle"]
 transform = Transform( 3.26639e-07, -1, 3.72904e-14, 9.77524e-08, 2.65431e-14, -0.6, 0.6, 5.44398e-07, 9.77524e-08, -1.18034, 2.33154, -0.250625 )
+visible = false
 script = SubResource( 15 )
 text = "Save: Play any workout, afterwards press save\\nLoad: Select a slot and then the songs\\nChallenges: Play any workout then press 'Create Challenge'\\nChallenge is uploaded and can be shared with a link"
 font_size = 16
@@ -501,95 +501,14 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0872474, 0 )
 mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
-[node name="StoredSlot1" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.22181, 1.73148, -0.748508 )
-slot_number = 1
-active_marker = "WorkoutMarker"
-
-[node name="SaveButton" parent="SettingsCarousel/Battle/StoredSlot1" instance=ExtResource( 24 )]
-transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.79481e-07, 4, 6.55671e-09, 0, 0, -1.6 )
-ontext = "Save"
-
-[node name="StoredSlot2" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.22181, 1.73148, -0.377992 )
-slot_number = 2
-active_marker = "WorkoutMarker"
-
-[node name="SaveButton" parent="SettingsCarousel/Battle/StoredSlot2" instance=ExtResource( 24 )]
-transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.79481e-07, 4, 6.55671e-09, 0, 0, -1.6 )
-ontext = "Save"
-
-[node name="StoredSlot3" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.22181, 1.73148, 0.00243878 )
-slot_number = 3
-active_marker = "WorkoutMarker"
-
-[node name="SaveButton" parent="SettingsCarousel/Battle/StoredSlot3" instance=ExtResource( 24 )]
-transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.79481e-07, 4, 6.55671e-09, 0, 0, -1.6 )
-ontext = "Save"
-
-[node name="StoredSlot4" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.22181, 1.73148, 0.374507 )
-slot_number = 4
-active_marker = "WorkoutMarker"
-
-[node name="SaveButton" parent="SettingsCarousel/Battle/StoredSlot4" instance=ExtResource( 24 )]
-transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.79481e-07, 4, 6.55671e-09, 0, 0, -1.6 )
-ontext = "Save"
-
-[node name="ChallengeSlot1" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.222, 1.95209, -0.749 )
-type = 1
-save_button_active = false
-slot_number = 1
-active_marker = "WorkoutMarker"
-
-[node name="SaveButton" parent="SettingsCarousel/Battle/ChallengeSlot1" instance=ExtResource( 24 )]
-transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.79481e-07, 4, 6.55671e-09, 0, 0, -1.6 )
-visible = false
-ontext = "Save"
-
-[node name="ChallengeSlot2" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.222, 1.95209, -0.378 )
-type = 1
-save_button_active = false
-slot_number = 2
-active_marker = "WorkoutMarker"
-
-[node name="SaveButton" parent="SettingsCarousel/Battle/ChallengeSlot2" instance=ExtResource( 24 )]
-transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.79481e-07, 4, 6.55671e-09, 0, 0, -1.6 )
-visible = false
-ontext = "Save"
-
-[node name="ChallengeSlot3" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.222, 1.95209, 0 )
-type = 1
-save_button_active = false
-slot_number = 3
-active_marker = "WorkoutMarker"
-
-[node name="SaveButton" parent="SettingsCarousel/Battle/ChallengeSlot3" instance=ExtResource( 24 )]
-transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.79481e-07, 4, 6.55671e-09, 0, 0, -1.6 )
-visible = false
-ontext = "Save"
-
-[node name="ChallengeSlot4" parent="SettingsCarousel/Battle" instance=ExtResource( 31 )]
-transform = Transform( -1.62921e-08, -1, -4.37114e-09, 0, -4.37114e-08, 0.1, -0.1, 1.62921e-07, 7.12149e-16, -1.222, 1.95209, 0.375 )
-type = 1
-slot_number = 4
-active_marker = "WorkoutMarker"
-
-[node name="SaveButton" parent="SettingsCarousel/Battle/ChallengeSlot4" instance=ExtResource( 24 )]
-transform = Transform( -4.5, 6.03983e-07, 9.90036e-16, 0, -1.74846e-07, 0.15, 6.79481e-07, 4, 6.55671e-09, 0, 0, -1.6 )
-visible = false
-ontext = "Save"
-
 [node name="CreateChallengeButton" parent="SettingsCarousel/Battle" instance=ExtResource( 24 )]
 transform = Transform( -3.49691e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.49691e-08, -1.26531, 1.37788, -0.6494 )
+visible = false
 font_size = 20
 ontext = "Create\\nChallenge"
 
 [node name="Opponents" type="Spatial" parent="SettingsCarousel/Battle"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.257761, 0 )
 
 [node name="NoEnemy" parent="SettingsCarousel/Battle/Opponents" instance=ExtResource( 10 )]
 transform = Transform( -2.8213e-08, -1, 4.37114e-09, 0, -4.37114e-08, -0.1, 0.1, -2.8213e-07, 1.23323e-15, -1.23036, 1.34471, -0.337731 )
@@ -660,24 +579,9 @@ server_url = "https://portal.vrworkout.at/fast/welcome.msg"
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
 [connection signal="toggled" from="SettingsCarousel/Connections/VRWorkoutConnection/PortalInfo" to="." method="_on_PortalSwitch_toggled"]
 [connection signal="value_changed" from="SettingsCarousel/Switchboard/ExerciseDuration" to="." method="_on_ExerciseDuration_value_changed"]
+[connection signal="challenge_selected" from="SettingsCarousel/Exercises/GamePanel" to="." method="_on_StoredSlot_selected"]
 [connection signal="exercise_set_selected" from="SettingsCarousel/Exercises/GamePanel" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="workout_selected" from="SettingsCarousel/Exercises/GamePanel" to="." method="_on_PresetCollector_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot1" to="." method="_on_StoredSlot_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot1/SaveButton" to="SettingsCarousel/Battle/StoredSlot1" method="_on_SaveButton_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot2" to="." method="_on_StoredSlot_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot2/SaveButton" to="SettingsCarousel/Battle/StoredSlot2" method="_on_SaveButton_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot3" to="." method="_on_StoredSlot_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot3/SaveButton" to="SettingsCarousel/Battle/StoredSlot3" method="_on_SaveButton_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot4" to="." method="_on_StoredSlot_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/StoredSlot4/SaveButton" to="SettingsCarousel/Battle/StoredSlot4" method="_on_SaveButton_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/ChallengeSlot1" to="." method="_on_StoredSlot_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/ChallengeSlot1/SaveButton" to="SettingsCarousel/Battle/ChallengeSlot1" method="_on_SaveButton_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/ChallengeSlot2" to="." method="_on_StoredSlot_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/ChallengeSlot2/SaveButton" to="SettingsCarousel/Battle/ChallengeSlot2" method="_on_SaveButton_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/ChallengeSlot3" to="." method="_on_StoredSlot_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/ChallengeSlot3/SaveButton" to="SettingsCarousel/Battle/ChallengeSlot3" method="_on_SaveButton_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/ChallengeSlot4" to="." method="_on_StoredSlot_selected"]
-[connection signal="selected" from="SettingsCarousel/Battle/ChallengeSlot4/SaveButton" to="SettingsCarousel/Battle/ChallengeSlot4" method="_on_SaveButton_selected"]
 [connection signal="selected" from="SettingsCarousel/Battle/CreateChallengeButton" to="." method="_on_CreateChallengeButton_selected"]
 [connection signal="selected" from="SettingsCarousel/Battle/Opponents/NoEnemy" to="." method="_on_BattleMode_selected" binds= [ "blue", "none" ]]
 [connection signal="selected" from="SettingsCarousel/Battle/Opponents/EasyEnemy" to="." method="_on_BattleMode_selected" binds= [ "blue", "easy" ]]
