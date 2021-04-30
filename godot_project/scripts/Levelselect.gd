@@ -1,6 +1,7 @@
 extends Spatial
 
 signal level_selected(filename, difficulty, level_number)
+signal onboarding_selected()
 
 var gu = GameUtilities.new()
 
@@ -34,8 +35,6 @@ func _ready():
 		get_node("SongSelector").playlist_from_song_files(GameVariables.current_song)
 	
 	get_node("MainText").print_info("[img]res://assets/vrworkout_logo.png[/img]\nBuild a playlist with the songs to your right and press start.\n[center][b]Tips[/b][/center]\n- Play with hand tracking (no controllers)\n- Connect a heart rate sensor for dynamic difficulty\n- Support is at [b]https://chat.vrworkout.at[/b]\n- Early access! Please judge mechanics not graphics")
-	
-	get_node("Tutorial").print_info("How to play\n-Position yourself between the green poles\n- Hit the hand cues to the beat of the music\n- Head cues should only be touched no headbutts\n- Run in place to receive point multipliers!\nThe optimal time to hit the cues is when the\nrotating marker meets the static one")	
 	
 	update_widget()
 	get_node("SongSelector").select_difficulty(GameVariables.difficulty)
@@ -193,11 +192,12 @@ func _on_PortalSwitch_toggled(value):
 func _on_Recenter_selected():
 	get_tree().current_scene.start_countdown(5,"recenter_screen")
 
-func _on_StoredSlot_selected(exercise_list, slot_number):
+func _on_StoredSlot_selected(exercise_list, slot_number, level_statistics_data):
 	if len(exercise_list) > 0:
 		GameVariables.game_mode = GameVariables.GameMode.STORED
 		GameVariables.selected_game_slot = slot_number
 		GameVariables.cue_list = exercise_list.duplicate()
+		GameVariables.input_level_statistics_data = level_statistics_data
 	else:
 		GameVariables.game_mode = GameVariables.GameMode.STANDARD
 	GameVariables.achievement_checks = Array()
@@ -253,3 +253,33 @@ func _on_AudioStreamPlayer_finished():
 
 func _on_ExerciseDuration_value_changed(value):
 	ProjectSettings.set("game/exercise_duration_avg", value)
+
+
+func _on_GamePanel_onboarding_selected():
+	print ("Levelselect onboarding selected")
+	emit_signal("onboarding_selected")
+
+
+func _on_SetWeightBar_selected_by(controller):
+	var new_controller = get_tree().current_scene.create_controller("weightbar", controller.controller_id, "controller")
+	
+	var main_controller = ""
+	if get_tree().current_scene.left_controller == controller:
+		main_controller = "left"
+		get_tree().current_scene.left_controller = null
+	elif get_tree().current_scene.right_controller == controller:
+		main_controller = "right"
+		get_tree().current_scene.right_controller = null
+	
+	get_tree().current_scene.replace_tracker(controller, new_controller)
+	
+	#Tell the system to keep the tracker visible if it's removed
+	var tracker_identifier = gu.get_tracker_id(new_controller)
+	var tracker_config = gu.get_tracker_config(tracker_identifier)
+	tracker_config["should_persist"] = true
+	gu.set_tracker_config(tracker_identifier, tracker_config)
+	
+	if main_controller == "left":
+		get_tree().current_scene.left_controller = new_controller
+	elif main_controller == "right":
+		get_tree().current_scene.right_controller = new_controller

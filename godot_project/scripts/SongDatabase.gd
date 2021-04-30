@@ -9,8 +9,11 @@ var location = "user://song_database.json"
 
 
 func create_database_entry(song):
-	var name = gu.get_song_name(song)
-	return {"name": name, "duration": 0, "file": song, "loaded": false}
+	var name = gu.get_song_name(song)	
+	var duration = 0
+	var loaded = false
+	
+	return {"name": name, "duration": duration, "file": song, "loaded": loaded}
 
 #If it's a string then find the actual filename, if it's a number then it's actually
 #not a song but either a rest or freeplay period
@@ -34,10 +37,26 @@ func get_song_duration(songfile):
 
 	if song_database.has(songfile):
 		if not song_database.get(songfile).get("loaded", false):
-			var audio = gu.load_audio_resource(songfile)
-			song_database[songfile]["duration"] = audio.get_length()
-			song_database[songfile]["loaded"] = true
-			audio = null #Tell the garbage collector to dump that sh
+			var loaded = false
+			var beat_file = File.new()
+			var beat_filename = "%s.json"%str(songfile)
+			if beat_file.file_exists(beat_filename):
+				var error = beat_file.open(beat_filename, File.READ)
+				if error == OK:
+					var tmp = JSON.parse(beat_file.get_as_text()).result
+					beat_file.close()
+					var tmp_duration = float(tmp.get("length",0))
+					song_database[songfile]["duration"] = tmp_duration
+					song_database[songfile]["loaded"] = true
+					loaded = true
+					print ("Use beat file %s (%f)"%[beat_filename,tmp_duration])
+			if not loaded:
+				var audio = gu.load_audio_resource(songfile)
+				song_database[songfile]["duration"] = audio.get_length()
+				song_database[songfile]["loaded"] = true
+				audio = null #Tell the garbage collector to dump that sh
+				print ("Use real audio file for duration")
+
 		duration = song_database.get(songfile,{"duration":0}).get("duration",0)
 		
 	return duration	

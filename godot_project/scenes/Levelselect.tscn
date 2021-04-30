@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=2]
+[gd_scene load_steps=64 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/level_platform.tscn" type="PackedScene" id=8]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/ImagePanel.tscn" type="PackedScene" id=10]
+[ext_resource path="res://assets/weightbar.jpg" type="Texture" id=11]
 [ext_resource path="res://models/gold.material" type="Material" id=14]
 [ext_resource path="res://ToggleSwitch.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scenes/VRHealthConnection.tscn" type="PackedScene" id=16]
@@ -50,6 +51,7 @@ height = 0.1
 
 [sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.0823529, 0, 0.654902, 1 )
+metallic_specular = 0.0
 
 [sub_resource type="PlaneMesh" id=4]
 size = Vector2( 2, 1 )
@@ -271,7 +273,7 @@ offtext = "Default beats"
 transform = Transform( -1.74846e-08, 0, -0.4, 0, 0.4, 0, 0.4, 0, -1.74846e-08, 0.919011, 1.43304, 1.71055e-07 )
 
 [node name="MainText" parent="." instance=ExtResource( 17 )]
-transform = Transform( -1.54463e-07, -0.974043, 0.226362, -7.37582e-08, -0.226362, -0.974043, 1, -1.6715e-07, -3.68791e-08, 2.17868, 2.30847, 3.54952e-07 )
+transform = Transform( 4.88762e-07, -1, -1.62921e-07, -5.30863e-14, 1.62921e-07, -1, 1, 4.88762e-07, 2.65431e-14, 2.17868, 2.30847, 3.54952e-07 )
 default_text = "VRWorkout"
 bbtext = true
 
@@ -281,15 +283,10 @@ row_elements = 5
 
 [node name="text_panel" parent="MainText" instance=ExtResource( 18 )]
 transform = Transform( 1.1, 0, -9.32587e-16, 0, 1, 0, 1.70974e-15, 0, 0.6, 6.68336e-11, -0.00769687, 0.00178862 )
-
-[node name="Tutorial" parent="." instance=ExtResource( 17 )]
-transform = Transform( -0.800001, -4.41957e-07, 2.15876e-08, 5.90066e-08, -0.226362, -0.779235, 3.49275e-07, -0.974044, 0.18109, -0.268867, 2.308, 3.26218 )
-
-[node name="text_panel" parent="Tutorial" instance=ExtResource( 18 )]
-transform = Transform( 1.2, 0, 0, 0, 1, 9.9729e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
+visible = false
 
 [node name="Stats" parent="." instance=ExtResource( 17 )]
-transform = Transform( -0.415138, -0.832633, 0.154799, 5.90065e-08, -0.226362, -0.779235, 0.683857, -0.505452, 0.0939715, 1.44823, 2.58036, 2.17733 )
+transform = Transform( -0.799807, 0.0219897, 2.86602e-09, 4.2469e-14, 1.62921e-07, -0.8, -0.0175918, -0.999758, -1.30305e-07, 0.675354, 2.29449, 1.7541 )
 default_text = "Workout Statistics"
 
 [node name="gauge" parent="Stats" instance=ExtResource( 29 )]
@@ -297,18 +294,18 @@ transform = Transform( 0.4, -2.98023e-08, -7.45058e-09, 0, 0.4, -7.45058e-09, 1.
 visible = false
 
 [node name="text_panel" parent="Stats" instance=ExtResource( 18 )]
-transform = Transform( 1.2, 0, 0, 0, 1, 9.9729e-15, 0, -1.66215e-14, 0.6, 0, -0.0072, 0.00167334 )
+transform = Transform( 1.2, 0, 0, 0, 1, 9.9729e-15, 0, -1.66215e-14, 0.6, 0, 0, 0 )
+visible = false
 
 [node name="Viewport" type="Viewport" parent="Stats"]
-size = Vector2( 512, 384 )
+size = Vector2( 1024, 512 )
 msaa = 6
 render_target_v_flip = true
 
 [node name="StatisticsPanel" parent="Stats/Viewport" instance=ExtResource( 22 )]
-scale = Vector2( 0.8, 0.95 )
 
 [node name="Display" type="MeshInstance" parent="Stats"]
-transform = Transform( 1, -5.96046e-08, 0, 0, 1, 2.98023e-08, 0, 2.98023e-08, 1, -0.0226345, -0.0291336, 1.13608 )
+transform = Transform( 0.999999, -5.7742e-08, -1.39698e-09, 7.45058e-09, 1, 1.64728e-08, -4.65661e-10, -1.53086e-08, 1, 2.331, 0, 0 )
 mesh = SubResource( 4 )
 material/0 = SubResource( 6 )
 
@@ -393,6 +390,10 @@ min_v = 5
 [node name="description" parent="SettingsCarousel/Switchboard/ExerciseDuration" instance=ExtResource( 41 )]
 transform = Transform( 0.6, 7.10543e-14, 1.69407e-21, -7.10543e-14, 0.6, -3.58179e-21, -5.0822e-21, -3.58179e-21, 0.6, 0, 0, -2.78321 )
 text = "[center]Average exercise duration in seconds[/center]"
+
+[node name="SetWeightBar" parent="SettingsCarousel/Switchboard" instance=ExtResource( 10 )]
+transform = Transform( 2.82131e-08, 0.1, -4.37113e-09, 3.25842e-08, -4.37114e-09, -0.1, -0.1, 2.82131e-08, -3.25842e-08, -0.772041, 1.29706, 2.21058 )
+image = ExtResource( 11 )
 
 [node name="Exercises" type="Spatial" parent="SettingsCarousel"]
 transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, -1.19209e-07, 0, -0.225055 )
@@ -579,8 +580,10 @@ server_url = "https://portal.vrworkout.at/fast/welcome.msg"
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
 [connection signal="toggled" from="SettingsCarousel/Connections/VRWorkoutConnection/PortalInfo" to="." method="_on_PortalSwitch_toggled"]
 [connection signal="value_changed" from="SettingsCarousel/Switchboard/ExerciseDuration" to="." method="_on_ExerciseDuration_value_changed"]
+[connection signal="selected_by" from="SettingsCarousel/Switchboard/SetWeightBar" to="." method="_on_SetWeightBar_selected_by"]
 [connection signal="challenge_selected" from="SettingsCarousel/Exercises/GamePanel" to="." method="_on_StoredSlot_selected"]
 [connection signal="exercise_set_selected" from="SettingsCarousel/Exercises/GamePanel" to="." method="_on_ExerciseCollection_selected"]
+[connection signal="onboarding_selected" from="SettingsCarousel/Exercises/GamePanel" to="." method="_on_GamePanel_onboarding_selected"]
 [connection signal="workout_selected" from="SettingsCarousel/Exercises/GamePanel" to="." method="_on_PresetCollector_selected"]
 [connection signal="selected" from="SettingsCarousel/Battle/CreateChallengeButton" to="." method="_on_CreateChallengeButton_selected"]
 [connection signal="selected" from="SettingsCarousel/Battle/Opponents/NoEnemy" to="." method="_on_BattleMode_selected" binds= [ "blue", "none" ]]

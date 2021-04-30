@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -21,6 +21,8 @@
 [ext_resource path="res://scripts/VisualRayCast.gd" type="Script" id=19]
 [ext_resource path="res://scenes/YoutubeInterface.tscn" type="PackedScene" id=20]
 [ext_resource path="res://scenes/GASTWebView.tscn" type="PackedScene" id=21]
+[ext_resource path="res://scenes/NetworkARVRController.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scenes/SimplePhone.tscn" type="PackedScene" id=23]
 
 [sub_resource type="SphereShape" id=1]
 radius = 0.12
@@ -57,6 +59,9 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 360, 0, 360 ) ]
 }
+
+[sub_resource type="PrismMesh" id=7]
+size = Vector3( 0.1, 0.2, 0.02 )
 
 [node name="VRScene" type="Spatial"]
 script = ExtResource( 1 )
@@ -165,6 +170,19 @@ transform = Transform( 0.998396, 0.0566011, 0, -0.0565104, 0.996796, 0.0566011, 
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="ARVROrigin/SkyBox"]
 anims/starfield_rotation = SubResource( 6 )
+
+[node name="NetworkARVRController" parent="ARVROrigin" instance=ExtResource( 22 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="Mesh" type="Spatial" parent="ARVROrigin/NetworkARVRController"]
+
+[node name="Phone" parent="ARVROrigin/NetworkARVRController/Mesh" instance=ExtResource( 23 )]
+transform = Transform( 0.1, 1.74845e-08, 0, -1.74845e-08, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+
+[node name="Compass" type="MeshInstance" parent="ARVROrigin/NetworkARVRController/Mesh"]
+transform = Transform( 1, 1.06581e-14, 0, -1.06581e-14, 1, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 7 )
+material/0 = null
 
 [node name="DemoTimer" type="Timer" parent="."]
 wait_time = 5.0

@@ -5,22 +5,26 @@
 [ext_resource path="res://assets/progress_bar_empty.png" type="Texture" id=3]
 [ext_resource path="res://scripts/StatisticsPanel.gd" type="Script" id=4]
 
-[node name="StatisticsPanel" type="Node2D"]
+[node name="StatisticsPanel" type="Control"]
+theme = ExtResource( 1 )
 script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="Panel" parent="."]
 margin_right = 1024.0
 margin_bottom = 512.0
-color = Color( 0, 0, 0, 1 )
+theme = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="StandValue" type="TextureProgress" parent="."]
-margin_left = 132.0
-margin_top = -1.0
-margin_right = 555.0
-margin_bottom = 38.0
+margin_left = 297.0
+margin_top = 37.0
+margin_right = 720.0
+margin_bottom = 76.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -53,10 +57,10 @@ __meta__ = {
 }
 
 [node name="JumpValue" type="TextureProgress" parent="."]
-margin_left = 132.0
-margin_top = 47.0
-margin_right = 555.0
-margin_bottom = 86.0
+margin_left = 297.0
+margin_top = 93.0
+margin_right = 720.0
+margin_bottom = 132.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -89,10 +93,10 @@ __meta__ = {
 }
 
 [node name="SprintValue" type="TextureProgress" parent="."]
-margin_left = 132.0
-margin_top = 95.0
-margin_right = 555.0
-margin_bottom = 134.0
+margin_left = 297.0
+margin_top = 149.0
+margin_right = 720.0
+margin_bottom = 188.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -125,10 +129,10 @@ __meta__ = {
 }
 
 [node name="SquatValue" type="TextureProgress" parent="."]
-margin_left = 132.0
-margin_top = 143.0
-margin_right = 555.0
-margin_bottom = 182.0
+margin_left = 297.0
+margin_top = 205.0
+margin_right = 720.0
+margin_bottom = 244.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -161,10 +165,10 @@ __meta__ = {
 }
 
 [node name="PushupValue" type="TextureProgress" parent="."]
-margin_left = 132.0
-margin_top = 191.0
-margin_right = 555.0
-margin_bottom = 230.0
+margin_left = 297.0
+margin_top = 261.0
+margin_right = 720.0
+margin_bottom = 300.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -197,10 +201,10 @@ __meta__ = {
 }
 
 [node name="CrunchValue" type="TextureProgress" parent="."]
-margin_left = 132.0
-margin_top = 239.0
-margin_right = 555.0
-margin_bottom = 278.0
+margin_left = 297.0
+margin_top = 317.0
+margin_right = 720.0
+margin_bottom = 356.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -233,10 +237,10 @@ __meta__ = {
 }
 
 [node name="BurpeeValue" type="TextureProgress" parent="."]
-margin_left = 132.0
-margin_top = 287.0
-margin_right = 555.0
-margin_bottom = 326.0
+margin_left = 297.0
+margin_top = 373.0
+margin_right = 720.0
+margin_bottom = 412.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -269,10 +273,10 @@ __meta__ = {
 }
 
 [node name="DifficultyValue" type="TextureProgress" parent="."]
-margin_left = 132.0
-margin_top = 335.0
-margin_right = 555.0
-margin_bottom = 374.0
+margin_left = 297.0
+margin_top = 429.0
+margin_right = 720.0
+margin_bottom = 468.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )

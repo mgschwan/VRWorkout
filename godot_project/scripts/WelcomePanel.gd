@@ -56,7 +56,7 @@ func scroll_element(direction):
 	var second_limit = $Viewport/RichTextLabel.get_line_count() - $Viewport/RichTextLabel.get_visible_line_count()
 	second_limit = max (second_limit, first_limit+1)
 
-	current_line = clamp(current_line+direction, first_limit, second_limit)
+	current_line = clamp(current_line+direction, max(0,first_limit), second_limit)
 
 	$Viewport/RichTextLabel.scroll_to_line(int(current_line))
 	$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE

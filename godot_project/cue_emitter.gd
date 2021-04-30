@@ -6,19 +6,23 @@ var current_playback_time = 0
 var points = 0
 var hits = 0
 var max_hits = 0
-var point_indicator
+var point_indicator = null
 
 var hud_enabled = false
+
+var run_point_multiplier = 1.0
+
 
 signal show_hud()
 signal hide_hud()
 signal streak_changed(count)
 signal hit_scored(hit_score, base_score, points, obj)
-
+signal update_info(hits,max_hits,points)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	point_indicator = get_node("PointIndicatorOrigin")
+	if has_node("PointIndicatorOrigin"):
+		point_indicator = get_node("PointIndicatorOrigin")
 	hud_enabled = ProjectSettings.get("game/hud_enabled")
 	pass # Replace with function body.
 
@@ -87,15 +91,17 @@ func update_hits(hit_score, is_hit):
 func score_negative_hits(hits):
 	GameVariables.vr_camera.tint_screen(0.2)
 	update_hits(-hits, true)
-	point_indicator.emit_text("-%d hits"%hits, "red")
+	if point_indicator:
+		point_indicator.emit_text("-%d hits"%hits, "red")
 
 func score_positive_hits(hits):
 	update_hits(hits, true)
-
-	point_indicator.emit_text("+%d hits"%hits, "green")
+	if point_indicator:
+		point_indicator.emit_text("+%d hits"%hits, "green")
 
 func score_miss(obj):
-	point_indicator.emit_text("miss", "red")
+	if point_indicator:
+		point_indicator.emit_text("miss", "red")
 	update_hits(obj.hit_score, false)
 	update_statistics_element(obj, false, 0)
 
@@ -109,8 +115,9 @@ func score_points(hit_points):
 	if hit_points > 0:
 		points += hit_points
 		update_hits(1,true)
-		point_indicator.emit_text("+%d"%hit_points,"green")
-		get_parent().update_info(hits,max_hits,points) 
+		if point_indicator:
+			point_indicator.emit_text("+%d"%hit_points,"green")
+		emit_signal("update_info",hits,max_hits,points) 
 	return hit_points
 
 func score_hit(delta, obj = null):
@@ -118,7 +125,7 @@ func score_hit(delta, obj = null):
 	if obj.has_method("hard_enough") and not obj.hard_enough(gu.hardness_level()):
 		score_negative_hits(1)
 	else:	
-		var multiplier = get_parent().run_point_multiplier
+		var multiplier = run_point_multiplier
 		if obj and "point_multiplier" in obj:
 			multiplier = multiplier * obj.point_multiplier
 			
@@ -130,11 +137,12 @@ func score_hit(delta, obj = null):
 		var pts_color = "green"
 		if multiplier > 1.0:
 			pts_color = "white"
-		point_indicator.emit_text("+%d"%hit_points,pts_color)
+		if point_indicator:
+			point_indicator.emit_text("+%d"%hit_points,pts_color)
 
 		update_statistics_element(obj, true, hit_points)
 
-		get_parent().update_info(hits,max_hits,points) 
+		emit_signal("update_info",hits,max_hits,points) 
 	return p
 
 
@@ -161,3 +169,28 @@ func _on_VisibilityNotifier_camera_entered(camera):
 func _on_VisibilityNotifier_camera_exited(camera):
 	if hud_enabled:
 		emit_signal("show_hud")
+		
+func set_move_tween(cue_node, start_pos, end_pos, actual_flytime):
+	var move_modifier = Tween.new()
+	move_modifier.set_name("tween")
+	cue_node.set_meta("move_tween", move_modifier)
+	cue_node.add_child(move_modifier)
+
+	move_modifier.interpolate_property(cue_node,"translation",start_pos,end_pos,actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+
+	#	var xdir = 1
+	#	if x < 0:
+	#		xdir = -1
+	#move_modifier.interpolate_property(cue_node,"translation:x",x,xdir*2.0,actual_flytime*0.75,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	#move_modifier.interpolate_property(cue_node,"translation:x",xdir*2.0,0,actual_flytime*0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,actual_flytime*0.75)
+	
+	move_modifier.connect("tween_completed",self,"_on_tween_completed")
+	move_modifier.start()
+		
+		
+func _on_tween_completed(obj,path):
+	if obj.has_method("should_be_avoided") and obj.should_be_avoided():
+		score_avoided(obj)
+	else:
+		score_miss(obj)
+	obj.queue_free()

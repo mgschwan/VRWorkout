@@ -10,11 +10,13 @@ func _ready():
 		get_node("AudioStreamPlayer").stream = select_sound
 
 signal selected()
+signal selected_by(controller)
 	
 func touched_by_controller(body, root):
 	print ("Panel touched")
 	get_node("AudioStreamPlayer").play(0.0)
 	emit_signal("selected")
+	emit_signal("selected_by", body)
 
 func mark_active(value = true):
 	var node = get_parent().get_node(active_marker)

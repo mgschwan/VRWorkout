@@ -41,14 +41,21 @@ size = Vector2( 184, 368 )
 transparent_bg = true
 msaa = 6
 render_target_v_flip = true
+render_target_update_mode = 1
 script = ExtResource( 9 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Viewport"]
 
-[node name="Easy" type="Button" parent="Viewport/CanvasLayer"]
-margin_left = 92.0
+[node name="Panel" type="Panel" parent="Viewport/CanvasLayer"]
 margin_right = 184.0
-margin_bottom = 50.0
+margin_bottom = 368.0
+theme = ExtResource( 7 )
+
+[node name="Easy" type="Button" parent="Viewport/CanvasLayer"]
+margin_left = 88.0
+margin_top = 4.0
+margin_right = 180.0
+margin_bottom = 54.0
 theme = ExtResource( 7 )
 text = "Easy"
 
@@ -60,10 +67,10 @@ margin_bottom = 45.0
 color = Color( 0.94902, 1, 0.0745098, 1 )
 
 [node name="Medium" type="Button" parent="Viewport/CanvasLayer"]
-margin_left = 92.0
-margin_top = 70.0
-margin_right = 184.0
-margin_bottom = 120.0
+margin_left = 88.0
+margin_top = 74.0
+margin_right = 180.0
+margin_bottom = 124.0
 theme = ExtResource( 7 )
 text = "Medium"
 
@@ -75,10 +82,10 @@ margin_bottom = 45.0
 color = Color( 0.94902, 1, 0.0745098, 1 )
 
 [node name="Hard" type="Button" parent="Viewport/CanvasLayer"]
-margin_left = 92.0
-margin_top = 140.0
-margin_right = 184.0
-margin_bottom = 190.0
+margin_left = 88.0
+margin_top = 144.0
+margin_right = 180.0
+margin_bottom = 194.0
 theme = ExtResource( 7 )
 text = "Hard"
 
@@ -90,10 +97,10 @@ margin_bottom = 45.0
 color = Color( 0.94902, 1, 0.0745098, 1 )
 
 [node name="Auto" type="Button" parent="Viewport/CanvasLayer"]
-margin_left = 92.0
-margin_top = 210.0
-margin_right = 184.0
-margin_bottom = 260.0
+margin_left = 88.0
+margin_top = 214.0
+margin_right = 180.0
+margin_bottom = 264.0
 theme = ExtResource( 7 )
 text = "Auto"
 
@@ -105,10 +112,10 @@ margin_bottom = 45.0
 color = Color( 0.94902, 1, 0.0745098, 1 )
 
 [node name="Ultra" type="Button" parent="Viewport/CanvasLayer"]
-margin_left = 92.0
-margin_top = 280.0
-margin_right = 184.0
-margin_bottom = 330.0
+margin_left = 88.0
+margin_top = 314.0
+margin_right = 180.0
+margin_bottom = 364.0
 theme = ExtResource( 7 )
 text = "Ultra"
 
@@ -132,16 +139,17 @@ margin_bottom = 342.0
 
 [node name="Plus" type="Button" parent="Viewport/CanvasLayer/Control"]
 margin_left = 23.0
+margin_top = 4.0
 margin_right = 69.0
-margin_bottom = 46.0
+margin_bottom = 50.0
 theme = ExtResource( 7 )
 text = "+"
 
 [node name="Minus" type="Button" parent="Viewport/CanvasLayer/Control"]
 margin_left = 23.0
-margin_top = 324.0
+margin_top = 318.0
 margin_right = 69.0
-margin_bottom = 370.0
+margin_bottom = 364.0
 theme = ExtResource( 7 )
 text = "+"
 

@@ -360,6 +360,15 @@ func load_challenges():
 	var challenges = load_persistent_config(challenge_database)		
 	return challenges
 	
+func delete_challenge(id):
+	var challenges = load_challenges()
+	if challenges.has(id):
+		print ("Deleting challenge")
+		challenges.erase(id)
+		store_persistent_config(challenge_database, challenges)
+	
+	
+	
 	
 func update_challenge(id, result):	
 	if GameVariables.game_mode == GameVariables.GameMode.STORED:
@@ -372,7 +381,28 @@ func update_challenge(id, result):
 			score["points"] = result.get("points",0)
 			score["score"] = result.get("vrw_score",0)
 			var duration = result.get("time",0)
-			save_challenge(id, GameVariables.cue_list, duration, "", Dictionary(), score, challenge.get("is_local",true))	
+			var additional_data = result.get("additional_data", Dictionary())
+			if len(GameVariables.level_statistics_data):
+				additional_data["level_statistics_data"] = GameVariables.level_statistics_data
+			
+			save_challenge(id, GameVariables.cue_list, duration, result.get("handle",""), additional_data, score, challenge.get("is_local",true))	
+	
+func get_tracker_id_actual(tracker_name, tracker_type):
+	var tracker_id = "%s/%s"%[tracker_name,str(tracker_type)]	
+	print ("Unique tracker id: %s"%tracker_id)
+	return tracker_name
+
+func get_tracker_id(controller):	
+	return get_tracker_id_actual(controller.get_controller_name(),controller.get_hand())
+
+	
+	
+func get_tracker_config(tracker_id):
+	var tracker_config = GameVariables.tracker_config_database.get(tracker_id, Dictionary())
+	return tracker_config
+	
+func set_tracker_config(tracker_id, config):
+	GameVariables.tracker_config_database[tracker_id] = config
 	
 	
 	

@@ -34,6 +34,7 @@ func switch(value):
 			GameVariables.vr_camera.blackout_screen(false)
 	
 func switch_environment(value):
+	ProjectSettings.set("game/stage", value)
 	if value == "angry":
 		get_viewport().get_camera().environment = red_environment
 	elif value == "bright":

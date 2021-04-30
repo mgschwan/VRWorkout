@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
 [ext_resource path="res://fonts/Droid_Sans_Bold_Big.tres" type="DynamicFont" id=2]
@@ -6,16 +6,47 @@
 [ext_resource path="res://fonts/Droid_Sans_Regular_medium.tres" type="DynamicFont" id=4]
 [ext_resource path="res://fonts/Droid_Sans_Regular_big.tres" type="DynamicFont" id=5]
 [ext_resource path="res://scripts/Onboarding.gd" type="Script" id=6]
+[ext_resource path="res://scripts/3rdparty/onboarding/assets/slide1.png" type="Texture" id=7]
+[ext_resource path="res://scripts/3rdparty/onboarding/assets/slide3.png" type="Texture" id=8]
+[ext_resource path="res://scripts/3rdparty/onboarding/assets/slide2.png" type="Texture" id=9]
+[ext_resource path="res://scripts/3rdparty/onboarding/assets/slide4.png" type="Texture" id=10]
+[ext_resource path="res://scripts/3rdparty/onboarding/assets/slide5.png" type="Texture" id=11]
 
-[node name="Node2D" type="Node2D"]
+[sub_resource type="StyleBoxEmpty" id=11]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+[node name="Onboarding" type="Control"]
 script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TabContainer" type="TabContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = 1024.0
-margin_bottom = 604.0
+margin_right = 1280.0
+margin_bottom = 720.0
 theme = ExtResource( 1 )
+custom_styles/panel = SubResource( 11 )
 tabs_visible = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -25,24 +56,9 @@ __meta__ = {
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 5.0
-margin_right = -5.0
-margin_bottom = -5.0
-
-[node name="Next" type="Button" parent="TabContainer/Onboarding1"]
-anchor_right = 0.099
-margin_left = 641.0
-margin_top = 511.898
-margin_right = 809.614
-margin_bottom = 572.898
-custom_fonts/font = ExtResource( 5 )
-text = "Next"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Onboarding1"]
+visible = false
 anchor_left = 0.009
 anchor_top = 0.019
 anchor_right = 0.953
@@ -63,14 +79,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SkipIntro" type="Button" parent="TabContainer/Onboarding1"]
-anchor_right = 0.099
-margin_left = 81.0
-margin_top = 511.898
-margin_right = 249.614
-margin_bottom = 572.898
-custom_fonts/font = ExtResource( 5 )
-text = "Skip Intro"
+[node name="TextureRect" type="TextureRect" parent="TabContainer/Onboarding1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 7 )
+expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -83,7 +96,17 @@ margin_top = 5.0
 margin_right = -5.0
 margin_bottom = -5.0
 
+[node name="TextureRect" type="TextureRect" parent="TabContainer/Onboarding2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 9 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Onboarding2"]
+visible = false
 anchor_left = 0.009
 anchor_top = 0.019
 anchor_right = 0.953
@@ -96,36 +119,175 @@ custom_fonts/bold_italics_font = ExtResource( 2 )
 custom_fonts/bold_font = ExtResource( 3 )
 custom_fonts/normal_font = ExtResource( 5 )
 bbcode_enabled = true
-bbcode_text = "This app is full of interesting and innovative features. We would like a few moments to explaing them to you"
-text = "This app is full of interesting and innovative features. We would like a few moments to explain them to you.
-
-You can always skip this, but you will miss some pretty important knowledge, so please take the time to go through it"
+bbcode_text = "[center]Meet your portable home trainer VRWorkout![/center]"
+text = "Meet your portable home trainer VRWorkout!"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SkipIntro" type="Button" parent="TabContainer/Onboarding2"]
+[node name="Onboarding3" type="Tabs" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Onboarding3"]
+anchor_left = 0.009
+anchor_top = 0.019
+anchor_right = 0.953
+anchor_bottom = 0.785
+margin_left = 16.874
+margin_top = 15.714
+margin_right = 22.658
+margin_bottom = 9.70999
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center]A quick intro to how VRWorkout works[/center]"
+text = "A quick intro to how VRWorkout works"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/Onboarding3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 8 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Onboarding4" type="Tabs" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Onboarding4"]
+visible = false
+anchor_left = 0.009
+anchor_top = 0.019
+anchor_right = 0.953
+anchor_bottom = 0.785
+margin_left = 16.874
+margin_top = 15.714
+margin_right = 22.658
+margin_bottom = 9.70999
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center]Now for a taste of the experience[/center]"
+text = "Now for a taste of the experience"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/Onboarding4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 10 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Onboarding5" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Onboarding5"]
+visible = false
+anchor_left = 0.009
+anchor_top = 0.019
+anchor_right = 0.953
+anchor_bottom = 0.785
+margin_left = 16.874
+margin_top = 15.714
+margin_right = 22.658
+margin_bottom = 9.70999
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center]Other important things you should know[/center]"
+text = "Other important things you should know"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/Onboarding5"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 11 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Next" type="Button" parent="."]
 anchor_right = 0.099
-margin_left = 81.0
-margin_top = 511.898
-margin_right = 249.614
-margin_bottom = 572.898
+margin_left = 359.0
+margin_top = 422.0
+margin_right = 529.0
+margin_bottom = 485.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
 custom_fonts/font = ExtResource( 5 )
-text = "Skip Intro"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Next" type="Button" parent="TabContainer/Onboarding2"]
+[node name="Previous" type="Button" parent="."]
 anchor_right = 0.099
-margin_left = 641.0
-margin_top = 511.898
-margin_right = 809.614
-margin_bottom = 572.898
+margin_left = 151.0
+margin_top = 422.0
+margin_right = 321.0
+margin_bottom = 485.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
 custom_fonts/font = ExtResource( 5 )
-text = "Next"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pressed" from="TabContainer/Onboarding1/Next" to="." method="_on_Next_pressed" binds= [ 1 ]]
+[node name="SkipIntro" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 155.0
+margin_top = 568.0
+margin_right = 319.0
+margin_bottom = 628.0
+theme = ExtResource( 1 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/focus = SubResource( 8 )
+custom_styles/disabled = SubResource( 9 )
+custom_styles/normal = SubResource( 10 )
+custom_fonts/font = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Next" to="." method="_on_Next_pressed"]
+[connection signal="pressed" from="Previous" to="." method="_on_Previous_pressed"]
+[connection signal="pressed" from="SkipIntro" to="." method="_on_SkipIntro_pressed"]

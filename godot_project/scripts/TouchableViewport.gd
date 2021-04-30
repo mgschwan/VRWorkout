@@ -3,6 +3,9 @@ extends Viewport
 
 var last_click_time = 0
 
+func _on_content_changed():
+	render_target_update_mode = Viewport.UPDATE_ONCE
+
 func manual_button_click(position):
 	var viewport = self
 	var input_point = position
@@ -34,6 +37,7 @@ func release_event(position = null):
 		else:
 			ev.position = last_position
 		viewport.input(ev)
+		_on_content_changed()
 	else:
 		print ("Release without click not possible")
 
@@ -91,6 +95,8 @@ func _on_ConnectPadInput_interface_touch(u, v):
 
 
 func _on_ConnectPadInput_interface_release(u, v):	
-	release_event() #Vector2(v,u))
+	var position = Vector2(self.size[0]*v, self.size[1]*u)		
+
+	release_event(position)
 
 	

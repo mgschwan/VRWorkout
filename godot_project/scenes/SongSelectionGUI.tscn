@@ -1,0 +1,59 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
+[ext_resource path="res://scripts/SongSelectionGUI.gd" type="Script" id=2]
+
+[node name="SongSelection" type="Panel"]
+margin_right = 768.0
+margin_bottom = 512.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SongList" type="ItemList" parent="."]
+margin_left = 8.0
+margin_top = 7.0
+margin_right = 595.0
+margin_bottom = 503.0
+custom_constants/vseparation = 8
+max_text_lines = 2
+fixed_column_width = 536
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Add" type="Button" parent="."]
+margin_left = 601.0
+margin_top = 29.0
+margin_right = 759.0
+margin_bottom = 92.0
+text = "Add to Playlist"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Preview" type="Button" parent="."]
+margin_left = 601.0
+margin_top = 133.0
+margin_right = 759.0
+margin_bottom = 196.0
+text = "Preview"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StopPreview" type="Button" parent="."]
+margin_left = 601.0
+margin_top = 237.0
+margin_right = 759.0
+margin_bottom = 300.0
+text = "Stop Preview"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Add" to="." method="_on_Add_pressed"]
+[connection signal="pressed" from="Preview" to="." method="_on_Preview_pressed"]
+[connection signal="pressed" from="StopPreview" to="." method="_on_StopPreview_pressed"]

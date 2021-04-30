@@ -70,13 +70,15 @@ var exercise_duration_avg = 20.0
 
 
 
-
+var tracker_config_database = Dictionary()
 
 var config_file_location = "user://settings.json"
 var achievement_file_location = "user://achievements.json"
 
 var game_result = Dictionary()
 var challenge_slots = Dictionary()
+#This is the ghost data the player plays against
+var input_level_statistics_data = Dictionary()
 
 var current_ingame_id = 0
 func get_next_ingame_id():
@@ -126,7 +128,7 @@ enum CueState {
 	PARCOUR = 8,	
 };
 
-enum CueSelector {
+enum CueSelector {u
 	HEAD = 0,
 	HAND = 1,	
 };

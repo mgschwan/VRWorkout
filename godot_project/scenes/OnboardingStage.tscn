@@ -1,0 +1,119 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://blue_outdoor_stage.tscn" type="PackedScene" id=1]
+[ext_resource path="res://RetractableMat.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Onboarding.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/ConnectPadInput.gd" type="Script" id=4]
+[ext_resource path="res://scripts/TouchableViewport.gd" type="Script" id=5]
+[ext_resource path="res://scripts/OnboardingStage.gd" type="Script" id=6]
+[ext_resource path="res://scripts/DelayedButton.gd" type="Script" id=7]
+[ext_resource path="res://assets/exit_button.jpg" type="Texture" id=8]
+[ext_resource path="res://models/StagePole.tscn" type="PackedScene" id=9]
+[ext_resource path="res://cue_emitter.gd" type="Script" id=10]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.483049, 0.0311753, 0.230285 )
+
+[sub_resource type="PlaneMesh" id=2]
+size = Vector2( 2, 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
+flags_unshaded = true
+albedo_texture = ExtResource( 8 )
+
+[sub_resource type="PlaneMesh" id=4]
+size = Vector2( 2, 1.12 )
+
+[sub_resource type="ViewportTexture" id=5]
+flags = 12
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="SpatialMaterial" id=6]
+resource_local_to_scene = true
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = SubResource( 5 )
+
+[sub_resource type="BoxShape" id=7]
+extents = Vector3( 1, 0.03, 0.56 )
+
+[node name="OnboardingStage" type="Spatial"]
+script = ExtResource( 6 )
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 1280, 716 )
+transparent_bg = true
+msaa = 6
+render_target_v_flip = true
+script = ExtResource( 5 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Viewport"]
+
+[node name="Onboarding" parent="Viewport/CanvasLayer" instance=ExtResource( 3 )]
+
+[node name="MainStage" type="Spatial" parent="."]
+transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, -0.252, 0, -4.953 )
+
+[node name="blue_stage_long" parent="MainStage" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.026, -0.001, -0.586 )
+
+[node name="floor_with_retractable_tile" parent="MainStage" instance=ExtResource( 2 )]
+transform = Transform( 0.19, 0, 0, 0, 0.2, 0, 0, 0, 0.19, 0.023, 0.01, 0.523 )
+
+[node name="Poles" type="Spatial" parent="MainStage"]
+transform = Transform( 0.01, 0, 0, 0, 0.1, 0, 0, 0, 0.01, -0.0420639, 0.0974677, 0.558376 )
+visible = false
+
+[node name="exit_button" type="StaticBody" parent="MainStage/Poles"]
+transform = Transform( -8.74228e-08, 1, -8.74228e-09, 0, -4.37114e-08, -0.2, -2, -4.37114e-08, 3.82137e-16, -2.57036, 0.25962, -0.0545118 )
+script = ExtResource( 7 )
+
+[node name="CollisionShape" type="CollisionShape" parent="MainStage/Poles/exit_button"]
+transform = Transform( 1, -3.55271e-15, 5.29396e-23, 0, 1, -3.55271e-15, 6.77626e-21, -4.26326e-14, 1, 0, -0.00640297, 0 )
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="MainStage/Poles/exit_button"]
+transform = Transform( 0.5, -3.55271e-15, 3.97047e-23, 0, 1, -2.22045e-15, 4.23516e-21, -4.26326e-14, 0.5, 0, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="target_zone_l" parent="MainStage/Poles" instance=ExtResource( 9 )]
+transform = Transform( 4, 0, 0, 0, 0.4, 0, 0, 0, 4, -3.10597, -0.919663, 0.00937921 )
+
+[node name="target_zone_l2" parent="MainStage/Poles" instance=ExtResource( 9 )]
+transform = Transform( -4, 0, -1.30337e-06, 0, 0.4, 0, 1.30337e-06, 0, -4, 17.0173, -0.919663, 0.00937921 )
+
+[node name="StaticBody" type="StaticBody" parent="."]
+transform = Transform( 0.707107, 0.707107, -3.09086e-08, 0, -4.37114e-08, -1, -0.707107, 0.707107, -3.09086e-08, -0.944898, 1.52187, -0.648889 )
+script = ExtResource( 4 )
+
+[node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, -1.77636e-14, 1, 0, 0, 0 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 6 )
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, -3.55271e-15, 1, 0, -0.0274527, 0 )
+shape = SubResource( 7 )
+
+[node name="tl_marker" type="Spatial" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -0.56 )
+
+[node name="tr_marker" type="Spatial" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -0.56 )
+
+[node name="bl_marker" type="Spatial" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0.56 )
+
+[node name="cue_emitter" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8 )
+script = ExtResource( 10 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[connection signal="onboarding_finished" from="Viewport/CanvasLayer/Onboarding" to="." method="_on_Onboarding_onboarding_finished"]
+[connection signal="onboarding_state_changed" from="Viewport/CanvasLayer/Onboarding" to="." method="_on_Onboarding_onboarding_state_changed"]
+[connection signal="interface_release" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_release"]
+[connection signal="interface_touch" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_touch"]
+[connection signal="hit_scored" from="cue_emitter" to="." method="_on_cue_emitter_hit_scored"]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_Audio_finished"]

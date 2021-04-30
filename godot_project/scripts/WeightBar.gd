@@ -1,5 +1,4 @@
 extends ARVRController
 
+var hand_mode = false
 
-func _physics_process(delta):
-	self.global_transform.basis = Quat.IDENTITY

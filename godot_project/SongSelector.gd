@@ -1,6 +1,7 @@
 extends Spatial
 
 signal level_selected(filename, difficulty, level_number)
+signal content_changed()
 
 var current_difficulty = 0
 
@@ -11,10 +12,6 @@ var page = 0
 var gu = GameUtilities.new()
 
 var playlist = []
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 
 func playlist_from_song_files(songs):
 	playlist.clear()
@@ -33,63 +30,11 @@ func playlist_from_song_names(songs):
 			var songfile = get_tree().current_scene.get_node("SongDatabase").get_songfile(song)
 			if songfile:
 				playlist.append(songfile)
-		
 	update_songs()
 
-func update_song_list():
-	var offset = page * 6
-	var pages = ceil(len(song_list)/6.0)
-	for idx in range(6):
-		var element = get_node("SongBlocks/Element%d"%(idx+1))
-		if len(song_list) > idx+offset:
-			var filename = song_list[idx+offset]
-			var song_name = gu.get_song_name(filename)
-			var song_info = song_infos.get(filename,{})
-			var artist = song_info.get("artist","")
-			var length = get_tree().current_scene.get_node("SongDatabase").get_song_duration(filename)
-			element.is_set = true
-			element.set_song_info(song_name,filename,artist,length)
-		else:
-			element.is_set = false
-			element.set_song_info("empty",null)
-
-	get_node("NextPage").print_info("[b]Next Page\n\n  Current: %d/%d[b]"%[page+1,pages])
-
-
-
-
-
-func get_song_infos(songs):
-	var infos = {}
-	for song in songs:
-		var beat_file = File.new()
-		var error = beat_file.open("%s.json"%song, File.READ)
-		if error == OK:
-			var tmp = JSON.parse(beat_file.get_as_text()).result
-			beat_file.close()
-			if tmp:
-				var artist = tmp.get("artist", "")
-				infos[song] = {"artist": artist, "length": 0}
-	return infos
-
-func sort_song_list(songs):
-	var retVal = []
-	var song_dict = {}
-	for s in songs:
-		var song_name = gu.get_song_name(s)
-		song_dict[song_name.to_lower()] = s
-		
-	var song_tmp = song_dict.keys()
-	song_tmp.sort()
-	for s in song_tmp:
-		retVal.append(song_dict[s])
-	return retVal
-
 func set_songs(songs):
-	song_list = sort_song_list(songs)
-	song_infos = get_song_infos(songs)
-	update_song_list()
-
+	$SongSelector/Viewport/SongSelection.set_songs(songs)
+	$SongSelector/Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
 
 var hrr #Heart rate receiver
 var youtube #Youtube interface
@@ -102,26 +47,22 @@ func update_automatic():
 		get_node("DifficultyButtons").enable_automatic(false)
 		gu.deactivate_node(get_node("Heartrate"))
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	hrr = get_tree().current_scene.get_node("HeartRateReceiver")
 	youtube = get_tree().current_scene.get_node("YoutubeInterface")
-
+	
 	var external_dir = ProjectSettings.get("game/external_songs")
 	
 	if external_dir:
-		get_node("MusicDirectory").print_info("Place custom OGG or MP3 files\n in: %s"%external_dir)
-
-
+		get_node("SongSelector/MusicDirectory").print_info("Place custom OGG or MP3 files\n in: %s"%external_dir)
+		
 	update_automatic()
-	update_song_list()
 	update_hr_selectors()
 	update_songs()
 	select_difficulty(current_difficulty)
+	emit_signal("content_changed")
 	
-	
-
 func update_songs():
 	var t = ""
 	var duration = 0
@@ -140,24 +81,8 @@ func update_songs():
 
 	root.set_text(0,"Your Playlist %s"%(gu.seconds_to_timestring(duration)))
 
+	emit_signal("content_changed")
 	#get_node("Viewport").render_target_update_mode = Viewport.UPDATE_ONCE
-		
-func next_page():
-	print ("Page: %d, Songs: %d, Pages: %d"%[page, len(song_list), int(ceil(len(song_list)/6.0))])
-	if len(song_list) > 0:
-		page = (page + 1) % int(ceil(len(song_list)/6.0))
-	print ("Next page: %d"%page)
-	update_song_list()
-
-func previous_page():
-	print ("Page: %d, Songs: %d, Pages: %d"%[page, len(song_list), int(ceil(len(song_list)/6.0))])
-	page -= 1
-	if page < 0:
-		page = max(0,int(ceil(len(song_list)/6.0))-1)
-		
-	print ("Previous page: %d"%page)
-	update_song_list()
-
 
 var frame_idx = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -169,30 +94,21 @@ func _process(delta):
 			#print ("Youtube available")
 			$Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.show()
 			$Viewport/CanvasLayer/TabContainer/Youtube/ActivateYoutube.hide()
-			#$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
+			emit_signal("content_changed")
 		elif not youtube.is_youtube_available(): # and $Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.visible:
 			#print ("Youtube not available")
 			$Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.hide()
 			$Viewport/CanvasLayer/TabContainer/Youtube/ActivateYoutube.show()
-			#$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
+			emit_signal("content_changed")
 		frame_idx = 0
 		
 func select_difficulty(d):
 	current_difficulty = d
 	get_node("DifficultyButtons").select_difficulty(d)
 
-
 func _on_level_block_selected(filename, difficulty, level_number):
 	playlist.append(filename)
 	update_songs()
-
-func _on_NextPage_touched():
-	next_page()
-
-func _on_PreviousPage_touched():
-	previous_page()
-
-
 
 var difficulties = {"easy":0,"medium": 1, "hard": 2, "ultra": 3, "auto": -1,}
 func _on_DifficultyButtons_difficulty_selected(difficulty):
@@ -250,7 +166,6 @@ func _on_PauseButton_pressed():
 		playlist.append(-10)
 	update_songs()
 
-
 func _on_RemoveButton_button_up():
 	print ("Remove Button UP")
 
@@ -262,3 +177,23 @@ func _on_YoutubeButton_pressed():
 func _on_ActivateYoutube_pressed():
 	var link = "%s%d"%[ProjectSettings.get("application/config/youtube_link"),OS.get_unix_time()]
 	OS.shell_open(link)
+	emit_signal("content_changed")
+
+func _on_SongSelection_add_playlist_song(song_filename):
+	playlist.append(song_filename)
+	update_songs()
+
+func _on_SongSelection_preview_song(song_filename):
+	if song_filename:
+		var stream = gu.load_audio_resource(song_filename)
+		$AudioStreamPlayer.stream = stream
+		$AudioStreamPlayer.play()
+	else:
+		$AudioStreamPlayer.stop()
+
+
+func _on_TabContainer_tab_selected(tab):
+	if tab == 0:
+		$SongSelector.enable()
+	else:
+		$SongSelector.disable()

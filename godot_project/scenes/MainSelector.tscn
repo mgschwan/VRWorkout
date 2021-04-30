@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
 [ext_resource path="res://scripts/MainGamemodeSelector.gd" type="Script" id=2]
+[ext_resource path="res://scripts/ScrollButton.gd" type="Script" id=3]
+[ext_resource path="res://assets/arrow_up_scroll_32.png" type="Texture" id=4]
+[ext_resource path="res://assets/arrow_down_scroll_32.png" type="Texture" id=5]
 
 [node name="main" type="Control"]
 anchor_right = 1.0
@@ -134,23 +137,17 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 471.0
-margin_top = 10.0
-margin_bottom = -117.0
+margin_top = 59.0
+margin_bottom = -112.0
 bbcode_enabled = true
 bbcode_text = "Description:
 
 
-
-UNDER CONSTRUCTION
-
-PLEASE USE THE BATTLE MENU FOR CHALLENGES FOR NOW"
+Press \"Save challenge\" after your workout if finished if you want to repeat it in the future."
 text = "Description:
 
 
-
-UNDER CONSTRUCTION
-
-PLEASE USE THE BATTLE MENU FOR CHALLENGES FOR NOW"
+Press \"Save challenge\" after your workout if finished if you want to repeat it in the future."
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -160,7 +157,33 @@ anchor_left = 0.005
 anchor_top = 0.005
 anchor_right = 0.443
 anchor_bottom = 0.995
+custom_constants/vseparation = 5
 items = [ "Local challenge 1", null, false, "Local challenge 2", null, false, "Local challenge 3", null, false, "Local challenge 4", null, false, "Online challenge 1", null, false, "Online challenge 2", null, false, "Online challenge 3", null, false, "Online challenge 4", null, false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollUpButton" type="TextureButton" parent="TabContainer/Challenges/ItemList"]
+visible = false
+margin_left = 380.195
+margin_top = 0.819618
+margin_right = 444.195
+margin_bottom = 64.8196
+texture_normal = ExtResource( 4 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+scroll_up = true
+
+[node name="ScrollDownButton" type="TextureButton" parent="TabContainer/Challenges/ItemList"]
+visible = false
+margin_left = 380.195
+margin_top = 398.82
+margin_right = 444.195
+margin_bottom = 462.82
+texture_normal = ExtResource( 5 )
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -175,7 +198,75 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Delete" type="Button" parent="TabContainer/Challenges"]
+margin_left = 472.0
+margin_top = 7.0
+margin_right = 665.0
+margin_bottom = 48.0
+text = "Delete challenge"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="TabContainer/Challenges/Delete"]
+visible = true
+margin_left = -162.0
+margin_top = 24.0
+margin_right = 273.0
+margin_bottom = 240.0
+theme = ExtResource( 1 )
+popup_exclusive = true
+window_title = "Confirm delete"
+resizable = true
+dialog_text = "Are you sure you want to delete this challenge?"
+dialog_autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Onboarding" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 42.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="Onboarding" type="Button" parent="TabContainer/Onboarding"]
+margin_left = 346.643
+margin_top = 293.762
+margin_right = 673.643
+margin_bottom = 408.762
+text = "Start onboarding"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Onboarding"]
+visible = false
+margin_left = 389.0
+margin_top = 112.48
+margin_right = 643.0
+margin_bottom = 277.48
+bbcode_enabled = true
+bbcode_text = "[center]Onboarding under construction
+Please use the tutorial
+to your right
+for now[/center]"
+text = "Onboarding under construction
+Please use the tutorial
+to your right
+for now"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="tab_changed" from="TabContainer" to="." method="_on_TabContainer_tab_changed"]
 [connection signal="item_selected" from="TabContainer/Exercise sets/ItemList" to="." method="_on_ExerciseSets_item_selected"]
 [connection signal="item_selected" from="TabContainer/Workouts/ItemList" to="." method="_on_Workout_item_selected"]
 [connection signal="item_selected" from="TabContainer/Challenges/ItemList" to="." method="_on_Challenge_item_selected"]
 [connection signal="pressed" from="TabContainer/Challenges/Save" to="." method="_on_Save_pressed"]
+[connection signal="pressed" from="TabContainer/Challenges/Delete" to="." method="_on_DeleteChallenge_pressed"]
+[connection signal="confirmed" from="TabContainer/Challenges/Delete/ConfirmationDialog" to="." method="_on_DeleteChallenge_confirmed"]
+[connection signal="pressed" from="TabContainer/Onboarding/Onboarding" to="." method="_on_Onboarding_pressed"]

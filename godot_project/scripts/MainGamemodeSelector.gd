@@ -2,7 +2,10 @@ extends Control
 
 signal workout_selected(collection, achievements)
 signal exercise_set_selected(collection)
-signal challenge_selected(exercise_list, slot_number)
+signal challenge_selected(exercise_list, slot_number, level_statistics_data)
+signal onboarding_selected()
+
+signal content_changed()
 
 var gu = GameUtilities.new()
 
@@ -80,6 +83,13 @@ func sync_online_challenges():
 		slot_index += 1	
 
 	
+func update_challenge_widget():
+	$TabContainer/Challenges/ItemList.clear()
+	for i in range(len(challenge_names)):
+		$TabContainer/Challenges/ItemList.add_item(challenge_names[i])		
+
+	
+	
 func update_widget():
 	$"TabContainer/Exercise sets/ItemList".clear()
 	for i in range(len(exercise_names)):
@@ -90,12 +100,9 @@ func update_widget():
 		$TabContainer/Workouts/ItemList.add_item(workout_names[i])
 	
 	setup_challenges()
+	update_challenge_widget()
 	
-	$TabContainer/Challenges/ItemList.clear()
-	for i in range(len(challenge_names)):
-		$TabContainer/Challenges/ItemList.add_item(challenge_names[i])		
-
-	
+	emit_signal("content_changed")
 
 func _ready():
 	sync_online_challenges()
@@ -105,11 +112,13 @@ func _on_ExerciseSets_item_selected(index):
 	var description = get_exercise_set_description(index)
 	$"TabContainer/Exercise sets/Info".bbcode_text = "Description:\n\n%s"%description
 	emit_signal("exercise_set_selected",exercise_sets[index])
+	emit_signal("content_changed")
 
 func _on_Workout_item_selected(index):
 	var description = get_workout_description(index)
 	$"TabContainer/Workouts/Info".bbcode_text = "Description:\n\n%s"%description
 	emit_signal("workout_selected",workouts[workout_names[index]], gu.get_possible_workout_achievements(workout_names[index]))
+	emit_signal("content_changed")
 
 
 func _on_Save_pressed():
@@ -117,11 +126,15 @@ func _on_Save_pressed():
 	var score = Dictionary()
 	score["points"] = GameVariables.game_result.get("points",0)
 	score["score"] = GameVariables.game_result.get("vrw_score",0)
+	var additional_data = Dictionary()
+	if len(GameVariables.level_statistics_data):
+		additional_data["level_statistics_data"] = GameVariables.level_statistics_data
+		
 	var	duration = GameVariables.game_result.get("time",0)
 	#	GameVariables.selected_game_slot = slot_number
 	var t = OS.get_datetime()
 	var id = "Local %02d.%02d.%04d %02d:%02d:%02d"%[t["day"],t["month"],t["year"],t["hour"],t["minute"],t["second"]]
-	gu.save_challenge(id, exercise_list, duration, "", Dictionary(), score, true)
+	gu.save_challenge(id, exercise_list, duration, "", additional_data, score, true)
 	update_widget()
 	
 func _on_Challenge_item_selected(index):
@@ -132,6 +145,31 @@ func _on_Challenge_item_selected(index):
 	var message = challenge.get("additional_data",Dictionary()).get("message","")
 	$TabContainer/Challenges/Info.bbcode_text += "\n%s"%message
 	
+	var level_statistics_data = challenge.get("additional_data",Dictionary()).get("level_statistics_data",Dictionary())
 	
-	
-	emit_signal("challenge_selected", challenge["cue_list"], challenge["id"])
+	emit_signal("challenge_selected", challenge["cue_list"], challenge["id"], level_statistics_data)
+	emit_signal("content_changed")
+
+
+func _on_Onboarding_pressed():
+	emit_signal("onboarding_selected")
+
+
+func _on_TabContainer_tab_changed(tab):
+	emit_signal("content_changed")
+
+func _on_DeleteChallenge_confirmed():
+	var items = $TabContainer/Challenges/ItemList.get_selected_items()
+	if len(items) > 0:
+		var delete_item = items[0]		
+		if delete_item < len(challenges):
+			var delete_id = challenges[delete_item].get("id",null)
+			print ("Delete challenge with id: %s"%str(delete_id))
+			if delete_id != null:
+				gu.delete_challenge(delete_id)
+				update_widget()
+
+func _on_DeleteChallenge_pressed():
+	var items = $TabContainer/Challenges/ItemList.get_selected_items()
+	if len(items) > 0:
+		$TabContainer/Challenges/Delete/ConfirmationDialog.popup()

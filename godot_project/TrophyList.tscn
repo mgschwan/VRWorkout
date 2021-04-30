@@ -1,18 +1,79 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://Trophy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://TrophyList.gd" type="Script" id=2]
-[ext_resource path="res://TextBlockTrapezoid.tscn" type="PackedScene" id=3]
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=4]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.631373, 0.619608, 1, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="DynamicFont" id=2]
+size = 20
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="PlaneMesh" id=3]
+size = Vector2( 1, 2 )
+
+[sub_resource type="ViewportTexture" id=4]
+flags = 4
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="SpatialMaterial" id=5]
+resource_local_to_scene = true
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = SubResource( 4 )
 
 [node name="TrophyList" type="Spatial"]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 script = ExtResource( 2 )
 
-[node name="trophy" parent="." instance=ExtResource( 1 )]
-transform = Transform( 0.8, -1.86265e-10, 2.38418e-08, 1.86265e-10, 0.8, 9.3132e-11, -2.38418e-08, -9.3132e-11, 0.8, 0, 0.12596, 0 )
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 192, 384 )
+transparent_bg = true
+msaa = 6
+render_target_v_flip = true
 
-[node name="Runtime" parent="." instance=ExtResource( 3 )]
-transform = Transform( -3.25841e-07, 2, 3.25841e-07, 0, -3.25841e-07, 2, 2, 3.25841e-07, 5.30863e-14, 0, -2.54141, 0 )
+[node name="CanvasLayer" type="CanvasLayer" parent="Viewport"]
 
-[node name="Groovetime" parent="." instance=ExtResource( 3 )]
-transform = Transform( -3.25841e-07, 2, 3.25841e-07, 0, -3.25841e-07, 2, 2, 3.25841e-07, 5.30863e-14, 0, -4.94079, 0 )
+[node name="Panel" type="Panel" parent="Viewport/CanvasLayer"]
+margin_right = 192.0
+margin_bottom = 384.0
+theme = ExtResource( 4 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="Runtime" type="RichTextLabel" parent="Viewport/CanvasLayer/Panel"]
+margin_left = 5.0
+margin_top = 192.0
+margin_right = 197.0
+margin_bottom = 288.0
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+
+[node name="Groovetime" type="RichTextLabel" parent="Viewport/CanvasLayer/Panel"]
+margin_left = 5.0
+margin_top = 288.0
+margin_right = 197.0
+margin_bottom = 384.0
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+
+[node name="Scores" type="RichTextLabel" parent="Viewport/CanvasLayer/Panel"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 187.0
+margin_bottom = 187.0
+theme = ExtResource( 4 )
+custom_fonts/bold_font = SubResource( 2 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( -2.18557e-07, 5, 2.18557e-07, 4.37114e-07, 2.18557e-07, -5, -5, -2.18557e-07, -4.37114e-07, -2.60541e-18, -1.00521, 0 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 5 )

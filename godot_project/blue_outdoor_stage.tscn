@@ -1,32 +1,33 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://materials/blue_stage_grid.tres" type="Material" id=1]
+[ext_resource path="res://materials/absolute_black.tres" type="Material" id=1]
 [ext_resource path="res://retro_sun.tscn" type="PackedScene" id=2]
 [ext_resource path="res://models/blue_stage_long.gltf" type="PackedScene" id=3]
 [ext_resource path="res://scripts/blue_outdoor_stage.gd" type="Script" id=4]
+[ext_resource path="res://materials/outdoor_stage_dark_mat.tres" type="Material" id=5]
 [ext_resource path="res://models/black.material" type="Material" id=6]
-
-[sub_resource type="SpatialMaterial" id=1]
-params_specular_mode = 2
-albedo_color = Color( 0.0784314, 0, 0.6, 1 )
-metallic = 1.0
-metallic_specular = 1.0
-roughness = 0.0
+[ext_resource path="res://materials/outdoor_stage_bright_mat.tres" type="Material" id=7]
 
 [node name="blue_stage_long" instance=ExtResource( 3 )]
 script = ExtResource( 4 )
+bright_material = ExtResource( 7 )
+dark_material = ExtResource( 5 )
 
 [node name="Grid" parent="." index="0"]
+generate_lightmap = false
 material/0 = ExtResource( 6 )
 
 [node name="Grid001" parent="." index="1"]
+generate_lightmap = false
 material/0 = ExtResource( 1 )
 
 [node name="retro_sun" parent="." index="2" instance=ExtResource( 2 )]
 transform = Transform( 6.90122e-14, -4.56178e-07, 2.8, -2.6, -4.56178e-07, -3.16226e-20, 4.23594e-07, -2.8, -4.56178e-07, -0.168069, 2.50243, -7.44617 )
 
 [node name="Grid002" parent="." index="3"]
-material/0 = SubResource( 1 )
+generate_lightmap = false
+material/0 = ExtResource( 5 )
 
 [node name="Grid003" parent="." index="4"]
+generate_lightmap = false
 material/0 = ExtResource( 6 )

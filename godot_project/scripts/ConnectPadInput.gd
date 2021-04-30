@@ -3,6 +3,14 @@ extends StaticBody
 signal interface_touch(u,v)
 signal interface_release(u,v)
 
+func disable():
+	$CollisionShape.disabled = true
+	hide()
+	
+func enable():
+	$CollisionShape.disabled = false
+	show()
+
 func get_touch_position(body):
 	var element_size = get_node("MeshInstance").mesh.size
 

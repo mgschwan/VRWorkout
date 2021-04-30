@@ -102,6 +102,8 @@ var update_counter = 0
 func update_info(hits, max_hits, points):
 	var song_pos = int(cue_emitter.current_playback_time)
 	var total = max(1.0, int(stream.stream.get_length())) #max(1.0,val) to prevent divison by zero
+
+	$TrophyList.set_score(0,"Player", hits, points) 
 	
 	var elapsed_string = gu.seconds_to_timestring(song_pos)
 	var t = OS.get_time()	
@@ -182,6 +184,8 @@ func setup_game_data():
 		battle_module.connect("player_won",self,"_on_BattleDisplay_player_won")
 
 		cue_emitter.connect("hit_scored", battle_module, "hit_scored")
+		cue_emitter.connect("update_info", self, "update_info")
+
 		self.connect("set_exercise", battle_module, "set_exercise")
 		gu.deactivate_node(boxman1)
 		gu.deactivate_node(boxman2)	
@@ -207,7 +211,7 @@ func setup_game_data():
 
 		
 var player_head
-var spectator_cam
+#var spectator_cam
 func _ready():
 	if GameVariables.ar_mode:
 		gu.deactivate_node(get_node("MainStage/blue_outdoor_stage"))
@@ -216,10 +220,10 @@ func _ready():
 		player_head =  Spatial.new()  #load("res://scenes/PlayerHead.tscn").instance()
 		add_child(player_head)
 
-		spectator_cam = Camera.new()
-		spectator_cam.far = 300
-		add_child(spectator_cam)
-		spectator_cam.current = true
+		#spectator_cam = Camera.new()
+		#spectator_cam.far = 300
+		#add_child(spectator_cam)
+		#spectator_cam.current = true
 	
 	if random_seed:
 		rng.randomize()
@@ -288,6 +292,12 @@ func _ready():
 			
 	update_safe_pushup()
 	
+	#Setup the ghost if available
+	if len(GameVariables.input_level_statistics_data):
+		add_remote_user_messages("Ghost", GameVariables.input_level_statistics_data)
+	GameVariables.input_level_statistics_data = Dictionary()
+	
+
 
 func update_groove_iteration():
 	if beat_index > 0:
@@ -326,9 +336,9 @@ func _process(delta):
 		#c.translation = GameVariables.vr_camera.translation + Vector3(0,0,1.0)
 		player_head.global_transform = GameVariables.vr_camera.global_transform
 		
-		spectator_cam.global_transform = player_head.global_transform
-		spectator_cam.global_transform.basis = Basis.IDENTITY
-		spectator_cam.translate(Vector3(0.0,0.2,1.0))
+		#spectator_cam.global_transform = player_head.global_transform
+		#spectator_cam.global_transform.basis = Basis.IDENTITY
+		#spectator_cam.translate(Vector3(0.0,0.2,1.0))
 
 		
 	#cue_emitter.current_playback_time += delta
@@ -368,6 +378,11 @@ func _process(delta):
 		else:
 			#If no duration is set yet, setup the initial duration
 			actual_state_duration = exercise_builder.state_duration
+		
+		#Remote messages can be consumed at a slower pace
+		consume_remote_user_messages()
+
+
 
 	create_all_current_cues( cue_emitter.current_playback_time )
 	check_beast_status()
@@ -385,14 +400,6 @@ func _on_exit_timer_timeout():
 	print ("End of level going back to main")
 	emit_signal("level_finished")
 	
-
-func _on_tween_completed(obj,path):
-	if obj.has_method("should_be_avoided") and obj.should_be_avoided():
-		cue_emitter.score_avoided(obj)
-	else:
-		cue_emitter.score_miss(obj)
-	obj.queue_free()
-
 func switch_floor_sign_actual(type):
 	var sign_node = get_node("FloorSign")
 	if type == "hands":
@@ -501,9 +508,6 @@ func create_and_attach_cue_actual(cue_data):
 	cue_node.hit_score = hit_score
 	
 	var main_node = get_node("cue_emitter")
-	var move_modifier = Tween.new()
-	move_modifier.set_name("tween")
-	cue_node.set_meta("move_tween", move_modifier)
 	
 	#If the player hits a streak of cues the next one will be special
 	if cue_streak and not is_avoid:
@@ -514,7 +518,6 @@ func create_and_attach_cue_actual(cue_data):
 			highlight.scale = highlight.scale * 6
 		cue_node.add_child(highlight)
 		cue_node.point_multiplier = 3.0
-	cue_node.add_child(move_modifier)
 	main_node.add_child(cue_node)
 	cue_node.translation = Vector3(x,y,0+fly_offset)
 	
@@ -526,7 +529,6 @@ func create_and_attach_cue_actual(cue_data):
 		cue_node.set_transform( cue_node.get_transform().rotated(Vector3(0,0,1), 3*3.1415926/2))
 	
 	if cue_type in ["left", "right", "left_hold", "right_hold"]:
-		cue_node.move_tween = move_modifier
 		var alpha = atan2(x,y-head_y_pos)
 		cue_node.set_transform(cue_node.get_transform().rotated(Vector3(0,0,1),-alpha))
 		
@@ -537,16 +539,8 @@ func create_and_attach_cue_actual(cue_data):
 	add_statistics_element(ingame_id, exercise_builder.state_string(actual_game_state)+"/%s"%cue_subtype, cue_type, exercise_builder.current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr, hit_score, hardness)
 	cue_node.ingame_id = ingame_id
 	
-	move_modifier.interpolate_property(cue_node,"translation",Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	cue_emitter.set_move_tween(cue_node, Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime)
 
-	var xdir = 1
-	if x < 0:
-		xdir = -1
-
-	#move_modifier.interpolate_property(cue_node,"translation:x",x,xdir*2.0,actual_flytime*0.75,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
-	#move_modifier.interpolate_property(cue_node,"translation:x",xdir*2.0,0,actual_flytime*0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,actual_flytime*0.75)
-	move_modifier.connect("tween_completed",self,"_on_tween_completed")
-	move_modifier.start()
 	return cue_node
 
 	
@@ -624,6 +618,9 @@ var actual_last_state_change = 0
 func internal_state_change():	
 	if actual_game_state != CueState.SPRINT:
 		get_tree().current_scene.set_controller_visible(true)
+		
+	if actual_game_state == CueState.SPRINT:
+		last_sprint_update = OS.get_ticks_msec()
 		
 	if actual_game_state == CueState.BURPEE or actual_game_state == CueState.PUSHUP:
 			update_safe_pushup()	
@@ -708,6 +705,9 @@ func setup_multiplier(running_speed):
 	var delta = (now-last_run_update)/1000.0
 	if last_run_update > 0 and run_point_multiplier > 1:
 		trophy_list.set_runtime(trophy_list.runtime + delta)
+	
+	cue_emitter.run_point_multiplier = run_point_multiplier
+	
 	last_run_update = now
 
 
@@ -848,3 +848,57 @@ func _on_BattleDisplay_player_won(player):
 func _on_SkipExerciseButton_touched():
 	print ("Force state change")
 	exercise_builder.force_state_change()
+
+enum TournamentState {
+	PLAYER_AHEAD = 1,
+	PLAYER_BEHIND = 2
+	}
+	
+var player_tournament_state = 0
+var remote_user_scores = Dictionary()
+var remote_user_messages = Dictionary()
+func consume_remote_user_messages():
+	for k in remote_user_messages:
+		while len(remote_user_messages[k]) > 0 and remote_user_messages[k][0]["tt"] < cue_emitter.current_playback_time:
+			var el = remote_user_messages[k].pop_front()
+			var hit = el["h"]
+			if typeof(hit) == TYPE_BOOL:
+				if hit:
+					hit = float(el.get("mh",1.0))
+				else:
+					hit = 0.0
+			
+			if not remote_user_scores.has(k):
+				remote_user_scores[k] = {"name": k, "score": 0.0, "points": 0.0}
+
+			remote_user_scores[k]["score"] = remote_user_scores[k].get("score",0.0) + hit
+			remote_user_scores[k]["points"] = remote_user_scores[k].get("points",0.0) + float(el["p"])
+				
+			print ("Remote score (%s): %s/%f"%[k, str(el["p"]), hit])
+
+	for k in remote_user_scores:
+		$TrophyList.set_score(k, remote_user_scores[k].get("name", "Unknown Player"),remote_user_scores[k].get("score",0.0), remote_user_scores[k].get("points", 0.0) )
+	
+	
+	if remote_user_scores.has("Ghost"):
+		var points = remote_user_scores["Ghost"].get("points",0)
+		if player_tournament_state != TournamentState.PLAYER_AHEAD and cue_emitter.points > points + 1000:
+			get_node("VoiceInstructor").say("pulling_ahead")
+			player_tournament_state = TournamentState.PLAYER_AHEAD
+		elif player_tournament_state != TournamentState.PLAYER_BEHIND and cue_emitter.points < points - 1000:
+			get_node("VoiceInstructor").say("falling_behind")
+			player_tournament_state = TournamentState.PLAYER_BEHIND
+	
+	
+	
+func add_remote_user_messages(user, messages):
+	if not remote_user_messages.has(user):
+		remote_user_messages[user] = Array()
+	var klist = messages.keys()
+	klist.sort()
+	
+	for m in klist:
+		remote_user_messages[user].append(messages[m])
+		
+	
+	

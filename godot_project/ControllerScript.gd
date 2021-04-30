@@ -153,7 +153,6 @@ func get_hit_velocity():
 		
 	var timedelta = max(0.001, last_time[2])
 	var velocity = distance/timedelta
-	get_parent().get_parent().level.infolayer.print_info("Velocity %.2f"%velocity, "debug")
 	return velocity
 
 func get_touch_object():

@@ -8,7 +8,8 @@ var levelselect_blueprint = null
 var splashscreen = preload("res://Splashscreen.tscn").instance()
 var left_controller_blueprint = preload("res://Left_Controller_Tree.tscn")
 var right_controller_blueprint = preload("res://Right_Controller_Tree.tscn")
-
+var weight_bar_blueprint = preload("res://scenes/WeightBar.tscn")
+var inactive_tracker_blueprint = preload("res://scenes/InactiveTracker.tscn")
 
 var gu = GameUtilities.new()
 
@@ -191,11 +192,75 @@ func _on_Controller_Tracking_Regained(controller):
 	if level != null:
 		level.controller_tracking_regained(controller)
 
+
+
+func create_controller(type, id, tracker_name):
+	#TODO: Make the controller universal without needing a left and right controller scene	
+	
+	var tmp = ARVRController.new()
+	tmp.controller_id = id
+	
+	var tracker_id = gu.get_tracker_id(tmp)
+	var tracker_config = gu.get_tracker_config(tracker_id)
+	
+	var new_controller = null		
+	if type == "left":
+		print ("Left controller")
+		new_controller = left_controller_blueprint.instance()
+		new_controller.is_left = true
+		left_controller = new_controller
+		new_controller.hand_mode = is_hand(tracker_name)
+		tracker_config["type"] = "left"
+		print ("Controller: Hand mode: %s"%str(new_controller.hand_mode))
+	elif type == "right":			
+		print ("Right controller")	
+		new_controller = right_controller_blueprint.instance()
+		new_controller.is_left = false
+		right_controller = new_controller
+		new_controller.hand_mode = is_hand(tracker_name)
+		print ("Controller: Hand mode: %s"%str(new_controller.hand_mode))
+		tracker_config["type"] = "right"
+	elif type == "weightbar":
+		print ("Add weight bar")
+		new_controller = weight_bar_blueprint.instance()
+		tracker_config["type"] = "weightbar"
+
+	new_controller.controller_id = id
+
+	get_node("ARVROrigin").add_child(new_controller)
+	if new_controller.has_method("set_detail_select"):
+		new_controller.set_detail_select(GameVariables.detail_selection_mode)
+	if new_controller.has_method("show_hand"):
+		new_controller.show_hand(GameVariables.hands_visible)
+	
+	gu.set_tracker_config(tracker_id, tracker_config)
+	
+	tmp.queue_free()
+	return new_controller
+
+func replace_tracker(old_controller, new_controller):
+	_on_Tracker_removed("",0,old_controller.controller_id)
+	GameVariables.trackers.append(new_controller)
+
 func _on_Tracker_removed(tracker_name, type, id):
 	print ("Tracker removed: %s / %d / %d"%[tracker_name, type, id])	
-
+	
 	for t in GameVariables.trackers:
 		if t.controller_id == id:
+			var tracker_identifier = gu.get_tracker_id(t)
+			var tracker_config = gu.get_tracker_config(tracker_identifier)
+			
+			if tracker_config.get("should_persist",false):
+				var tmp = inactive_tracker_blueprint.instance()
+				$ARVROrigin.add_child(tmp)
+				var old = tracker_config.get("inactive_tracker", null)
+				if old:
+					old.queue_free()
+				tmp.global_transform = t.global_transform
+				tracker_config["inactive_tracker"] = tmp
+				
+			gu.set_tracker_config(tracker_identifier, tracker_config)
+	
 			GameVariables.trackers.erase(t)
 			t.queue_free()
 			break
@@ -207,13 +272,26 @@ func is_hand(name):
 			
 func _on_Tracker_added(tracker_name, type, id):
 	print ("Tracker added: %s / %d / %d"%[tracker_name, type, id])	
-	
+		
 	if type == ARVRServer.TRACKER_CONTROLLER:
 		print ("New controller added %s"%tracker_name.to_lower())
-			
+		
 		var controller = ARVRController.new()
 		controller.controller_id = id
 		
+		var tracker_identifier = gu.get_tracker_id(controller)
+		var tracker_config = gu.get_tracker_config(tracker_identifier)
+		
+		print ("Tracker config: %s"%str(tracker_config))
+
+		var old = tracker_config.get("inactive_tracker", null)
+		if old:
+			old.queue_free()
+			tracker_config.erase("inactive_tracker")
+		gu.set_tracker_config(tracker_identifier, tracker_config)
+
+
+
 		var is_left = false
 		if controller.get_hand() == ARVRPositionalTracker.TRACKER_LEFT_HAND:
 			is_left = true
@@ -233,26 +311,16 @@ func _on_Tracker_added(tracker_name, type, id):
 			
 		controller.queue_free()
 			
-		#TODO: Make the controller universal without needing a left and right controller scene	
-		var new_controller = null		
-		if is_left:
-			print ("Left controller")
-			new_controller = left_controller_blueprint.instance()
-			new_controller.is_left = true
-			left_controller = new_controller
-		else:			
-			print ("Right controller")	
-			new_controller = right_controller_blueprint.instance()
-			new_controller.is_left = false
-			right_controller = new_controller
+		var new_controller
+		if tracker_config.get("type","") == "weightbar":
+			new_controller = create_controller("weightbar", id, tracker_name)
+		elif is_left:
+			new_controller = create_controller("left", id, tracker_name)
+		else:
+			new_controller = create_controller("right", id, tracker_name)
 
-		new_controller.controller_id = id
-		new_controller.hand_mode = is_hand(tracker_name)
-		print ("Controller: Hand mode: %s"%str(new_controller.hand_mode))
-		get_node("ARVROrigin").add_child(new_controller)
-		new_controller.set_detail_select(GameVariables.detail_selection_mode)
-		new_controller.show_hand(GameVariables.hands_visible)
 		new_controller.get_node("RemoteSpatial").multiplayer_room = get_node("MultiplayerRoom")
+		
 		GameVariables.trackers.append(new_controller)
 
 func set_controller_visible(value):
@@ -474,6 +542,14 @@ func _input(event):
 			if event is InputEventKey:
 				if event.scancode == KEY_L and event.pressed:
 					OS.shell_open("https://vrworkout.at/play.html")
+				if event.scancode == KEY_N and event.pressed:
+					for t in GameVariables.trackers:
+						t.hide()
+				if event.scancode == KEY_C and event.pressed:
+					for t in GameVariables.trackers:
+						t.show()
+					
+			
 
 	
 	
@@ -486,6 +562,17 @@ func _input(event):
 				tmp = cam.transform.xform(Vector3(-0.15,-0.25,-arm_length))	
 				left_controller.translation = tmp
 	
+func start_levelselect():
+	levelselect = levelselect_blueprint.instance()
+	
+	levelselect.translation = Vector3(0,0,0)
+	levelselect.connect("level_selected",self,"_on_Area_level_selected")
+	levelselect.connect("onboarding_selected",self,"_on_Onboarding_selected")
+	get_node("MultiplayerRoom").connect("room_joined",levelselect,"_on_multiplayer_room_joined")
+	get_node("MultiplayerRoom").connect("room_left",levelselect,"_on_multiplayer_room_left")
+
+	add_child(levelselect)
+
 			
 func _on_level_finished	():
 	_on_level_finished_actual(true)
@@ -563,15 +650,7 @@ func _on_level_finished_actual(valid_end):
 	gu.store_persistent_config(GameVariables.achievement_file_location, achievements)
 	
 		
-	levelselect = levelselect_blueprint.instance()
-	
-	levelselect.translation = Vector3(0,0,0)
-	levelselect.connect("level_selected",self,"_on_Area_level_selected")
-	get_node("MultiplayerRoom").connect("room_joined",levelselect,"_on_multiplayer_room_joined")
-	get_node("MultiplayerRoom").connect("room_left",levelselect,"_on_multiplayer_room_left")
-
-	add_child(levelselect)
-	
+	start_levelselect()	
 	
 	var last_played_str = gu.seconds_to_timestring(last_played)
 	var total_played_str = gu.seconds_to_timestring(total_played)
@@ -816,25 +895,33 @@ func _on_Splashscreen_finished():
 	var default_playlist = ProjectSettings.get("game/default_playlist")
 	if default_playlist:
 		GameVariables.current_song = default_playlist	
-	
 
-	levelselect = levelselect_blueprint.instance()
-	levelselect.translation = Vector3(0,0,0)
-	levelselect.connect("level_selected",self,"_on_Area_level_selected")
-	get_node("MultiplayerRoom").connect("room_joined",levelselect,"_on_multiplayer_room_joined")
-	get_node("MultiplayerRoom").connect("room_left",levelselect,"_on_multiplayer_room_left")
-
+	start_levelselect()
 
 	if not GameVariables.vr_mode:
 		_on_Tracker_added("right", ARVRServer.TRACKER_CONTROLLER, 1)
 		_on_Tracker_added("left", ARVRServer.TRACKER_CONTROLLER, 2)
-
+		
 	splashscreen.queue_free()
 	add_child(levelselect)
 	if not GameVariables.vr_mode:
 		pass
 		#get_node("DemoTimer").start()
 
+var onboarding_scene
+func _on_Onboarding_selected():
+	GameVariables.vr_camera.blackout_screen(true)
+	onboarding_scene = load("res://scenes/OnboardingStage.tscn").instance()
+	levelselect.queue_free()
+	add_child(onboarding_scene)
+	onboarding_scene.connect("onboarding_finished", self, "_on_Onboarding_finished")
+	GameVariables.vr_camera.blackout_screen(false)
+
+func _on_Onboarding_finished():
+	GameVariables.vr_camera.blackout_screen(true)
+	onboarding_scene.queue_free()
+	start_levelselect()
+	GameVariables.vr_camera.blackout_screen(false)
 
 func change_environment(value):
 	print ("CHANGE ENV\n\n\n\n\n%s"%value)
