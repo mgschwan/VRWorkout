@@ -7,6 +7,8 @@ onready var _container_symbols = $Container_Symbols
 
 export var allow_newline = false;
 
+var key_offset = Vector2(0,152)
+
 const B_SIZE = 48;
 const B_GAP = 24
 
@@ -65,6 +67,9 @@ func _create_input_event(b, pressed):
 		scancode = KEY_SHIFT;
 	elif (b == _backspace_button):
 		scancode = KEY_BACKSPACE;
+		if pressed:
+			$LineEdit.text = $LineEdit.text.left($LineEdit.text.length() - 1)
+
 	elif (b == _enter_button):
 		scancode = KEY_ENTER;
 		if (!pressed): emit_signal("enter_pressed");
@@ -73,19 +78,15 @@ func _create_input_event(b, pressed):
 		scancode = KEY_SPACE;
 		key = " ";
 		unicode = " ".ord_at(0);
+		if pressed:
+			$LineEdit.text += " "
+
 	else:
 		scancode = OS.find_scancode_from_string(b.text);
 		unicode = key.ord_at(0);
+		if pressed:
+			$LineEdit.text += key
 	
-
-	#print("  Event for " + key + ": scancode = " + str(scancode));
-	
-	var ev = InputEventKey.new();
-	ev.scancode = scancode;
-	ev.unicode = unicode;
-	ev.pressed = pressed;
-
-	return ev;
 
 
 # not sure what causes this yet but it happens that a button press
@@ -93,20 +94,22 @@ func _create_input_event(b, pressed):
 var _last_button_down_hack = null;
 
 func _on_button_down(b):
-	if (b == _last_button_down_hack): return;
-	_last_button_down_hack = b;
+	#if (b == _last_button_down_hack): return;
+	#_last_button_down_hack = b;
 	
 	var ev = _create_input_event(b, true);
-	if (!ev): return;
-	get_tree().input_event(ev);
+	#if (!ev): return;
+	#get_tree().input_event(ev);
 
 
 func _on_button_up(b):
-	_last_button_down_hack = null;
-	
+	#_last_button_down_hack = null;
+		
 	var ev = _create_input_event(b, false);
-	if (!ev): return;
-	get_tree().input_event(ev);
+	#if (!ev): return;
+	#get_tree().input_event(ev);
+
+
 
 
 func _create_button(_parent, text, x, y, w = 1, h = 1):
@@ -118,13 +121,16 @@ func _create_button(_parent, text, x, y, w = 1, h = 1):
 		if (c >= 97 && c <= 122):
 			_all_letter_buttons.append(b);
 	
-	b.rect_position = Vector2(x, y) * (B_SIZE + B_GAP);
+	b.rect_position = key_offset + Vector2(x, y) * (B_SIZE + B_GAP);
 	b.rect_min_size = Vector2(w, h) * B_SIZE;
 	
 	b.name = "button_"+text;
 	
-	b.connect("button_down", self, "_on_button_down", [b]);
-	b.connect("button_up", self, "_on_button_up", [b]);
+#	b.connect("button_down", self, "_on_button_down", [b]);
+	#b.connect("button_up", self, "_on_button_up", [b]);
+
+	b.connect("pressed", self, "_on_button_down", [b]);
+
 	
 	_parent.add_child(b);
 	return b;

@@ -66,6 +66,7 @@ var cue_head_avoid = preload("res://cue_head_obj_avoid.tscn")
 var cue_squat_avoid = preload("res://scenes/SquatAvoidCue.tscn")
 var cue_avoid_bar = preload("res://scenes/ParcourAvoidCue.tscn")
 var cue_highlight = preload("res://scenes/highlight_ring.tscn")
+var cue_weight = preload("res://scenes/WeightCue.tscn")
 var infolayer
 
 var cue_emitter
@@ -93,6 +94,8 @@ func display_state(state):
 		psign.burpee() 
 	elif state == CueState.SPRINT:
 		psign.sprint() 
+	elif state == CueState.WEIGHTS:
+		psign.weights() 
 	elif state == CueState.YOGA:
 		#TODO: Add sign
 		pass
@@ -477,6 +480,10 @@ func create_and_attach_cue_actual(cue_data):
 		is_head = true
 		is_avoid = true
 		cue_node = cue_avoid_bar.instance()
+	elif cue_type == "weight":
+		is_head = false
+		is_avoid = false
+		cue_node = cue_weight.instance()
 	else:
 		head_y_pos = y
 		if cue_type == "head_avoid":
@@ -565,6 +572,8 @@ func get_start_exercise():
 						CueState.BURPEE  : ProjectSettings.get("game/exercise/burpees"),
 						CueState.SPRINT  : ProjectSettings.get("game/exercise/sprint"),
 						CueState.YOGA  : ProjectSettings.get("game/exercise/yoga"),
+						CueState.PARCOUR  : ProjectSettings.get("game/exercise/parcour"),
+						CueState.WEIGHTS  : ProjectSettings.get("game/exercise/weights"),
 					}
 		for key in states:
 			if states[key]:
@@ -583,6 +592,8 @@ func populate_state_model():
 					CueState.BURPEE  : ProjectSettings.get("game/exercise/burpees"),
 					CueState.SPRINT  : ProjectSettings.get("game/exercise/sprint"),
 					CueState.YOGA  : ProjectSettings.get("game/exercise/yoga"),
+					CueState.PARCOUR  : ProjectSettings.get("game/exercise/parcour"),
+					CueState.WEIGHTS  : ProjectSettings.get("game/exercise/weights"),
 				}
 				
 	for key in states:
@@ -807,7 +818,7 @@ func controller_tracking_regained(controller):
 			node.has_been_hit(type)
 
 func play_encouragement():
-	var selector = rng.randi()%5
+	var selector = rng.randi()%6
 	if selector == 0:
 		get_node("VoiceInstructor").say("keep it up")
 	elif selector == 1:
@@ -818,6 +829,8 @@ func play_encouragement():
 		get_node("VoiceInstructor").say("thats the spirit")
 	elif selector == 4:
 		get_node("VoiceInstructor").say("you are on a roll")
+	elif selector == 5:
+		get_node("VoiceInstructor").say("very good")
 	
 
 var knee_high_ok = true

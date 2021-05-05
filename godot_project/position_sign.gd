@@ -34,7 +34,13 @@ func sprint():
 	get_node("ExerciseSign").play("sprint")
 	play_sfx("player_sprint")
 
+func parcour():
+	get_node("ExerciseSign").play("parcour")
+	play_sfx("player_parcour")
 
+func weights():
+	get_node("ExerciseSign").play("weights")
+	play_sfx("player_weights")
 
 
 func start_sign(start, end, duration):

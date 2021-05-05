@@ -54,6 +54,9 @@ func _ready():
 	print ("Room server result: %s"%str(result))
 	GameVariables.multiplayer_server = result.get("server", GameVariables.multiplayer_server)
 	print ("Room Server: %s"%str(GameVariables.multiplayer_server))
+	
+	GameVariables.vr_camera.blackout_screen(false)
+
 
 func set_main_text(text):
 	get_node("MainText").print_info(text)

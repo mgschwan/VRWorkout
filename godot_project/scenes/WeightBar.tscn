@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/WeightBar.gd" type="Script" id=1]
 [ext_resource path="res://models/blue_transparent.material" type="Material" id=2]
 [ext_resource path="res://scenes/WeightDecorator.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scripts/WeightBarArea.gd" type="Script" id=4]
 [ext_resource path="res://MultiplayerRoom/RemoteSpatial.gd" type="Script" id=5]
+[ext_resource path="res://audio/metal_clank.wav" type="AudioStream" id=6]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.05
@@ -16,8 +17,8 @@ bottom_radius = 0.05
 height = 8.0
 
 [sub_resource type="SphereMesh" id=3]
-radius = 0.05
-height = 0.1
+radius = 0.02
+height = 0.04
 
 [node name="ARVRController" type="ARVRController"]
 script = ExtResource( 1 )
@@ -46,3 +47,11 @@ script = ExtResource( 5 )
 is_local = true
 transform_parent = true
 node_type = "controller"
+
+[node name="hit_player" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="RumbleTimer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
+[connection signal="timeout" from="RumbleTimer" to="." method="_on_RumbleTimer_timeout"]

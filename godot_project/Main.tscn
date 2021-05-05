@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -23,6 +23,7 @@
 [ext_resource path="res://scenes/GASTWebView.tscn" type="PackedScene" id=21]
 [ext_resource path="res://scenes/NetworkARVRController.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scenes/SimplePhone.tscn" type="PackedScene" id=23]
+[ext_resource path="res://scenes/Keyboard.tscn" type="PackedScene" id=24]
 
 [sub_resource type="SphereShape" id=1]
 radius = 0.12
@@ -183,6 +184,8 @@ transform = Transform( 0.1, 1.74845e-08, 0, -1.74845e-08, 0.1, 0, 0, 0, 0.1, 0, 
 transform = Transform( 1, 1.06581e-14, 0, -1.06581e-14, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 7 )
 material/0 = null
+
+[node name="Keyboard" parent="ARVROrigin" instance=ExtResource( 24 )]
 
 [node name="DemoTimer" type="Timer" parent="."]
 wait_time = 5.0

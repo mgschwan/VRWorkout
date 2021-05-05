@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://stick-figure.png" type="Texture" id=1]
 [ext_resource path="res://ExerciseSign.gd" type="Script" id=2]
@@ -222,6 +222,33 @@ tracks/1/keys = {
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 
+[sub_resource type="Animation" id=11]
+resource_name = "weights"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material/0:uv1_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.25, 0.25, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material/0:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.5, 0 ) ]
+}
+
 [node name="ExerciseSign" type="MeshInstance"]
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
@@ -236,3 +263,4 @@ anims/pushup = SubResource( 7 )
 anims/sprint = SubResource( 8 )
 anims/squat = SubResource( 9 )
 anims/stand = SubResource( 10 )
+anims/weights = SubResource( 11 )

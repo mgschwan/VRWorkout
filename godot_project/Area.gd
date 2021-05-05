@@ -1,7 +1,5 @@
 extends Area
 
-signal level_selected(num, diff)
-signal exit_event()
 var hit_player
 
 # Called when the node enters the scene tree for the first time.

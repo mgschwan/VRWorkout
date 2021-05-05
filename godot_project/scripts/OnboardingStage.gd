@@ -10,12 +10,23 @@ var current_state = 0
 
 func _ready():
 	show_state(0)
+	GameVariables.vr_camera.blackout_screen(false)
 
+
+
+var frame_limiter = 0
 var wait_for_audio = false
 var emitting_cues = false
 func _process(delta):
 	if current_state == 3 and not emitting_cues and not wait_for_audio:
 		emit_cue()
+
+	frame_limiter += 1
+	if frame_limiter > 30:
+		frame_limiter = 0
+		if $AudioStreamPlayer.playing:
+			var pos = $AudioStreamPlayer.get_playback_position()
+			adjust_highlight(current_audio_slot, pos)
 
 var current_cue_demonstration = 0
 func emit_cue():
@@ -68,7 +79,10 @@ func _on_cue_emitter_hit_scored(hit_score, base_score, points, obj):
 		elif current_cue_demonstration == 2:
 			wait_for_audio = true
 			play_audio("slide4c")
-		emitting_cues = false
+		elif current_cue_demonstration == 3:
+			wait_for_audio = true
+			play_audio("slide4d")
+	emitting_cues = false
 	
 func _on_Audio_finished():
 	wait_for_audio = false
@@ -80,9 +94,11 @@ var slide3 = preload("res://scripts/3rdparty/onboarding/audio/slide3.mp3")
 var slide4 = preload("res://scripts/3rdparty/onboarding/audio/slide4a.mp3")
 var slide4b = preload("res://scripts/3rdparty/onboarding/audio/slide4b.mp3")
 var slide4c = preload("res://scripts/3rdparty/onboarding/audio/slide4c.mp3")
+var slide4d = preload("res://audio/instruction_very_good.wav")
 var slide5 = preload("res://scripts/3rdparty/onboarding/audio/slide5.mp3")
 
 
+var current_audio_slot = ""
 func play_audio(value):
 	var audio = null
 	if value == "slide1":
@@ -97,15 +113,56 @@ func play_audio(value):
 		audio = slide4b
 	elif value == "slide4c":
 		audio = slide4c
+	elif value == "slide4d":
+		audio = slide4d
 	elif value == "slide5":
 		audio = slide5
 		
 	if audio:
+		current_audio_slot = value
 		$AudioStreamPlayer.stream = audio
 		$AudioStreamPlayer.play()
-			
-		
-		
+					
 func stop_audio():
 	$AudioStreamPlayer.stop()
 	wait_for_audio = false
+
+
+var highlights = { "slide1": [[2.5, 100.0, Vector3(-0.401, 0, 0.148603)]
+							],
+					"slide2": [[2.0, 5.5, Vector3(0.023, 0, -0.2315)],
+							 [6.0, 9.5, Vector3(0.023, 0, -0.05474)],
+							 [10.0, 15.0, Vector3(0.023, 0, 0.1376)],
+							 [15.1, 100.0, Vector3(-0.401, 0, 0.148603)]
+							],
+					"slide3": [[2.8, 8.0, Vector3(0.023, 0, -0.2315)],
+							   [8.28, 11.8 , Vector3(0.023, 0, -0.014078)],
+							 [11.7, 100.0, Vector3(-0.401, 0, 0.148603)]
+							],
+					"slide4": [[2.02, 100.0, Vector3(0.023, 0, -0.2315)]],
+					"slide4b": [[0.1, 100.0, Vector3(0.023, 0, -0.05474)]],
+					"slide4c": [[0.1, 100.0, Vector3(0.023, 0, 0.1376)]],
+					"slide4d": [[0.0, 100.0, Vector3(-0.401, 0, 0.148603)]],
+					"slide5": [[2.0, 3.75, Vector3(0.023, 0, -0.2315)],
+							 [3.93, 8.0, Vector3(0.023, 0, -0.014078)],
+							 [8.1, 100.0, Vector3(-0.401, 0, 0.148603)]
+							],
+
+}
+
+#Check if there is a highlightmarker for the current audio position
+func adjust_highlight(slot, pos):
+	var hlist = highlights.get(slot,[])
+	var spatial_pos = null
+	for h in hlist:
+		if h[0] <= pos and pos <= h[1]:
+			spatial_pos = h[2]
+			break
+	
+	if spatial_pos != null:
+		print ("Found marker: %s"%str(spatial_pos))
+		$StaticBody/highlight.translation = spatial_pos
+		$StaticBody/highlight.show()
+	else:
+		$StaticBody/highlight.hide()
+		

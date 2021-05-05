@@ -4,7 +4,7 @@ extends Node
 ################## Warning, this has to be set to false in production builds
 #############################################################################
 
-var demo_mode = false
+var demo_mode = true
 var hands_visible = false
 
 #############################################################################
@@ -14,7 +14,7 @@ var hit_player = null
 
 #############################################################################
 ############################ Activated features #############################
-var FEATURE_MULTIPLAYER = false
+var FEATURE_MULTIPLAYER = true
 
 #Deactivate certain features to meet Oculus Store requirements
 var FEATURE_STORE_COMPATIBILITY = false 
@@ -126,9 +126,10 @@ enum CueState {
 	SPRINT = 6,
 	YOGA = 7,
 	PARCOUR = 8,	
+	WEIGHTS = 9,
 };
 
-enum CueSelector {u
+enum CueSelector {
 	HEAD = 0,
 	HAND = 1,	
 };
@@ -476,7 +477,7 @@ var exercise_collections = [
 
 var exercise_model = {
 	"cardio": {
-		"exercise_state_model": { CueState.STAND: { CueState.SQUAT: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.JUMP: 10, CueState.BURPEE: 10, CueState.SPRINT: 10},
+		"exercise_state_model": { CueState.STAND: { CueState.SQUAT: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.JUMP: 10, CueState.BURPEE: 10, CueState.SPRINT: 10, CueState.WEIGHTS: 10},
 						CueState.SQUAT: { CueState.STAND: 10, CueState.PUSHUP: 10, CueState.CRUNCH: 10, CueState.SPRINT: 10},
 						CueState.PUSHUP: { CueState.STAND: 10, CueState.SQUAT: 10, CueState.BURPEE: 10, CueState.SPRINT: 10},
 						CueState.CRUNCH: { CueState.STAND: 10, CueState.SQUAT: 10, CueState.SPRINT: 10, CueState.JUMP: 5},
@@ -484,6 +485,8 @@ var exercise_model = {
 						CueState.BURPEE: {CueState.STAND: 50, CueState.CRUNCH: 10, CueState.SQUAT: 10, CueState.PUSHUP: 10}, 
 						CueState.SPRINT: {CueState.STAND: 50, CueState.JUMP: 10, CueState.SQUAT: 10}, 
 						CueState.YOGA: { CueState.STAND: 50 },
+						CueState.PARCOUR: { CueState.STAND: 50 },
+						CueState.WEIGHTS: { CueState.STAND: 50 },
 						},
 #		"pushup_state_model": { PushupState.REGULAR : { PushupState.LEFT_HAND : 15, PushupState.RIGHT_HAND: 15, PushupState.LEFT_SIDEPLANK: 10, PushupState.RIGHT_SIDEPLANK: 10},
 #						PushupState.LEFT_HAND : { PushupState.REGULAR: 25, PushupState.RIGHT_HAND: 5, PushupState.RIGHT_SIDEPLANK: 10},
@@ -518,7 +521,7 @@ var exercise_model = {
 		"rebalance_exercises": true
 		},
 	"strength": {
-		"exercise_state_model": { CueState.STAND: { CueState.SQUAT: 20, CueState.PUSHUP: 20, CueState.CRUNCH: 5, CueState.JUMP: 1, CueState.BURPEE: 20, CueState.SPRINT: 1},
+		"exercise_state_model": { CueState.STAND: { CueState.SQUAT: 20, CueState.PUSHUP: 20, CueState.CRUNCH: 5, CueState.JUMP: 1, CueState.BURPEE: 20, CueState.SPRINT: 1, CueState.WEIGHTS: 1},
 						CueState.SQUAT: { CueState.STAND: 10, CueState.PUSHUP: 50, CueState.CRUNCH: 5, CueState.BURPEE: 10},
 						CueState.PUSHUP: { CueState.STAND: 10, CueState.SQUAT: 35, CueState.BURPEE: 10, CueState.CRUNCH: 10},
 						CueState.CRUNCH: { CueState.PUSHUP: 25, CueState.SQUAT: 25, CueState.JUMP: 10},
@@ -526,6 +529,8 @@ var exercise_model = {
 						CueState.BURPEE: {CueState.SQUAT: 50, CueState.STAND: 45, CueState.PUSHUP: 5, CueState.CRUNCH: 1 }, 
 						CueState.SPRINT: {CueState.SQUAT: 20, CueState.PUSHUP: 20, CueState.CRUNCH: 5, CueState.JUMP: 1, CueState.BURPEE: 20}, 
 						CueState.YOGA: { CueState.STAND: 50 },
+						CueState.PARCOUR: { CueState.STAND: 50 },
+						CueState.WEIGHTS: { CueState.STAND: 50 },
 						},
 		"pushup_state_model": { PushupState.REGULAR : { PushupState.LEFT_HAND : 1, PushupState.RIGHT_HAND: 1, PushupState.LEFT_SIDEPLANK: 1, PushupState.RIGHT_SIDEPLANK: 1},
 						PushupState.LEFT_HAND : { PushupState.REGULAR: 100},
@@ -559,7 +564,8 @@ var difficulty_weight_adjustments = {
 		CueState.BURPEE: 0.0,
 		CueState.SPRINT: 1.0,
 		CueState.YOGA: 1.0,
-		CueState.PARCOUR: 1.0
+		CueState.PARCOUR: 1.0,
+		CueState.WEIGHTS: 1.0
 		},
 	"medium" : {
 		CueState.STAND: 0.8,
@@ -570,7 +576,8 @@ var difficulty_weight_adjustments = {
 		CueState.BURPEE: 0.3,
 		CueState.SPRINT: 1.0,
 		CueState.YOGA: 1.0,
-		CueState.PARCOUR: 1.0
+		CueState.PARCOUR: 1.0,
+		CueState.WEIGHTS: 1.0
 		},
 	"hard" : {
 		CueState.STAND: 0.1,
@@ -581,7 +588,8 @@ var difficulty_weight_adjustments = {
 		CueState.BURPEE: 1.3,
 		CueState.SPRINT: 1.0,
 		CueState.YOGA: 1.0,
-		CueState.PARCOUR: 1.0
+		CueState.PARCOUR: 1.0,
+		CueState.WEIGHTS: 1.0
 	},
 }	
 	
@@ -626,6 +634,7 @@ func setup_globals_demo():
 	ProjectSettings.set("game/exercise/burpees", true)
 	ProjectSettings.set("game/exercise/parcour", false)
 	ProjectSettings.set("game/exercise/duck", true)
+	ProjectSettings.set("game/exercise/weights", false)
 	ProjectSettings.set("game/exercise/sprint", true)
 	ProjectSettings.set("game/exercise/kneesaver", false)
 	ProjectSettings.set("game/exercise/stand/windmill", true)
@@ -662,6 +671,7 @@ func setup_globals_regular():
 	ProjectSettings.set("game/exercise/crunch", true)
 	ProjectSettings.set("game/exercise/burpees", false)
 	ProjectSettings.set("game/exercise/parcour", false)
+	ProjectSettings.set("game/exercise/weights", false)
 	ProjectSettings.set("game/exercise/duck", true)
 	ProjectSettings.set("game/exercise/sprint", true)
 	ProjectSettings.set("game/exercise/stand/windmill", true)

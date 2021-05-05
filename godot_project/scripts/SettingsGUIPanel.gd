@@ -94,6 +94,12 @@ func update_widgets():
 	else:
 		$Viewport/CanvasLayer/StrengthMode/StrengthModeButton.pressed = false
 
+	if ProjectSettings.get("game/exercise/weights"):
+		$Viewport/CanvasLayer/Weights/WeightsButton.pressed = true
+	else:
+		$Viewport/CanvasLayer/Weights/WeightsButton.pressed = false
+
+
 	$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
 
 
@@ -194,3 +200,8 @@ func _on_StrengthModeButton_pressed():
 
 
 
+
+
+func _on_WeightsButton_pressed():
+	ProjectSettings.set("game/exercise/weights", $Viewport/CanvasLayer/Weights/WeightsButton.pressed)
+	update_widgets()

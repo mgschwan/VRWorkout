@@ -12,8 +12,6 @@
 [ext_resource path="res://scripts/3rdparty/onboarding/assets/slide4.png" type="Texture" id=10]
 [ext_resource path="res://scripts/3rdparty/onboarding/assets/slide5.png" type="Texture" id=11]
 
-[sub_resource type="StyleBoxEmpty" id=11]
-
 [sub_resource type="StyleBoxEmpty" id=1]
 
 [sub_resource type="StyleBoxEmpty" id=2]
@@ -34,10 +32,14 @@
 
 [sub_resource type="StyleBoxEmpty" id=10]
 
+[sub_resource type="StyleBoxEmpty" id=11]
+
 [node name="Onboarding" type="Control"]
 script = ExtResource( 6 )
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_horizontal_guides_": [ 208.137, 322.79, 446.262, 452.561, 349.248 ],
+"_edit_use_anchors_": false,
+"_edit_vertical_guides_": [ 655.483, 382.62 ]
 }
 
 [node name="TabContainer" type="TabContainer" parent="."]
@@ -46,14 +48,13 @@ anchor_bottom = 1.0
 margin_right = 1280.0
 margin_bottom = 720.0
 theme = ExtResource( 1 )
-custom_styles/panel = SubResource( 11 )
+custom_styles/panel = SubResource( 1 )
 tabs_visible = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Onboarding1" type="Tabs" parent="TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -89,12 +90,9 @@ __meta__ = {
 }
 
 [node name="Onboarding2" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 5.0
-margin_right = -5.0
-margin_bottom = -5.0
 
 [node name="TextureRect" type="TextureRect" parent="TabContainer/Onboarding2"]
 anchor_right = 1.0
@@ -126,12 +124,9 @@ __meta__ = {
 }
 
 [node name="Onboarding3" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 5.0
-margin_right = -5.0
-margin_bottom = -5.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Onboarding3"]
 anchor_left = 0.009
@@ -162,12 +157,9 @@ __meta__ = {
 }
 
 [node name="Onboarding4" type="Tabs" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 5.0
-margin_right = -5.0
-margin_bottom = -5.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Onboarding4"]
 visible = false
@@ -202,10 +194,6 @@ __meta__ = {
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 5.0
-margin_right = -5.0
-margin_bottom = -5.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Onboarding5"]
 visible = false
@@ -243,11 +231,11 @@ margin_top = 422.0
 margin_right = 529.0
 margin_bottom = 485.0
 theme = ExtResource( 1 )
-custom_styles/hover = SubResource( 1 )
-custom_styles/pressed = SubResource( 2 )
-custom_styles/focus = SubResource( 3 )
-custom_styles/disabled = SubResource( 4 )
-custom_styles/normal = SubResource( 5 )
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
 custom_fonts/font = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -260,11 +248,11 @@ margin_top = 422.0
 margin_right = 321.0
 margin_bottom = 485.0
 theme = ExtResource( 1 )
-custom_styles/hover = SubResource( 1 )
-custom_styles/pressed = SubResource( 2 )
-custom_styles/focus = SubResource( 3 )
-custom_styles/disabled = SubResource( 4 )
-custom_styles/normal = SubResource( 5 )
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
 custom_fonts/font = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -278,11 +266,11 @@ margin_top = 568.0
 margin_right = 319.0
 margin_bottom = 628.0
 theme = ExtResource( 1 )
-custom_styles/hover = SubResource( 6 )
-custom_styles/pressed = SubResource( 7 )
-custom_styles/focus = SubResource( 8 )
-custom_styles/disabled = SubResource( 9 )
-custom_styles/normal = SubResource( 10 )
+custom_styles/hover = SubResource( 7 )
+custom_styles/pressed = SubResource( 8 )
+custom_styles/focus = SubResource( 9 )
+custom_styles/disabled = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
 custom_fonts/font = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false

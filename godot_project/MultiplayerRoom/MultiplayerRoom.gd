@@ -7,6 +7,7 @@ signal remove_spatial(userid, nodeid)
 signal connected()
 signal room_joined(as_host)
 signal room_left()
+signal game_message(userid, data)
 
 
 var is_active = false
@@ -87,9 +88,14 @@ func process_spatial_remove_message(data_object):
 	if user and id != self_id:
 		if "nodes" in user:
 			if target_node in user["nodes"]:
-				user["nodes"][target_node] = {"pos": Vector3(0,0,0), "rot": Vector3(0,0,0)}
+				#user["nodes"][target_node] = {"pos": Vector3(0,0,0), "rot": Vector3(0,0,0)}
+				user["nodes"].erase(target_node)
 				emit_signal("remove_spatial",id,target_node) 
-
+				
+func process_game_message(data_object):
+	var data = data_object.get("data", {})
+	var id = data_object.get("id",-1)
+	emit_signal(id, data)
 
 func process_move_message(data_object):
 	var data = data_object.get("data", {})
@@ -147,6 +153,8 @@ func decode_data(data):
 				process_spatial_remove_message(data_object)
 			"identity":
 				self_id = data_object.get("id",-1)
+			"game_message":
+				process_game_message(data_object)
 			"ping":
 				pass
 			"unknown":

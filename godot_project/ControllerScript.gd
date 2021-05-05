@@ -109,6 +109,13 @@ func _physics_process(delta):
 		time_elapsed = 0
 
 
+var last_steady_counter = 0
+var candidate_steady_pos = Vector3(0,0,0)
+var last_steady_pos = Vector3(0,0,0)
+#When the tracker get's removed the position seems to be invalid during the on_tracker_removed
+func get_past_position():
+	return last_steady_pos
+
 var update_helper = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -139,6 +146,18 @@ func _process(delta):
 	if fixed_global_transform:
 		get_node("Area").global_transform = saved_global_transform
 		
+	if candidate_steady_pos.distance_to(self.translation) < 0.1:		
+		candidate_steady_pos = (candidate_steady_pos + self.translation)/2.0
+		last_steady_counter += 1
+	else:
+		candidate_steady_pos = self.translation
+		last_steady_counter = 0
+		
+	if last_steady_counter > 40:
+		last_steady_pos = candidate_steady_pos	
+		last_steady_counter = 0		
+		
+	
 	last_pos[2] = last_pos[1]
 	last_pos[1] = last_pos[0]
 	last_pos[0] = self.translation

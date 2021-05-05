@@ -7,7 +7,7 @@
 
 [node name="VirtualKeyboard" type="Panel"]
 margin_right = 864.0
-margin_bottom = 360.0
+margin_bottom = 512.0
 theme = ExtResource( 2 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -17,9 +17,8 @@ __meta__ = {
 [node name="ReferenceButton" type="Button" parent="."]
 margin_right = 48.0
 margin_bottom = 48.0
-focus_mode = 0
 custom_styles/hover = SubResource( 1 )
-enabled_focus_mode = 0
+action_mode = 0
 text = "A"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -36,6 +35,15 @@ __meta__ = {
 visible = false
 margin_right = 40.0
 margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 832.0
+margin_bottom = 59.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/VoiceInstructor.gd" type="Script" id=1]
 [ext_resource path="res://audio/instruction_keep_it_up.wav" type="AudioStream" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://audio/instruction_knees_higher.wav" type="AudioStream" id=8]
 [ext_resource path="res://audio/instruction_falling_behind.wav" type="AudioStream" id=9]
 [ext_resource path="res://audio/instruction_pulled_ahead.wav" type="AudioStream" id=10]
+[ext_resource path="res://audio/instruction_very_good.wav" type="AudioStream" id=11]
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
@@ -24,6 +25,10 @@ bus = "Voice"
 
 [node name="go_go_go" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+bus = "Voice"
+
+[node name="very_good" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
 bus = "Voice"
 
 [node name="thats_the_spirit" type="AudioStreamPlayer" parent="."]

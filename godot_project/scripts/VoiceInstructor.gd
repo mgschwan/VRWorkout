@@ -16,6 +16,8 @@ func say(text):
 			play_sfx("go_for_it")
 		elif text == "go go go":
 			play_sfx("go_go_go")
+		elif text == "very good":
+			play_sfx("very_good")
 		elif text == "faster":
 			play_sfx("faster")
 		elif text == "thats the spirit":

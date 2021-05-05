@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://ExerciseSign.tscn" type="PackedScene" id=1]
 [ext_resource path="res://position_sign.gd" type="Script" id=2]
@@ -10,6 +10,8 @@
 [ext_resource path="res://audio/instruction_crunch.wav" type="AudioStream" id=8]
 [ext_resource path="res://audio/instruction_burpee.wav" type="AudioStream" id=9]
 [ext_resource path="res://audio/instruction_sprint.wav" type="AudioStream" id=10]
+[ext_resource path="res://audio/instruction_weights.wav" type="AudioStream" id=11]
+[ext_resource path="res://audio/instruction_parcour.wav" type="AudioStream" id=12]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1.5, 0.2, 1.5 )
@@ -49,6 +51,11 @@ stream = ExtResource( 6 )
 volume_db = 5.0
 bus = "Voice"
 
+[node name="player_parcour" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+volume_db = 5.0
+bus = "Voice"
+
 [node name="player_now" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
 volume_db = 5.0
@@ -64,6 +71,11 @@ stream = ExtResource( 9 )
 volume_db = 5.0
 bus = "Voice"
 
+[node name="player_weights" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+volume_db = 5.0
+bus = "Voice"
+
 [node name="player_sprint" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 10 )
 volume_db = 5.0
@@ -73,7 +85,9 @@ bus = "Voice"
 [connection signal="finished" from="player_crunch" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_stand" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_pushup" to="." method="_on_sfx_finished"]
+[connection signal="finished" from="player_parcour" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_now" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_jump" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_burpee" to="." method="_on_sfx_finished"]
+[connection signal="finished" from="player_weights" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="player_sprint" to="." method="_on_sfx_finished"]

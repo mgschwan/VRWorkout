@@ -401,6 +401,10 @@ func state_string(state):
 		return "sprint"
 	elif state == CueState.YOGA:
 		return "yoga"
+	elif state == CueState.PARCOUR:
+		return "parcour"
+	elif state == CueState.WEIGHTS:
+		return "weights"
 	
 	return "unknown"
 
@@ -422,6 +426,10 @@ func string_to_state(s):
 		retVal = CueState.SPRINT
 	elif s == "yoga":
 		retVal = CueState.YOGA
+	elif s == "parcour":
+		retVal = CueState.PARCOUR
+	elif s == "weights":
+		retVal = CueState.WEIGHTS
 	return retVal
 
 
@@ -504,7 +512,7 @@ func emit_cue_node(current_time, target_time):
 				cue_emitter_state = state_transition(cue_emitter_state, adjusted_model, null, false)
 				print ("New state (%d) %s\n\n\n\n"%[cue_emitter_state, state_string(cue_emitter_state)])
 			else:
-				#print ("Take from standard model %s"%str(auto_difficulty))
+				print ("Take from standard model %s"%str(exercise_state_model))
 				cue_emitter_state = state_transition(cue_emitter_state, exercise_state_model, null, false)
 			state_duration = min_state_duration + 5*current_difficulty*rng.randf()
 		state_transition_pause = get_state_transition_pause(old_state, cue_emitter_state)
@@ -540,6 +548,10 @@ func emit_cue_node(current_time, target_time):
 			pass #handle_sprint_cues(target_time)
 		elif cue_emitter_state == CueState.YOGA:
 			handle_yoga_cues(current_time, target_time, cue_emitter_state)
+		elif cue_emitter_state == CueState.WEIGHTS:
+			handle_weight_cues(current_time, target_time, cue_emitter_state)
+		elif cue_emitter_state == CueState.PARCOUR:
+			handle_parcour_cues(current_time, target_time, cue_emitter_state)
 		else: #CueState.PUSHUP
 			handle_pushup_cues(current_time, target_time, cue_emitter_state)
 		exercise_changed = false
@@ -615,16 +627,18 @@ func handle_crunch_cues(current_time, target_time, cue_emitter_state):
 	elif crunch_state == CrunchState.MEDIUM_HOLD:
 		x_head = 0
 		if medium_hold_high:
-			y_head = "ph/2.2"
-			y_hand = "ph/2.7"
+			y_head = "ph/2.0"
+			y_hand = "ph/3.3"
 		else:
-			y_head = "ph/3.1"
+			y_head = "ph/3.9"
 			y_hand = "ph/2.7"
 		medium_hold_high = not medium_hold_high
 			
 		create_and_attach_cue(current_time,"head", x_head, y_head, target_time, 0,0,"", null,null, 0.4)
 		create_and_attach_cue(current_time + 0.1,"right", "%s+ph/5,0"%str(x_head), y_hand, target_time+0.1,0,0,"",null,null,0.3)
 		create_and_attach_cue(current_time + 0.1,"left", "%s-ph/5.0"%str(x_head), y_hand, target_time+0.1,0,0,"",null,null,0.3)	
+		temporary_cue_space_extension = 0.7
+
 
 ############################# PUSHUP ######################################
 
@@ -778,6 +792,41 @@ func handle_yoga_cues(current_time, target_time, cue_emitter_state):
 	else:
 		create_and_attach_cue(current_time,"right_hold", "0.3*ph", "0.85*ph", target_time, 0, target_time+0.5)
 
+############################# WEIGHTS ######################################
+
+enum WeightState {
+	HIGH = 0,
+	LOW = 1,
+};	
+
+var weight_state_model = { WeightState.HIGH : { WeightState.LOW: 100},
+						WeightState.LOW : { WeightState.HIGH: 100},
+					};
+var weight_state = WeightState.LOW
+
+func handle_weight_cues(current_time, target_time, cue_emitter_state):
+	switch_floor_sign(current_time,"feet")
+	weight_state = state_transition(weight_state, weight_state_model)
+
+	if weight_state == WeightState.HIGH:
+		create_and_attach_cue(current_time,"weight", 0, "0.75*ph", target_time, -hand_cue_offset)
+	else:
+		create_and_attach_cue(current_time,"weight", 0, "0.4*ph", target_time, -hand_cue_offset)
+
+
+############################# PARCOUR ######################################
+
+func handle_parcour_cues_actual(current_time, target_time, cue_emitter_state, state_change):
+	var y_head = "ph/1.071+%f"%cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
+	create_and_attach_cue(current_time,"head", 0, y_head, target_time, 0, 0, "", null, null, 1.0, clamp(int(current_difficulty),0,1)) #TODO: Change the difficulty back to a real value once the energy is calculated better
+	create_and_attach_cue(current_time+1.0,"head_avoid_bar", 0, "0.8", target_time)		
+	temporary_cue_space_extension = 2.5
+
+
+func handle_parcour_cues(current_time, target_time, cue_emitter_state):
+	#Not implemented yet.
+	#TODO
+	handle_stand_cues(current_time, target_time, cue_emitter_state)
 
 
 ############################# STAND ######################################
@@ -802,7 +851,7 @@ func handle_stand_cues(current_time,target_time,cue_emitter_state):
 	elif stand_state == StandState.WINDMILL_TOE:
 		handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, stand_state_model_changed)
 	elif stand_state == StandState.PARCOUR:
-		handle_parcour_cues(current_time, target_time, cue_emitter_state, stand_state_model_changed)
+		handle_parcour_cues_actual(current_time, target_time, cue_emitter_state, stand_state_model_changed)
 	elif stand_state == StandState.HOLD_CUE:
 		handle_hold_cues(current_time, target_time, "ph*0.8", cue_emitter_state, stand_state_model_changed)
 	else:
@@ -858,13 +907,6 @@ func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitte
 		create_and_attach_cue(current_time+double_punch_delay,"right", "-(%s)+0.1"%x_hand, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
 	else:
 		last_double_swing_left = not last_double_swing_left
-	
-func handle_parcour_cues(current_time, target_time, cue_emitter_state, state_change):
-	var y_head = "ph/1.071+%f"%cue_parameters[cue_emitter_state][CueSelector.HEAD]["yoffset"]
-	create_and_attach_cue(current_time,"head", 0, y_head, target_time, 0, 0, "", null, null, 1.0, clamp(int(current_difficulty),0,1)) #TODO: Change the difficulty back to a real value once the energy is calculated better
-	create_and_attach_cue(current_time+1.0,"head_avoid_bar", 0, "0.8", target_time)		
-	temporary_cue_space_extension = 2.5
-	
 	
 var windmill_left = true
 var windmill_high = true

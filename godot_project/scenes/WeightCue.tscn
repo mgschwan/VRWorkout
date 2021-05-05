@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scripts/WeightCue.gd" type="Script" id=1]
+[ext_resource path="res://scenes/weights.tscn" type="PackedScene" id=2]
+[ext_resource path="res://models/super_white.material" type="Material" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "explode"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ), Vector3( 0, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, true, false ]
+}
+
+[sub_resource type="CylinderMesh" id=2]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 4.2
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 2.3, 0.15, 0.15 )
+
+[node name="WeightCue" type="StaticBody"]
+script = ExtResource( 1 )
+
+[node name="Model" type="Spatial" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Model"]
+anims/explode = SubResource( 1 )
+
+[node name="weights_left" parent="Model" instance=ExtResource( 2 )]
+transform = Transform( -8.74228e-09, -0.2, 0, 0.2, -8.74228e-09, 0, 0, 0, 0.2, -2.13884, 0, 0 )
+
+[node name="weights_right" parent="Model" instance=ExtResource( 2 )]
+transform = Transform( -8.74228e-09, 0.2, 0, -0.2, -8.74228e-09, 0, 0, 0, 0.2, 2.139, 0, 0 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Model"]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = ExtResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 3 )

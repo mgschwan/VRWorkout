@@ -239,24 +239,28 @@ func create_controller(type, id, tracker_name):
 	return new_controller
 
 func replace_tracker(old_controller, new_controller):
-	_on_Tracker_removed("",0,old_controller.controller_id)
+	#During tracker replacement the old one should not persist override_persist = true
+	_on_Tracker_removed("",0,old_controller.controller_id, true)
 	GameVariables.trackers.append(new_controller)
 
-func _on_Tracker_removed(tracker_name, type, id):
+func _on_Tracker_removed(tracker_name, type, id, override_persist = false):
 	print ("Tracker removed: %s / %d / %d"%[tracker_name, type, id])	
 	
 	for t in GameVariables.trackers:
 		if t.controller_id == id:
 			var tracker_identifier = gu.get_tracker_id(t)
 			var tracker_config = gu.get_tracker_config(tracker_identifier)
-			
-			if tracker_config.get("should_persist",false):
+			print ("Tracker (%s) config (remove): %s"%[tracker_identifier,str(tracker_config)])
+			if not override_persist and tracker_config.get("should_persist",false):
+				print ("Tracker should persist")
 				var tmp = inactive_tracker_blueprint.instance()
 				$ARVROrigin.add_child(tmp)
 				var old = tracker_config.get("inactive_tracker", null)
 				if old:
 					old.queue_free()
-				tmp.global_transform = t.global_transform
+				tmp.translation = t.get_past_position() #t.global_transform
+				tmp.scale = Vector3 (1.2,1.2,1.2)
+				print ("inactive tracker pos = %s"%str(t.global_transform))
 				tracker_config["inactive_tracker"] = tmp
 				
 			gu.set_tracker_config(tracker_identifier, tracker_config)
@@ -282,10 +286,11 @@ func _on_Tracker_added(tracker_name, type, id):
 		var tracker_identifier = gu.get_tracker_id(controller)
 		var tracker_config = gu.get_tracker_config(tracker_identifier)
 		
-		print ("Tracker config: %s"%str(tracker_config))
+		print ("Tracker (%s) config (add): %s"%[tracker_identifier,str(tracker_config)])
 
 		var old = tracker_config.get("inactive_tracker", null)
 		if old:
+			print ("Remove old tracker")
 			old.queue_free()
 			tracker_config.erase("inactive_tracker")
 		gu.set_tracker_config(tracker_identifier, tracker_config)
@@ -325,14 +330,14 @@ func _on_Tracker_added(tracker_name, type, id):
 
 func set_controller_visible(value):
 	for t in GameVariables.trackers:
-		if t:
+		if t and t.has_method("set_visible"):
 			print ("Change controller visibility: %s"%str(value))
 			t.set_visible(value)
 			
 func set_detail_selection_mode(value):
 	GameVariables.detail_selection_mode = value
 	for t in GameVariables.trackers:
-		if t:
+		if t and t.has_method("set_detail_select"):
 			print ("Set tracker detail (%s): %s"%[str(t),str(value)])
 			t.set_detail_select(value)
 
@@ -548,7 +553,8 @@ func _input(event):
 				if event.scancode == KEY_C and event.pressed:
 					for t in GameVariables.trackers:
 						t.show()
-					
+				if event.scancode == KEY_T and event.pressed:
+					$ARVROrigin/Keyboard.toggle()
 			
 
 	
@@ -658,7 +664,7 @@ func _on_level_finished_actual(valid_end):
 	levelselect.set_stat_text("Results for %s\n\nLast round\nScore: %.2f (%d/%d)\nPoints: %d"%[GameVariables.player_name, vrw_score,GameVariables.game_result["hits"],GameVariables.game_result["max_hits"],last_points]+" Duration: %s"%last_played_str+"\n\nTotal\nPoints: %d"%total_points+" Duration: %s"%total_played_str, vrw_score) 
 
 	yield(get_tree().create_timer(1), "timeout")
-	GameVariables.vr_camera.blackout_screen(false)
+	
 	if not GameVariables.vr_mode:
 		pass
 		#get_node("DemoTimer").start()
@@ -777,7 +783,7 @@ func _process(delta):
 		if beast_mode:
 			var tmp = level.beast_mode_supported()
 			for t in GameVariables.trackers:
-				if t:
+				if t and t.has_method("set_beast_mode"):
 					t.set_beast_mode(tmp)
 	
 	for t in GameVariables.trackers:
@@ -886,7 +892,7 @@ func set_beast_mode(enabled):
 	beast_mode = enabled
 	ProjectSettings.set("game/beast_mode",enabled)
 	for t in GameVariables.trackers:
-		if t:
+		if t and t.has_method("set_beast_mode"):
 			t.set_beast_mode(enabled)
 
 func _on_Splashscreen_finished():
@@ -915,13 +921,12 @@ func _on_Onboarding_selected():
 	levelselect.queue_free()
 	add_child(onboarding_scene)
 	onboarding_scene.connect("onboarding_finished", self, "_on_Onboarding_finished")
-	GameVariables.vr_camera.blackout_screen(false)
+	#GameVariables.vr_camera.blackout_screen(false)
 
 func _on_Onboarding_finished():
 	GameVariables.vr_camera.blackout_screen(true)
 	onboarding_scene.queue_free()
 	start_levelselect()
-	GameVariables.vr_camera.blackout_screen(false)
 
 func change_environment(value):
 	print ("CHANGE ENV\n\n\n\n\n%s"%value)
