@@ -32,6 +32,10 @@ func playlist_from_song_names(songs):
 				playlist.append(songfile)
 	update_songs()
 
+func set_playlist(songs):
+	playlist = songs
+	update_songs()
+
 func set_songs(songs):
 	$SongSelector/Viewport/SongSelection.set_songs(songs)
 	$SongSelector/Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
@@ -197,3 +201,15 @@ func _on_TabContainer_tab_selected(tab):
 		$SongSelector.enable()
 	else:
 		$SongSelector.disable()
+
+
+func hide_panels():
+	$StaticBody/CollisionShape.disabled = true
+	$SongSelector/CollisionShape.disabled = true	
+	self.hide()
+
+func show_panels():
+	$StaticBody/CollisionShape.disabled = false
+	$SongSelector/CollisionShape.disabled = false	
+	self.show()
+

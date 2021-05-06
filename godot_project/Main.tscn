@@ -186,6 +186,7 @@ mesh = SubResource( 7 )
 material/0 = null
 
 [node name="Keyboard" parent="ARVROrigin" instance=ExtResource( 24 )]
+visible = false
 
 [node name="DemoTimer" type="Timer" parent="."]
 wait_time = 5.0

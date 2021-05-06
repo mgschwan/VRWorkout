@@ -809,9 +809,9 @@ func handle_weight_cues(current_time, target_time, cue_emitter_state):
 	weight_state = state_transition(weight_state, weight_state_model)
 
 	if weight_state == WeightState.HIGH:
-		create_and_attach_cue(current_time,"weight", 0, "0.75*ph", target_time, -hand_cue_offset)
+		create_and_attach_cue(current_time,"weight", 0, "0.75*ph", target_time, 0)
 	else:
-		create_and_attach_cue(current_time,"weight", 0, "0.4*ph", target_time, -hand_cue_offset)
+		create_and_attach_cue(current_time,"weight", 0, "0.5*ph", target_time, 0)
 
 
 ############################# PARCOUR ######################################

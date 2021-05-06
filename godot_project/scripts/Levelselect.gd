@@ -71,10 +71,12 @@ func get_last_beat():
 
 func _on_multiplayer_room_joined(as_host):
 	if not as_host:
-		gu.deactivate_node(get_node("SongSelector"))
+		$SongSelector.hide_panels()
+		#gu.deactivate_node(get_node("SongSelector"))
 		
 func _on_multiplayer_room_left():
-		gu.activate_node(get_node("SongSelector"))
+		$SongSelector.show_panels()
+		#gu.activate_node(get_node("SongSelector"))
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 var controller_detail_set = false
@@ -286,3 +288,12 @@ func _on_SetWeightBar_selected_by(controller):
 		get_tree().current_scene.left_controller = new_controller
 	elif main_controller == "right":
 		get_tree().current_scene.right_controller = new_controller
+
+func _on_multiplayer_game_message(sender, message):
+	var message_type = message.get("type","")
+	if message_type == "playlist":
+		var playlist = message.get("paylist","")		
+		print ("Playlist received: %s"%str(playlist))
+		$SongSelector.set_playlist(playlist)
+	elif message_type == "start":
+		emit_signal("level_selected", $SongSelector.playlist, 0, 0)

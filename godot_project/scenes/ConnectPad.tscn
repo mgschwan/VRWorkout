@@ -258,6 +258,7 @@ anchor_bottom = 0.138
 margin_right = 260.0
 margin_bottom = 40.0
 theme = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 readonly = true
 
 [node name="Mark" type="ColorRect" parent="Viewport/CanvasLayer"]

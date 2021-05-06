@@ -574,8 +574,10 @@ func start_levelselect():
 	levelselect.translation = Vector3(0,0,0)
 	levelselect.connect("level_selected",self,"_on_Area_level_selected")
 	levelselect.connect("onboarding_selected",self,"_on_Onboarding_selected")
+	
 	get_node("MultiplayerRoom").connect("room_joined",levelselect,"_on_multiplayer_room_joined")
 	get_node("MultiplayerRoom").connect("room_left",levelselect,"_on_multiplayer_room_left")
+	get_node("MultiplayerRoom").connect("game_message",levelselect,"_on_multiplayer_game_message")
 
 	add_child(levelselect)
 
@@ -819,6 +821,10 @@ var game_statistics = {}
 func _on_Area_level_selected(filename, diff, num):
 	if level == null:
 		GameVariables.current_song = filename
+		if $MultiplayerRoom.is_multiplayer_host():
+			$MultiplayerRoom.send_game_message({"type":"playlist","playlist":filename})
+			$MultiplayerRoom.send_game_message({"type":"start"})
+			
 		GameVariables.exercise_duration_avg = ProjectSettings.get("game/exercise_duration_avg")
 		#Store the parameters that should survive a restart
 		gu.store_persistent_config(GameVariables.config_file_location, get_persisting_parameters())

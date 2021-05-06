@@ -25,6 +25,9 @@ var conn_peer
 #This id is our own id
 func is_self_user(id):
 	return id == self_id
+	
+func is_multiplayer_host():
+	return is_active and is_host
 
 func remove_user(id):
 	if id in user_list:
@@ -95,7 +98,11 @@ func process_spatial_remove_message(data_object):
 func process_game_message(data_object):
 	var data = data_object.get("data", {})
 	var id = data_object.get("id",-1)
-	emit_signal(id, data)
+	print ("Game Message received %s"%str(data))
+	emit_signal("game_message", id, data)
+
+func send_game_message(message):
+	self.send_message("game_message", message)
 
 func process_move_message(data_object):
 	var data = data_object.get("data", {})
