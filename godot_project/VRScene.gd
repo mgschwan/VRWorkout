@@ -185,11 +185,13 @@ func _webxr_create_entervr_buttons():
 
 
 func _on_Controller_Tracking_Lost(controller):
-	if level != null:
+	if level != null and controller != null:
+		print ("DBG Controller tracking lost")
 		level.controller_tracking_lost(controller)
 	
 func _on_Controller_Tracking_Regained(controller):
-	if level != null:
+	if level != null and controller != null:
+		print ("DBG Controller tracking regained")
 		level.controller_tracking_regained(controller)
 
 
@@ -202,6 +204,8 @@ func create_controller(type, id, tracker_name):
 	
 	var tracker_id = gu.get_tracker_id(tmp)
 	var tracker_config = gu.get_tracker_config(tracker_id)
+	
+	tmp.free()
 	
 	var new_controller = null		
 	if type == "left":
@@ -227,15 +231,20 @@ func create_controller(type, id, tracker_name):
 
 	new_controller.controller_id = id
 
+	print ("Add controller to scene")
 	get_node("ARVROrigin").add_child(new_controller)
+	
+	print ("Set detail select?")
 	if new_controller.has_method("set_detail_select"):
 		new_controller.set_detail_select(GameVariables.detail_selection_mode)
+	
+	print ("Show hand?")
 	if new_controller.has_method("show_hand"):
 		new_controller.show_hand(GameVariables.hands_visible)
-	
+	print ("Store tracker config")
 	gu.set_tracker_config(tracker_id, tracker_config)
 	
-	tmp.queue_free()
+
 	return new_controller
 
 func replace_tracker(old_controller, new_controller):
@@ -324,22 +333,28 @@ func _on_Tracker_added(tracker_name, type, id):
 		else:
 			new_controller = create_controller("right", id, tracker_name)
 
+
 		new_controller.get_node("RemoteSpatial").multiplayer_room = get_node("MultiplayerRoom")
-		
+
+		print ("Add tracker to list")		
 		GameVariables.trackers.append(new_controller)
 
 func set_controller_visible(value):
+	print ("Set controller visibility %s"%str(value))
 	for t in GameVariables.trackers:
 		if t and t.has_method("set_visible"):
 			print ("Change controller visibility: %s"%str(value))
 			t.set_visible(value)
+	print ("Set controller 	visibility done")
 			
 func set_detail_selection_mode(value):
+	print ("Set detail selection %s"%str(value))
 	GameVariables.detail_selection_mode = value
 	for t in GameVariables.trackers:
 		if t and t.has_method("set_detail_select"):
 			print ("Set tracker detail (%s): %s"%[str(t),str(value)])
 			t.set_detail_select(value)
+	print ("Set detail selection done")
 
 func _enter_tree():		
 	check_ar_mode()
@@ -477,6 +492,7 @@ func _ready():
 	GameVariables.vr_camera = get_node("ARVROrigin/ARVRCamera")
 	GameVariables.hit_player = get_node("HitPlayer")
 	print ("Unique device id %s"%GameVariables.device_id)
+	GameVariables.multiplayer_api = $MultiplayerRoom
 	GameVariables.setup_globals()
 
 	print ("Initialize VR")
@@ -575,10 +591,6 @@ func start_levelselect():
 	levelselect.connect("level_selected",self,"_on_Area_level_selected")
 	levelselect.connect("onboarding_selected",self,"_on_Onboarding_selected")
 	
-	get_node("MultiplayerRoom").connect("room_joined",levelselect,"_on_multiplayer_room_joined")
-	get_node("MultiplayerRoom").connect("room_left",levelselect,"_on_multiplayer_room_left")
-	get_node("MultiplayerRoom").connect("game_message",levelselect,"_on_multiplayer_game_message")
-
 	add_child(levelselect)
 
 			
@@ -594,13 +606,13 @@ func _on_level_finished_actual(valid_end):
 	#In case the player exited while controller were hidden
 	set_controller_visible(true)
 	
-	if record_tracker_data and ProjectSettings.get("game/is_oculusquest"):
-		print ("Storing tracker data")
-		var f = File.new()
-		f.open("/sdcard/tracker.data", File.WRITE)
-		f.store_var(tracking_data)
-		f.close()
-		tracking_data.clear()	
+#	if record_tracker_data and ProjectSettings.get("game/is_oculusquest"):
+#		print ("Storing tracker data")
+#		var f = File.new()
+#		f.open("/sdcard/tracker.data", File.WRITE)
+#		f.store_var(tracking_data)
+#		f.close()
+#		tracking_data.clear()	
 	
 	GameVariables.override_beatmap = false
 	
@@ -792,8 +804,9 @@ func _process(delta):
 		if t and t.hand_mode:	
 			_update_hand_model(t, t.collision_root, t.model, t.last_controller);
 
-	if record_tracker_data and left_controller and right_controller:
-		tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
+	#DEACTIVATED: REASON: Race condition during controller switching
+	#if record_tracker_data and left_controller and right_controller:
+	#	tracking_data.append([OS.get_ticks_msec(), cam.translation, cam.rotation,left_controller.translation,left_controller.rotation,right_controller.translation, right_controller.rotation])
 
 	update_rate_limiter += 1
 	if update_rate_limiter > 100:
@@ -823,13 +836,13 @@ func _on_Area_level_selected(filename, diff, num):
 		GameVariables.current_song = filename
 		if $MultiplayerRoom.is_multiplayer_host():
 			$MultiplayerRoom.send_game_message({"type":"playlist","playlist":filename})
-			$MultiplayerRoom.send_game_message({"type":"start"})
+
 			
 		GameVariables.exercise_duration_avg = ProjectSettings.get("game/exercise_duration_avg")
 		#Store the parameters that should survive a restart
 		gu.store_persistent_config(GameVariables.config_file_location, get_persisting_parameters())
 		
-		record_tracker_data = ProjectSettings.get("game/record_tracker")
+		#record_tracker_data = ProjectSettings.get("game/record_tracker")
 		
 		set_beast_mode(ProjectSettings.get("game/beast_mode"))
 		level = level_blueprint.instance()
@@ -950,3 +963,18 @@ func change_environment(value):
 
 
 
+
+#dispatch the game message to the correct node
+func _on_MultiplayerRoom_game_message(userid, data):
+	if level != null:
+		level._on_multiplayer_game_message(userid, data)
+	elif levelselect != null:
+		levelselect._on_multiplayer_game_message(userid, data)
+
+func _on_MultiplayerRoom_room_joined(as_host):
+	if levelselect != null:
+		levelselect._on_multiplayer_room_joined(as_host)
+
+func _on_MultiplayerRoom_room_left():
+	if levelselect != null:
+		levelselect._on_multiplayer_room_left()

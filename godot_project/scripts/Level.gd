@@ -3,6 +3,7 @@ extends Spatial
 signal level_finished
 signal level_finished_manually
 
+
 signal set_exercise(exercise)
 var gu = GameUtilities.new()
 
@@ -10,6 +11,9 @@ var exercise_builder = preload("res://scripts/ExerciseBuilder.gd").new()
 var stored
 var CueState = GameVariables.CueState
 var CueSelector = GameVariables.CueSelector
+
+var game_state = GameSyncSate.INIT
+
 
 onready var battle_module
 
@@ -289,7 +293,6 @@ func _ready():
 	beats = stream.playlist_beats		
 	
 	if stream.stream:
-		stream.play()	
 		if GameVariables.battle_mode != GameVariables.BattleMode.NO:
 			get_node("BattleDisplay").setup_data(int(stream.stream.get_length()))
 			
@@ -299,8 +302,47 @@ func _ready():
 	if len(GameVariables.input_level_statistics_data):
 		add_remote_user_messages("Ghost", GameVariables.input_level_statistics_data)
 	GameVariables.input_level_statistics_data = Dictionary()
-	
 
+	if not (GameVariables.multiplayer_api and GameVariables.multiplayer_api.is_multiplayer()):
+		game_state = GameSyncSate.LEVEL_BEGIN
+
+
+#Used for multiplayer to prepopulate the exercises on all players
+func prebuild_exercise_list():
+	for beat in beats:
+		var target_time = beat
+		var start_time = max(0,beats[beat] - exercise_builder.emit_early)
+		if GameVariables.game_mode == GameVariables.GameMode.STANDARD or GameVariables.game_mode == GameVariables.GameMode.EXERCISE_SET:
+			exercise_builder.evaluate_beat(start_time, target_time)
+
+
+enum GameSyncSate {
+	INIT = 0,
+	LEVEL_WAIT_BEGIN = 1,
+	LEVEL_BEGIN = 2,
+	LEVEL_RUNNING = 3,
+}	
+	
+func game_start_checkpoint():
+	if GameVariables.multiplayer_api:	
+		if game_state == GameSyncSate.INIT:
+			if  GameVariables.multiplayer_api.is_multiplayer_host():
+				prebuild_exercise_list()
+				GameVariables.multiplayer_api.send_game_message({"type":"start","exercise_list": exercise_builder.cue_emitter_list})
+				game_state = GameSyncSate.LEVEL_WAIT_BEGIN
+			elif GameVariables.multiplayer_api.is_multiplayer_client():
+				GameVariables.multiplayer_api.send_game_message({"type":"level_begin"})
+				game_state = GameSyncSate.LEVEL_BEGIN
+
+	if game_state == GameSyncSate.LEVEL_BEGIN and stream.stream:
+		game_state = GameSyncSate.LEVEL_RUNNING
+		stream.play()	
+	
+func _on_multiplayer_game_message(sender, message):
+	var message_type = message.get("type","")
+	print ("Level game_message received %s"%str(message))
+	if message_type == "level_begin" and game_state == GameSyncSate.LEVEL_WAIT_BEGIN:
+		game_state = GameSyncSate.LEVEL_BEGIN
 
 func update_groove_iteration():
 	if beat_index > 0:
@@ -334,6 +376,9 @@ var last_game_update = 0
 var last_battle_update = 0
 
 func _process(delta):
+	if game_state != GameSyncSate.LEVEL_RUNNING:
+		game_start_checkpoint()
+	
 	if not GameVariables.vr_mode:
 		var c = get_viewport().get_camera()
 		#c.translation = GameVariables.vr_camera.translation + Vector3(0,0,1.0)
@@ -795,8 +840,12 @@ func _on_PositionSign_state_change_completed():
 		
 var auto_hit_distance = 0.3
 func controller_tracking_lost(controller):
+	
+	#Make sure the controller is still available when accessing those attributes
+	
+	
 	var node = cue_emitter.get_closest_cue(controller.global_transform.origin, "hand", controller.is_left)
-	#print ("Tracking lost. Closest object: %s"%str(node))
+	print ("Tracking lost. Closest object: %s"%str(node))
 	if node:
 		if node.global_transform.origin.distance_to(controller.global_transform.origin) < auto_hit_distance:
 			var type = "right"
@@ -804,18 +853,21 @@ func controller_tracking_lost(controller):
 				type = "left"
 			GameVariables.hit_player.play(0)
 			node.has_been_hit(type)
-	
+	print ("Tracking compensation done")
+		
 func controller_tracking_regained(controller):
 	var node = cue_emitter.get_closest_cue(controller.global_transform.origin, "hand", controller.is_left)
-	#print ("Tracking regained. Closest object: %s"%str(node))
+	print ("Tracking regained. Closest object: %s"%str(node))
 
 	if node:
+		
 		if node.global_transform.origin.distance_to(controller.global_transform.origin) < auto_hit_distance:
 			var type = "right"
 			if controller.is_left:
 				type = "left"
 			GameVariables.hit_player.play(0)
 			node.has_been_hit(type)
+	print ("Tracking compensation done")
 
 func play_encouragement():
 	var selector = rng.randi()%6

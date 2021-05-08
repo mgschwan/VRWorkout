@@ -292,8 +292,10 @@ func _on_SetWeightBar_selected_by(controller):
 func _on_multiplayer_game_message(sender, message):
 	var message_type = message.get("type","")
 	if message_type == "playlist":
-		var playlist = message.get("paylist","")		
+		var playlist = message.get("playlist","")		
 		print ("Playlist received: %s"%str(playlist))
 		$SongSelector.set_playlist(playlist)
 	elif message_type == "start":
+		var exercise_list = message.get("exercise_list",[])
+		_on_StoredSlot_selected(exercise_list, -1, [])
 		emit_signal("level_selected", $SongSelector.playlist, 0, 0)

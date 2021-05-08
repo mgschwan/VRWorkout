@@ -28,6 +28,12 @@ func is_self_user(id):
 	
 func is_multiplayer_host():
 	return is_active and is_host
+	
+func is_multiplayer_client():
+	return is_active and (!is_host)
+
+func is_multiplayer():
+	return is_active
 
 func remove_user(id):
 	if id in user_list:
@@ -102,6 +108,7 @@ func process_game_message(data_object):
 	emit_signal("game_message", id, data)
 
 func send_game_message(message):
+	print ("Send game message: %s"%str(message))
 	self.send_message("game_message", message)
 
 func process_move_message(data_object):

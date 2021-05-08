@@ -225,5 +225,8 @@ script = null
 [connection signal="timeout" from="ARVROrigin/ARVRCamera/HUDHideTimer" to="ARVROrigin/ARVRCamera" method="_on_HUDHideTimer_timeout"]
 [connection signal="timeout" from="DemoTimer" to="." method="_on_DemoTimer_timeout"]
 [connection signal="add_spatial" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_MultiplayerRoom_add_spatial"]
+[connection signal="game_message" from="MultiplayerRoom" to="." method="_on_MultiplayerRoom_game_message"]
 [connection signal="remove_spatial" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_MultiplayerRoom_remove_spatial"]
+[connection signal="room_joined" from="MultiplayerRoom" to="." method="_on_MultiplayerRoom_room_joined"]
+[connection signal="room_left" from="MultiplayerRoom" to="." method="_on_MultiplayerRoom_room_left"]
 [connection signal="user_leave" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_MultiplayerRoom_user_leave"]

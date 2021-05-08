@@ -38,6 +38,7 @@ var vr_mode = true
 var ar_mode = false
 
 var multiplayer_server = ProjectSettings.get("application/config/room_server")
+var multiplayer_api = null
 
 var player_camera = null
 

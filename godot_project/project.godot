@@ -85,6 +85,11 @@ singletons_disabled=[  ]
 
 file_logging/log_path="/sdcard/vrworkout_log.txt"
 
+[network]
+
+limits/websocket_client/max_in_buffer_kb=1024
+limits/websocket_client/max_out_buffer_kb=1024
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
