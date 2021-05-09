@@ -184,6 +184,9 @@ func setup_game_data():
 		dynamic_states = false
 	GameVariables.cue_list.clear()
 
+	cue_emitter.connect("hit_scored", self, "_on_cue_hit_scored")
+
+
 	if GameVariables.battle_mode != GameVariables.BattleMode.NO:
 		battle_module = load("res://scenes/BattleDisplay.tscn").instance()
 		battle_module.name = "BattleDisplay"
@@ -309,8 +312,8 @@ func _ready():
 
 #Used for multiplayer to prepopulate the exercises on all players
 func prebuild_exercise_list():
-	for beat in beats:
-		var target_time = beat
+	for beat in range(len(beats)):
+		var target_time = beats[beat]
 		var start_time = max(0,beats[beat] - exercise_builder.emit_early)
 		if GameVariables.game_mode == GameVariables.GameMode.STANDARD or GameVariables.game_mode == GameVariables.GameMode.EXERCISE_SET:
 			exercise_builder.evaluate_beat(start_time, target_time)
@@ -340,9 +343,13 @@ func game_start_checkpoint():
 	
 func _on_multiplayer_game_message(sender, message):
 	var message_type = message.get("type","")
-	print ("Level game_message received %s"%str(message))
+	#print ("Level game_message received %s"%str(message))
 	if message_type == "level_begin" and game_state == GameSyncSate.LEVEL_WAIT_BEGIN:
 		game_state = GameSyncSate.LEVEL_BEGIN
+	elif message_type == "remote_statistics_data":
+		if not GameVariables.multiplayer_api.is_self_user(sender):
+			var statistics = message.get("statistics",[])
+			add_remote_user_messages("Opponent%d"%sender, statistics)
 
 func update_groove_iteration():
 	if beat_index > 0:
@@ -553,6 +560,7 @@ func create_and_attach_cue_actual(cue_data):
 		
 	cue_node.target_time = target_time
 	cue_node.start_time = cue_emitter.current_playback_time
+	#print ("Add cue node: now: %f  target_time: %f"%[cue_node.start_time, cue_node.target_time])
 	var actual_flytime = fly_time
 	if actual_flytime == 0:
 		actual_flytime = exercise_builder.fly_time
@@ -803,7 +811,18 @@ func _on_UpdateTimer_timeout():
 
 func end_level():
 	stream.stop()
-	var t = Timer.new()
+	
+	if len(remote_user_scores) > 0:
+		var winner = get_winner()
+		var winner_panel = load("res://scenes/WinnerPanel.tscn").instance()
+		winner_panel.set_winner ( winner == "Player")
+		winner_panel.set_points(cue_emitter.points)
+		add_child(winner_panel)
+		winner_panel.translation = Vector3(0,1.34,-2.94)
+		winner_panel.rotation = Vector3(PI/2,0,0)
+	
+	
+	var t = Timer.new()	
 	t.connect("timeout", self, "_on_exit_timer_timeout")
 	t.set_wait_time(5)
 	self.add_child(t)
@@ -954,7 +973,25 @@ func consume_remote_user_messages():
 			get_node("VoiceInstructor").say("falling_behind")
 			player_tournament_state = TournamentState.PLAYER_BEHIND
 	
+func get_winner():
+	var winner = "Player"
+	var winning_points = cue_emitter.points
+	if len(remote_user_scores) > 0:
+		for k in remote_user_scores:
+			if remote_user_scores[k].get("points", 0.0) > winning_points:
+				winner = remote_user_scores[k].get("name", "Unknown Player")
+				winning_points = remote_user_scores[k].get("points", 0.0)
+	return winner
 	
+func _on_cue_hit_scored(hit_score, base_score, points, obj):
+	if obj and "ingame_id" in obj:
+		var ingame_id = obj.ingame_id
+		var statistics_element = GameVariables.level_statistics_data [ingame_id]
+		send_statistics_elements({ingame_id : statistics_element})
+
+func send_statistics_elements(elements):
+	if GameVariables.multiplayer_api and GameVariables.multiplayer_api.is_multiplayer():
+		GameVariables.multiplayer_api.send_game_message({"type":"remote_statistics_data","statistics":elements})
 	
 func add_remote_user_messages(user, messages):
 	if not remote_user_messages.has(user):

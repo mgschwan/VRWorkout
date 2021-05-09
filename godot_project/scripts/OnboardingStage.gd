@@ -42,7 +42,7 @@ func emit_cue():
 	if cue_node:
 		emitting_cues = true
 		$cue_emitter.add_child(cue_node)
-		$cue_emitter.set_move_tween(cue_node,Vector3(0,GameVariables.player_height,0), Vector3(0,GameVariables.player_height,10), 5)	
+		$cue_emitter.set_move_tween(cue_node,Vector3(0,get_viewport().get_camera().translation.y,0), Vector3(0,get_viewport().get_camera().translation.y,10), 5)	
 
 func _on_Onboarding_onboarding_finished():
 	emit_signal("onboarding_finished")

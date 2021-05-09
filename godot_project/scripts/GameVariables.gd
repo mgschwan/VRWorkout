@@ -4,7 +4,7 @@ extends Node
 ################## Warning, this has to be set to false in production builds
 #############################################################################
 
-var demo_mode = true
+var demo_mode = false
 var hands_visible = false
 
 #############################################################################

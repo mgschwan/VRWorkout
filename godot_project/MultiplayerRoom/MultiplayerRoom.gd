@@ -104,11 +104,11 @@ func process_spatial_remove_message(data_object):
 func process_game_message(data_object):
 	var data = data_object.get("data", {})
 	var id = data_object.get("id",-1)
-	print ("Game Message received %s"%str(data))
+	#print ("Game Message received %s"%str(data))
 	emit_signal("game_message", id, data)
 
 func send_game_message(message):
-	print ("Send game message: %s"%str(message))
+	#print ("Send game message: %s"%str(message))
 	self.send_message("game_message", message)
 
 func process_move_message(data_object):

@@ -812,6 +812,8 @@ func handle_weight_cues(current_time, target_time, cue_emitter_state):
 		create_and_attach_cue(current_time,"weight", 0, "0.75*ph", target_time, 0)
 	else:
 		create_and_attach_cue(current_time,"weight", 0, "0.5*ph", target_time, 0)
+	temporary_cue_space_extension = 1.0
+
 
 
 ############################# PARCOUR ######################################

@@ -8,6 +8,7 @@ var gu = GameUtilities.new()
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+
 	
 func update_widget():
 	get_node("SettingsCarousel/Connections/VRWorkoutConnection/PortalInfo").set_state(ProjectSettings.get("game/portal_connection"))
@@ -16,7 +17,6 @@ func update_widget():
 	get_node("BPM/OverrideBeats").update_switch()
 
 	get_node("SettingsCarousel/Switchboard/ExerciseDuration").set_value(ProjectSettings.get("game/exercise_duration_avg"))
-
 
 	GameVariables.exercise_state_list = []
 	
@@ -70,13 +70,10 @@ func get_last_beat():
 	return get_node("BPM").last_beat
 
 func _on_multiplayer_room_joined(as_host):
-	if not as_host:
-		$SongSelector.hide_panels()
-		#gu.deactivate_node(get_node("SongSelector"))
+	update_multiplayer_panels()
 		
 func _on_multiplayer_room_left():
-		$SongSelector.show_panels()
-		#gu.activate_node(get_node("SongSelector"))
+	update_multiplayer_panels()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 var controller_detail_set = false
@@ -263,6 +260,12 @@ func _on_ExerciseDuration_value_changed(value):
 func _on_GamePanel_onboarding_selected():
 	print ("Levelselect onboarding selected")
 	emit_signal("onboarding_selected")
+
+func update_multiplayer_panels():
+	if GameVariables.multiplayer_api and GameVariables.multiplayer_api.is_multiplayer_client():
+		$SongSelector.hide_panels()
+	else:
+		$SongSelector.show_panels()
 
 
 func _on_SetWeightBar_selected_by(controller):

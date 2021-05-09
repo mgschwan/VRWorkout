@@ -75,12 +75,14 @@ func update_statistics_element(obj, hit, points):
 	current_hits +=  actual_hit_score
 	current_max_hits += hit_score
 
-	emit_signal("streak_changed", get_current_streak())
-	emit_signal("hit_scored", actual_hit_score, hit_score, points, obj)
 	if obj:
 		if GameVariables.level_statistics_data.has(obj.ingame_id):
 			GameVariables.level_statistics_data[obj.ingame_id]["h"] = hit
 			GameVariables.level_statistics_data[obj.ingame_id]["p"] = points
+
+	emit_signal("streak_changed", get_current_streak())
+	emit_signal("hit_scored", actual_hit_score, hit_score, points, obj)
+
 
 func update_hits(hit_score, is_hit):
 	self.max_hits += max(0,hit_score)
@@ -129,7 +131,7 @@ func score_hit(delta, obj = null):
 		if obj and "point_multiplier" in obj:
 			multiplier = multiplier * obj.point_multiplier
 			
-		p = int(200 - min(delta*1000, 200))
+		p = max (10, int(200 - min(delta*1000, 200)))
 		
 		var hit_points = p * multiplier
 		points += hit_points

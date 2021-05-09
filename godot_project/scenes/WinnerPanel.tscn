@@ -1,0 +1,68 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://fonts/droid-sans/DroidSans-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://scripts/WinnerPanel.gd" type="Script" id=2]
+[ext_resource path="res://assets/you_win.png" type="Texture" id=3]
+[ext_resource path="res://assets/you_lose.png" type="Texture" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 48
+font_data = ExtResource( 1 )
+
+[sub_resource type="PlaneMesh" id=2]
+
+[sub_resource type="ViewportTexture" id=3]
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="SpatialMaterial" id=4]
+resource_local_to_scene = true
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = SubResource( 3 )
+
+[node name="WinnerPanel" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 512, 512 )
+transparent_bg = true
+msaa = 6
+render_target_v_flip = true
+
+[node name="Panel" type="Panel" parent="Viewport"]
+margin_right = 512.0
+margin_bottom = 512.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="you_win" type="TextureRect" parent="Viewport"]
+margin_right = 512.0
+margin_bottom = 512.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="you_lose" type="TextureRect" parent="Viewport"]
+margin_right = 512.0
+margin_bottom = 512.0
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Viewport"]
+margin_top = 20.0
+margin_right = 512.0
+margin_bottom = 209.0
+custom_fonts/font = SubResource( 1 )
+text = "0 points"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 2 )
+material/0 = SubResource( 4 )
