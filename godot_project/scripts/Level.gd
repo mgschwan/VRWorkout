@@ -329,12 +329,17 @@ enum GameSyncSate {
 func game_start_checkpoint():
 	if GameVariables.multiplayer_api:	
 		if game_state == GameSyncSate.INIT:
-			if  GameVariables.multiplayer_api.is_multiplayer_host():
-				prebuild_exercise_list()
+			if  GameVariables.multiplayer_api.is_multiplayer_host():	
+				if GameVariables.game_mode != GameVariables.GameMode.STORED:
+					prebuild_exercise_list()
+								
 				GameVariables.multiplayer_api.send_game_message({"type":"start","exercise_list": exercise_builder.cue_emitter_list})
+				
 				game_state = GameSyncSate.LEVEL_WAIT_BEGIN
+			
 			elif GameVariables.multiplayer_api.is_multiplayer_client():
 				GameVariables.multiplayer_api.send_game_message({"type":"level_begin"})
+			
 				game_state = GameSyncSate.LEVEL_BEGIN
 
 	if game_state == GameSyncSate.LEVEL_BEGIN and stream.stream:

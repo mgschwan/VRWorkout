@@ -5,7 +5,7 @@ var last_click_time = 0
 
 func _on_content_changed():
 	render_target_update_mode = Viewport.UPDATE_ONCE
-
+	
 func manual_button_click(position):
 	var viewport = self
 	var input_point = position

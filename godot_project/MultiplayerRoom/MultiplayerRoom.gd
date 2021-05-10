@@ -120,7 +120,7 @@ func process_move_message(data_object):
 	var pos = data.get("pos", Vector3(0,0,0))
 	var rot = data.get("rot", Vector3(0,0,0))
 	var movement = data.get("movement", Vector3(0,0,0))
-
+	#print ("Move message: %s"%str(data))
 	var user = user_list.get(id,null)
 	if user and id != self_id:
 		if not "nodes" in user:
@@ -229,26 +229,21 @@ func remove_all_users():
 	user_list = Dictionary()
 
 
-func _on_connection_error():
+func teardown_connection():
 	if is_active:
-		emit_signal("room_left")
-	#This removes all stale nodes
-	get_node("PlayerArea").remove_all_entities()
-	remove_all_users()
-	is_active = false
-	is_host = false
+		#This removes all stale nodes
+		remove_all_users()
+		get_node("PlayerArea").remove_all_entities()
+		is_active = false
+		is_host = false
+	emit_signal("room_left")
+
+func _on_connection_error():
+	teardown_connection()
 	print ("Could not connect")
 
 func _on_connection_closed(was_clean):
-	if is_active:
-		emit_signal("room_left")
-	
-	remove_all_users()
-	#This removes all stale nodes
-	get_node("PlayerArea").remove_all_entities()
-	
-	is_active = false
-	is_host = false
+	teardown_connection()
 	print ("Connection ended")
 	
 
