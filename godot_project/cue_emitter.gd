@@ -111,10 +111,10 @@ func score_miss(obj):
 func score_avoided(obj):
 	update_statistics_element(obj, false, 0)
 
-func score_points(hit_points):
-	update_statistics_element(null, hit_points > 0, hit_points)
+func score_points(hit_score, hit_points, obj=null):
+	update_statistics_element(obj, hit_score, hit_points)
 
-	if hit_points > 0:
+	if hit_score > 0 or hit_points > 0:
 		points += hit_points
 		update_hits(1,true)
 		if point_indicator:
@@ -172,20 +172,27 @@ func _on_VisibilityNotifier_camera_exited(camera):
 	if hud_enabled:
 		emit_signal("show_hud")
 		
-func set_move_tween(cue_node, start_pos, end_pos, actual_flytime):
+func set_move_tween(cue_node, start_pos, end_pos, actual_flytime, curved_direction = 0):
 	var move_modifier = Tween.new()
 	move_modifier.set_name("tween")
 	cue_node.set_meta("move_tween", move_modifier)
 	cue_node.add_child(move_modifier)
 
-	move_modifier.interpolate_property(cue_node,"translation",start_pos,end_pos,actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
-
-	#	var xdir = 1
-	#	if x < 0:
-	#		xdir = -1
-	#move_modifier.interpolate_property(cue_node,"translation:x",x,xdir*2.0,actual_flytime*0.75,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
-	#move_modifier.interpolate_property(cue_node,"translation:x",xdir*2.0,0,actual_flytime*0.25,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,actual_flytime*0.75)
+	var x = start_pos[0]
 	
+	cue_node.translation.x = start_pos[0]
+	cue_node.translation.y = start_pos[1]
+	move_modifier.interpolate_property(cue_node,"translation:z",start_pos[2],end_pos[2],actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+	
+	if curved_direction != 0:
+		var additional_move_modifier = Tween.new()
+		cue_node.add_child(additional_move_modifier)
+		if "rotate_to_player" in cue_node:
+			cue_node.rotate_to_player = true
+		additional_move_modifier.interpolate_property(cue_node,"translation:x",x,x+curved_direction,actual_flytime*0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+		additional_move_modifier.interpolate_property(cue_node,"translation:x",x+curved_direction, 0,actual_flytime*0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,actual_flytime*0.5)
+		additional_move_modifier.start()
+		
 	move_modifier.connect("tween_completed",self,"_on_tween_completed")
 	move_modifier.start()
 		

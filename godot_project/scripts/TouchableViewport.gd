@@ -3,6 +3,9 @@ extends Viewport
 
 var last_click_time = 0
 
+#func _input(event):
+#	print ("Viewport received input event: %s (%s/%s)"%[str(event),str(event.pressed),str(event.position)])
+	
 func _on_content_changed():
 	render_target_update_mode = Viewport.UPDATE_ONCE
 	
@@ -22,7 +25,7 @@ func manual_button_click(position):
 				item.emit_signal("pressed")
 
 
-var last_position = Vector2(0,0)
+var last_position = null
 var is_pressed = false
 func release_event(position = null):
 	var viewport = self
@@ -32,11 +35,19 @@ func release_event(position = null):
 		var ev = InputEventMouseButton.new()
 		ev.button_index=BUTTON_LEFT
 		ev.pressed = false
-		if position is Vector2:
-			ev.position = position
+		
+		#Releasing at the buttondown point is probably not necessary but
+		#we will keep that for now
+		
+		if last_position == null:
+			if position is Vector2:
+				ev.position = position
+			else:
+				ev.position = Vector2(0,0)
 		else:
 			ev.position = last_position
 		viewport.input(ev)
+		last_position = null
 		_on_content_changed()
 	else:
 		print ("Release without click not possible")
@@ -77,9 +88,11 @@ func click_event(position):
 
 		print ("P: %s"%str(ev.position))
 		viewport.input(ev)
+		_on_content_changed()
+
 
 func _on_ConnectPadInput_interface_touch(u, v):	
-	if OS.get_ticks_msec() > last_click_time + 200:
+	if OS.get_ticks_msec() > last_click_time + 20:
 		var position = Vector2(self.size[0]*v, self.size[1]*u)		
 		
 		last_click_time = OS.get_ticks_msec() 

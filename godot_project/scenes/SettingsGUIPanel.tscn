@@ -343,6 +343,25 @@ custom_icons/off = ExtResource( 5 )
 custom_icons/on = ExtResource( 4 )
 custom_styles/focus = SubResource( 13 )
 
+[node name="CurvedCues" type="Label" parent="Viewport/CanvasLayer"]
+margin_left = 820.0
+margin_top = 300.0
+margin_right = 979.0
+margin_bottom = 367.0
+theme = ExtResource( 6 )
+text = "Curved cues"
+
+[node name="CurvedCuesButton" type="CheckButton" parent="Viewport/CanvasLayer/CurvedCues"]
+margin_left = -64.0
+margin_top = 32.0
+margin_right = 309.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.5, 0.5 )
+theme = ExtResource( 6 )
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 13 )
+
 [node name="Kneesaver" type="Label" parent="Viewport/CanvasLayer"]
 margin_left = 520.0
 margin_top = 100.0
@@ -472,6 +491,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -1 )
 [connection signal="pressed" from="Viewport/CanvasLayer/BeastMode/BeastModeButton" to="." method="_on_BeastModeButton_pressed"]
 [connection signal="pressed" from="Viewport/CanvasLayer/StrengthMode/StrengthModeButton" to="." method="_on_StrengthModeButton_pressed"]
 [connection signal="pressed" from="Viewport/CanvasLayer/Weights/WeightsButton" to="." method="_on_WeightsButton_pressed"]
+[connection signal="pressed" from="Viewport/CanvasLayer/CurvedCues/CurvedCuesButton" to="." method="_on_CurvedCuesButton_pressed"]
 [connection signal="pressed" from="Viewport/CanvasLayer/Kneesaver/KneesaverButton" to="." method="_on_KneesaverButton_pressed"]
 [connection signal="pressed" from="Viewport/CanvasLayer/Ducking/DuckButton" to="." method="_on_DuckingButton_pressed"]
 [connection signal="pressed" from="Viewport/CanvasLayer/Windmill/WindmillButton" to="." method="_on_WindmillButton_pressed"]

@@ -257,4 +257,5 @@ bus = "Voice"
 [node name="retract" type="AudioStreamPlayer" parent="." index="5"]
 stream = ExtResource( 4 )
 bus = "Voice"
+
 [connection signal="body_entered" from="Cube/Area" to="Cube/Area" method="_on_Area_body_entered"]

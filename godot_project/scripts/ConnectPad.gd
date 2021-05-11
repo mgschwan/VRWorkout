@@ -24,9 +24,11 @@ func _process(delta):
 
 func _on_Button_button_down(character):
 	get_node("Viewport/CanvasLayer/Code").text += character
+	$Viewport._on_content_changed()
 
 func _on_Clear_button_down():
 	get_node("Viewport/CanvasLayer/Code").text = ""
+	$Viewport._on_content_changed()
 
 func _on_CreateRoom_button_down():
 	if multiplayer_room:

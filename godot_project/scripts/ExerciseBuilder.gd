@@ -92,7 +92,7 @@ func adjust_cue_spacing():
 			pass
 
 
-func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", target_cue = null, hit_velocity = null, hit_score = 1.0, hardness = 0):
+func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_time = 0, cue_subtype="", target_cue = null, hit_velocity = null, hit_score = 1.0, hardness = 0, curved_direction = 0):
 	#Cue IDs have to be generated when they are added to the list so others can reference it
 	if fly_time == 0:
 		fly_time = self.fly_time
@@ -111,7 +111,8 @@ func create_and_attach_cue(ts, cue_type, x, y, target_time, fly_offset=0, fly_ti
 		"hit_velocity": hit_velocity,
 		"hit_score": hit_score,
 		"fly_distance": fly_distance,
-		"hardness": hardness
+		"hardness": hardness,
+		"curved": curved_direction
 		}
 	#print (str(cue_data))
 	gu.insert_cue_sorted(ts, cue_data, cue_emitter_list)
@@ -278,7 +279,8 @@ func setup_cue_parameters(difficulty, ph):
 				"yrange" : "(0.3+%f*ph/8.0)"%difficulty,
 				"double_swing_spread": "ph/%f"%( 3.0 + (2.0-difficulty)/1.5 ) ,
 				"invertible_sides": difficulty >= 1.0, #If hands can cross the sides
-				"windmill": ProjectSettings.get("game/exercise/stand/windmill")
+				"windmill": ProjectSettings.get("game/exercise/stand/windmill"),
+				"curved": 0
 			}
 		},	
 		CueState.SQUAT : {
@@ -351,11 +353,15 @@ func setup_cue_parameters(difficulty, ph):
 	if kneesaver_mode:
 		cue_parameters[CueState.SQUAT][CueSelector.HEAD]["yoffset"] = "ph*0.18"
 
+	if ProjectSettings.get("game/exercise/stand/curved"):
+		cue_parameters[CueState.STAND][CueSelector.HAND]["curved"] = difficulty
+
+	stand_state_model = stand_state_model_template.duplicate()
 	if not cue_parameters[CueState.STAND][CueSelector.HAND]["windmill"]:
-		stand_state_model = model_without_state(stand_state_model_template, StandState.WINDMILL_TOE)
+		stand_state_model = model_without_state(stand_state_model, StandState.WINDMILL_TOE)
 
 	if not ProjectSettings.get("game/exercise/parcour"):
-		stand_state_model = model_without_state(stand_state_model_template, StandState.PARCOUR)
+		stand_state_model = model_without_state(stand_state_model, StandState.PARCOUR)
 	
 	#Easy difficulties don't have double swings
 	if difficulty < 1.0:
@@ -896,17 +902,20 @@ func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitte
 	var y_hand = get_double_swing_y(y_hand_base, last_double_swing_high)
 	last_double_swing_high = not last_double_swing_high
 
-	create_and_attach_cue(current_time,"left", "%s-0.1"%x_hand, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
-	create_and_attach_cue(current_time,"right", "%s+0.1"%x_hand, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
+	var curved = 0
+
+	create_and_attach_cue(current_time,"left", "%s-0.1"%x_hand, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5, 0, curved) 
+	create_and_attach_cue(current_time,"right", "%s+0.1"%x_hand, y_hand, target_time, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5, 0, curved)
 
 	if min_cue_space >= 0.5:	
+		curved = -curved
 		var double_punch_delay = 0.4
 		
 		y_hand = get_double_swing_y(y_hand_base, last_double_swing_high)
 		last_double_swing_high = not last_double_swing_high
 		
-		create_and_attach_cue(current_time+double_punch_delay,"left", "-(%s)-0.1"%x_hand, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
-		create_and_attach_cue(current_time+double_punch_delay,"right", "-(%s)+0.1"%x_hand, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5)
+		create_and_attach_cue(current_time+double_punch_delay,"left", "-(%s)-0.1"%x_hand, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5, 0, curved)
+		create_and_attach_cue(current_time+double_punch_delay,"right", "-(%s)+0.1"%x_hand, y_hand, target_time+double_punch_delay, -hand_cue_offset, 0, "double_swing", null, -1.0, 0.5, 0, curved)
 	else:
 		last_double_swing_left = not last_double_swing_left
 	
@@ -955,7 +964,7 @@ func handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, st
 	temporary_cue_space_extension = double_punch_delay + 0.25
 
 
-		
+var stand_cues_regular_next_left_hand = true
 func handle_stand_cues_regular(current_time, target_time, cue_emitter_state):
 	var node_selector = rng.randi()%100
 	
@@ -978,13 +987,28 @@ func handle_stand_cues_regular(current_time, target_time, cue_emitter_state):
 	var double_punch = rng.randf() < 0.5
 	var double_punch_delay = 0.25
 	
+	var left_hand = stand_cues_regular_next_left_hand 
+	
+	var curved = cue_parameters[cue_emitter_state][CueSelector.HAND]["curved"]
+	if double_punch:
+		curved = 0
+	if not left_hand:
+		curved = -curved
+	
 	if cue_selector == CueSelector.HAND:
-		if node_selector < 50:	
-			var n_id = create_and_attach_cue(current_time,"left", -x,y_hand, target_time, -hand_cue_offset)
+		
+		# Select the next hand that's coming and if hands switch in curved cues add a pause
+		var tmp = node_selector < 50
+		if curved and tmp != stand_cues_regular_next_left_hand:
+			temporary_cue_space_extension = 0.75
+		stand_cues_regular_next_left_hand = tmp
+		
+		if left_hand:	
+			var n_id = create_and_attach_cue(current_time,"left", -x,y_hand, target_time, -hand_cue_offset, 0, "", null, -1.0, 1.0, 0, curved)
 			if double_punch:
 				var n2 = create_and_attach_cue(current_time+double_punch_delay,"left", -x*rng.randf(),"(%s+ph*%f)/2.0"%[y_hand,(0.5+rng.randf()*0.2)], target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
 		else:			
-			var n_id = create_and_attach_cue(current_time,"right", x,y_hand, target_time, -hand_cue_offset)
+			var n_id = create_and_attach_cue(current_time,"right", x,y_hand, target_time, -hand_cue_offset, 0, "", null, -1.0, 1.0, 0, curved)
 			if double_punch:
 				var n2 = create_and_attach_cue(current_time+double_punch_delay,"right", x*rng.randf(),"(%s+ph*%f)/2.0"%[y_hand,(0.5+rng.randf()*0.2)], target_time+double_punch_delay , -hand_cue_offset,0,"",n_id)
 	else:

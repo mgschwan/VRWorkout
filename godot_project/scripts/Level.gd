@@ -520,7 +520,7 @@ func create_and_attach_cue_actual(cue_data):
 	var hit_score = cue_data["hit_score"]
 	var fly_distance = cue_data.get("fly_distance", exercise_builder.fly_distance)
 	var hardness = cue_data.get("hardness", 0)
-	
+	var curved_direction = cue_data.get("curved", 0)
 	
 	var is_head = false
 	var is_avoid = false
@@ -604,7 +604,7 @@ func create_and_attach_cue_actual(cue_data):
 	add_statistics_element(ingame_id, exercise_builder.state_string(actual_game_state)+"/%s"%cue_subtype, cue_type, exercise_builder.current_difficulty, 0, false, cue_emitter.current_playback_time, target_time, GameVariables.current_hr, hit_score, hardness)
 	cue_node.ingame_id = ingame_id
 	
-	cue_emitter.set_move_tween(cue_node, Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime)
+	cue_emitter.set_move_tween(cue_node, Vector3(x,y,0+fly_offset),Vector3(x,y,fly_distance+fly_offset),actual_flytime, curved_direction)
 
 	return cue_node
 
@@ -666,6 +666,13 @@ func populate_state_model():
 	exercise_builder.stand_state_model = exercise_builder.stand_state_model_template.duplicate(true)
 	
 	
+class SprintObject:
+	var hit_score = 1.0
+	var ingame_id = -1
+	func _init(ingame_id, hit_score):
+		self.ingame_id = ingame_id
+		self.hit_score = hit_score
+		
 var sprint_multiplier = 15.0
 var last_sprint_update = 0
 func handle_sprint_cues_actual(target_time):
@@ -677,7 +684,8 @@ func handle_sprint_cues_actual(target_time):
 	var max_hit_score = 1.0
 	var actual_hit_score = exercise_builder.eval_running_speed(running_speed)
 	var ingame_id = add_statistics_element(GameVariables.get_next_ingame_id(), exercise_builder.state_string(exercise_builder.cue_emitter_state), "", exercise_builder.current_difficulty, points, actual_hit_score, cue_emitter.current_playback_time, cue_emitter.current_playback_time, GameVariables.current_hr, max_hit_score, 0)
-	cue_emitter.score_points(points)
+	var obj = SprintObject.new(ingame_id, actual_hit_score)
+	cue_emitter.score_points(actual_hit_score, points, obj)
 	if GameVariables.battle_mode != GameVariables.BattleMode.NO:
 		battle_module.hit_scored_opponent(null)
 

@@ -28,9 +28,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, 0 )
 controller_id = 2
 script = ExtResource( 3 )
 
-[node name="RumbleTimer" type="Timer" parent="."]
-wait_time = 0.2
-
 [node name="Area" type="Area" parent="."]
 transform = Transform( 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0, 1, 0, 0, 0 )
 script = ExtResource( 2 )
@@ -70,6 +67,9 @@ transform = Transform( 0.5, -0.866026, 0, 0.866026, 0.5, 0, 0, 0, 1, 0, 0, 0 )
 transform = Transform( -4.37114e-08, -1, 0, -1, 4.37114e-08, 8.74228e-08, -8.74228e-08, 3.82137e-15, -1, 0.289307, 0, -1.19209e-07 )
 visible = false
 
+[node name="RumbleTimer" type="Timer" parent="."]
+wait_time = 0.2
+
 [node name="CenterMarker" type="MeshInstance" parent="."]
 visible = false
 mesh = SubResource( 3 )
@@ -81,8 +81,8 @@ is_local = true
 transform_parent = true
 node_type = "controller"
 
-[connection signal="timeout" from="RumbleTimer" to="." method="_on_RumbleTimer_timeout"]
 [connection signal="body_entered" from="Area" to="Area" method="_on_Area_body_entered"]
 [connection signal="body_exited" from="Area" to="Area" method="_on_Area_body_exited"]
 [connection signal="body_entered" from="Area/hand_model" to="Area" method="_on_Area_body_entered"]
 [connection signal="body_exited" from="Area/hand_model" to="." method="_on_Area_body_exited"]
+[connection signal="timeout" from="RumbleTimer" to="." method="_on_RumbleTimer_timeout"]

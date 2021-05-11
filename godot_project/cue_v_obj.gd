@@ -9,6 +9,7 @@ var velocity_required = 1.25
 var hit = false
 var emit_sound = true
 var is_hold_cue = false
+var rotate_to_player = false
 var hold_time = 1.0
 var target_time = 0.0
 var start_time = 0.0
@@ -75,7 +76,8 @@ func _process(delta):
 			if cue_left:
 				hand = "left"
 			has_been_hit(hand)
-	if is_hold_cue:
+	
+	if is_hold_cue or rotate_to_player:
 		var a = self.global_transform.origin
 		var b = GameVariables.vr_camera.global_transform.origin
 		var r = PI + atan2(a.x-b.x,a.z-b.z)

@@ -44,6 +44,11 @@ func update_widgets():
 	else:
 		$Viewport/CanvasLayer/Windmill/WindmillButton.pressed = false
 
+	if ProjectSettings.get("game/exercise/stand/curved"):
+		$Viewport/CanvasLayer/CurvedCues/CurvedCuesButton.pressed = true
+	else:
+		$Viewport/CanvasLayer/CurvedCues/CurvedCuesButton.pressed = false
+
 	if ProjectSettings.get("game/equalizer"):
 		$Viewport/CanvasLayer/Equalizer/EqualizerButton.pressed = true
 	else:
@@ -204,4 +209,9 @@ func _on_StrengthModeButton_pressed():
 
 func _on_WeightsButton_pressed():
 	ProjectSettings.set("game/exercise/weights", $Viewport/CanvasLayer/Weights/WeightsButton.pressed)
+	update_widgets()
+
+
+func _on_CurvedCuesButton_pressed():
+	ProjectSettings.set("game/exercise/stand/curved", $Viewport/CanvasLayer/CurvedCues/CurvedCuesButton.pressed)
 	update_widgets()
