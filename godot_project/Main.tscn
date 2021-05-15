@@ -205,7 +205,9 @@ script = ExtResource( 18 )
 [node name="MultiplayerRoom" type="Spatial" parent="."]
 script = ExtResource( 12 )
 
-[node name="PlayerArea" type="Spatial" parent="MultiplayerRoom"]
+[node name="PlayerAreaOffset" type="Spatial" parent="MultiplayerRoom"]
+
+[node name="PlayerArea" type="Spatial" parent="MultiplayerRoom/PlayerAreaOffset"]
 script = ExtResource( 13 )
 
 [node name="SongDatabase" type="Node" parent="."]
@@ -223,10 +225,10 @@ script = null
 [connection signal="body_entered" from="ARVROrigin/ARVRCamera/AreaHead" to="ARVROrigin/ARVRCamera/AreaHead" method="_on_AreaHead_body_entered"]
 [connection signal="timeout" from="ARVROrigin/ARVRCamera/HUDHideTimer" to="ARVROrigin/ARVRCamera" method="_on_HUDHideTimer_timeout"]
 [connection signal="timeout" from="DemoTimer" to="." method="_on_DemoTimer_timeout"]
-[connection signal="add_spatial" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_MultiplayerRoom_add_spatial"]
+[connection signal="add_spatial" from="MultiplayerRoom" to="MultiplayerRoom/PlayerAreaOffset/PlayerArea" method="_on_MultiplayerRoom_add_spatial"]
 [connection signal="game_message" from="MultiplayerRoom" to="." method="_on_MultiplayerRoom_game_message"]
-[connection signal="remove_spatial" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_MultiplayerRoom_remove_spatial"]
+[connection signal="remove_spatial" from="MultiplayerRoom" to="MultiplayerRoom/PlayerAreaOffset/PlayerArea" method="_on_MultiplayerRoom_remove_spatial"]
 [connection signal="room_joined" from="MultiplayerRoom" to="." method="_on_MultiplayerRoom_room_joined"]
 [connection signal="room_left" from="MultiplayerRoom" to="." method="_on_MultiplayerRoom_room_left"]
-[connection signal="spatial_offset_message" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_set_spatial_offset"]
-[connection signal="user_leave" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_MultiplayerRoom_user_leave"]
+[connection signal="spatial_offset_message" from="MultiplayerRoom" to="MultiplayerRoom/PlayerAreaOffset/PlayerArea" method="_on_set_spatial_offset"]
+[connection signal="user_leave" from="MultiplayerRoom" to="MultiplayerRoom/PlayerAreaOffset/PlayerArea" method="_on_MultiplayerRoom_user_leave"]

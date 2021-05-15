@@ -76,12 +76,21 @@ func spatial_remove_message(node):
 	var pos_update = {"nodeid":node.get_instance_id()}
 	self.send_message("spatial_remove", pos_update)
 
-func send_move_message(node, parent, node_type, movement_vector):
-	var pos_net = $PlayerArea.translation + node.translation #.xform(node.translation)
-	#print ("Move message: pre %s  post %s"%[str(node.translation),str(pos_net)])
 
-	var move_net = $PlayerArea.transform.basis.get_rotation_quat().xform(movement_vector)
-	var pos_rot = ($PlayerArea.transform.basis.inverse() * node.transform.basis).get_euler()
+var update_limiter = 0
+var network_rot_offset = Quat.IDENTITY
+var network_pos_offset = Vector3(0,0,0)
+
+func send_move_message(node, parent, node_type, movement_vector):
+	var pos_net = network_pos_offset + network_rot_offset.xform( node.translation ) 
+	
+#	update_limiter += 1
+#	if update_limiter > 20:
+#		print ("Move message: pre %s  post %s"%[str(node.translation),str(pos_net)])
+#		update_limiter = 0
+		
+	var move_net = network_rot_offset.xform(movement_vector)
+	var pos_rot = (node.transform.basis * Transform(network_rot_offset).basis).get_euler()
 	#Transform
 	var pos_update = {"nodeid":node.get_instance_id(),"parent": parent,
 													  "type" : node_type,
@@ -148,6 +157,8 @@ func process_move_message(data_object):
 			print ("Can't add node yet: %s"%str(data_object))
 	#print ("User List: %s"%str(user_list))
 
+
+
 func process_spatial_offset_message(data_object):
 	print ("Spatial offset message received: %s"%str(data_object))
 	var data = data_object.get("data", {})
@@ -155,8 +166,15 @@ func process_spatial_offset_message(data_object):
 	if target_id == self_id:
 		var pos = data.get("pos", [0,0,0])
 		var rot = data.get("rot", [0,0,0])
-		$PlayerArea.translation = Vector3(pos[0],pos[1],pos[2])
-		$PlayerArea.rotation = Vector3(rot[0],rot[1],rot[2])
+
+		network_pos_offset = Vector3(pos[0], pos[1], pos[2])
+		network_rot_offset = Quat(Vector3(rot[0], rot[1], rot[2]))
+
+		$PlayerAreaOffset.rotation = Vector3(0, #fmod(rot[0]+PI,2*PI),
+														rot[1], #fmod(rot[1]+PI,2*PI),
+														0) # fmod(rot[2]+PI,2*PI))
+		$PlayerAreaOffset/PlayerArea.translation = -network_pos_offset
+		
 		#emit_signal("spatial_offset_message", transform)
 		
 func process_room_join_message(data_object):
@@ -299,7 +317,7 @@ func teardown_connection():
 	if is_active:
 		#This removes all stale nodes
 		remove_all_users()
-		get_node("PlayerArea").remove_all_entities()
+		get_node("PlayerAreaOffset/PlayerArea").remove_all_entities()
 		is_active = false
 		is_host = false
 	emit_signal("room_left")
