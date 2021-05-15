@@ -179,6 +179,7 @@ func set_move_tween(cue_node, start_pos, end_pos, actual_flytime, curved_directi
 	cue_node.add_child(move_modifier)
 
 	var x = start_pos[0]
+	var y = start_pos[1]
 	
 	cue_node.translation.x = start_pos[0]
 	cue_node.translation.y = start_pos[1]
@@ -189,6 +190,15 @@ func set_move_tween(cue_node, start_pos, end_pos, actual_flytime, curved_directi
 		cue_node.add_child(additional_move_modifier)
 		if "rotate_to_player" in cue_node:
 			cue_node.rotate_to_player = true
+
+		if cue_node.translation.y > GameVariables.player_height:
+			additional_move_modifier.interpolate_property(cue_node,"translation:y",2.0,y-1.0,actual_flytime*0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+			additional_move_modifier.interpolate_property(cue_node,"translation:y",y-1.0,y,actual_flytime*0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,actual_flytime*0.5)
+		else:
+			additional_move_modifier.interpolate_property(cue_node,"translation:y",0,GameVariables.player_height+1.5,actual_flytime*0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+			additional_move_modifier.interpolate_property(cue_node,"translation:y",GameVariables.player_height+1.5,y,actual_flytime*0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,actual_flytime*0.5)
+			
+	
 		additional_move_modifier.interpolate_property(cue_node,"translation:x",x,x+curved_direction,actual_flytime*0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 		additional_move_modifier.interpolate_property(cue_node,"translation:x",x+curved_direction, 0,actual_flytime*0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,actual_flytime*0.5)
 		additional_move_modifier.start()

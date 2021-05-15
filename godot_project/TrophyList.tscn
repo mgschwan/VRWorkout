@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://TrophyList.gd" type="Script" id=2]
+[ext_resource path="res://themes/vrworkout_theme_trophy.theme" type="Theme" id=3]
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=4]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -34,7 +35,7 @@ transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 script = ExtResource( 2 )
 
 [node name="Viewport" type="Viewport" parent="."]
-size = Vector2( 192, 384 )
+size = Vector2( 384, 768 )
 transparent_bg = true
 msaa = 6
 render_target_v_flip = true
@@ -42,36 +43,42 @@ render_target_v_flip = true
 [node name="CanvasLayer" type="CanvasLayer" parent="Viewport"]
 
 [node name="Panel" type="Panel" parent="Viewport/CanvasLayer"]
-margin_right = 192.0
-margin_bottom = 384.0
-theme = ExtResource( 4 )
+margin_right = 384.0
+margin_bottom = 768.0
+theme = ExtResource( 3 )
 custom_styles/panel = SubResource( 1 )
 
 [node name="Runtime" type="RichTextLabel" parent="Viewport/CanvasLayer/Panel"]
-margin_left = 5.0
-margin_top = 192.0
-margin_right = 197.0
-margin_bottom = 288.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 374.0
+margin_bottom = 110.0
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
+text = "..."
 
 [node name="Groovetime" type="RichTextLabel" parent="Viewport/CanvasLayer/Panel"]
-margin_left = 5.0
-margin_top = 288.0
-margin_right = 197.0
-margin_bottom = 384.0
+margin_left = 10.0
+margin_top = 120.0
+margin_right = 374.0
+margin_bottom = 220.0
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
+text = "..."
 
 [node name="Scores" type="RichTextLabel" parent="Viewport/CanvasLayer/Panel"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 187.0
-margin_bottom = 187.0
+margin_left = 10.0
+margin_top = 250.0
+margin_right = 374.0
+margin_bottom = 758.0
 theme = ExtResource( 4 )
 custom_fonts/bold_font = SubResource( 2 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
+bbcode_text = "
+"
+text = "
+"
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( -2.18557e-07, 5, 2.18557e-07, 4.37114e-07, 2.18557e-07, -5, -5, -2.18557e-07, -4.37114e-07, -2.60541e-18, -1.00521, 0 )

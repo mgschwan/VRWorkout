@@ -8,6 +8,7 @@ signal connected()
 signal room_joined(as_host)
 signal room_left()
 signal game_message(userid, data)
+signal spatial_offset_message(transform)
 
 
 var is_active = false
@@ -54,8 +55,8 @@ func update_users(ulist):
 		if id in user_list:
 			new_user = false
 			pre_update_users.erase(id)
-		user_list[id] = {"name":name, "nodes": {}}
 		if new_user and id != self_id:
+			user_list[id] = {"name":name, "nodes": {}}
 			emit_signal("user_join", id, name)
 
 	print ("The following users left: %s"%str(pre_update_users))
@@ -76,30 +77,37 @@ func spatial_remove_message(node):
 	self.send_message("spatial_remove", pos_update)
 
 func send_move_message(node, parent, node_type, movement_vector):
+	var pos_net = $PlayerArea.translation + node.translation #.xform(node.translation)
+	#print ("Move message: pre %s  post %s"%[str(node.translation),str(pos_net)])
+
+	var move_net = $PlayerArea.transform.basis.get_rotation_quat().xform(movement_vector)
+	var pos_rot = ($PlayerArea.transform.basis.inverse() * node.transform.basis).get_euler()
+	#Transform
 	var pos_update = {"nodeid":node.get_instance_id(),"parent": parent,
 													  "type" : node_type,
-													  "pos": [node.translation.x,
-														  node.translation.y,
-														  node.translation.z],
-												      "rot": [node.rotation.x,
-														  node.rotation.y,
-														  node.rotation.z],
-													  "movement": [movement_vector.x,
-														   movement_vector.y,
-														movement_vector.z]}
+													  "pos": [pos_net.x,
+														  pos_net.y,
+														  pos_net.z],
+												      "rot": [pos_rot.x,
+														  pos_rot.y,
+														  pos_rot.z],
+													  "movement": [move_net.x,
+														   move_net.y,
+														move_net.z]}
 	self.send_message("move", pos_update)
 
 func process_spatial_remove_message(data_object):
-	var data = data_object.get("data", {})
-	var id = data_object.get("id",-1)
-	var target_node = data.get("nodeid","root")
-	var user = user_list.get(id,null)
-	if user and id != self_id:
-		if "nodes" in user:
-			if target_node in user["nodes"]:
-				#user["nodes"][target_node] = {"pos": Vector3(0,0,0), "rot": Vector3(0,0,0)}
-				user["nodes"].erase(target_node)
-				emit_signal("remove_spatial",id,target_node) 
+	if not is_multiplayer_host():
+		var data = data_object.get("data", {})
+		var id = data_object.get("id",-1)
+		var target_node = data.get("nodeid","root")
+		var user = user_list.get(id,null)
+		if user and id != self_id:
+			if "nodes" in user:
+				if target_node in user["nodes"]:
+					#user["nodes"][target_node] = {"pos": Vector3(0,0,0), "rot": Vector3(0,0,0)}
+					user["nodes"].erase(target_node)
+					emit_signal("remove_spatial",id,target_node) 
 				
 func process_game_message(data_object):
 	var data = data_object.get("data", {})
@@ -123,6 +131,8 @@ func process_move_message(data_object):
 	#print ("Move message: %s"%str(data))
 	var user = user_list.get(id,null)
 	if user and id != self_id:
+		if not "spatial_offset_pos" in user:
+			process_user_join(id)
 		if not "nodes" in user:
 			user["nodes"] = {}
 		if parent_node < 0 or parent_node in user["nodes"]:
@@ -138,6 +148,17 @@ func process_move_message(data_object):
 			print ("Can't add node yet: %s"%str(data_object))
 	#print ("User List: %s"%str(user_list))
 
+func process_spatial_offset_message(data_object):
+	print ("Spatial offset message received: %s"%str(data_object))
+	var data = data_object.get("data", {})
+	var target_id = data.get("target_id", -1)
+	if target_id == self_id:
+		var pos = data.get("pos", [0,0,0])
+		var rot = data.get("rot", [0,0,0])
+		$PlayerArea.translation = Vector3(pos[0],pos[1],pos[2])
+		$PlayerArea.rotation = Vector3(rot[0],rot[1],rot[2])
+		#emit_signal("spatial_offset_message", transform)
+		
 func process_room_join_message(data_object):
 	var room = data_object.get("room", "")
 	print ("Room joined %s"%str(data_object))
@@ -148,6 +169,47 @@ func process_room_join_message(data_object):
 		print ("Room has been joined: %s"%room)
 		self.room = room
 
+
+#The host assigns positions to newly joining users
+var user_positions = 1
+func process_user_join(user_id):
+	if is_multiplayer_host():
+		var user = user_list.get(user_id,null)
+		if user == null or not "spatial_offset_pos" in user:
+			user = Dictionary()
+			var angle = 0
+			var pos = 0
+			var dir = 0		
+
+			if user_positions > 1:
+				var alternator = int((user_positions-2)/2)
+				dir = int((user_positions+2)/4)
+				if alternator % 2 == 1:
+					dir = -dir
+			
+			if user_positions % 2 == 1:
+				angle = PI
+				pos = -9.4
+		
+			var offset = Vector3(1.5*dir, 0, pos)
+			user["spatial_offset_pos"] = offset
+			user["spatial_offset_rot"] = Vector3(0,angle, 0)
+			
+			var message = {"target_id":user_id, "pos": [
+				user["spatial_offset_pos"].x,
+				user["spatial_offset_pos"].y,
+				user["spatial_offset_pos"].z],
+				"rot": [
+					user["spatial_offset_rot"].x,
+					user["spatial_offset_rot"].y,
+					user["spatial_offset_rot"].z]
+				}
+			print ("User %d gets offset: %s"%[user_id, str(message)])
+			
+			send_message("spatial_offset", message)
+			user_list[user_id] = user
+			user_positions += 1
+
 func decode_data(data):
 	var parse_result = JSON.parse(data)
 	if parse_result.error == OK:
@@ -155,6 +217,7 @@ func decode_data(data):
 		match data_object.get("type","unknown"):
 			"join":
 				print ("User %s joined"%data_object.get("name",""))
+				process_user_join(data_object.get("id",0))
 			"user_list":
 				var ulist = data_object.get("users",[])
 				print ("Current user list: %s"%str(ulist))
@@ -165,6 +228,8 @@ func decode_data(data):
 				process_room_join_message(data_object)
 			"spatial_remove":
 				process_spatial_remove_message(data_object)
+			"spatial_offset":
+				process_spatial_offset_message(data_object)
 			"identity":
 				self_id = data_object.get("id",-1)
 			"game_message":
@@ -213,6 +278,7 @@ func disconnect_from_server():
 	
 func _on_data_received():
 	var data = conn_peer.get_packet().get_string_from_utf8()
+	#print ("Message received: %s"%str(data))
 	decode_data(data)
 	
 func _on_connection_established(protocol):

@@ -203,7 +203,6 @@ volume_db = -2.5
 script = ExtResource( 18 )
 
 [node name="MultiplayerRoom" type="Spatial" parent="."]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -9.97356 )
 script = ExtResource( 12 )
 
 [node name="PlayerArea" type="Spatial" parent="MultiplayerRoom"]
@@ -229,4 +228,5 @@ script = null
 [connection signal="remove_spatial" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_MultiplayerRoom_remove_spatial"]
 [connection signal="room_joined" from="MultiplayerRoom" to="." method="_on_MultiplayerRoom_room_joined"]
 [connection signal="room_left" from="MultiplayerRoom" to="." method="_on_MultiplayerRoom_room_left"]
+[connection signal="spatial_offset_message" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_set_spatial_offset"]
 [connection signal="user_leave" from="MultiplayerRoom" to="MultiplayerRoom/PlayerArea" method="_on_MultiplayerRoom_user_leave"]

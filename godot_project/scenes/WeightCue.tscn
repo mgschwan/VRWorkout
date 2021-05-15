@@ -61,3 +61,5 @@ material/0 = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 3 )
+
+[connection signal="animation_finished" from="Model/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

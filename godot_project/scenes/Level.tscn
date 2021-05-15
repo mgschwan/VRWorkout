@@ -188,9 +188,6 @@ visible = false
 wait_time = 0.1
 autostart = true
 
-[node name="RunIndicator" parent="." instance=ExtResource( 24 )]
-transform = Transform( 0.117853, 0, 0.161588, 0, 0.2, 0, -0.161588, 0, 0.117853, -1.93559, 2.27291, -1.36809 )
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 1 )
 
@@ -216,7 +213,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.026268, -0.001, -0.586 )
 transform = Transform( 0.19, 0, 0, 0, 0.2, 0, 0, 0, 0.19, 0.0230895, 0.00996999, 0.522808 )
 
 [node name="TrophyList" parent="." instance=ExtResource( 16 )]
-transform = Transform( 0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, -1.80553, 1.38989, -1.07377 )
+transform = Transform( 0.120644, 0, -0.089135, 0, 0.15, 0, 0.089135, 0, 0.120644, -1.86695, 1.38989, -1.42501 )
+
+[node name="RunIndicator" parent="." instance=ExtResource( 24 )]
+transform = Transform( 0.117853, 0, 0.161588, 0, 0.2, 0, -0.161588, 0, 0.117853, -1.93559, 2.27291, -1.36809 )
 
 [node name="heart_coin" parent="." instance=ExtResource( 21 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -1.91774, 3.01999, -3.98032 )
