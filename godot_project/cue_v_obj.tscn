@@ -8,6 +8,7 @@
 [ext_resource path="res://models/black.material" type="Material" id=6]
 [ext_resource path="res://Hold_Ring.tscn" type="PackedScene" id=7]
 [ext_resource path="res://models/super_white.material" type="Material" id=8]
+[ext_resource path="res://models/RainbowParticle.tres" type="ArrayMesh" id=9]
 
 [sub_resource type="Animation" id=1]
 resource_name = "explode"
@@ -192,18 +193,14 @@ albedo_color = Color( 0.454902, 0.321569, 1, 1 )
 radius = 0.12
 height = 0.0897926
 
-[sub_resource type="CubeMesh" id=8]
-material = ExtResource( 8 )
-size = Vector3( 0.02, 0.02, 0.02 )
-
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=8]
 albedo_color = Color( 0.690196, 0, 0, 1 )
 
-[sub_resource type="CubeMesh" id=10]
-material = SubResource( 9 )
+[sub_resource type="CubeMesh" id=9]
+material = SubResource( 8 )
 size = Vector3( 0.02, 0.02, 0.02 )
 
-[sub_resource type="SphereMesh" id=11]
+[sub_resource type="SphereMesh" id=10]
 radius = 0.01
 height = 0.02
 radial_segments = 6
@@ -258,13 +255,27 @@ emitting = false
 amount = 16
 one_shot = true
 speed_scale = 2.0
-mesh = SubResource( 8 )
+mesh = ExtResource( 9 )
 direction = Vector3( 0, 0, 1 )
 spread = 90.0
 gravity = Vector3( 0, 0, -2 )
 initial_velocity = 0.5
 initial_velocity_random = 0.59
-linear_accel = 2.0
+linear_accel = 3.0
+scale_amount = 0.02
+
+[node name="trail" type="CPUParticles" parent="."]
+cast_shadow = 0
+emitting = false
+amount = 16
+speed_scale = 2.0
+mesh = ExtResource( 9 )
+direction = Vector3( 0, 0, -1 )
+spread = 35.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 0.4
+initial_velocity_random = 0.1
+scale_amount = 0.02
 
 [node name="sprinkle_opponent" type="CPUParticles" parent="."]
 cast_shadow = 0
@@ -272,7 +283,7 @@ emitting = false
 amount = 16
 one_shot = true
 speed_scale = 2.0
-mesh = SubResource( 10 )
+mesh = SubResource( 9 )
 direction = Vector3( 0, 0, 1 )
 spread = 90.0
 gravity = Vector3( 0, 0, -2 )
@@ -285,7 +296,7 @@ transform = Transform( 0.03, -8.08722e-16, 4.37114e-09, 0, 0.006, -2.78182e-10, 
 
 [node name="dot" type="MeshInstance" parent="."]
 visible = false
-mesh = SubResource( 11 )
+mesh = SubResource( 10 )
 material/0 = ExtResource( 8 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

@@ -1,0 +1,57 @@
+[gd_resource type="ArrayMesh" load_steps=5 format=2]
+
+[ext_resource path="res://models/TriSideRed.material" type="Material" id=1]
+[ext_resource path="res://models/TriSideWhite.material" type="Material" id=2]
+[ext_resource path="res://models/TriSideYellow.material" type="Material" id=3]
+[ext_resource path="res://models/TriSideBlue.material" type="Material" id=4]
+
+[resource]
+resource_name = "Cube"
+surfaces/0 = {
+"aabb": AABB( -0.437469, -0.261702, 0.00314689, 1.35801, 1.04681, 0.684228 ),
+"array_data": PoolByteArray( 176, 167, 107, 63, 208, 253, 133, 190, 176, 184, 191, 61, 46, 49, 107, 0, 43, 99, 191, 127, 0, 54, 0, 52, 0, 142, 101, 60, 183, 252, 72, 63, 0, 60, 78, 59, 46, 49, 107, 0, 43, 99, 191, 127, 0, 57, 0, 0, 0, 252, 223, 190, 208, 253, 133, 190, 204, 247, 47, 63, 46, 49, 107, 0, 43, 99, 191, 127, 0, 54, 0, 0 ),
+"array_index_data": PoolByteArray( 0, 0, 2, 0, 1, 0 ),
+"blend_shape_data": [  ],
+"format": 97559,
+"index_count": 3,
+"material": ExtResource( 3 ),
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 3
+}
+surfaces/1 = {
+"aabb": AABB( -0.497069, -0.261702, -0.784136, 0.51108, 1.04681, 1.47152 ),
+"array_data": PoolByteArray( 0, 252, 223, 190, 208, 253, 133, 190, 204, 247, 47, 63, 141, 52, 4, 0, 46, 94, 71, 127, 0, 54, 0, 60, 0, 142, 101, 60, 183, 252, 72, 63, 0, 60, 78, 59, 141, 52, 4, 0, 46, 94, 71, 127, 0, 57, 0, 58, 204, 127, 254, 190, 208, 253, 133, 190, 31, 189, 72, 191, 141, 52, 4, 0, 46, 94, 71, 127, 0, 54, 0, 58 ),
+"array_index_data": PoolByteArray( 0, 0, 2, 0, 1, 0 ),
+"blend_shape_data": [  ],
+"format": 97559,
+"index_count": 3,
+"material": ExtResource( 4 ),
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 3
+}
+surfaces/2 = {
+"aabb": AABB( -0.497069, -0.261702, -0.784136, 1.4176, 1.00136e-05, 1.47151 ),
+"array_data": PoolByteArray( 204, 127, 254, 190, 208, 253, 133, 190, 31, 189, 72, 191, 0, 129, 0, 0, 127, 0, 0, 127, 0, 54, 0, 58, 176, 167, 107, 63, 208, 253, 133, 190, 176, 184, 191, 61, 0, 129, 0, 0, 127, 0, 0, 127, 0, 54, 0, 52, 0, 252, 223, 190, 208, 253, 133, 190, 204, 247, 47, 63, 0, 129, 0, 0, 127, 0, 0, 127, 0, 54, 0, 0 ),
+"array_index_data": PoolByteArray( 0, 0, 2, 0, 1, 0 ),
+"blend_shape_data": [  ],
+"format": 97559,
+"index_count": 3,
+"material": ExtResource( 2 ),
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 3
+}
+surfaces/3 = {
+"aabb": AABB( -0.497069, -0.261702, -0.784136, 1.41761, 1.04681, 0.87776 ),
+"array_data": PoolByteArray( 176, 167, 107, 63, 208, 253, 133, 190, 176, 184, 191, 61, 62, 45, 156, 0, 154, 66, 223, 127, 0, 54, 0, 52, 204, 127, 254, 190, 208, 253, 133, 190, 31, 189, 72, 191, 62, 45, 156, 0, 154, 66, 223, 127, 0, 54, 0, 58, 0, 142, 101, 60, 183, 252, 72, 63, 0, 60, 78, 59, 62, 45, 156, 0, 154, 66, 223, 127, 0, 57, 0, 0 ),
+"array_index_data": PoolByteArray( 0, 0, 2, 0, 1, 0 ),
+"blend_shape_data": [  ],
+"format": 97559,
+"index_count": 3,
+"material": ExtResource( 1 ),
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 3
+}

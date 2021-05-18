@@ -896,6 +896,12 @@ func handle_double_swing_cues(current_time, target_time, y_hand_base, cue_emitte
 	if state_change:
 		last_double_swing_high = (randi()%2 == 0)
 		last_double_swing_left = (randi()%2 == 0)
+	
+	#This is a test to make the double swings more interesting
+	#it intentionally breaks the up/down logic
+	#TODO: make this a selectable feature
+	var last_double_swing_high = (randi()%2 == 0)
+	
 	if not last_double_swing_left:
 		x_hand = "-%s"%x_hand
 	

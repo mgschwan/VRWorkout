@@ -106,18 +106,22 @@ func send_move_message(node, parent, node_type, movement_vector):
 	self.send_message("move", pos_update)
 
 func process_spatial_remove_message(data_object):
-	if not is_multiplayer_host():
-		var data = data_object.get("data", {})
-		var id = data_object.get("id",-1)
-		var target_node = data.get("nodeid","root")
-		var user = user_list.get(id,null)
-		if user and id != self_id:
-			if "nodes" in user:
-				if target_node in user["nodes"]:
-					#user["nodes"][target_node] = {"pos": Vector3(0,0,0), "rot": Vector3(0,0,0)}
-					user["nodes"].erase(target_node)
-					emit_signal("remove_spatial",id,target_node) 
-				
+	#TODO: Why did I prevent the multiplayer host from removing
+	#elements? Check if it works without it and the remove that check
+	#if not is_multiplayer_host():
+	var data = data_object.get("data", {})
+	var id = data_object.get("id",-1)
+	var target_node = data.get("nodeid","root")
+	var user = user_list.get(id,null)
+	if user and id != self_id:
+		if "nodes" in user:
+			if target_node in user["nodes"]:
+				user["nodes"].erase(target_node)
+				emit_signal("remove_spatial",id,target_node) 
+
+
+#Game Messages are passed through by the server without evaluating them
+#The are meant to transport game specific messages
 func process_game_message(data_object):
 	var data = data_object.get("data", {})
 	var id = data_object.get("id",-1)

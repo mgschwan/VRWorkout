@@ -54,6 +54,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label" type="Label" parent="."]
+margin_left = 601.0
+margin_top = 320.0
+margin_right = 759.0
+margin_bottom = 485.0
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="pressed" from="Add" to="." method="_on_Add_pressed"]
 [connection signal="pressed" from="Preview" to="." method="_on_Preview_pressed"]
 [connection signal="pressed" from="StopPreview" to="." method="_on_StopPreview_pressed"]

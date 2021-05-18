@@ -16,11 +16,11 @@ func _ready():
 	update_trophies()
 
 func update_trophies():
-	$Viewport/CanvasLayer/Panel/Runtime.bbcode_text = "[center][b][i]Running time[/i][/b]\n[b][color=navy]%d seconds[/color][/b][/center]"%runtime
-	$Viewport/CanvasLayer/Panel/Groovetime.bbcode_text = "[center][b][i]Groove time[/i][/b]\n[b][color=navy]%d seconds[/color][/b][/center]"%groove
+	$Viewport/CanvasLayer/Panel/Runtime.bbcode_text = "[center]Running time\n[color=navy]%d seconds[/color][/center]"%runtime
+	$Viewport/CanvasLayer/Panel/Groovetime.bbcode_text = "[center]Groove time\n[color=navy]%d seconds[/color][/center]"%groove
 	var text = ""
 	for user in user_scores:
-		text += "[center][b][i]%s[/i][/b]\n[b][color=navy]%.1f[/color][/b][/center]\n"%[user_scores[user].get("name","Player"), user_scores[user].get("points",0)]
+		text += "[center]%s\n[color=navy]%.1f[/color][/center]\n"%[user_scores[user].get("name","Player"), user_scores[user].get("points",0)]
 	$Viewport/CanvasLayer/Panel/Scores.bbcode_text = text
 	$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
 	

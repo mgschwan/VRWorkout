@@ -137,6 +137,9 @@ func end_hold(hand = "unknown"):
 		hold_ring_player.stop(false)
 
 
+func show_trail(value):
+	$trail.emitting = value
+
 func activate_path_cue(target):
 	coupled_node = target
 

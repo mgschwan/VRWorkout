@@ -246,7 +246,7 @@ ontext = "Recenter"
 transform = Transform( 0.913545, 0, 0.406737, 0, 1, 0, -0.406737, 0, 0.913545, 0, -0.34, 0 )
 
 [node name="BPM" type="StaticBody" parent="."]
-transform = Transform( 0.671837, 0.294369, -0.679693, -6.47481e-08, 0.917637, 0.39742, 0.7407, -0.267002, 0.616503, -0.710166, 1.19237, 0.841135 )
+transform = Transform( 0.512852, 0.341176, -0.78777, -6.47481e-08, 0.917637, 0.39742, 0.858478, -0.203818, 0.470613, -1.03415, 1.19237, 0.898615 )
 script = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="BPM"]
@@ -271,7 +271,7 @@ ontext = "Override beats"
 offtext = "Default beats"
 
 [node name="SongSelector" parent="." instance=ExtResource( 23 )]
-transform = Transform( -1.74846e-08, 0, -0.4, 0, 0.4, 0, 0.4, 0, -1.74846e-08, 0.919011, 1.43304, 1.71055e-07 )
+transform = Transform( -1.74846e-08, 0, -0.4, 0, 0.4, 0, 0.4, 0, -1.74846e-08, 0.919011, 1.43304, -0.37315 )
 
 [node name="MainText" parent="." instance=ExtResource( 17 )]
 transform = Transform( 4.88762e-07, -1, -1.62921e-07, -5.30863e-14, 1.62921e-07, -1, 1, 4.88762e-07, 2.65431e-14, 2.17868, 2.30847, 3.54952e-07 )
@@ -558,7 +558,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399, 1.05413, -1 )
 ontext = "Battle"
 
 [node name="PlayerHeightAdjuster" parent="." instance=ExtResource( 26 )]
-transform = Transform( 0.0521398, 0, -0.0539115, 0, 0.075, 0, 0.0539115, 0, 0.0521398, 0.901743, 0, -0.952223 )
+transform = Transform( 0.0521398, 0, -0.0539115, 0, 0.075, 0, 0.0539115, 0, 0.0521398, 0.96517, 0, -1.35699 )
 
 [node name="TrackerRecorderButton" parent="." instance=ExtResource( 24 )]
 transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -0.369874, 0.0648079, 0.921215 )
@@ -573,7 +573,7 @@ volume_db = -9.0
 transform = Transform( 2.84861e-14, 1, -1.62921e-07, -1, 1.91069e-15, -2.06632e-07, -2.06632e-07, 1.62921e-07, 1, -3.31028, 1.9648, 0.0695851 )
 
 [node name="WelcomePanel" parent="." instance=ExtResource( 42 )]
-transform = Transform( -1.30337e-07, -0.767281, -0.226449, 0, 0.226449, -0.767281, 0.8, -1.25006e-07, -3.68932e-08, 0.787944, 0.445045, 0.00432485 )
+transform = Transform( -0.7, 1.05697e-07, -4.62017e-15, 0, -3.0598e-08, -0.7, -1.05697e-07, -0.7, 3.0598e-08, -0.130422, 1.26719, 1.3085 )
 server_url = "https://portal.vrworkout.at/fast/welcome.msg"
 
 [node name="Keyboard" parent="." instance=ExtResource( 12 )]

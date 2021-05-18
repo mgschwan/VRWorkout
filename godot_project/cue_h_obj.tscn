@@ -9,6 +9,7 @@
 [ext_resource path="res://models/green_ball_mat.material" type="Material" id=7]
 [ext_resource path="res://Hold_Ring.tscn" type="PackedScene" id=8]
 [ext_resource path="res://models/super_white.material" type="Material" id=9]
+[ext_resource path="res://models/RainbowParticle.tres" type="ArrayMesh" id=10]
 
 [sub_resource type="Animation" id=1]
 length = 0.8
@@ -176,18 +177,14 @@ rings = 3
 radius = 0.12
 height = 0.09
 
-[sub_resource type="CubeMesh" id=7]
-material = ExtResource( 9 )
-size = Vector3( 0.02, 0.02, 0.02 )
-
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=7]
 albedo_color = Color( 0.690196, 0, 0, 1 )
 
-[sub_resource type="CubeMesh" id=9]
-material = SubResource( 8 )
+[sub_resource type="CubeMesh" id=8]
+material = SubResource( 7 )
 size = Vector3( 0.02, 0.02, 0.02 )
 
-[sub_resource type="SphereMesh" id=10]
+[sub_resource type="SphereMesh" id=9]
 radius = 0.01
 height = 0.02
 radial_segments = 6
@@ -244,13 +241,31 @@ emitting = false
 amount = 16
 one_shot = true
 speed_scale = 2.0
-mesh = SubResource( 7 )
+mesh = ExtResource( 10 )
 direction = Vector3( 0, 0, 1 )
 spread = 90.0
 gravity = Vector3( 0, 0, -2 )
 initial_velocity = 0.5
 initial_velocity_random = 0.59
 linear_accel = 3.0
+scale_amount = 0.02
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="trail" type="CPUParticles" parent="."]
+cast_shadow = 0
+emitting = false
+amount = 16
+speed_scale = 2.0
+lifetime_randomness = 1.0
+mesh = ExtResource( 10 )
+direction = Vector3( 0, 0, -1 )
+spread = 35.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 0.4
+initial_velocity_random = 0.1
+scale_amount = 0.02
 __meta__ = {
 "_editor_description_": ""
 }
@@ -261,7 +276,7 @@ emitting = false
 amount = 16
 one_shot = true
 speed_scale = 2.0
-mesh = SubResource( 9 )
+mesh = SubResource( 8 )
 direction = Vector3( 0, 0, 1 )
 spread = 90.0
 gravity = Vector3( 0, 0, -2 )
@@ -277,7 +292,7 @@ transform = Transform( 0.03, 0, 0, 0, 0.03, 1.88745e-09, 0, -8.4639e-09, 0.05, 0
 
 [node name="dot" type="MeshInstance" parent="."]
 visible = false
-mesh = SubResource( 10 )
+mesh = SubResource( 9 )
 material/0 = ExtResource( 9 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

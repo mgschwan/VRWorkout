@@ -1,10 +1,12 @@
 extends Area
 
 var hit_player
+var rumble_player
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	hit_player = get_node("hit_player")
+	rumble_player = get_node("rumble_audio")
 
 func _on_Area_body_entered(body):
 	print ("Touched %s"%body.name)
@@ -29,6 +31,10 @@ func _on_Area_body_entered(body):
 				if body.emit_sound and body.cue_left == (hand == "left"):
 					body.emit_sound = false
 					hit_player.play(0)
+					
+					#TODO: For Woojer vest but deactivated for now because it sound terrible 
+					#rumble_player.play(0)
+					
 					controller.do_rumble( p > 0)
 		else:
 			# Ignore if the hand controller touched the head cue

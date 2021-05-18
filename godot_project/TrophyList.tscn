@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://TrophyList.gd" type="Script" id=2]
@@ -12,9 +12,21 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
+[sub_resource type="DynamicFont" id=6]
+size = 32
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 32
+font_data = ExtResource( 1 )
+
 [sub_resource type="DynamicFont" id=2]
-size = 20
+size = 32
 use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 32
 font_data = ExtResource( 1 )
 
 [sub_resource type="PlaneMesh" id=3]
@@ -53,6 +65,7 @@ margin_left = 10.0
 margin_top = 10.0
 margin_right = 374.0
 margin_bottom = 110.0
+custom_fonts/normal_font = SubResource( 6 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 text = "..."
@@ -62,6 +75,7 @@ margin_left = 10.0
 margin_top = 120.0
 margin_right = 374.0
 margin_bottom = 220.0
+custom_fonts/normal_font = SubResource( 7 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 text = "..."
@@ -73,6 +87,7 @@ margin_right = 374.0
 margin_bottom = 758.0
 theme = ExtResource( 4 )
 custom_fonts/bold_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 8 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "

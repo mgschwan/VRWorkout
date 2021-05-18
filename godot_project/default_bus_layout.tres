@@ -1,12 +1,4 @@
-[gd_resource type="AudioBusLayout" load_steps=3 format=2]
-
-[sub_resource type="AudioEffectPanner" id=1]
-resource_name = "Panner"
-pan = -1.0
-
-[sub_resource type="AudioEffectPanner" id=2]
-resource_name = "Panner"
-pan = 1.0
+[gd_resource type="AudioBusLayout" format=2]
 
 [resource]
 bus/1/name = "Voice"
@@ -27,13 +19,9 @@ bus/3/mute = false
 bus/3/bypass_fx = false
 bus/3/volume_db = 0.0
 bus/3/send = "Master"
-bus/3/effect/0/effect = SubResource( 1 )
-bus/3/effect/0/enabled = true
 bus/4/name = "Right"
 bus/4/solo = false
 bus/4/mute = false
 bus/4/bypass_fx = false
 bus/4/volume_db = 0.0
 bus/4/send = "Master"
-bus/4/effect/0/effect = SubResource( 2 )
-bus/4/effect/0/enabled = true

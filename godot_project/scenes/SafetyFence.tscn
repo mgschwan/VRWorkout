@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://models/StagePole.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/SafetyFence.gd" type="Script" id=2]
+[ext_resource path="res://materials/SafetyShader.tres" type="Material" id=3]
+
+[sub_resource type="PlaneMesh" id=1]
+size = Vector2( 1, 4 )
+
+[node name="SafetyFence" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="PoleRight" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, 4, 0, 0 )
+
+[node name="PoleLeft" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, -4, 0, 0 )
+
+[node name="UpperLeft" type="Spatial" parent="."]
+transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, -4, 2.61213, 0 )
+
+[node name="UpperLeft" type="MeshInstance" parent="UpperLeft"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 3 )
+
+[node name="LowerLeft" type="Spatial" parent="."]
+transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, -4, 0.61757, 0 )
+
+[node name="LowerLeft" type="MeshInstance" parent="LowerLeft"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 3 )
+
+[node name="UpperRight" type="Spatial" parent="."]
+transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, 4, 2.61213, 0 )
+
+[node name="UpperRight" type="MeshInstance" parent="UpperRight"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 3 )
+
+[node name="LowerRight" type="Spatial" parent="."]
+transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, 4, 0.61757, 0 )
+
+[node name="LowerRight" type="MeshInstance" parent="LowerRight"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 3 )

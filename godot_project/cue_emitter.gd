@@ -186,6 +186,8 @@ func set_move_tween(cue_node, start_pos, end_pos, actual_flytime, curved_directi
 	move_modifier.interpolate_property(cue_node,"translation:z",start_pos[2],end_pos[2],actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 	
 	if curved_direction != 0:
+		if cue_node.has_method("show_trail"):
+			cue_node.show_trail(true)
 		var additional_move_modifier = Tween.new()
 		cue_node.add_child(additional_move_modifier)
 		if "rotate_to_player" in cue_node:

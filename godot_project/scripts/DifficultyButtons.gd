@@ -1,5 +1,9 @@
 extends Spatial
 
+var min_hr = 80
+var hr_range = 90
+
+var auto_enabled = false
 var selected = "easy"
 
 signal difficulty_selected(difficulty)
@@ -34,6 +38,20 @@ func update_widgets():
 	else:
 		$Viewport/CanvasLayer/Auto/Active.hide()
 	
+	
+	if auto_enabled:
+		var y_range = 188
+		var y_offset = 60
+		
+		var current_hr = ProjectSettings.get("game/target_hr")
+		var factor = 1.0 - (float(current_hr) - float(min_hr)) / float(hr_range)
+		var value = clamp(int(factor*y_range), 0, y_range)
+		
+		$Viewport/CanvasLayer/Control/Label.rect_position.y = y_offset + value
+		$Viewport/CanvasLayer/Control/Label.text = "Target\nHeartrate\n%d"%current_hr
+	else:
+		$Viewport/CanvasLayer/Control/Label.text = "No HR\nsensor\nconnected"
+	
 	$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
 
 
@@ -59,9 +77,12 @@ func _on_Button_selected(extra_arg_0):
 func enable_automatic (state):
 	var autonode = get_node("Viewport/CanvasLayer/Auto")
 	if state:
+		auto_enabled = true
 		autonode.show()
 	else:
+		auto_enabled = false
 		autonode.hide()
+	update_widgets()
 
 func _on_Easy_pressed(extra_arg_0):
 	$SoundEasy.play()
@@ -83,3 +104,18 @@ func _on_Auto_pressed(extra_arg_0):
 func _on_Ultra_pressed(extra_arg_0):
 	$SoundUltra.play()
 	_on_Button_selected(extra_arg_0)
+
+
+
+func _on_Plus_pressed():
+	var current_hr = ProjectSettings.get("game/target_hr")
+	current_hr = clamp(current_hr+10, min_hr, min_hr+hr_range)
+	ProjectSettings.set("game/target_hr", current_hr)
+	update_widgets()
+
+
+func _on_Minus_pressed():
+	var current_hr = ProjectSettings.get("game/target_hr")
+	current_hr = clamp(current_hr-10, min_hr, min_hr+hr_range)
+	ProjectSettings.set("game/target_hr", current_hr)
+	update_widgets()

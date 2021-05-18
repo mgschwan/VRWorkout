@@ -54,6 +54,13 @@ func set_songs(songs):
 
 
 func _ready():
+		
+	var external_dir = ProjectSettings.get("game/external_songs")
+	
+	if external_dir:
+		$Label.text = "Place custom OGG or MP3 files in: %s"%external_dir
+		
+	
 	pass
 
 

@@ -27,7 +27,7 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
-margin_top = 42.0
+margin_top = 39.0
 margin_right = -5.0
 margin_bottom = -5.0
 
@@ -73,7 +73,7 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
-margin_top = 42.0
+margin_top = 39.0
 margin_right = -5.0
 margin_bottom = -5.0
 
@@ -118,7 +118,7 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
-margin_top = 42.0
+margin_top = 39.0
 margin_right = -5.0
 margin_bottom = -5.0
 
@@ -230,7 +230,7 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
-margin_top = 42.0
+margin_top = 39.0
 margin_right = -5.0
 margin_bottom = -5.0
 

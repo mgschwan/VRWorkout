@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://hand_right.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Area.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://models/super_white.material" type="Material" id=5]
 [ext_resource path="res://audio/hand_hit.wav" type="AudioStream" id=6]
 [ext_resource path="res://models/red_material.tres" type="Material" id=7]
+[ext_resource path="res://audio/low_impact.wav" type="AudioStream" id=8]
 [ext_resource path="res://forearm_model.tscn" type="PackedScene" id=9]
 [ext_resource path="res://right_hand_model.tscn" type="PackedScene" id=10]
 [ext_resource path="res://MultiplayerRoom/RemoteSpatial.gd" type="Script" id=11]
@@ -66,6 +67,12 @@ transform = Transform( 0.5, -0.866026, 0, 0.866026, 0.5, 0, 0, 0, 1, 0, 0, 0 )
 [node name="forearm" parent="Area/hand_model" instance=ExtResource( 9 )]
 transform = Transform( -4.37114e-08, -1, 0, -1, 4.37114e-08, 8.74228e-08, -8.74228e-08, 3.82137e-15, -1, 0.289307, 0, -1.19209e-07 )
 visible = false
+
+[node name="rumble_audio" type="AudioStreamPlayer" parent="Area"]
+stream = ExtResource( 8 )
+volume_db = -14.0
+pitch_scale = 0.3
+bus = "Right"
 
 [node name="RumbleTimer" type="Timer" parent="."]
 wait_time = 0.2

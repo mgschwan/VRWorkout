@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://blue_outdoor_stage.tscn" type="PackedScene" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://CircularGauge.tscn" type="PackedScene" id=15]
 [ext_resource path="res://TrophyList.tscn" type="PackedScene" id=16]
 [ext_resource path="res://position_sign.tscn" type="PackedScene" id=17]
+[ext_resource path="res://scenes/SafetyFence.tscn" type="PackedScene" id=18]
 [ext_resource path="res://HudLayer.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scripts/Level.gd" type="Script" id=20]
 [ext_resource path="res://Heart_Coin.tscn" type="PackedScene" id=21]
@@ -238,6 +239,11 @@ transform = Transform( -4.88762e-08, 0, 0.3, 0, 0.3, 0, -0.3, 0, -4.88762e-08, 0
 [node name="WinnerPanel" parent="." instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.345, -2.94747 )
 visible = false
+
+[node name="SafetyFence" parent="." instance=ExtResource( 18 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0468838, -2.5273 )
+max_allowed_distance = 0.4
+deadzone = 0.15
 
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="streak_changed" from="cue_emitter" to="." method="_on_cue_emitter_streak_changed"]
