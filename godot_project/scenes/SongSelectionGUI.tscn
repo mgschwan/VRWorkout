@@ -1,7 +1,29 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
 [ext_resource path="res://scripts/SongSelectionGUI.gd" type="Script" id=2]
+[ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://fonts/PanelHeader_PassioOne.tres" type="DynamicFont" id=4]
+[ext_resource path="res://assets/panel_background.jpg" type="Texture" id=5]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.380392, 0.298039, 0.831373, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="DynamicFont" id=3]
+size = 18
+use_filter = true
+font_data = ExtResource( 3 )
 
 [node name="SongSelection" type="Panel"]
 margin_right = 768.0
@@ -9,14 +31,38 @@ margin_bottom = 512.0
 theme = ExtResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
+"_edit_horizontal_guides_": [ 19.9387 ],
+"_edit_use_anchors_": false,
+"_edit_vertical_guides_": [ 21.8494 ]
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 765.0
+margin_bottom = 510.0
+texture = ExtResource( 5 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 763.0
+margin_bottom = 507.0
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SongList" type="ItemList" parent="."]
-margin_left = 8.0
-margin_top = 7.0
-margin_right = 595.0
-margin_bottom = 503.0
+margin_left = 22.0
+margin_top = 95.0
+margin_right = 746.0
+margin_bottom = 428.0
+custom_styles/bg = SubResource( 2 )
 custom_constants/vseparation = 8
 max_text_lines = 2
 fixed_column_width = 536
@@ -25,45 +71,73 @@ __meta__ = {
 }
 
 [node name="Add" type="Button" parent="."]
-margin_left = 601.0
-margin_top = 29.0
-margin_right = 759.0
-margin_bottom = 92.0
+margin_left = 22.0
+margin_top = 440.0
+margin_right = 172.0
+margin_bottom = 490.0
+rect_min_size = Vector2( 150, 0 )
 text = "Add to Playlist"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Preview" type="Button" parent="."]
-margin_left = 601.0
-margin_top = 133.0
-margin_right = 759.0
-margin_bottom = 196.0
+margin_left = 600.204
+margin_top = 19.0309
+margin_right = 750.204
+margin_bottom = 69.0309
+rect_min_size = Vector2( 150, 0 )
 text = "Preview"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StopPreview" type="Button" parent="."]
-margin_left = 601.0
-margin_top = 237.0
-margin_right = 759.0
-margin_bottom = 300.0
-text = "Stop Preview"
+[node name="Freeplay" type="Button" parent="."]
+margin_left = 195.0
+margin_top = 440.0
+margin_right = 345.0
+margin_bottom = 490.0
+rect_min_size = Vector2( 150, 0 )
+text = "Freeplay +5min"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Resting" type="Button" parent="."]
+margin_left = 368.0
+margin_top = 440.0
+margin_right = 518.0
+margin_bottom = 490.0
+rect_min_size = Vector2( 150, 0 )
+text = "Resting +20sec"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="."]
-margin_left = 601.0
-margin_top = 320.0
-margin_right = 759.0
-margin_bottom = 485.0
+margin_left = 17.0
+margin_top = 49.0
+margin_right = 742.0
+margin_bottom = 81.0
+custom_fonts/font = SubResource( 3 )
+text = "Lorem Ipsum something something"
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Heading" type="Label" parent="."]
+margin_left = 17.0
+margin_top = 6.0
+margin_right = 564.0
+margin_bottom = 62.0
+custom_fonts/font = ExtResource( 4 )
+text = "MUSIC LIBRARY"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [connection signal="pressed" from="Add" to="." method="_on_Add_pressed"]
 [connection signal="pressed" from="Preview" to="." method="_on_Preview_pressed"]
-[connection signal="pressed" from="StopPreview" to="." method="_on_StopPreview_pressed"]
+[connection signal="pressed" from="Freeplay" to="." method="_on_Freeplay_pressed"]
+[connection signal="pressed" from="Resting" to="." method="_on_Resting_pressed"]

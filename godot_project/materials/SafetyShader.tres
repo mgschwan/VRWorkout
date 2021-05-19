@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=2]
 
-[sub_resource type="Shader" id=2]
+[sub_resource type="Shader" id=1]
 code = "shader_type spatial;
 render_mode unshaded, blend_mix;
 
@@ -16,4 +16,4 @@ void fragment() {
 "
 
 [resource]
-shader = SubResource( 2 )
+shader = SubResource( 1 )

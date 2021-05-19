@@ -1,0 +1,174 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
+[ext_resource path="res://scripts/PlaylistView.gd" type="Script" id=2]
+[ext_resource path="res://fonts/PanelHeader_PassioOne.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/arrow_right.png" type="Texture" id=4]
+[ext_resource path="res://scenes/Tutorial.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/SongTabContainer.gd" type="Script" id=6]
+
+[node name="TabContainer" type="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -512.0
+margin_bottom = -54.0
+theme = ExtResource( 1 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 33.2741 ],
+"_edit_use_anchors_": false
+}
+
+[node name="Playlist" type="Tabs" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 39.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="Songs" type="Tree" parent="Playlist"]
+margin_left = 22.0
+margin_top = 60.0
+margin_right = 486.0
+margin_bottom = 411.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartButton" type="Button" parent="Playlist"]
+margin_left = 22.0
+margin_top = 434.0
+margin_right = 172.0
+margin_bottom = 484.0
+rect_min_size = Vector2( 150, 0 )
+theme = ExtResource( 1 )
+action_mode = 0
+text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RemoveButton" type="Button" parent="Playlist"]
+margin_left = 334.0
+margin_top = 434.0
+margin_right = 484.0
+margin_bottom = 484.0
+rect_min_size = Vector2( 150, 0 )
+theme = ExtResource( 1 )
+action_mode = 0
+text = "Delete"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Instruction" type="TextureRect" parent="Playlist"]
+anchor_left = 0.209
+anchor_right = 0.36
+margin_left = -4.582
+margin_right = 211.616
+margin_bottom = 463.0
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Playlist/Instruction"]
+margin_left = 35.0
+margin_top = 160.0
+margin_right = 313.0
+margin_bottom = 355.0
+rect_scale = Vector2( 0.7, 0.75 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Look to your right and add
+songs from the list
+
+You can preview each song 
+by pressing Preview"
+
+[node name="Label" type="Label" parent="Playlist"]
+margin_left = 14.0
+margin_top = 3.0
+margin_right = 406.0
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 3 )
+text = "WORKOUT PLAYLIST"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Youtube" type="Tabs" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 39.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="YoutubeButton" type="Button" parent="Youtube"]
+visible = false
+margin_left = 16.0
+margin_top = 20.0
+margin_right = 279.0
+margin_bottom = 65.0
+theme = ExtResource( 1 )
+action_mode = 0
+text = " Start with Youtube Music "
+
+[node name="ActivateYoutube" type="Button" parent="Youtube"]
+margin_left = 16.0
+margin_top = 120.0
+margin_right = 279.0
+margin_bottom = 165.0
+theme = ExtResource( 1 )
+action_mode = 0
+text = " Activate Youtube Player "
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Youtube/ActivateYoutube"]
+margin_top = 60.0
+margin_right = 480.0
+margin_bottom = 360.0
+bbcode_enabled = true
+bbcode_text = "This will open the browser
+Click play and then go back into the game
+
+Attention!
+Youtube support is highly experimental.
+The Quest will stop network access of the browser after 10 minutes. You will have to exit the game and start anew
+"
+text = "This will open the browser
+Click play and then go back into the game
+
+Attention!
+Youtube support is highly experimental.
+The Quest will stop network access of the browser after 10 minutes. You will have to exit the game and start anew
+"
+
+[node name="Tutorial" type="Tabs" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 39.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="Tutorial" parent="Tutorial" instance=ExtResource( 5 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 10.0
+margin_bottom = 10.0
+rect_scale = Vector2( 0.95, 0.95 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="pressed" from="Playlist/StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="pressed" from="Playlist/RemoveButton" to="." method="_on_RemoveButton_pressed"]
+[connection signal="pressed" from="Youtube/YoutubeButton" to="." method="_on_YoutubeButton_pressed"]
+[connection signal="pressed" from="Youtube/ActivateYoutube" to="." method="_on_ActivateYoutube_pressed"]
+[connection signal="content_changed" from="Tutorial/Tutorial" to="." method="_on_Content_changed"]

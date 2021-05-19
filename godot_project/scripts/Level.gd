@@ -927,7 +927,7 @@ func _on_cue_emitter_streak_changed(count):
 		if actual_game_state == CueState.SPRINT:
 			if run_point_multiplier >= 3:
 				var e = gu.get_current_energy()
-				if knee_high_ok and e < (GameVariables.energy_level_medium + GameVariables.energy_level_high)/2.0:
+				if knee_high_ok and e < (0.6*GameVariables.energy_level_medium + 0.4*GameVariables.energy_level_high):
 					#Player is running fast enough but not using a high knee running
 					$VoiceInstructor.say("i want to see those knees higher")
 					knee_high_ok = false

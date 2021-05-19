@@ -2,6 +2,8 @@ extends Panel
 
 signal add_playlist_song (song_filename)
 signal preview_song (song_filename)
+signal freeplay()
+signal resting()
 
 
 var song_list = []
@@ -81,3 +83,11 @@ func _on_Preview_pressed():
 
 func _on_StopPreview_pressed():
 	emit_signal("preview_song", null)
+
+
+func _on_Freeplay_pressed():
+	emit_signal("freeplay")
+
+
+func _on_Resting_pressed():
+	emit_signal("resting")

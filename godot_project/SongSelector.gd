@@ -41,7 +41,6 @@ func set_songs(songs):
 	$SongSelector/Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
 
 var hrr #Heart rate receiver
-var youtube #Youtube interface
 
 func update_automatic():
 	if hrr and hrr.hr_active:
@@ -52,7 +51,6 @@ func update_automatic():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	hrr = get_tree().current_scene.get_node("HeartRateReceiver")
-	youtube = get_tree().current_scene.get_node("YoutubeInterface")
 
 	update_automatic()
 	update_songs()
@@ -75,7 +73,7 @@ func update_songs():
 		tmp.set_text(0, gu.get_song_name(song))
 		duration += abs(get_tree().current_scene.get_node("SongDatabase").get_song_duration(song))
 
-	root.set_text(0,"Your Playlist %s"%(gu.seconds_to_timestring(duration)))
+	root.set_text(0,"Total duration %s"%(gu.seconds_to_timestring(duration)))
 
 	emit_signal("content_changed")
 	#get_node("Viewport").render_target_update_mode = Viewport.UPDATE_ONCE
@@ -86,16 +84,6 @@ func _process(delta):
 	frame_idx += 1
 	if frame_idx > 20:
 		update_automatic()
-		if youtube.is_youtube_available(): #and not $Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.visible:
-			#print ("Youtube available")
-			$Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.show()
-			$Viewport/CanvasLayer/TabContainer/Youtube/ActivateYoutube.hide()
-			emit_signal("content_changed")
-		elif not youtube.is_youtube_available(): # and $Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.visible:
-			#print ("Youtube not available")
-			$Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.hide()
-			$Viewport/CanvasLayer/TabContainer/Youtube/ActivateYoutube.show()
-			emit_signal("content_changed")
 		frame_idx = 0
 		
 func select_difficulty(d):
@@ -118,42 +106,16 @@ func _on_DifficultyButtons_difficulty_selected(difficulty):
 #			get_tree().current_scene.change_environment("calm")
 
 
-func _on_Button_pressed():
+func _on_Start_pressed():
 	print ("Start button pressed")
 	if len(playlist) > 0:
 		emit_signal("level_selected", playlist, current_difficulty, 0)
 
-func _on_RemoveButton_pressed():
+func _on_Remove_pressed():
 	print ("Remove button pressed")
 	playlist.pop_back()
 	update_songs()
 
-func _on_FreeplayButton_pressed():
-	var complete = false
-	if playlist:
-		var last = playlist.back()
-		if typeof(last) == TYPE_REAL or typeof(last) == TYPE_INT:
-			if last > 0:
-				playlist[-1] = last + 300
-				complete = true
-	if not complete:
-		playlist.append(300)
-	update_songs()
-
-func _on_PauseButton_pressed():
-	var complete = false
-	if playlist:
-		var last = playlist.back()
-		if typeof(last) == TYPE_REAL or typeof(last) == TYPE_INT:
-			if last <= 0:
-				playlist[-1] = last - 10
-				complete = true
-	if not complete:
-		playlist.append(-10)
-	update_songs()
-
-func _on_RemoveButton_button_up():
-	print ("Remove Button UP")
 
 func _on_YoutubeButton_pressed():
 	playlist.clear()
@@ -161,6 +123,7 @@ func _on_YoutubeButton_pressed():
 	emit_signal("level_selected", playlist, current_difficulty, 0)
 
 func _on_ActivateYoutube_pressed():
+	print ("Activate Youtube")
 	var link = "%s%d"%[ProjectSettings.get("application/config/youtube_link"),OS.get_unix_time()]
 	OS.shell_open(link)
 	emit_signal("content_changed")
@@ -169,12 +132,15 @@ func _on_SongSelection_add_playlist_song(song_filename):
 	playlist.append(song_filename)
 	update_songs()
 
+var preview_song_playing = null
 func _on_SongSelection_preview_song(song_filename):
-	if song_filename:
+	if preview_song_playing == null and song_filename:
+		preview_song_playing = song_filename
 		var stream = gu.load_audio_resource(song_filename)
 		$AudioStreamPlayer.stream = stream
 		$AudioStreamPlayer.play()
 	else:
+		preview_song_playing = null
 		$AudioStreamPlayer.stop()
 
 
@@ -195,3 +161,32 @@ func show_panels():
 	$SongSelector/CollisionShape.disabled = false	
 	self.show()
 
+
+
+func _on_Freeplay_pressed():
+	var complete = false
+	if playlist:
+		var last = playlist.back()
+		if typeof(last) == TYPE_REAL or typeof(last) == TYPE_INT:
+			if last > 0:
+				playlist[-1] = last + 300
+				complete = true
+	if not complete:
+		playlist.append(300)
+	update_songs()
+
+
+func _on_Resting_pressed():
+	var complete = false
+	if playlist:
+		var last = playlist.back()
+		if typeof(last) == TYPE_REAL or typeof(last) == TYPE_INT:
+			if last <= 0:
+				playlist[-1] = last - 10
+				complete = true
+	if not complete:
+		playlist.append(-10)
+	update_songs()
+
+func _on_TabContainer_content_changed():
+	emit_signal("content_changed")

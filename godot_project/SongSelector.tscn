@@ -1,20 +1,30 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://SongSelector.gd" type="Script" id=1]
+[ext_resource path="res://scenes/SongTabContainer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/DifficultyButtons.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scripts/ConnectPadInput.gd" type="Script" id=7]
 [ext_resource path="res://scripts/TouchableViewport.gd" type="Script" id=8]
-[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=9]
-[ext_resource path="res://scripts/PlaylistView.gd" type="Script" id=10]
-[ext_resource path="res://assets/arrow_right.png" type="Texture" id=11]
-[ext_resource path="res://scenes/Tutorial.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/SongSelectionGUI.tscn" type="PackedScene" id=14]
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0, 0, 0, 0 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.380392, 0.298039, 0.831373, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="BoxShape" id=1]
 margin = 0.001
-extents = Vector3( 1, 0.0325357, 0.999178 )
+extents = Vector3( 1, 0.033, 1.066 )
 
 [sub_resource type="PlaneMesh" id=2]
+size = Vector2( 2, 2.133 )
 
 [sub_resource type="ViewportTexture" id=3]
 flags = 12
@@ -49,7 +59,7 @@ script = ExtResource( 1 )
 transform = Transform( 0.3, 0, 0, 0, -1.31134e-08, -0.3, 0, 0.3, -1.31134e-08, -1.41562, -0.206276, -0.000524152 )
 
 [node name="Viewport" type="Viewport" parent="."]
-size = Vector2( 512, 512 )
+size = Vector2( 512, 546 )
 transparent_bg = true
 msaa = 6
 render_target_v_flip = true
@@ -62,150 +72,17 @@ script = ExtResource( 8 )
 margin_right = 4.0
 margin_bottom = 4.0
 
-[node name="TabContainer" type="TabContainer" parent="Viewport/CanvasLayer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-theme = ExtResource( 9 )
+[node name="TabContainer" parent="Viewport/CanvasLayer" instance=ExtResource( 2 )]
+margin_right = 0.0
+margin_bottom = 0.0
 
-[node name="Playlist" type="Tabs" parent="Viewport/CanvasLayer/TabContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="Panel" type="Panel" parent="Viewport/CanvasLayer"]
 margin_left = 5.0
 margin_top = 39.0
-margin_right = -5.0
-margin_bottom = -5.0
-
-[node name="StartButton" type="Button" parent="Viewport/CanvasLayer/TabContainer/Playlist"]
-margin_left = 355.0
-margin_top = 5.0
-margin_right = 475.0
-margin_bottom = 78.0
-theme = ExtResource( 9 )
-action_mode = 0
-text = "Start"
-
-[node name="FreeplayButton" type="Button" parent="Viewport/CanvasLayer/TabContainer/Playlist"]
-margin_left = 355.0
-margin_top = 318.0
-margin_right = 475.0
-margin_bottom = 391.0
-theme = ExtResource( 9 )
-action_mode = 0
-text = "Freeplay"
-
-[node name="PauseButton" type="Button" parent="Viewport/CanvasLayer/TabContainer/Playlist"]
-margin_left = 355.0
-margin_top = 98.0
-margin_right = 475.0
-margin_bottom = 171.0
-theme = ExtResource( 9 )
-action_mode = 0
-text = "Rest"
-
-[node name="RemoveButton" type="Button" parent="Viewport/CanvasLayer/TabContainer/Playlist"]
-margin_left = 355.0
-margin_top = 208.0
-margin_right = 475.0
-margin_bottom = 281.0
-theme = ExtResource( 9 )
-action_mode = 0
-text = "Delete"
-
-[node name="Songs" type="Tree" parent="Viewport/CanvasLayer/TabContainer/Playlist"]
-margin_left = 5.0
-margin_right = 345.0
-margin_bottom = 460.0
-theme = ExtResource( 9 )
-script = ExtResource( 10 )
-
-[node name="Instruction" type="TextureRect" parent="Viewport/CanvasLayer/TabContainer/Playlist"]
-anchor_left = 0.209
-anchor_right = 0.36
-margin_left = -4.582
-margin_right = 211.616
-margin_bottom = 463.0
-texture = ExtResource( 11 )
-
-[node name="Label" type="Label" parent="Viewport/CanvasLayer/TabContainer/Playlist/Instruction"]
-margin_left = 35.0
-margin_top = 160.0
-margin_right = 313.0
-margin_bottom = 355.0
-rect_scale = Vector2( 0.7, 0.75 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Look to your right and add
-songs from the list
-
-You can preview each song 
-by pressing Preview"
-
-[node name="Youtube" type="Tabs" parent="Viewport/CanvasLayer/TabContainer"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 39.0
-margin_right = -5.0
-margin_bottom = -5.0
-
-[node name="YoutubeButton" type="Button" parent="Viewport/CanvasLayer/TabContainer/Youtube"]
-visible = false
-margin_left = 16.0
-margin_top = 20.0
-margin_right = 279.0
-margin_bottom = 65.0
-theme = ExtResource( 9 )
-action_mode = 0
-text = " Start with Youtube Music "
-
-[node name="ActivateYoutube" type="Button" parent="Viewport/CanvasLayer/TabContainer/Youtube"]
-margin_left = 16.0
-margin_top = 120.0
-margin_right = 279.0
-margin_bottom = 165.0
-theme = ExtResource( 9 )
-action_mode = 0
-text = " Activate Youtube Player "
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Viewport/CanvasLayer/TabContainer/Youtube/ActivateYoutube"]
-margin_top = 60.0
-margin_right = 480.0
-margin_bottom = 360.0
-bbcode_enabled = true
-bbcode_text = "This will open the browser
-Click play and then go back into the game
-
-Attention!
-Youtube support is highly experimental.
-The Quest will stop network access of the browser after 10 minutes. You will have to exit the game and start anew
-"
-text = "This will open the browser
-Click play and then go back into the game
-
-Attention!
-Youtube support is highly experimental.
-The Quest will stop network access of the browser after 10 minutes. You will have to exit the game and start anew
-"
-
-[node name="Tutorial" type="Tabs" parent="Viewport/CanvasLayer/TabContainer"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 39.0
-margin_right = -5.0
-margin_bottom = -5.0
-
-[node name="Tutorial" parent="Viewport/CanvasLayer/TabContainer/Tutorial" instance=ExtResource( 12 )]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 10.0
-margin_bottom = 10.0
-rect_scale = Vector2( 0.95, 0.95 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
+margin_right = 507.0
+margin_bottom = 541.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 9 )
 
 [node name="StaticBody" type="StaticBody" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.441766, 0 )
@@ -220,16 +97,16 @@ mesh = SubResource( 2 )
 material/0 = SubResource( 4 )
 
 [node name="tl_marker" type="Spatial" parent="StaticBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1.067 )
 
 [node name="tr_marker" type="Spatial" parent="StaticBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1.067 )
 
 [node name="bl_marker" type="Spatial" parent="StaticBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1.066 )
 
 [node name="SongSelector" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 2.491, -0.442, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 2.62802, -0.513638, -3.13141e-09 )
 script = ExtResource( 7 )
 
 [node name="Viewport" type="Viewport" parent="SongSelector"]
@@ -261,19 +138,16 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1 )
 
 [connection signal="content_changed" from="." to="Viewport" method="_on_content_changed"]
 [connection signal="difficulty_selected" from="DifficultyButtons" to="." method="_on_DifficultyButtons_difficulty_selected"]
-[connection signal="tab_selected" from="Viewport/CanvasLayer/TabContainer" to="." method="_on_TabContainer_tab_selected"]
-[connection signal="button_down" from="Viewport/CanvasLayer/TabContainer/Playlist/StartButton" to="." method="_on_Button_pressed"]
-[connection signal="button_down" from="Viewport/CanvasLayer/TabContainer/Playlist/FreeplayButton" to="." method="_on_FreeplayButton_pressed"]
-[connection signal="button_down" from="Viewport/CanvasLayer/TabContainer/Playlist/PauseButton" to="." method="_on_PauseButton_pressed"]
-[connection signal="pressed" from="Viewport/CanvasLayer/TabContainer/Playlist/PauseButton" to="." method="_on_PauseButton_pressed"]
-[connection signal="button_down" from="Viewport/CanvasLayer/TabContainer/Playlist/RemoveButton" to="." method="_on_RemoveButton_pressed"]
-[connection signal="button_up" from="Viewport/CanvasLayer/TabContainer/Playlist/RemoveButton" to="." method="_on_RemoveButton_button_up"]
-[connection signal="pressed" from="Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton" to="." method="_on_YoutubeButton_pressed"]
-[connection signal="pressed" from="Viewport/CanvasLayer/TabContainer/Youtube/ActivateYoutube" to="." method="_on_ActivateYoutube_pressed"]
-[connection signal="content_changed" from="Viewport/CanvasLayer/TabContainer/Tutorial/Tutorial" to="Viewport" method="_on_content_changed"]
+[connection signal="activate_youtube" from="Viewport/CanvasLayer/TabContainer" to="." method="_on_ActivateYoutube_pressed"]
+[connection signal="content_changed" from="Viewport/CanvasLayer/TabContainer" to="." method="_on_TabContainer_content_changed"]
+[connection signal="remove_pressed" from="Viewport/CanvasLayer/TabContainer" to="." method="_on_Remove_pressed"]
+[connection signal="start_pressed" from="Viewport/CanvasLayer/TabContainer" to="." method="_on_Start_pressed"]
+[connection signal="start_youtube" from="Viewport/CanvasLayer/TabContainer" to="." method="_on_YoutubeButton_pressed"]
 [connection signal="interface_release" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_release"]
 [connection signal="interface_touch" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_touch"]
 [connection signal="interface_release" from="SongSelector" to="SongSelector/Viewport" method="_on_ConnectPadInput_interface_release"]
 [connection signal="interface_touch" from="SongSelector" to="SongSelector/Viewport" method="_on_ConnectPadInput_interface_touch"]
 [connection signal="add_playlist_song" from="SongSelector/Viewport/SongSelection" to="." method="_on_SongSelection_add_playlist_song"]
+[connection signal="freeplay" from="SongSelector/Viewport/SongSelection" to="." method="_on_Freeplay_pressed"]
 [connection signal="preview_song" from="SongSelector/Viewport/SongSelection" to="." method="_on_SongSelection_preview_song"]
+[connection signal="resting" from="SongSelector/Viewport/SongSelection" to="." method="_on_Resting_pressed"]

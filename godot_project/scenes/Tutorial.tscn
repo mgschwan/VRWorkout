@@ -38,7 +38,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Description" type="RichTextLabel" parent="TabContainer/Page10"]
-margin_right = 380.0
+margin_right = 502.0
 margin_bottom = 392.0
 bbcode_enabled = true
 bbcode_text = "[center]Position yourself between the green poles during exercise
@@ -56,10 +56,10 @@ __meta__ = {
 }
 
 [node name="Image" type="TextureRect" parent="TabContainer/Page10"]
-margin_left = 391.735
-margin_top = 1.51472
-margin_right = 491.735
-margin_bottom = 101.515
+margin_left = 201.0
+margin_top = 402.0
+margin_right = 301.0
+margin_bottom = 502.0
 texture = ExtResource( 12 )
 expand = true
 stretch_mode = 1
@@ -73,7 +73,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Description" type="RichTextLabel" parent="TabContainer/Page9"]
-margin_right = 384.0
+margin_right = 502.0
 margin_bottom = 392.0
 bbcode_enabled = true
 bbcode_text = "[center]The avatars are meant to keep you company
@@ -95,10 +95,10 @@ __meta__ = {
 }
 
 [node name="Image" type="TextureRect" parent="TabContainer/Page9"]
-margin_left = 391.735
-margin_top = 1.51472
-margin_right = 491.735
-margin_bottom = 101.515
+margin_left = 201.0
+margin_top = 402.0
+margin_right = 301.0
+margin_bottom = 502.0
 texture = ExtResource( 11 )
 expand = true
 stretch_mode = 1
@@ -112,7 +112,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Description" type="RichTextLabel" parent="TabContainer/Page1"]
-margin_right = 380.0
+margin_right = 502.0
 margin_bottom = 380.0
 bbcode_enabled = true
 bbcode_text = "[center]Hand cues are the most basic element in VRWorkout
@@ -134,10 +134,10 @@ __meta__ = {
 }
 
 [node name="Image" type="TextureRect" parent="TabContainer/Page1"]
-margin_left = 391.735
-margin_top = 1.51472
-margin_right = 491.735
-margin_bottom = 101.515
+margin_left = 201.0
+margin_top = 402.0
+margin_right = 301.0
+margin_bottom = 502.0
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 1
@@ -151,7 +151,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Description" type="RichTextLabel" parent="TabContainer/Page2"]
-margin_right = 380.0
+margin_right = 502.0
 margin_bottom = 380.0
 bbcode_enabled = true
 bbcode_text = "[center]This guides your head into the correct position
@@ -173,10 +173,10 @@ __meta__ = {
 }
 
 [node name="Image" type="TextureRect" parent="TabContainer/Page2"]
-margin_left = 391.735
-margin_top = 1.51472
-margin_right = 491.735
-margin_bottom = 101.515
+margin_left = 201.0
+margin_top = 402.0
+margin_right = 301.0
+margin_bottom = 502.0
 texture = ExtResource( 4 )
 expand = true
 stretch_mode = 1
@@ -190,7 +190,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Description" type="RichTextLabel" parent="TabContainer/Page3"]
-margin_right = 380.0
+margin_right = 502.0
 margin_bottom = 380.0
 bbcode_enabled = true
 bbcode_text = "[center]Those cues have to be avoided by your head
@@ -212,10 +212,10 @@ __meta__ = {
 }
 
 [node name="Image" type="TextureRect" parent="TabContainer/Page3"]
-margin_left = 391.735
-margin_top = 1.51472
-margin_right = 491.735
-margin_bottom = 101.515
+margin_left = 201.0
+margin_top = 402.0
+margin_right = 301.0
+margin_bottom = 502.0
 texture = ExtResource( 5 )
 expand = true
 stretch_mode = 1
@@ -229,7 +229,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Description" type="RichTextLabel" parent="TabContainer/Page8"]
-margin_right = 380.0
+margin_right = 502.0
 margin_bottom = 392.0
 bbcode_enabled = true
 bbcode_text = "[center]Run in place as fast as you can.
@@ -253,10 +253,10 @@ __meta__ = {
 }
 
 [node name="Image" type="TextureRect" parent="TabContainer/Page8"]
-margin_left = 391.735
-margin_top = 1.51472
-margin_right = 491.735
-margin_bottom = 101.515
+margin_left = 201.0
+margin_top = 402.0
+margin_right = 301.0
+margin_bottom = 502.0
 texture = ExtResource( 10 )
 expand = true
 stretch_mode = 1
@@ -270,7 +270,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Description" type="RichTextLabel" parent="TabContainer/Page4"]
-margin_right = 380.0
+margin_right = 502.0
 margin_bottom = 380.0
 bbcode_enabled = true
 bbcode_text = "[center]This limits your standing height during squat exercises
@@ -292,10 +292,10 @@ __meta__ = {
 }
 
 [node name="Image" type="TextureRect" parent="TabContainer/Page4"]
-margin_left = 391.735
-margin_top = 1.51472
-margin_right = 491.735
-margin_bottom = 101.515
+margin_left = 201.0
+margin_top = 402.0
+margin_right = 301.0
+margin_bottom = 502.0
 texture = ExtResource( 6 )
 expand = true
 stretch_mode = 1
@@ -309,7 +309,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Description" type="RichTextLabel" parent="TabContainer/Page5"]
-margin_right = 380.0
+margin_right = 502.0
 margin_bottom = 392.0
 bbcode_enabled = true
 bbcode_text = "[center]Touch and hold with your hand
@@ -331,10 +331,10 @@ __meta__ = {
 }
 
 [node name="Image" type="TextureRect" parent="TabContainer/Page5"]
-margin_left = 391.735
-margin_top = 1.51472
-margin_right = 491.735
-margin_bottom = 101.515
+margin_left = 201.0
+margin_top = 402.0
+margin_right = 301.0
+margin_bottom = 502.0
 texture = ExtResource( 7 )
 expand = true
 stretch_mode = 1
@@ -348,7 +348,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Description" type="RichTextLabel" parent="TabContainer/Page6"]
-margin_right = 380.0
+margin_right = 502.0
 margin_bottom = 392.0
 bbcode_enabled = true
 bbcode_text = "[center]High energy head cues require the energy gauge to have at least as many stars as the head cue shows
@@ -366,10 +366,10 @@ __meta__ = {
 }
 
 [node name="Image" type="TextureRect" parent="TabContainer/Page6"]
-margin_left = 391.735
-margin_top = 1.51472
-margin_right = 491.735
-margin_bottom = 101.515
+margin_left = 201.0
+margin_top = 402.0
+margin_right = 301.0
+margin_bottom = 502.0
 texture = ExtResource( 8 )
 expand = true
 stretch_mode = 1
@@ -383,7 +383,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Description" type="RichTextLabel" parent="TabContainer/Page7"]
-margin_right = 380.0
+margin_right = 502.0
 margin_bottom = 392.0
 bbcode_enabled = true
 bbcode_text = "[center]Parcour cues show you the space where it's safe to pass
@@ -401,10 +401,10 @@ __meta__ = {
 }
 
 [node name="Image" type="TextureRect" parent="TabContainer/Page7"]
-margin_left = 391.735
-margin_top = 1.51472
-margin_right = 491.735
-margin_bottom = 101.515
+margin_left = 201.0
+margin_top = 402.0
+margin_right = 301.0
+margin_bottom = 502.0
 texture = ExtResource( 9 )
 expand = true
 stretch_mode = 1
@@ -413,23 +413,24 @@ __meta__ = {
 }
 
 [node name="NextButton" type="Button" parent="."]
-margin_left = 365.0
-margin_top = 396.0
-margin_right = 496.0
-margin_bottom = 455.0
+margin_left = 352.0
+margin_top = 452.0
+margin_right = 502.0
+margin_bottom = 502.0
+rect_min_size = Vector2( 150, 0 )
 theme = ExtResource( 1 )
-text = "NEXT"
+text = "Next"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PreviousButton" type="Button" parent="."]
-margin_left = 14.0
-margin_top = 396.0
-margin_right = 145.0
-margin_bottom = 455.0
+margin_top = 452.0
+margin_right = 150.0
+margin_bottom = 502.0
+rect_min_size = Vector2( 150, 0 )
 theme = ExtResource( 1 )
-text = "PREVIOUS"
+text = "Previous"
 __meta__ = {
 "_edit_use_anchors_": false
 }
