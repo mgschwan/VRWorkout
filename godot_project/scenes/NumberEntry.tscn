@@ -3,20 +3,15 @@
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
 [ext_resource path="res://scripts/NumberEntry.gd" type="Script" id=2]
 
-[node name="NumberEntry" type="Node2D"]
+[node name="NumberEntry" type="Control"]
 script = ExtResource( 2 )
-
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 168.0
-margin_bottom = 315.0
-color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Plus" type="Button" parent="."]
 margin_right = 64.0
-margin_bottom = 92.0
+margin_bottom = 64.0
 theme = ExtResource( 1 )
 text = "+"
 __meta__ = {
@@ -24,9 +19,10 @@ __meta__ = {
 }
 
 [node name="Minus" type="Button" parent="."]
-margin_top = 164.0
-margin_right = 64.0
-margin_bottom = 256.0
+margin_left = 145.0
+margin_top = 1.0
+margin_right = 209.0
+margin_bottom = 65.0
 theme = ExtResource( 1 )
 text = "-"
 __meta__ = {
@@ -34,10 +30,10 @@ __meta__ = {
 }
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-margin_left = 11.0
-margin_top = 114.0
-margin_right = 51.0
-margin_bottom = 142.0
+margin_left = 85.0
+margin_top = 20.0
+margin_right = 125.0
+margin_bottom = 48.0
 theme = ExtResource( 1 )
 bbcode_enabled = true
 bbcode_text = "[center]20[/center]"

@@ -603,6 +603,8 @@ func _on_level_finished_manually():
 func _on_level_finished_actual(valid_end):
 	GameVariables.vr_camera.blackout_screen(true)
 	GameVariables.vr_camera.show_hud(false)
+	yield(get_tree().create_timer(0.1),"timeout")
+
 	#In case the player exited while controller were hidden
 	set_controller_visible(true)
 	
@@ -827,11 +829,15 @@ func get_persisting_parameters():
 			"game/default_playlist" : GameVariables.current_song,
 			"game/exercise_duration_avg" :ProjectSettings.get("game/exercise_duration_avg"),
 			"game/environment" :ProjectSettings.get("game/environment"),
-			"game/hold_cues" :ProjectSettings.get("game/hold_cues")
+			"game/hold_cues" :ProjectSettings.get("game/hold_cues"),
+			"game/onboarding_complete" :ProjectSettings.get("game/onboarding_complete"),
 		}
 		
 var game_statistics = {}
 func _on_Area_level_selected(filename, diff, num):
+	GameVariables.vr_camera.blackout_screen(true)
+	yield(get_tree().create_timer(0.1),"timeout")
+
 	if level == null:
 		GameVariables.current_song = filename
 		if $MultiplayerRoom.is_multiplayer_host():
@@ -916,39 +922,52 @@ func set_beast_mode(enabled):
 
 func _on_Splashscreen_finished():
 	GameVariables.vr_camera.blackout_screen(true)
+	yield(get_tree().create_timer(0.1),"timeout")
+
+	splashscreen.queue_free()
+
 	get_node("SongDatabase").intialize_song_database()
 	var default_playlist = ProjectSettings.get("game/default_playlist")
 	if default_playlist:
 		GameVariables.current_song = default_playlist	
 
-	start_levelselect()
 
 	if not GameVariables.vr_mode:
 		_on_Tracker_added("right", ARVRServer.TRACKER_CONTROLLER, 1)
 		_on_Tracker_added("left", ARVRServer.TRACKER_CONTROLLER, 2)
-		
-	splashscreen.queue_free()
-	add_child(levelselect)
-	if not GameVariables.vr_mode:
-		pass
-		#get_node("DemoTimer").start()
+
+	if ProjectSettings.has_setting("game/onboarding_complete") and ProjectSettings.get("game/onboarding_complete"):
+		start_levelselect()	
+		add_child(levelselect)
+	else:
+		_on_Onboarding_selected()
+
+
 
 var onboarding_scene
 func _on_Onboarding_selected():
 	GameVariables.vr_camera.blackout_screen(true)
+	yield(get_tree().create_timer(0.1),"timeout")
 	onboarding_scene = load("res://scenes/OnboardingStage.tscn").instance()
-	levelselect.queue_free()
+	if levelselect != null:
+		levelselect.queue_free()
 	add_child(onboarding_scene)
 	onboarding_scene.connect("onboarding_finished", self, "_on_Onboarding_finished")
 	#GameVariables.vr_camera.blackout_screen(false)
 
 func _on_Onboarding_finished():
 	GameVariables.vr_camera.blackout_screen(true)
+	yield(get_tree().create_timer(0.1),"timeout")
+
+	ProjectSettings.set("game/onboarding_complete", true)
 	onboarding_scene.queue_free()
 	start_levelselect()
 
 func change_environment(value):
 	print ("CHANGE ENV\n\n\n\n\n%s"%value)
+	GameVariables.vr_camera.blackout_screen(true)
+	yield(get_tree().create_timer(0.1),"timeout")
+	
 	if value == "angry":
 		get_node("ARVROrigin/SkyBox").switch("angry")
 		ProjectSettings.set("game/environment",value)
@@ -958,6 +977,7 @@ func change_environment(value):
 	else:
 		get_node("ARVROrigin/SkyBox").switch("calm")
 		ProjectSettings.set("game/environment",value)
+	GameVariables.vr_camera.blackout_screen(false)
 	
 
 

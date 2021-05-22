@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
+[ext_resource path="res://scenes/WelcomePanel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/StatisticsPanel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/SettingsGUIPanel.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scripts/MultiPanel.gd" type="Script" id=5]
+
+[node name="MultiPanel" type="Control"]
+margin_right = 1024.0
+margin_bottom = 512.0
+theme = ExtResource( 1 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TabContainer" type="TabContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 512.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="News" type="Tabs" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 39.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="WelcomePanel" parent="TabContainer/News" instance=ExtResource( 2 )]
+server_url = "https://portal.vrworkout.at/fast/welcome.msg"
+
+[node name="Settings" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 39.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="SettingsGUI" parent="TabContainer/Settings" instance=ExtResource( 4 )]
+
+[node name="Multiplayer" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 39.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="Label" type="Label" parent="TabContainer/Multiplayer"]
+margin_top = 184.0
+margin_right = 1015.0
+margin_bottom = 297.0
+text = "The multiplayer connection panel is currently in the connect menu behind you
+
+It will be moved into this panel in the future"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Statistics" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 39.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="StatisticsPanel" parent="TabContainer/Statistics" instance=ExtResource( 3 )]
+
+[connection signal="content_changed" from="TabContainer/News/WelcomePanel" to="." method="_on_content_changed"]
+[connection signal="content_changed" from="TabContainer/Settings/SettingsGUI" to="." method="_on_content_changed"]

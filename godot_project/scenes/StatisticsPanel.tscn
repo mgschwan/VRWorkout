@@ -12,19 +12,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="Panel" parent="."]
-margin_right = 1024.0
-margin_bottom = 512.0
-theme = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="StandValue" type="TextureProgress" parent="."]
 margin_left = 297.0
-margin_top = 37.0
+margin_top = 16.0
 margin_right = 720.0
-margin_bottom = 76.0
+margin_bottom = 55.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -58,9 +50,9 @@ __meta__ = {
 
 [node name="JumpValue" type="TextureProgress" parent="."]
 margin_left = 297.0
-margin_top = 93.0
+margin_top = 72.0
 margin_right = 720.0
-margin_bottom = 132.0
+margin_bottom = 111.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -94,9 +86,9 @@ __meta__ = {
 
 [node name="SprintValue" type="TextureProgress" parent="."]
 margin_left = 297.0
-margin_top = 149.0
+margin_top = 128.0
 margin_right = 720.0
-margin_bottom = 188.0
+margin_bottom = 167.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -130,9 +122,9 @@ __meta__ = {
 
 [node name="SquatValue" type="TextureProgress" parent="."]
 margin_left = 297.0
-margin_top = 205.0
+margin_top = 184.0
 margin_right = 720.0
-margin_bottom = 244.0
+margin_bottom = 223.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -166,9 +158,9 @@ __meta__ = {
 
 [node name="PushupValue" type="TextureProgress" parent="."]
 margin_left = 297.0
-margin_top = 261.0
+margin_top = 240.0
 margin_right = 720.0
-margin_bottom = 300.0
+margin_bottom = 279.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -202,9 +194,9 @@ __meta__ = {
 
 [node name="CrunchValue" type="TextureProgress" parent="."]
 margin_left = 297.0
-margin_top = 317.0
+margin_top = 296.0
 margin_right = 720.0
-margin_bottom = 356.0
+margin_bottom = 335.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -238,9 +230,9 @@ __meta__ = {
 
 [node name="BurpeeValue" type="TextureProgress" parent="."]
 margin_left = 297.0
-margin_top = 373.0
+margin_top = 352.0
 margin_right = 720.0
-margin_bottom = 412.0
+margin_bottom = 391.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )
@@ -274,9 +266,9 @@ __meta__ = {
 
 [node name="DifficultyValue" type="TextureProgress" parent="."]
 margin_left = 297.0
-margin_top = 429.0
+margin_top = 408.0
 margin_right = 720.0
-margin_bottom = 468.0
+margin_bottom = 447.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_under = ExtResource( 3 )

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
 [ext_resource path="res://fonts/Droid_Sans_Bold_Big.tres" type="DynamicFont" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://scripts/3rdparty/onboarding/assets/slide2.png" type="Texture" id=9]
 [ext_resource path="res://scripts/3rdparty/onboarding/assets/slide4.png" type="Texture" id=10]
 [ext_resource path="res://scripts/3rdparty/onboarding/assets/slide5.png" type="Texture" id=11]
+[ext_resource path="res://scripts/3rdparty/onboarding/assets/slide6.png" type="Texture" id=12]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -219,6 +220,40 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 11 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Onboarding6" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Onboarding6"]
+visible = false
+anchor_left = 0.009
+anchor_top = 0.019
+anchor_right = 0.953
+anchor_bottom = 0.785
+margin_left = 16.874
+margin_top = 15.714
+margin_right = 22.658
+margin_bottom = 9.70999
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center]Other important things you should know[/center]"
+text = "Other important things you should know"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="TabContainer/Onboarding6"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 12 )
 expand = true
 __meta__ = {
 "_edit_use_anchors_": false

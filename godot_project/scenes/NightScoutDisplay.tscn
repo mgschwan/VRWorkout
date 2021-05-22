@@ -5,13 +5,13 @@
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://fonts/droid-sans/DroidSans-Bold.ttf" type="DynamicFontData" id=4]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=1]
 size = 25
 outline_color = Color( 0.839216, 0.839216, 0.839216, 1 )
 use_filter = true
 font_data = ExtResource( 4 )
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=2]
 size = 10
 use_filter = true
 font_data = ExtResource( 3 )
@@ -43,7 +43,7 @@ margin_top = 25.0
 margin_right = 62.0
 margin_bottom = 58.0
 theme = ExtResource( 1 )
-custom_fonts/normal_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 1 )
 bbcode_enabled = true
 bbcode_text = "[center]0[/center]"
 text = "0"
@@ -56,7 +56,7 @@ margin_left = 28.6434
 margin_top = 48.6974
 margin_right = 37.6434
 margin_bottom = 62.6974
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "0"
 __meta__ = {
 "_edit_use_anchors_": false

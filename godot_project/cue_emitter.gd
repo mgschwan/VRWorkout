@@ -199,7 +199,7 @@ func set_move_tween(cue_node, start_pos, end_pos, actual_flytime, curved_directi
 		else:
 			additional_move_modifier.interpolate_property(cue_node,"translation:y",0,GameVariables.player_height+1.5,actual_flytime*0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 			additional_move_modifier.interpolate_property(cue_node,"translation:y",GameVariables.player_height+1.5,y,actual_flytime*0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,actual_flytime*0.5)
-			
+		
 	
 		additional_move_modifier.interpolate_property(cue_node,"translation:x",x,x+curved_direction,actual_flytime*0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
 		additional_move_modifier.interpolate_property(cue_node,"translation:x",x+curved_direction, 0,actual_flytime*0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,actual_flytime*0.5)

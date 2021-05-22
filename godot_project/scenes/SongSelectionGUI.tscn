@@ -61,7 +61,7 @@ __meta__ = {
 margin_left = 22.0
 margin_top = 95.0
 margin_right = 746.0
-margin_bottom = 428.0
+margin_bottom = 420.0
 custom_styles/bg = SubResource( 2 )
 custom_constants/vseparation = 8
 max_text_lines = 2
@@ -109,7 +109,7 @@ margin_top = 440.0
 margin_right = 518.0
 margin_bottom = 490.0
 rect_min_size = Vector2( 150, 0 )
-text = "Resting +20sec"
+text = "Resting +10sec"
 __meta__ = {
 "_edit_use_anchors_": false
 }

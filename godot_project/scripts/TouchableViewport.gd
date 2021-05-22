@@ -7,6 +7,7 @@ var last_click_time = 0
 #	print ("Viewport received input event: %s (%s/%s)"%[str(event),str(event.pressed),str(event.position)])
 	
 func _on_content_changed():
+	print ("Content changed: %s"%self.get_path())
 	render_target_update_mode = Viewport.UPDATE_ONCE
 	
 func manual_button_click(position):

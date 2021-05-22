@@ -20,12 +20,12 @@ var frame_idx = 0
 func _process(delta):
 	frame_idx += 1
 	if frame_idx > 20:
-		if youtube.is_youtube_available(): #and not $Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.visible:
+		if youtube.is_youtube_available() and not $Youtube/YoutubeButton.visible:
 			#print ("Youtube available")
 			$Youtube/YoutubeButton.show()
 			$Youtube/ActivateYoutube.hide()
 			emit_signal("content_changed")
-		elif not youtube.is_youtube_available(): # and $Viewport/CanvasLayer/TabContainer/Youtube/YoutubeButton.visible:
+		elif not youtube.is_youtube_available() and $Youtube/YoutubeButton.visible:
 			#print ("Youtube not available")
 			$Youtube/YoutubeButton.hide()
 			$Youtube/ActivateYoutube.show()

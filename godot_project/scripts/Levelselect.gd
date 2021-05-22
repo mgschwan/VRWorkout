@@ -16,8 +16,6 @@ func update_widget():
 	get_node("BPM/OverrideBeats").value = ProjectSettings.get("game/override_beats")
 	get_node("BPM/OverrideBeats").update_switch()
 
-	get_node("SettingsCarousel/Switchboard/ExerciseDuration").set_value(ProjectSettings.get("game/exercise_duration_avg"))
-
 	GameVariables.exercise_state_list = []
 	
 	
@@ -40,7 +38,6 @@ func _ready():
 	get_node("SongSelector").select_difficulty(GameVariables.difficulty)
 	GameVariables.vr_camera.blackout_screen(false)
 	#show_settings("battle")
-	#show_settings("switchboard")
 	yield(get_tree().create_timer(1.0),"timeout")
 	show_settings("exercises")
 	
@@ -104,7 +101,6 @@ func _on_ExerciseCollection_selected(collection):
 	update_widget()
 
 func show_settings(panel):
-	var switchboard_node = get_node("SettingsCarousel/Switchboard")
 	var connections_node = get_node("SettingsCarousel/Connections")
 	var exercises_node = get_node("SettingsCarousel/Exercises")
 	var battle_node = get_node("SettingsCarousel/Battle")
@@ -115,33 +111,23 @@ func show_settings(panel):
 
 	carousel.translation.y = -3
 
-	if panel == "switchboard":
-		gu.activate_node(switchboard_node)
-		gu.deactivate_node(connections_node)
-		gu.deactivate_node(exercises_node)
-		gu.deactivate_node(battle_node)
-		angle = 0
-	elif panel == "connections":
-		gu.deactivate_node(switchboard_node)
+	if panel == "connections":
 		gu.activate_node(connections_node)
 		gu.deactivate_node(exercises_node)
 		gu.deactivate_node(battle_node)
 		angle = 3*PI/2.0
 	elif panel == "exercises":
-		gu.deactivate_node(switchboard_node)
 		gu.deactivate_node(connections_node)
 		gu.activate_node(exercises_node)
 		gu.deactivate_node(battle_node)
 		angle = PI
 	elif panel == "battle":
-		gu.deactivate_node(switchboard_node)
 		gu.deactivate_node(connections_node)
 		gu.deactivate_node(exercises_node)
 		gu.activate_node(battle_node)
 		update_online_features()
 		angle = PI/2.0
 	elif panel == "empty":
-		gu.deactivate_node(switchboard_node)
 		gu.deactivate_node(connections_node)
 		gu.deactivate_node(exercises_node)
 		gu.deactivate_node(battle_node)
@@ -155,8 +141,6 @@ func show_settings(panel):
 	t.start()
 
 		
-func _on_SettingsButton_selected():
-	show_settings("switchboard")	
 	
 func _on_ExerciseButton_selected():
 	show_settings("exercises")	
@@ -256,8 +240,6 @@ func _on_AudioStreamPlayer_finished():
 	get_node("AudioStreamPlayer").play(0)
 
 
-func _on_ExerciseDuration_value_changed(value):
-	ProjectSettings.set("game/exercise_duration_avg", value)
 
 
 func _on_GamePanel_onboarding_selected():
@@ -269,32 +251,7 @@ func update_multiplayer_panels():
 		$SongSelector.hide_panels()
 	else:
 		$SongSelector.show_panels()
-
-
-func _on_SetWeightBar_selected_by(controller):
-	var new_controller = get_tree().current_scene.create_controller("weightbar", controller.controller_id, "controller")
-	
-	var main_controller = ""
-	if get_tree().current_scene.left_controller == controller:
-		main_controller = "left"
-		get_tree().current_scene.left_controller = null
-	elif get_tree().current_scene.right_controller == controller:
-		main_controller = "right"
-		get_tree().current_scene.right_controller = null
-	
-	get_tree().current_scene.replace_tracker(controller, new_controller)
-	
-	#Tell the system to keep the tracker visible if it's removed
-	var tracker_identifier = gu.get_tracker_id(new_controller)
-	var tracker_config = gu.get_tracker_config(tracker_identifier)
-	tracker_config["should_persist"] = true
-	gu.set_tracker_config(tracker_identifier, tracker_config)
-	
-	if main_controller == "left":
-		get_tree().current_scene.left_controller = new_controller
-	elif main_controller == "right":
-		get_tree().current_scene.right_controller = new_controller
-
+		
 func _on_multiplayer_game_message(sender, message):
 	var message_type = message.get("type","")
 	if message_type == "playlist":

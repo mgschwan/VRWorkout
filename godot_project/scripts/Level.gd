@@ -309,6 +309,8 @@ func _ready():
 	if not (GameVariables.multiplayer_api and GameVariables.multiplayer_api.is_multiplayer()):
 		game_state = GameSyncSate.LEVEL_BEGIN
 
+	GameVariables.vr_camera.blackout_screen(false)
+
 
 #Used for multiplayer to prepopulate the exercises on all players
 func prebuild_exercise_list():

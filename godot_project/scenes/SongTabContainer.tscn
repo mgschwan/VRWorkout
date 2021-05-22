@@ -20,7 +20,6 @@ __meta__ = {
 }
 
 [node name="Playlist" type="Tabs" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
@@ -149,6 +148,7 @@ The Quest will stop network access of the browser after 10 minutes. You will hav
 "
 
 [node name="Tutorial" type="Tabs" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0

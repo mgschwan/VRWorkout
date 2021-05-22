@@ -10,32 +10,34 @@
 [ext_resource path="res://scripts/ConnectPadInput.gd" type="Script" id=8]
 [ext_resource path="res://scripts/TouchableViewport.gd" type="Script" id=9]
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.380392, 0.298039, 0.831373, 1 )
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=2]
 outline_color = Color( 0, 0, 0, 1 )
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="PlaneMesh" id=2]
+[sub_resource type="PlaneMesh" id=3]
 size = Vector2( 2.217, 4 )
 
-[sub_resource type="ViewportTexture" id=3]
+[sub_resource type="ViewportTexture" id=4]
 flags = 12
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="SpatialMaterial" id=5]
 resource_local_to_scene = true
 flags_transparent = true
 flags_unshaded = true
-albedo_texture = SubResource( 3 )
+params_use_alpha_scissor = true
+params_alpha_scissor_threshold = 0.98
+albedo_texture = SubResource( 4 )
 
-[sub_resource type="BoxShape" id=5]
+[sub_resource type="BoxShape" id=6]
 margin = 0.001
 extents = Vector3( 1.109, 0.05, 2 )
 
@@ -162,8 +164,8 @@ margin_top = 100.0
 margin_right = 90.0
 margin_bottom = 141.0
 theme = ExtResource( 7 )
-custom_styles/normal = SubResource( 6 )
-custom_fonts/font = SubResource( 1 )
+custom_styles/normal = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "Target Heartrate
 80"
 align = 1
@@ -173,12 +175,12 @@ autowrap = true
 script = ExtResource( 8 )
 
 [node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
-mesh = SubResource( 2 )
-material/0 = SubResource( 4 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 5 )
 
 [node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0339105, 0 )
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 
 [node name="tl_marker" type="Spatial" parent="StaticBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.109, 0, -2 )

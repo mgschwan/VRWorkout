@@ -1,217 +1,202 @@
-extends Spatial
+extends Control
+
+signal content_changed()
 
 export var beast_mode = false
 
-
 func update_widgets():
 	if ProjectSettings.get("game/exercise/hold_cues"):
-		$Viewport/CanvasLayer/HoldCue/HoldCueButton.pressed = true
+		$HoldCue/HoldCueButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/HoldCue/HoldCueButton.pressed = false
+		$HoldCue/HoldCueButton.pressed = false
 		
 	if ProjectSettings.get("game/exercise/parcour"):
-		$Viewport/CanvasLayer/Parcour/ParcourButton.pressed = true
+		$Parcour/ParcourButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Parcour/ParcourButton.pressed = false
+		$Parcour/ParcourButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/pushup"):
-		$Viewport/CanvasLayer/Pushup/PushupButton.pressed = true
+		$Pushup/PushupButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Pushup/PushupButton.pressed = false
+		$Pushup/PushupButton.pressed = false
 
 	if ProjectSettings.get("game/hud_enabled"):
-		$Viewport/CanvasLayer/SafePushups/SafePushupsButton.pressed = true
+		$SafePushups/SafePushupsButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/SafePushups/SafePushupsButton.pressed = false
+		$SafePushups/SafePushupsButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/burpees"):
-		$Viewport/CanvasLayer/Burpee/BurpeeButton.pressed = true
+		$Burpee/BurpeeButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Burpee/BurpeeButton.pressed = false
+		$Burpee/BurpeeButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/stand"):
-		$Viewport/CanvasLayer/Stand/StandButton.pressed = true
+		$Stand/StandButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Stand/StandButton.pressed = false
+		$Stand/StandButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/duck"):
-		$Viewport/CanvasLayer/Ducking/DuckButton.pressed = true
+		$Ducking/DuckButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Ducking/DuckButton.pressed = false
+		$Ducking/DuckButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/stand/windmill"):
-		$Viewport/CanvasLayer/Windmill/WindmillButton.pressed = true
+		$Windmill/WindmillButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Windmill/WindmillButton.pressed = false
+		$Windmill/WindmillButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/stand/curved"):
-		$Viewport/CanvasLayer/CurvedCues/CurvedCuesButton.pressed = true
+		$CurvedCues/CurvedCuesButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/CurvedCues/CurvedCuesButton.pressed = false
+		$CurvedCues/CurvedCuesButton.pressed = false
 
 	if ProjectSettings.get("game/equalizer"):
-		$Viewport/CanvasLayer/Equalizer/EqualizerButton.pressed = true
+		$Equalizer/EqualizerButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Equalizer/EqualizerButton.pressed = false
+		$Equalizer/EqualizerButton.pressed = false
 
 	if ProjectSettings.get("game/easy_transition"):
-		$Viewport/CanvasLayer/ExtendedTransition/ExtendedTransitionButton.pressed = true
+		$ExtendedTransition/ExtendedTransitionButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/ExtendedTransition/ExtendedTransitionButton.pressed = false
+		$ExtendedTransition/ExtendedTransitionButton.pressed = false
 
 	if ProjectSettings.get("game/instructor"):
-		$Viewport/CanvasLayer/Instructor/InstructorButton.pressed = true
+		$Instructor/InstructorButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Instructor/InstructorButton.pressed = false
+		$Instructor/InstructorButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/jump"):
-		$Viewport/CanvasLayer/Jump/JumpButton.pressed = true
+		$Jump/JumpButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Jump/JumpButton.pressed = false
+		$Jump/JumpButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/sprint"):
-		$Viewport/CanvasLayer/Sprint/SprintButton.pressed = true
+		$Sprint/SprintButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Sprint/SprintButton.pressed = false
+		$Sprint/SprintButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/squat"):
-		$Viewport/CanvasLayer/Squat/SquatButton.pressed = true
+		$Squat/SquatButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Squat/SquatButton.pressed = false
+		$Squat/SquatButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/kneesaver"):
-		$Viewport/CanvasLayer/Kneesaver/KneesaverButton.pressed = true
+		$Kneesaver/KneesaverButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Kneesaver/KneesaverButton.pressed = false
+		$Kneesaver/KneesaverButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/crunch"):
-		$Viewport/CanvasLayer/Crunches/CrunchesButton.pressed = true
+		$Crunches/CrunchesButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Crunches/CrunchesButton.pressed = false
+		$Crunches/CrunchesButton.pressed = false
 
 	if ProjectSettings.get("game/beast_mode"):
-		$Viewport/CanvasLayer/BeastMode/BeastModeButton.pressed = true
+		$BeastMode/BeastModeButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/BeastMode/BeastModeButton.pressed = false
+		$BeastMode/BeastModeButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/strength_focus"):
-		$Viewport/CanvasLayer/StrengthMode/StrengthModeButton.pressed = true
+		$StrengthMode/StrengthModeButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/StrengthMode/StrengthModeButton.pressed = false
+		$StrengthMode/StrengthModeButton.pressed = false
 
 	if ProjectSettings.get("game/exercise/weights"):
-		$Viewport/CanvasLayer/Weights/WeightsButton.pressed = true
+		$Weights/WeightsButton.pressed = true
 	else:
-		$Viewport/CanvasLayer/Weights/WeightsButton.pressed = false
+		$Weights/WeightsButton.pressed = false
+		
+	var avg_exercise_duration = ProjectSettings.get("game/exercise_duration_avg")
+	$ExerciseDuration/NumberEntry.set_value(avg_exercise_duration)
 
-
-	$Viewport.render_target_update_mode = Viewport.UPDATE_ONCE
-
-
-var frame_limiter = 0
-func _process(delta):
-	frame_limiter += 1
-	if frame_limiter > 50:
-		frame_limiter = 0
-		update_widgets()
+	emit_signal("content_changed")
 
 func _ready():
 	update_widgets()
 
 func _on_HoldCueButton_pressed():
-	ProjectSettings.set("game/exercise/hold_cues", $Viewport/CanvasLayer/HoldCue/HoldCueButton.pressed)
+	ProjectSettings.set("game/exercise/hold_cues", $HoldCue/HoldCueButton.pressed)
 	update_widgets()
 
-
 func _on_ParcourButton_pressed():
-	ProjectSettings.set("game/exercise/parcour", $Viewport/CanvasLayer/Parcour/ParcourButton.pressed)
+	ProjectSettings.set("game/exercise/parcour", $Parcour/ParcourButton.pressed)
 	update_widgets()
 
 
 func _on_PushupButton_pressed():
-	ProjectSettings.set("game/exercise/pushup", $Viewport/CanvasLayer/Pushup/PushupButton.pressed)
+	ProjectSettings.set("game/exercise/pushup", $Pushup/PushupButton.pressed)
 	update_widgets()
 
 func _on_SafePushupsButton_pressed():
-	ProjectSettings.set("game/hud_enabled", $Viewport/CanvasLayer/SafePushups/SafePushupsButton.pressed)
+	ProjectSettings.set("game/hud_enabled", $SafePushups/SafePushupsButton.pressed)
 	update_widgets()
 
 func _on_BurpeeButton_pressed():
-	ProjectSettings.set("game/exercise/burpees", $Viewport/CanvasLayer/Burpee/BurpeeButton.pressed)
+	ProjectSettings.set("game/exercise/burpees", $Burpee/BurpeeButton.pressed)
 	update_widgets()
 
 func _on_StandButton_pressed():
-	ProjectSettings.set("game/exercise/stand", $Viewport/CanvasLayer/Stand/StandButton.pressed)
+	ProjectSettings.set("game/exercise/stand", $Stand/StandButton.pressed)
 	update_widgets()
 
 func _on_DuckingButton_pressed():
-	ProjectSettings.set("game/exercise/duck", $Viewport/CanvasLayer/Ducking/DuckButton.pressed)
+	ProjectSettings.set("game/exercise/duck", $Ducking/DuckButton.pressed)
 	update_widgets()
 	
 func _on_WindmillButton_pressed():
-	ProjectSettings.set("game/exercise/stand/windmill", $Viewport/CanvasLayer/Windmill/WindmillButton.pressed)
+	ProjectSettings.set("game/exercise/stand/windmill", $Windmill/WindmillButton.pressed)
 	update_widgets()
 	
 func _on_EqualizerButton_pressed():
-	ProjectSettings.set("game/equalizer", $Viewport/CanvasLayer/Equalizer/EqualizerButton.pressed)
+	ProjectSettings.set("game/equalizer", $Equalizer/EqualizerButton.pressed)
 	update_widgets()
 
 func _on_ExtendedTransitionButton_pressed():
-	ProjectSettings.set("game/easy_transition", $Viewport/CanvasLayer/ExtendedTransition/ExtendedTransitionButton.pressed)
+	ProjectSettings.set("game/easy_transition", $ExtendedTransition/ExtendedTransitionButton.pressed)
 	update_widgets()
 
 func _on_InstructorButton_pressed():
-	ProjectSettings.set("game/instructor", $Viewport/CanvasLayer/Instructor/InstructorButton.pressed)
+	ProjectSettings.set("game/instructor", $Instructor/InstructorButton.pressed)
 	update_widgets()
 	
 func _on_JumpButton_pressed():
-	ProjectSettings.set("game/exercise/jump", $Viewport/CanvasLayer/Jump/JumpButton.pressed)
+	ProjectSettings.set("game/exercise/jump", $Jump/JumpButton.pressed)
 	update_widgets()
 
 func _onSprintButton_pressed():
-	ProjectSettings.set("game/exercise/sprint", $Viewport/CanvasLayer/Sprint/SprintButton.pressed)
+	ProjectSettings.set("game/exercise/sprint", $Sprint/SprintButton.pressed)
 	update_widgets()
 	
 func _on_SquatButton_pressed():
-	ProjectSettings.set("game/exercise/squat", $Viewport/CanvasLayer/Squat/SquatButton.pressed)
+	ProjectSettings.set("game/exercise/squat", $Squat/SquatButton.pressed)
 	update_widgets()
 
 func _on_KneesaverButton_pressed():
-	ProjectSettings.set("game/exercise/kneesaver", $Viewport/CanvasLayer/Kneesaver/KneesaverButton.pressed)
+	ProjectSettings.set("game/exercise/kneesaver", $Kneesaver/KneesaverButton.pressed)
 	update_widgets()
 
 func _on_CrunchesButton_pressed():
-	ProjectSettings.set("game/exercise/crunch", $Viewport/CanvasLayer/Crunches/CrunchesButton.pressed)
+	ProjectSettings.set("game/exercise/crunch", $Crunches/CrunchesButton.pressed)
 	update_widgets()
 
 func _on_BeastModeButton_pressed():
 	beast_mode = not beast_mode
 	get_tree().current_scene.set_beast_mode(beast_mode)
 
-	ProjectSettings.set("game/beast_mode", $Viewport/CanvasLayer/BeastMode/BeastModeButton.pressed)
+	ProjectSettings.set("game/beast_mode", $BeastMode/BeastModeButton.pressed)
 	update_widgets()
 
 func _on_StrengthModeButton_pressed():	
-	ProjectSettings.set("game/exercise/strength_focus", $Viewport/CanvasLayer/StrengthMode/StrengthModeButton.pressed)
+	ProjectSettings.set("game/exercise/strength_focus", $StrengthMode/StrengthModeButton.pressed)
 	update_widgets()
-
-
-	
-#	get_node("SettingsCarousel/Switchboard/YogaSwitch").value = ProjectSettings.get("game/exercise/yoga")
-#	get_node("SettingsCarousel/Switchboard/YogaSwitch").update_switch()
-
-	
-
-
-
-
-
 
 func _on_WeightsButton_pressed():
-	ProjectSettings.set("game/exercise/weights", $Viewport/CanvasLayer/Weights/WeightsButton.pressed)
+	ProjectSettings.set("game/exercise/weights", $Weights/WeightsButton.pressed)
 	update_widgets()
 
-
 func _on_CurvedCuesButton_pressed():
-	ProjectSettings.set("game/exercise/stand/curved", $Viewport/CanvasLayer/CurvedCues/CurvedCuesButton.pressed)
+	ProjectSettings.set("game/exercise/stand/curved", $CurvedCues/CurvedCuesButton.pressed)
+	update_widgets()
+
+func _on_ExerciseDuration_value_changed(value):
+	ProjectSettings.set("game/exercise_duration_avg", value)
 	update_widgets()

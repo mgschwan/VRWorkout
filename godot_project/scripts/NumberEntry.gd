@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 signal view_changed
 signal value_changed
@@ -13,15 +13,17 @@ func update_display():
 	$RichTextLabel.bbcode_text = "[center]%d[/center]"%value
 	emit_signal("view_changed")
 	
-func _ready():
+func set_value(value):
+	self.value = value
 	update_display()
+	
+func _ready():
+	set_value(value)
 
 func _on_Plus_pressed():
-	value = clamp(value + step, min_v, max_v)
-	update_display()
+	set_value(clamp(value + step, min_v, max_v))
 	emit_signal("value_changed", value)
 
 func _on_Minus_pressed():
-	value = clamp(value - step, min_v, max_v)
-	update_display()
+	set_value(clamp(value - step, min_v, max_v))
 	emit_signal("value_changed", value)

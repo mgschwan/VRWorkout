@@ -1,18 +1,16 @@
-[gd_scene load_steps=65 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
 [ext_resource path="res://scenes/GameSelectionPanel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://BPM.gd" type="Script" id=4]
-[ext_resource path="res://ControllerAdjuster.gd" type="Script" id=5]
 [ext_resource path="res://scripts/Levelselect.gd" type="Script" id=6]
 [ext_resource path="res://models/super_white.material" type="Material" id=7]
 [ext_resource path="res://scenes/level_platform.tscn" type="PackedScene" id=8]
 [ext_resource path="res://InfoBox.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/ImagePanel.tscn" type="PackedScene" id=10]
-[ext_resource path="res://assets/weightbar.jpg" type="Texture" id=11]
 [ext_resource path="res://scenes/Keyboard.tscn" type="PackedScene" id=12]
-[ext_resource path="res://models/gold.material" type="Material" id=14]
+[ext_resource path="res://scenes/MultiPanelGUI.tscn" type="PackedScene" id=13]
 [ext_resource path="res://ToggleSwitch.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scenes/VRHealthConnection.tscn" type="PackedScene" id=16]
 [ext_resource path="res://InfoBoxOpaque.tscn" type="PackedScene" id=17]
@@ -20,7 +18,6 @@
 [ext_resource path="res://assets/enemy_medium.jpg" type="Texture" id=19]
 [ext_resource path="res://audio/snare_hit.wav" type="AudioStream" id=20]
 [ext_resource path="res://scenes/PortalInfoSwitch.tscn" type="PackedScene" id=21]
-[ext_resource path="res://scenes/StatisticsPanel.tscn" type="PackedScene" id=22]
 [ext_resource path="res://SongSelector.tscn" type="PackedScene" id=23]
 [ext_resource path="res://scenes/Button.tscn" type="PackedScene" id=24]
 [ext_resource path="res://scenes/PlayerHeightAdjuster.tscn" type="PackedScene" id=26]
@@ -35,11 +32,7 @@
 [ext_resource path="res://scenes/SideQuestConnection.tscn" type="PackedScene" id=37]
 [ext_resource path="res://scenes/SideQuestPanel.tscn" type="PackedScene" id=38]
 [ext_resource path="res://scenes/AchievementDisplay.tscn" type="PackedScene" id=39]
-[ext_resource path="res://scenes/NumberEntryWidget.tscn" type="PackedScene" id=40]
-[ext_resource path="res://scenes/SimpleText.tscn" type="PackedScene" id=41]
-[ext_resource path="res://scenes/WelcomePanel.tscn" type="PackedScene" id=42]
 [ext_resource path="res://scenes/EnvironmentSelectionPanel.tscn" type="PackedScene" id=43]
-[ext_resource path="res://scenes/SettingsGUIPanel.tscn" type="PackedScene" id=44]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.2
@@ -54,102 +47,7 @@ height = 0.1
 albedo_color = Color( 0.0823529, 0, 0.654902, 1 )
 metallic_specular = 0.0
 
-[sub_resource type="PlaneMesh" id=4]
-size = Vector2( 2, 1 )
-
-[sub_resource type="ViewportTexture" id=5]
-flags = 12
-viewport_path = NodePath("Stats/Viewport")
-
-[sub_resource type="SpatialMaterial" id=6]
-resource_local_to_scene = true
-flags_unshaded = true
-albedo_texture = SubResource( 5 )
-
-[sub_resource type="SphereShape" id=7]
-radius = 0.1
-
-[sub_resource type="SphereMesh" id=8]
-radius = 0.1
-height = 0.2
-
-[sub_resource type="GDScript" id=9]
-script/source = "extends Spatial
-
-export(String) var text = \"default\"
-
-var textnode
-export(int) var font_size = 32
-export(int) var viewport_width = 256
-export(int) var viewport_height = 64
-
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = \"text\"
-
-var viewport
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	viewport = get_node(\"Viewport\")	
-
-	viewport.size = Vector2(viewport_width,viewport_height)
-
-	textnode = viewport.get_node(\"CanvasLayer/Panel/Container/Label\")
-	viewport.get_node(\"CanvasLayer/Panel\").rect_size = Vector2(viewport_width/0.8,viewport_height/0.8)
-	
-	var textmesh = get_node(\"MeshInstance\")
-
-	var font = textnode.get(\"custom_fonts/font\")
-
-
-	if font.size != font_size:
-		#Make a local copy of the texture
-		print (\"Font needs copying\")
-		#Custom size needs a local copy of the font
-		var font_copy = font.duplicate(true)
-		textnode.set(\"custom_fonts/font\", font_copy)
-		font_copy.size = font_size
-		
-	textmesh.set_surface_material(0,textmesh.get_surface_material(0).duplicate())
-		
-	textmesh.mesh.size = Vector2(2, 2*float(viewport_height)/float(viewport_width))
-	
-	print_info(text)
-
-func print_info(t):
-	text = t.replace(\"\\\\n\",\"\\n\")
-	textnode.text = text
-	viewport.render_target_update_mode = Viewport.UPDATE_ONCE
-
-
-
-
-
-"
-
-[sub_resource type="StyleBoxFlat" id=10]
-bg_color = Color( 0, 0, 0, 1 )
-
-[sub_resource type="DynamicFont" id=11]
-size = 32
-use_filter = true
-font_data = ExtResource( 1 )
-
-[sub_resource type="PlaneMesh" id=12]
-size = Vector2( 2, 0.5 )
-
-[sub_resource type="ViewportTexture" id=13]
-flags = 4
-viewport_path = NodePath("SettingsCarousel/Switchboard/ControllerAdjuster/TextElement/Viewport")
-
-[sub_resource type="SpatialMaterial" id=14]
-resource_local_to_scene = true
-flags_unshaded = true
-albedo_texture = SubResource( 13 )
-
-[sub_resource type="GDScript" id=15]
+[sub_resource type="GDScript" id=12]
 script/source = "extends Spatial
 
 export(String) var text = \"default\"
@@ -200,38 +98,29 @@ func print_info(t):
 
 "
 
-[sub_resource type="Theme" id=16]
+[sub_resource type="Theme" id=13]
 default_font = ExtResource( 30 )
 
-[sub_resource type="StyleBoxFlat" id=17]
+[sub_resource type="StyleBoxFlat" id=14]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="DynamicFont" id=18]
+[sub_resource type="DynamicFont" id=15]
 size = 32
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="PlaneMesh" id=19]
+[sub_resource type="PlaneMesh" id=16]
 size = Vector2( 2, 0.5 )
 
-[sub_resource type="ViewportTexture" id=20]
-flags = 4
-viewport_path = NodePath("SettingsCarousel/Exercises/Header/Viewport")
-
-[sub_resource type="SpatialMaterial" id=21]
-resource_local_to_scene = true
-flags_unshaded = true
-albedo_texture = SubResource( 20 )
-
-[sub_resource type="ViewportTexture" id=22]
+[sub_resource type="ViewportTexture" id=17]
 viewport_path = NodePath("SettingsCarousel/Battle/Header/Viewport")
 
-[sub_resource type="SpatialMaterial" id=23]
+[sub_resource type="SpatialMaterial" id=18]
 resource_local_to_scene = true
 flags_unshaded = true
-albedo_texture = SubResource( 22 )
+albedo_texture = SubResource( 17 )
 
-[sub_resource type="PrismMesh" id=24]
+[sub_resource type="PrismMesh" id=19]
 size = Vector3( 0.03, 0.03, 0.03 )
 
 [node name="Spatial" type="Spatial"]
@@ -246,7 +135,7 @@ ontext = "Recenter"
 transform = Transform( 0.913545, 0, 0.406737, 0, 1, 0, -0.406737, 0, 0.913545, 0, -0.34, 0 )
 
 [node name="BPM" type="StaticBody" parent="."]
-transform = Transform( 0.512852, 0.341176, -0.78777, -6.47481e-08, 0.917637, 0.39742, 0.858478, -0.203818, 0.470613, -1.03415, 1.19237, 0.898615 )
+transform = Transform( 0.0149038, 0.397376, -0.917535, -6.47481e-08, 0.917637, 0.39742, 0.99989, -0.00592356, 0.0136778, -1.58985, 1.19237, 0.551304 )
 script = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="BPM"]
@@ -298,18 +187,6 @@ visible = false
 transform = Transform( 1.2, 0, 0, 0, 1, 9.9729e-15, 0, -1.66215e-14, 0.6, 0, 0, 0 )
 visible = false
 
-[node name="Viewport" type="Viewport" parent="Stats"]
-size = Vector2( 1024, 512 )
-msaa = 6
-render_target_v_flip = true
-
-[node name="StatisticsPanel" parent="Stats/Viewport" instance=ExtResource( 22 )]
-
-[node name="Display" type="MeshInstance" parent="Stats"]
-transform = Transform( 0.999999, -5.7742e-08, -1.39698e-09, 7.45058e-09, 1, 1.64728e-08, -4.65661e-10, -1.53086e-08, 1, 2.331, 0, 0 )
-mesh = SubResource( 4 )
-material/0 = SubResource( 6 )
-
 [node name="SettingsCarousel" type="Spatial" parent="."]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, -3, -2.3 )
 
@@ -332,70 +209,6 @@ transform = Transform( 1, -1.13687e-13, 6.77626e-21, 1.13687e-13, 1, 7.4607e-14,
 [node name="ConnectPad" parent="SettingsCarousel/Connections" instance=ExtResource( 36 )]
 transform = Transform( 1, 0, -2.38419e-07, 0, 1, 0, 2.38419e-07, 0, 1, 1.27542, 1.18846, -0.45944 )
 
-[node name="Switchboard" type="Spatial" parent="SettingsCarousel"]
-
-[node name="SettingsGUI" parent="SettingsCarousel/Switchboard" instance=ExtResource( 44 )]
-transform = Transform( 0.25, 6.51683e-07, 1.32716e-14, -1.32716e-14, 1.62921e-07, -0.25, -1.62921e-07, 1, 4.07302e-08, 0.160368, 1.48742, 1.33247 )
-
-[node name="ControllerAdjuster" type="StaticBody" parent="SettingsCarousel/Switchboard"]
-transform = Transform( 0.925256, 0, 0.379343, 0, 1, 0, -0.379343, 0, 0.925256, -0.594399, 1.60599, 1.34621 )
-script = ExtResource( 5 )
-
-[node name="CollisionShape" type="CollisionShape" parent="SettingsCarousel/Switchboard/ControllerAdjuster"]
-shape = SubResource( 7 )
-
-[node name="Sphere" type="MeshInstance" parent="SettingsCarousel/Switchboard/ControllerAdjuster"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.19209e-07 )
-mesh = SubResource( 8 )
-material/0 = ExtResource( 14 )
-
-[node name="TextElement" type="Spatial" parent="SettingsCarousel/Switchboard/ControllerAdjuster"]
-transform = Transform( 0.0864364, 2.98023e-08, -1.11022e-16, 0, -4.37114e-08, -0.0864362, -5.58794e-09, 1, -3.77825e-09, 1.19209e-07, 0, 0.110089 )
-script = SubResource( 9 )
-viewport_height = 128
-
-[node name="Viewport" type="Viewport" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement"]
-size = Vector2( 256, 256 )
-msaa = 6
-render_target_v_flip = true
-
-[node name="CanvasLayer" type="CanvasLayer" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement/Viewport"]
-
-[node name="Panel" type="Panel" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement/Viewport/CanvasLayer"]
-margin_right = 256.0
-margin_bottom = 256.0
-custom_styles/panel = SubResource( 10 )
-
-[node name="Container" type="MarginContainer" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement/Viewport/CanvasLayer/Panel"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 82.0
-margin_bottom = 27.0
-theme = ExtResource( 2 )
-
-[node name="Label" type="Label" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement/Viewport/CanvasLayer/Panel/Container"]
-margin_right = 165.0
-margin_bottom = 46.0
-custom_fonts/font = SubResource( 11 )
-text = "defaulttext"
-
-[node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Switchboard/ControllerAdjuster/TextElement"]
-transform = Transform( 1, 4.76837e-07, 0, -1.86265e-09, 1, -3.33067e-16, -5.32907e-15, 2.13163e-14, 1, 0, 0, -1.41491 )
-mesh = SubResource( 12 )
-material/0 = SubResource( 14 )
-
-[node name="ExerciseDuration" parent="SettingsCarousel/Switchboard" instance=ExtResource( 40 )]
-transform = Transform( -4.37114e-09, 0.1, -4.37114e-09, 0, -4.37114e-09, -0.1, -0.1, -4.37114e-09, 1.91069e-16, -0.774999, 1.21161, 1.73877 )
-min_v = 5
-
-[node name="description" parent="SettingsCarousel/Switchboard/ExerciseDuration" instance=ExtResource( 41 )]
-transform = Transform( 0.6, 7.10543e-14, 1.69407e-21, -7.10543e-14, 0.6, -3.58179e-21, -5.0822e-21, -3.58179e-21, 0.6, 0, 0, -2.78321 )
-text = "[center]Average exercise duration in seconds[/center]"
-
-[node name="SetWeightBar" parent="SettingsCarousel/Switchboard" instance=ExtResource( 10 )]
-transform = Transform( 2.82131e-08, 0.1, -4.37113e-09, 3.25842e-08, -4.37114e-09, -0.1, -0.1, 2.82131e-08, -3.25842e-08, -0.772041, 1.29706, 2.21058 )
-image = ExtResource( 11 )
-
 [node name="Exercises" type="Spatial" parent="SettingsCarousel"]
 transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, -1.19209e-07, 0, -0.225055 )
 
@@ -405,55 +218,12 @@ transform = Transform( -9.77524e-08, -1, 2.62268e-08, 0, -4.37114e-08, -0.6, 0.6
 [node name="EnvironmentSelectionPanel" parent="SettingsCarousel/Exercises" instance=ExtResource( 43 )]
 transform = Transform( -8.02679e-08, -1, 8.74228e-09, 0, -4.37114e-08, -0.2, 0.2, -4.01339e-07, 3.50862e-15, -1, 1.0238, 0.152352 )
 
-[node name="Header" type="Spatial" parent="SettingsCarousel/Exercises"]
-transform = Transform( 2.93257e-07, -1, 3.18518e-14, 9.77524e-08, 2.65431e-14, -0.6, 0.6, 4.88762e-07, 9.77524e-08, -1.06915, 2.11855, -0.111982 )
-script = SubResource( 15 )
-text = "Step 1: Select workout or exercises\\nStep 2: Select song(s) behind you or Freeplay\\nStep 3: Press Start"
-font_size = 18
-viewport_width = 512
-viewport_height = 96
-
-[node name="Viewport" type="Viewport" parent="SettingsCarousel/Exercises/Header"]
-size = Vector2( 512, 96 )
-msaa = 6
-disable_3d = true
-usage = 0
-render_target_v_flip = true
-render_target_update_mode = 0
-
-[node name="CanvasLayer" type="CanvasLayer" parent="SettingsCarousel/Exercises/Header/Viewport"]
-
-[node name="Panel" type="Panel" parent="SettingsCarousel/Exercises/Header/Viewport/CanvasLayer"]
-margin_right = 256.0
-margin_bottom = 48.0
-theme = SubResource( 16 )
-custom_styles/panel = SubResource( 17 )
-
-[node name="Container" type="MarginContainer" parent="SettingsCarousel/Exercises/Header/Viewport/CanvasLayer/Panel"]
-margin_right = 256.0
-margin_bottom = 48.0
-theme = ExtResource( 2 )
-
-[node name="Label" type="Label" parent="SettingsCarousel/Exercises/Header/Viewport/CanvasLayer/Panel/Container"]
-margin_top = 1.0
-margin_right = 256.0
-margin_bottom = 47.0
-custom_fonts/font = SubResource( 18 )
-text = "defaulttext"
-
-[node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Exercises/Header"]
-mesh = SubResource( 19 )
-material/0 = SubResource( 21 )
-
-[node name="text_panel" parent="SettingsCarousel/Exercises/Header" instance=ExtResource( 18 )]
-transform = Transform( 1.1, -1.13687e-13, 6.88809e-21, -5.68434e-14, 1, 0, 1.42109e-14, -6.77626e-21, 0.25, 0, -0.00774515, 0 )
-
 [node name="Battle" type="Spatial" parent="SettingsCarousel"]
 
 [node name="Header" type="Spatial" parent="SettingsCarousel/Battle"]
 transform = Transform( 3.26639e-07, -1, 3.72904e-14, 9.77524e-08, 2.65431e-14, -0.6, 0.6, 5.44398e-07, 9.77524e-08, -1.18034, 2.33154, -0.250625 )
 visible = false
-script = SubResource( 15 )
+script = SubResource( 12 )
 text = "Save: Play any workout, afterwards press save\\nLoad: Select a slot and then the songs\\nChallenges: Play any workout then press 'Create Challenge'\\nChallenge is uploaded and can be shared with a link"
 font_size = 16
 viewport_width = 512
@@ -472,8 +242,8 @@ render_target_update_mode = 0
 [node name="Panel" type="Panel" parent="SettingsCarousel/Battle/Header/Viewport/CanvasLayer"]
 margin_right = 256.0
 margin_bottom = 48.0
-theme = SubResource( 16 )
-custom_styles/panel = SubResource( 17 )
+theme = SubResource( 13 )
+custom_styles/panel = SubResource( 14 )
 
 [node name="Container" type="MarginContainer" parent="SettingsCarousel/Battle/Header/Viewport/CanvasLayer/Panel"]
 margin_right = 256.0
@@ -484,12 +254,12 @@ theme = ExtResource( 2 )
 margin_top = 1.0
 margin_right = 256.0
 margin_bottom = 47.0
-custom_fonts/font = SubResource( 18 )
+custom_fonts/font = SubResource( 15 )
 text = "defaulttext"
 
 [node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Battle/Header"]
-mesh = SubResource( 19 )
-material/0 = SubResource( 23 )
+mesh = SubResource( 16 )
+material/0 = SubResource( 18 )
 
 [node name="text_panel" parent="SettingsCarousel/Battle/Header" instance=ExtResource( 18 )]
 transform = Transform( 1.1, -1.13687e-13, 6.88809e-21, -5.68434e-14, 1, 0, 1.42109e-14, -6.77626e-21, 0.25, 0, -0.00774515, 0 )
@@ -500,7 +270,7 @@ visible = false
 
 [node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Battle/WorkoutMarker"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0872474, 0 )
-mesh = SubResource( 24 )
+mesh = SubResource( 19 )
 material/0 = ExtResource( 7 )
 
 [node name="CreateChallengeButton" parent="SettingsCarousel/Battle" instance=ExtResource( 24 )]
@@ -538,12 +308,8 @@ visible = false
 
 [node name="MeshInstance" type="MeshInstance" parent="SettingsCarousel/Battle/Opponents/WorkoutMarker"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0872474, 0 )
-mesh = SubResource( 24 )
+mesh = SubResource( 19 )
 material/0 = ExtResource( 7 )
-
-[node name="SettingsButton" parent="." instance=ExtResource( 24 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 1.05393, -1 )
-ontext = "Settings"
 
 [node name="ExerciseButton" parent="." instance=ExtResource( 24 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618245, 0.925931, -1 )
@@ -572,9 +338,8 @@ volume_db = -9.0
 [node name="SideQuestPanel" parent="." instance=ExtResource( 38 )]
 transform = Transform( 2.84861e-14, 1, -1.62921e-07, -1, 1.91069e-15, -2.06632e-07, -2.06632e-07, 1.62921e-07, 1, -3.31028, 1.9648, 0.0695851 )
 
-[node name="WelcomePanel" parent="." instance=ExtResource( 42 )]
-transform = Transform( -0.7, 1.05697e-07, -4.62017e-15, 0, -3.0598e-08, -0.7, -1.05697e-07, -0.7, 3.0598e-08, -0.130422, 1.26719, 1.3085 )
-server_url = "https://portal.vrworkout.at/fast/welcome.msg"
+[node name="MultiPanel" parent="." instance=ExtResource( 13 )]
+transform = Transform( -0.9, 1.35896e-07, -5.94021e-15, 0, -3.93403e-08, -0.9, -1.35896e-07, -0.9, 3.93403e-08, -0.281889, 1.32653, 1.35002 )
 
 [node name="Keyboard" parent="." instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.318969, 0 )
@@ -583,8 +348,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.318969, 0 )
 [connection signal="toggled" from="BPM/OverrideBeats" to="." method="_on_OverrideBeats_toggled"]
 [connection signal="level_selected" from="SongSelector" to="." method="_on_SongSelector_level_selected"]
 [connection signal="toggled" from="SettingsCarousel/Connections/VRWorkoutConnection/PortalInfo" to="." method="_on_PortalSwitch_toggled"]
-[connection signal="value_changed" from="SettingsCarousel/Switchboard/ExerciseDuration" to="." method="_on_ExerciseDuration_value_changed"]
-[connection signal="selected_by" from="SettingsCarousel/Switchboard/SetWeightBar" to="." method="_on_SetWeightBar_selected_by"]
 [connection signal="challenge_selected" from="SettingsCarousel/Exercises/GamePanel" to="." method="_on_StoredSlot_selected"]
 [connection signal="exercise_set_selected" from="SettingsCarousel/Exercises/GamePanel" to="." method="_on_ExerciseCollection_selected"]
 [connection signal="onboarding_selected" from="SettingsCarousel/Exercises/GamePanel" to="." method="_on_GamePanel_onboarding_selected"]
@@ -594,7 +357,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.318969, 0 )
 [connection signal="selected" from="SettingsCarousel/Battle/Opponents/EasyEnemy" to="." method="_on_BattleMode_selected" binds= [ "blue", "easy" ]]
 [connection signal="selected" from="SettingsCarousel/Battle/Opponents/MediumEnemy" to="." method="_on_BattleMode_selected" binds= [ "blue", "medium" ]]
 [connection signal="selected" from="SettingsCarousel/Battle/Opponents/HardEnemy" to="." method="_on_BattleMode_selected" binds= [ "blue", "hard" ]]
-[connection signal="selected" from="SettingsButton" to="." method="_on_SettingsButton_selected"]
 [connection signal="selected" from="ExerciseButton" to="." method="_on_ExerciseButton_selected"]
 [connection signal="selected" from="ConnectionsButton" to="." method="_on_ConnectionsButton_selected"]
 [connection signal="selected" from="BattleButton" to="." method="_on_BattleButton_selected"]

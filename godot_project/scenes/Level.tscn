@@ -242,8 +242,7 @@ visible = false
 
 [node name="SafetyFence" parent="." instance=ExtResource( 18 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0468838, -2.5273 )
-max_allowed_distance = 0.4
-deadzone = 0.15
+max_allowed_distance = 0.5
 
 [connection signal="timeout" from="spawn_timer" to="spawn_timer" method="_on_spawn_timer_timeout"]
 [connection signal="streak_changed" from="cue_emitter" to="." method="_on_cue_emitter_streak_changed"]

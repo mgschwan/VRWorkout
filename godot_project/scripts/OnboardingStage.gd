@@ -63,6 +63,8 @@ func show_state(state):
 		$MainStage/Poles.show()
 	elif state == 4:
 		play_audio("slide5")
+	elif state == 5:
+		play_audio("slide6")
 	else:
 		$MainStage/Poles.hide()
 
@@ -96,6 +98,7 @@ var slide4b = preload("res://scripts/3rdparty/onboarding/audio/slide4b.mp3")
 var slide4c = preload("res://scripts/3rdparty/onboarding/audio/slide4c.mp3")
 var slide4d = preload("res://audio/instruction_very_good.wav")
 var slide5 = preload("res://scripts/3rdparty/onboarding/audio/slide5.mp3")
+var slide6 = preload("res://scripts/3rdparty/onboarding/audio/slide6.mp3")
 
 
 var current_audio_slot = ""
@@ -117,6 +120,8 @@ func play_audio(value):
 		audio = slide4d
 	elif value == "slide5":
 		audio = slide5
+	elif value == "slide6":
+		audio = slide6
 		
 	if audio:
 		current_audio_slot = value
@@ -146,6 +151,10 @@ var highlights = { "slide1": [[2.5, 100.0, Vector3(-0.401, 0, 0.148603)]
 					"slide5": [[2.0, 3.75, Vector3(0.023, 0, -0.2315)],
 							 [3.93, 8.0, Vector3(0.023, 0, -0.014078)],
 							 [8.1, 100.0, Vector3(-0.401, 0, 0.148603)]
+							],
+					"slide6": [[6.7, 9.5, Vector3(0.023, 0, -0.2315)],
+							 [9.7, 15.9, Vector3(0.023, 0, -0.014078)],
+							 [16.0, 100.0, Vector3(-0.401, 0, 0.148603)]
 							],
 
 }

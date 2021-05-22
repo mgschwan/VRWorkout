@@ -75,6 +75,7 @@ func update_songs():
 
 	root.set_text(0,"Total duration %s"%(gu.seconds_to_timestring(duration)))
 
+	print ("Update songs: changed")
 	emit_signal("content_changed")
 	#get_node("Viewport").render_target_update_mode = Viewport.UPDATE_ONCE
 
@@ -189,4 +190,5 @@ func _on_Resting_pressed():
 	update_songs()
 
 func _on_TabContainer_content_changed():
+	print ("Tab container changed")
 	emit_signal("content_changed")

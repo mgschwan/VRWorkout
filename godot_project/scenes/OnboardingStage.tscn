@@ -90,7 +90,7 @@ transform = Transform( 4, 0, 0, 0, 0.4, 0, 0, 0, 4, -3.10597, -0.919663, 0.00937
 transform = Transform( -4, 0, -1.30337e-06, 0, 0.4, 0, 1.30337e-06, 0, -4, 17.0173, -0.919663, 0.00937921 )
 
 [node name="StaticBody" type="StaticBody" parent="."]
-transform = Transform( 0.370363, 0.928887, -4.06029e-08, 0, -4.37114e-08, -1, -0.928887, 0.370363, -1.61891e-08, -0.812835, 1.52187, -0.218266 )
+transform = Transform( 0.333327, 0.835998, -3.65426e-08, 0, -3.93403e-08, -0.9, -0.835998, 0.333327, -1.45702e-08, -0.786941, 1.52187, -0.355545 )
 script = ExtResource( 4 )
 
 [node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
