@@ -27,3 +27,12 @@ func _on_SetWeightBar_selected_by(controller):
 	elif main_controller == "right":
 		get_tree().current_scene.right_controller = new_controller
 
+func _on_MultiPanel_activate_feature(feature, active):
+	if feature == "weights":
+		if active:
+			$SetWeightBar.translation.z = 0.57
+		else:
+			$SetWeightBar.translation.z = -2
+		
+		
+		

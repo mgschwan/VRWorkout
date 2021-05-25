@@ -26,7 +26,6 @@ func _ready():
 	if environment:
 		get_tree().current_scene.change_environment(environment)
 	show_settings("empty")
-	update_online_features()
 	
 	get_node("SongSelector").set_songs(get_tree().current_scene.get_node("SongDatabase").song_list())
 	if GameVariables.current_song:
@@ -125,7 +124,7 @@ func show_settings(panel):
 		gu.deactivate_node(connections_node)
 		gu.deactivate_node(exercises_node)
 		gu.activate_node(battle_node)
-		update_online_features()
+
 		angle = PI/2.0
 	elif panel == "empty":
 		gu.deactivate_node(connections_node)
@@ -157,26 +156,8 @@ func _on_PresetCollector_selected(collection, achievements):
 	GameVariables.exercise_state_list = collection
 	GameVariables.achievement_checks = achievements
 	
-func update_online_features():
-	var enabled = ProjectSettings.get("game/portal_connection")
-	if enabled:
-		if has_node("SettingsCarousel/Connections/ConnectPad"):
-			gu.activate_node(get_node("SettingsCarousel/Connections/ConnectPad"))
-		#gu.activate_node(get_node("SettingsCarousel/Battle/CreateChallengeButton"))		
-	else:
-		if has_node("SettingsCarousel/Connections/ConnectPad"):
-			gu.deactivate_node(get_node("SettingsCarousel/Connections/ConnectPad"))
-		#gu.deactivate_node(get_node("SettingsCarousel/Battle/CreateChallengeButton"))		
-
-
-	#Connect Pad Deactivated for now
-	if not GameVariables.FEATURE_MULTIPLAYER and has_node("SettingsCarousel/Connections/ConnectPad"):
-		get_node("SettingsCarousel/Connections/ConnectPad").queue_free()
-
 func _on_PortalSwitch_toggled(value):
 	ProjectSettings.set("game/portal_connection", value)
-	update_online_features()
-
 
 func _on_Recenter_selected():
 	get_tree().current_scene.start_countdown(5,"recenter_screen")

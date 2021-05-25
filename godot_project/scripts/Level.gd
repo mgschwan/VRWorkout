@@ -595,10 +595,6 @@ func create_and_attach_cue_actual(cue_data):
 	elif cue_type == "head_right":
 		cue_node.set_transform( cue_node.get_transform().rotated(Vector3(0,0,1), 3*3.1415926/2))
 	
-	if cue_type in ["left", "right", "left_hold", "right_hold"]:
-		var alpha = atan2(x,y-head_y_pos)
-		cue_node.set_transform(cue_node.get_transform().rotated(Vector3(0,0,1),-alpha))
-		
 	if hit_velocity != null:
 		cue_node.velocity_required = hit_velocity
 

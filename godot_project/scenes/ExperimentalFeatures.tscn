@@ -1,0 +1,77 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
+[ext_resource path="res://scripts/ExperimentalFeatures.gd" type="Script" id=2]
+[ext_resource path="res://assets/toggle_switch_off.png" type="Texture" id=3]
+[ext_resource path="res://assets/toggle_switch_on.png" type="Texture" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[node name="ExperimentalFeatures" type="Control"]
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 10.0
+margin_top = 1.0
+margin_right = 1012.0
+margin_bottom = 162.0
+theme = ExtResource( 1 )
+text = "You are entering uncharted territory. Experimental features are things we are testing that may or may not be included in the future and that may or may not work at the moment"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BeastMode" type="Label" parent="."]
+margin_left = 20.8525
+margin_top = 91.6489
+margin_right = 136.852
+margin_bottom = 158.649
+theme = ExtResource( 1 )
+text = "Beast mode"
+
+[node name="BeastModeButton" type="CheckButton" parent="BeastMode"]
+margin_top = 32.0
+margin_right = 268.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.4, 0.4 )
+theme = ExtResource( 1 )
+custom_icons/off = ExtResource( 3 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Weights" type="Label" parent="."]
+margin_left = 20.8524
+margin_top = 187.892
+margin_right = 179.852
+margin_bottom = 254.892
+theme = ExtResource( 1 )
+text = "Free weights"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WeightsButton" type="CheckButton" parent="Weights"]
+margin_top = 32.0
+margin_right = 268.0
+margin_bottom = 168.0
+rect_scale = Vector2( 0.4, 0.4 )
+theme = ExtResource( 1 )
+custom_icons/off = ExtResource( 3 )
+custom_icons/on = ExtResource( 4 )
+custom_styles/focus = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="BeastMode/BeastModeButton" to="." method="_on_BeastModeButton_pressed"]
+[connection signal="pressed" from="Weights/WeightsButton" to="." method="_on_WeightsButton_pressed"]

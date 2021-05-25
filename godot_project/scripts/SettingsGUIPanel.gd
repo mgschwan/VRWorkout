@@ -2,7 +2,6 @@ extends Control
 
 signal content_changed()
 
-export var beast_mode = false
 
 func update_widgets():
 	if ProjectSettings.get("game/exercise/hold_cues"):
@@ -90,20 +89,10 @@ func update_widgets():
 	else:
 		$Crunches/CrunchesButton.pressed = false
 
-	if ProjectSettings.get("game/beast_mode"):
-		$BeastMode/BeastModeButton.pressed = true
-	else:
-		$BeastMode/BeastModeButton.pressed = false
-
 	if ProjectSettings.get("game/exercise/strength_focus"):
 		$StrengthMode/StrengthModeButton.pressed = true
 	else:
 		$StrengthMode/StrengthModeButton.pressed = false
-
-	if ProjectSettings.get("game/exercise/weights"):
-		$Weights/WeightsButton.pressed = true
-	else:
-		$Weights/WeightsButton.pressed = false
 		
 	var avg_exercise_duration = ProjectSettings.get("game/exercise_duration_avg")
 	$ExerciseDuration/NumberEntry.set_value(avg_exercise_duration)
@@ -178,21 +167,10 @@ func _on_CrunchesButton_pressed():
 	ProjectSettings.set("game/exercise/crunch", $Crunches/CrunchesButton.pressed)
 	update_widgets()
 
-func _on_BeastModeButton_pressed():
-	beast_mode = not beast_mode
-	get_tree().current_scene.set_beast_mode(beast_mode)
-
-	ProjectSettings.set("game/beast_mode", $BeastMode/BeastModeButton.pressed)
-	update_widgets()
-
 func _on_StrengthModeButton_pressed():	
 	ProjectSettings.set("game/exercise/strength_focus", $StrengthMode/StrengthModeButton.pressed)
 	update_widgets()
-
-func _on_WeightsButton_pressed():
-	ProjectSettings.set("game/exercise/weights", $Weights/WeightsButton.pressed)
-	update_widgets()
-
+	
 func _on_CurvedCuesButton_pressed():
 	ProjectSettings.set("game/exercise/stand/curved", $CurvedCues/CurvedCuesButton.pressed)
 	update_widgets()

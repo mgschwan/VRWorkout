@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://fonts/droid-sans/DroidSans.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://BlackTheme.theme" type="Theme" id=2]
@@ -28,7 +28,6 @@
 [ext_resource path="res://assets/enemy_hard.jpg" type="Texture" id=33]
 [ext_resource path="res://assets/enemy_none.jpg" type="Texture" id=34]
 [ext_resource path="res://audio/menu_bg_music.ogg" type="AudioStream" id=35]
-[ext_resource path="res://scenes/ConnectPad.tscn" type="PackedScene" id=36]
 [ext_resource path="res://scenes/SideQuestConnection.tscn" type="PackedScene" id=37]
 [ext_resource path="res://scenes/SideQuestPanel.tscn" type="PackedScene" id=38]
 [ext_resource path="res://scenes/AchievementDisplay.tscn" type="PackedScene" id=39]
@@ -206,9 +205,6 @@ transform = Transform( -4.88762e-08, 0.3, -1.31134e-08, 0, -1.31134e-08, -0.3, -
 [node name="PortalInfo" parent="SettingsCarousel/Connections/VRWorkoutConnection" instance=ExtResource( 21 )]
 transform = Transform( 1, -1.13687e-13, 6.77626e-21, 1.13687e-13, 1, 7.4607e-14, -1.69407e-21, -7.4607e-14, 1, -2.85625, 0.0214405, 1.68262 )
 
-[node name="ConnectPad" parent="SettingsCarousel/Connections" instance=ExtResource( 36 )]
-transform = Transform( 1, 0, -2.38419e-07, 0, 1, 0, 2.38419e-07, 0, 1, 1.27542, 1.18846, -0.45944 )
-
 [node name="Exercises" type="Spatial" parent="SettingsCarousel"]
 transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, -1.19209e-07, 0, -0.225055 )
 
@@ -324,7 +320,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399, 1.05413, -1 )
 ontext = "Battle"
 
 [node name="PlayerHeightAdjuster" parent="." instance=ExtResource( 26 )]
-transform = Transform( 0.0521398, 0, -0.0539115, 0, 0.075, 0, 0.0539115, 0, 0.0521398, 0.96517, 0, -1.35699 )
+transform = Transform( 0.0521398, 0, -0.0539115, 0, 0.075, 0, 0.0539115, 0, 0.0521398, 0.87, 0, -1.026 )
 
 [node name="TrackerRecorderButton" parent="." instance=ExtResource( 24 )]
 transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -0.369874, 0.0648079, 0.921215 )

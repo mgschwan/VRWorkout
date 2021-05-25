@@ -167,7 +167,7 @@ light_indirect_energy = 0.1
 light_specular = 0.2
 
 [node name="SkyBox" parent="ARVROrigin" instance=ExtResource( 11 )]
-transform = Transform( 0.998396, 0.0566011, 0, -0.0565104, 0.996796, 0.0566011, 0.00320369, -0.0565104, 0.998397, 0, 0, 0 )
+transform = Transform( 0.99841, 0.056602, 1.78814e-07, -0.0565104, 0.996796, 0.0566011, 0.00320494, -0.0565112, 0.998413, 0, 0, 0 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="ARVROrigin/SkyBox"]
 anims/starfield_rotation = SubResource( 6 )

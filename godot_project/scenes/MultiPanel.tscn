@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
 [ext_resource path="res://scenes/WelcomePanel.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/StatisticsPanel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/SettingsGUIPanel.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/MultiPanel.gd" type="Script" id=5]
+[ext_resource path="res://scenes/ConnectPad.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/ExperimentalFeatures.tscn" type="PackedScene" id=7]
 
 [node name="MultiPanel" type="Control"]
 margin_right = 1024.0
@@ -53,17 +55,12 @@ margin_top = 39.0
 margin_right = -5.0
 margin_bottom = -5.0
 
-[node name="Label" type="Label" parent="TabContainer/Multiplayer"]
-margin_top = 184.0
-margin_right = 1015.0
-margin_bottom = 297.0
-text = "The multiplayer connection panel is currently in the connect menu behind you
-
-It will be moved into this panel in the future"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="ConnectPad" parent="TabContainer/Multiplayer" instance=ExtResource( 6 )]
+margin_left = 212.868
+margin_top = 48.7035
+margin_right = 212.868
+margin_bottom = 48.7035
+rect_scale = Vector2( 0.75, 0.75 )
 
 [node name="Statistics" type="Tabs" parent="TabContainer"]
 visible = false
@@ -76,5 +73,18 @@ margin_bottom = -5.0
 
 [node name="StatisticsPanel" parent="TabContainer/Statistics" instance=ExtResource( 3 )]
 
+[node name="Experimental" type="Tabs" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 39.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="ExperimentalFeatures" parent="TabContainer/Experimental" instance=ExtResource( 7 )]
+
 [connection signal="content_changed" from="TabContainer/News/WelcomePanel" to="." method="_on_content_changed"]
 [connection signal="content_changed" from="TabContainer/Settings/SettingsGUI" to="." method="_on_content_changed"]
+[connection signal="content_changed" from="TabContainer/Multiplayer/ConnectPad" to="." method="_on_content_changed"]
+[connection signal="activate_feature" from="TabContainer/Experimental/ExperimentalFeatures" to="." method="_on_activate_feature"]

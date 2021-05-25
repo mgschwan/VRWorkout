@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://scenes/NumberEntry.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/SettingsGUIPanel.gd" type="Script" id=3]
@@ -28,8 +28,6 @@
 
 [sub_resource type="StyleBoxEmpty" id=11]
 
-[sub_resource type="StyleBoxEmpty" id=12]
-
 [sub_resource type="StyleBoxEmpty" id=13]
 
 [sub_resource type="StyleBoxEmpty" id=14]
@@ -45,7 +43,9 @@
 [node name="SettingsGUI" type="Control"]
 script = ExtResource( 3 )
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_horizontal_guides_": [ 435.0 ],
+"_edit_use_anchors_": false,
+"_edit_vertical_guides_": [ 918.0, 529.0 ]
 }
 
 [node name="HoldCue" type="Label" parent="."]
@@ -251,28 +251,10 @@ custom_icons/off = ExtResource( 5 )
 custom_icons/on = ExtResource( 4 )
 custom_styles/focus = SubResource( 11 )
 
-[node name="BeastMode" type="Label" parent="."]
-margin_left = 820.0
-margin_right = 936.0
-margin_bottom = 67.0
-theme = ExtResource( 6 )
-text = "Beast mode"
-
-[node name="BeastModeButton" type="CheckButton" parent="BeastMode"]
-margin_top = 32.0
-margin_right = 268.0
-margin_bottom = 168.0
-rect_scale = Vector2( 0.4, 0.4 )
-theme = ExtResource( 6 )
-custom_icons/off = ExtResource( 5 )
-custom_icons/on = ExtResource( 4 )
-custom_styles/focus = SubResource( 12 )
-
 [node name="StrengthMode" type="Label" parent="."]
 margin_left = 820.0
-margin_top = 88.0
 margin_right = 970.0
-margin_bottom = 155.0
+margin_bottom = 67.0
 theme = ExtResource( 6 )
 text = "Strength focus"
 
@@ -289,34 +271,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Weights" type="Label" parent="."]
+[node name="CurvedCues" type="Label" parent="."]
 margin_left = 820.0
-margin_top = 176.0
+margin_top = 88.0
 margin_right = 979.0
-margin_bottom = 243.0
+margin_bottom = 155.0
 theme = ExtResource( 6 )
-text = "Free weights"
-
-[node name="WeightsButton" type="CheckButton" parent="Weights"]
-margin_top = 32.0
-margin_right = 268.0
-margin_bottom = 168.0
-rect_scale = Vector2( 0.4, 0.4 )
-theme = ExtResource( 6 )
-custom_icons/off = ExtResource( 5 )
-custom_icons/on = ExtResource( 4 )
-custom_styles/focus = SubResource( 13 )
+text = "Curved cues"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="CurvedCues" type="Label" parent="."]
-margin_left = 820.0
-margin_top = 264.0
-margin_right = 979.0
-margin_bottom = 331.0
-theme = ExtResource( 6 )
-text = "Curved cues"
 
 [node name="CurvedCuesButton" type="CheckButton" parent="CurvedCues"]
 margin_top = 32.0
@@ -395,6 +359,9 @@ margin_right = 479.0
 margin_bottom = 331.0
 theme = ExtResource( 6 )
 text = "Jumping"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="JumpButton" type="CheckButton" parent="Jump"]
 margin_top = 32.0
@@ -428,10 +395,10 @@ custom_icons/on = ExtResource( 4 )
 custom_styles/focus = SubResource( 18 )
 
 [node name="ExerciseDuration" type="Label" parent="."]
-margin_left = 572.0
-margin_top = 313.0
-margin_right = 732.0
-margin_bottom = 374.0
+margin_left = 555.0
+margin_top = 310.0
+margin_right = 715.0
+margin_bottom = 371.0
 theme = ExtResource( 6 )
 text = "Average exercise
 duration"
@@ -458,9 +425,7 @@ min_v = 10
 [connection signal="pressed" from="Stand/StandButton" to="." method="_on_StandButton_pressed"]
 [connection signal="pressed" from="Squat/SquatButton" to="." method="_on_SquatButton_pressed"]
 [connection signal="pressed" from="Crunches/CrunchesButton" to="." method="_on_CrunchesButton_pressed"]
-[connection signal="pressed" from="BeastMode/BeastModeButton" to="." method="_on_BeastModeButton_pressed"]
 [connection signal="pressed" from="StrengthMode/StrengthModeButton" to="." method="_on_StrengthModeButton_pressed"]
-[connection signal="pressed" from="Weights/WeightsButton" to="." method="_on_WeightsButton_pressed"]
 [connection signal="pressed" from="CurvedCues/CurvedCuesButton" to="." method="_on_CurvedCuesButton_pressed"]
 [connection signal="pressed" from="Kneesaver/KneesaverButton" to="." method="_on_KneesaverButton_pressed"]
 [connection signal="pressed" from="Ducking/DuckButton" to="." method="_on_DuckingButton_pressed"]

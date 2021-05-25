@@ -10,7 +10,8 @@ __meta__ = {
 }
 
 [node name="Plus" type="Button" parent="."]
-margin_right = 64.0
+margin_left = 145.0
+margin_right = 209.0
 margin_bottom = 64.0
 theme = ExtResource( 1 )
 text = "+"
@@ -19,10 +20,8 @@ __meta__ = {
 }
 
 [node name="Minus" type="Button" parent="."]
-margin_left = 145.0
-margin_top = 1.0
-margin_right = 209.0
-margin_bottom = 65.0
+margin_right = 64.0
+margin_bottom = 64.0
 theme = ExtResource( 1 )
 text = "-"
 __meta__ = {

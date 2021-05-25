@@ -1,7 +1,5 @@
 extends Spatial
 
-var vrhealthAPI = null
-
 var port = 21110
 var server = WebSocketServer.new()
 var peer = null
