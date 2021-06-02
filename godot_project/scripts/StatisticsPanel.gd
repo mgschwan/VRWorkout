@@ -65,6 +65,16 @@ func update_statistics():
 	perc = get_percent(val,total)	
 	$DifficultyValue.value = perc
 	$DifficultyValue/Percent.text = "%.1f"%perc
+	
+	var last_played_str = gu.seconds_to_timestring(GameVariables.game_result.get("time",0.0))
+	var total_played_str = gu.seconds_to_timestring(GameVariables.stats.get("total_played",0.0))
+	
+	$StatisticsText.bbcode_text = ("Results for %s\n\n\n\n\nLast round\nScore: %.2f (%d/%d)\nPoints: %d\n"%[GameVariables.player_name, GameVariables.game_result.get("vrw_score",0.0),GameVariables.game_result.get("hits",0),GameVariables.game_result.get("max_hits",0),GameVariables.game_result.get("points",0.0)]+"Duration: %s"%last_played_str+"\n\n\nTotal\nPoints: %d\n"%GameVariables.stats.get("total_points",0.0)+"Duration: %s"%total_played_str) 
+
+	$Score/Text.text = "%.1f"%(GameVariables.game_result.get("vrw_score",0.0))
+	$Score.material.set_shader_param("value", GameVariables.game_result.get("vrw_score",0.0))
+
+
 
 func _ready():
 	update_statistics()

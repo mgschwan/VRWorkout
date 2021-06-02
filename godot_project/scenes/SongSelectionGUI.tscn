@@ -31,7 +31,7 @@ margin_bottom = 512.0
 theme = ExtResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
-"_edit_horizontal_guides_": [ 19.9387 ],
+"_edit_horizontal_guides_": [ 19.9387, 94.578 ],
 "_edit_use_anchors_": false,
 "_edit_vertical_guides_": [ 21.8494 ]
 }
@@ -60,8 +60,8 @@ __meta__ = {
 [node name="SongList" type="ItemList" parent="."]
 margin_left = 22.0
 margin_top = 95.0
-margin_right = 746.0
-margin_bottom = 420.0
+margin_right = 588.0
+margin_bottom = 487.0
 custom_styles/bg = SubResource( 2 )
 custom_constants/vseparation = 8
 max_text_lines = 2
@@ -71,10 +71,10 @@ __meta__ = {
 }
 
 [node name="Add" type="Button" parent="."]
-margin_left = 22.0
-margin_top = 440.0
-margin_right = 172.0
-margin_bottom = 490.0
+margin_left = 600.0
+margin_top = 180.0
+margin_right = 751.144
+margin_bottom = 230.0
 rect_min_size = Vector2( 150, 0 )
 text = "Add to Playlist"
 __meta__ = {
@@ -83,9 +83,9 @@ __meta__ = {
 
 [node name="Preview" type="Button" parent="."]
 margin_left = 600.204
-margin_top = 19.0309
+margin_top = 94.0
 margin_right = 750.204
-margin_bottom = 69.0309
+margin_bottom = 144.0
 rect_min_size = Vector2( 150, 0 )
 text = "Preview"
 __meta__ = {
@@ -93,10 +93,10 @@ __meta__ = {
 }
 
 [node name="Freeplay" type="Button" parent="."]
-margin_left = 195.0
-margin_top = 440.0
-margin_right = 345.0
-margin_bottom = 490.0
+margin_left = 600.204
+margin_top = 266.0
+margin_right = 750.204
+margin_bottom = 316.0
 rect_min_size = Vector2( 150, 0 )
 text = "Freeplay +5min"
 __meta__ = {
@@ -104,10 +104,10 @@ __meta__ = {
 }
 
 [node name="Resting" type="Button" parent="."]
-margin_left = 368.0
-margin_top = 440.0
-margin_right = 518.0
-margin_bottom = 490.0
+margin_left = 600.204
+margin_top = 352.0
+margin_right = 750.204
+margin_bottom = 402.0
 rect_min_size = Vector2( 150, 0 )
 text = "Resting +10sec"
 __meta__ = {

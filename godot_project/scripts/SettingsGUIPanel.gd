@@ -2,7 +2,6 @@ extends Control
 
 signal content_changed()
 
-
 func update_widgets():
 	if ProjectSettings.get("game/exercise/hold_cues"):
 		$HoldCue/HoldCueButton.pressed = true
@@ -110,7 +109,6 @@ func _on_ParcourButton_pressed():
 	ProjectSettings.set("game/exercise/parcour", $Parcour/ParcourButton.pressed)
 	update_widgets()
 
-
 func _on_PushupButton_pressed():
 	ProjectSettings.set("game/exercise/pushup", $Pushup/PushupButton.pressed)
 	update_widgets()
@@ -178,3 +176,7 @@ func _on_CurvedCuesButton_pressed():
 func _on_ExerciseDuration_value_changed(value):
 	ProjectSettings.set("game/exercise_duration_avg", value)
 	update_widgets()
+	
+func _input(event):
+	update_widgets()	
+	

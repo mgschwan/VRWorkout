@@ -31,7 +31,7 @@ func _ready():
 	if GameVariables.current_song:
 		get_node("SongSelector").playlist_from_song_files(GameVariables.current_song)
 	
-	get_node("MainText").print_info("[img]res://assets/vrworkout_logo.png[/img]\nBuild a playlist with the songs to your right and press start.\n[center][b]Tips[/b][/center]\n- Play with hand tracking (no controllers)\n- Connect a heart rate sensor for dynamic difficulty\n- Support is at [b]https://chat.vrworkout.at[/b]\n- Early access! Please judge mechanics not graphics")
+	#get_node("MainText").print_info("[img]res://assets/vrworkout_logo.png[/img]\nBuild a playlist with the songs to your right and press start.\n[center][b]Tips[/b][/center]\n- Play with hand tracking (no controllers)\n- Connect a heart rate sensor for dynamic difficulty\n- Support is at [b]https://chat.vrworkout.at[/b]\n- Early access! Please judge mechanics not graphics")
 	
 	update_widget()
 	get_node("SongSelector").select_difficulty(GameVariables.difficulty)
@@ -58,12 +58,14 @@ func _ready():
 
 
 func set_main_text(text):
-	get_node("MainText").print_info(text)
+	pass
+	#get_node("MainText").print_info(text)
 
 func set_stat_text(text, score):
-	get_node("Stats").print_info(text)
-	get_node("Stats/gauge").set_value(score)
-	get_node("Stats/gauge").show()
+	pass
+	#get_node("Stats").print_info(text)
+	#get_node("Stats/gauge").set_value(score)
+	#get_node("Stats/gauge").show()
 
 func get_last_beat():
 	return get_node("BPM").last_beat

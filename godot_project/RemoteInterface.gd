@@ -123,32 +123,44 @@ func dataobject_response(response):
 	data_object_query_result = JSON.parse(response.get("value","{}")).result
 	print ("Dataobject result: %s"%str(data_object_query_result))
 
-
+var generic_request_inprocess = false
+var generic_request_result = {}
 
 func _generic_http_connect_request_completed(result, response_code, headers, body):
 	var decoded = parse_json(body.get_string_from_utf8())
 	if response_code >= 200 and response_code < 300 and body and decoded:
-		generic_get_result = decoded
-	generic_get_inprocess = false
+		if generic_request_inprocess:
+			generic_request_result = decoded
+	generic_request_inprocess = false
 
-var generic_get_result = {}
-var generic_get_inprocess = false
 
 func generic_get_request(path, value_container):
 	value_container["result"] = {}
-	if not generic_get_inprocess:
-		generic_get_inprocess = true
+	if not generic_request_inprocess:
+		generic_request_inprocess = true
 		var ret = generic_request.request("%s%s"%[api_url,path], [], true, HTTPClient.METHOD_GET)
 		if ret != OK:		
 			print ("Could not send request %s"%str(ret))
 		else:
-			while generic_get_inprocess:
+			while generic_request_inprocess:
 				yield(get_tree().create_timer(0.1),"timeout")
 		print ("### Get Request finished")
-		value_container["result"] = generic_get_result
+		value_container["result"] = generic_request_result
 
-
-
+func generic_post_request(path, data, value_container):
+	value_container["result"] = {}
+	if not generic_request_inprocess:
+		generic_request_inprocess = true
+		var url = "%s%s"%[api_url,path]
+		var ret = generic_request.request(url, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, to_json(data))
+		
+		if ret != OK:		
+			print ("Could not send request %s"%str(ret))
+		else:
+			while generic_request_inprocess:
+				yield(get_tree().create_timer(0.1),"timeout")
+		print ("### Post Request finished")
+		value_container["result"] = generic_request_result
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

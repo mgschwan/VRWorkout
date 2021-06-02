@@ -28,6 +28,8 @@
 
 [sub_resource type="StyleBoxEmpty" id=11]
 
+[sub_resource type="StyleBoxEmpty" id=12]
+
 [sub_resource type="StyleBoxEmpty" id=13]
 
 [sub_resource type="StyleBoxEmpty" id=14]
@@ -37,8 +39,6 @@
 [sub_resource type="StyleBoxEmpty" id=16]
 
 [sub_resource type="StyleBoxEmpty" id=17]
-
-[sub_resource type="StyleBoxEmpty" id=18]
 
 [node name="SettingsGUI" type="Control"]
 script = ExtResource( 3 )
@@ -266,7 +266,7 @@ rect_scale = Vector2( 0.4, 0.4 )
 theme = ExtResource( 6 )
 custom_icons/off = ExtResource( 5 )
 custom_icons/on = ExtResource( 4 )
-custom_styles/focus = SubResource( 13 )
+custom_styles/focus = SubResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -290,7 +290,7 @@ rect_scale = Vector2( 0.4, 0.4 )
 theme = ExtResource( 6 )
 custom_icons/off = ExtResource( 5 )
 custom_icons/on = ExtResource( 4 )
-custom_styles/focus = SubResource( 13 )
+custom_styles/focus = SubResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -311,7 +311,7 @@ rect_scale = Vector2( 0.4, 0.4 )
 theme = ExtResource( 6 )
 custom_icons/off = ExtResource( 5 )
 custom_icons/on = ExtResource( 4 )
-custom_styles/focus = SubResource( 14 )
+custom_styles/focus = SubResource( 13 )
 
 [node name="Ducking" type="Label" parent="."]
 margin_left = 370.0
@@ -329,7 +329,7 @@ rect_scale = Vector2( 0.4, 0.4 )
 theme = ExtResource( 6 )
 custom_icons/off = ExtResource( 5 )
 custom_icons/on = ExtResource( 4 )
-custom_styles/focus = SubResource( 15 )
+custom_styles/focus = SubResource( 14 )
 
 [node name="Windmill" type="Label" parent="."]
 margin_left = 370.0
@@ -350,7 +350,7 @@ rect_scale = Vector2( 0.4, 0.4 )
 theme = ExtResource( 6 )
 custom_icons/off = ExtResource( 5 )
 custom_icons/on = ExtResource( 4 )
-custom_styles/focus = SubResource( 16 )
+custom_styles/focus = SubResource( 15 )
 
 [node name="Jump" type="Label" parent="."]
 margin_left = 370.0
@@ -371,7 +371,7 @@ rect_scale = Vector2( 0.4, 0.4 )
 theme = ExtResource( 6 )
 custom_icons/off = ExtResource( 5 )
 custom_icons/on = ExtResource( 4 )
-custom_styles/focus = SubResource( 17 )
+custom_styles/focus = SubResource( 16 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -392,7 +392,7 @@ rect_scale = Vector2( 0.4, 0.4 )
 theme = ExtResource( 6 )
 custom_icons/off = ExtResource( 5 )
 custom_icons/on = ExtResource( 4 )
-custom_styles/focus = SubResource( 18 )
+custom_styles/focus = SubResource( 17 )
 
 [node name="ExerciseDuration" type="Label" parent="."]
 margin_left = 555.0

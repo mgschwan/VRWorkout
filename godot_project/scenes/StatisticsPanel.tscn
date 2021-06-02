@@ -1,21 +1,81 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
 [ext_resource path="res://assets/progress_bar.png" type="Texture" id=2]
 [ext_resource path="res://assets/progress_bar_empty.png" type="Texture" id=3]
 [ext_resource path="res://scripts/StatisticsPanel.gd" type="Script" id=4]
+[ext_resource path="res://fonts/Droid_Sans_Bold.tres" type="DynamicFont" id=5]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float value: hint_range(0, 100); // %
+uniform float thickness: hint_range(0, 100) = 30.; // % thickness
+uniform sampler2D fg: hint_albedo;
+uniform sampler2D bg: hint_black_albedo;
+uniform float offset: hint_range(0, 100); // %
+uniform float smoothing: hint_range(0, 100) = 5.;
+
+void fragment() {
+	vec2 point = UV - vec2(0.5);
+	float PI = 3.14159265358979323846;
+	float ang = (1. - atan(point.x, point.y) / PI) * 50. - offset;
+	if (ang < 0.)
+		ang += 100.;
+	float s = smoothing / 1000.;
+	float k = PI / 2. / s;
+	float r1 = .5 - thickness / 200.;
+	float r2 = .5;
+	float r = length(point);
+	float uy = (r2 - r) / (r2 - r1);
+	if (r > r2 || r < r1)
+		COLOR.a = 0.;
+	else {
+		if (ang <= value) 
+			COLOR = texture(fg, vec2(ang / 100., uy));
+		else
+			COLOR = texture(bg, vec2(ang / 100., uy));
+		if ((r2 - r) < s)
+			COLOR.a = sin((r2 - r) * k);
+		if ((r - r1) < s)
+			COLOR.a = sin((r - r1) * k);
+	}
+}"
+
+[sub_resource type="Gradient" id=3]
+colors = PoolColorArray( 0.572549, 0.572549, 0.572549, 1, 0.572549, 0.572549, 0.572549, 1 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="Gradient" id=5]
+offsets = PoolRealArray( 0.00900901, 1 )
+colors = PoolColorArray( 0.792969, 0.792969, 0.792969, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/value = 0.0
+shader_param/thickness = 25.0
+shader_param/offset = 0.0
+shader_param/smoothing = 10.0
+shader_param/fg = SubResource( 6 )
+shader_param/bg = SubResource( 4 )
 
 [node name="StatisticsPanel" type="Control"]
 theme = ExtResource( 1 )
 script = ExtResource( 4 )
 __meta__ = {
+"_edit_horizontal_guides_": [ 25.0674 ],
 "_edit_use_anchors_": false
 }
 
 [node name="StandValue" type="TextureProgress" parent="."]
-margin_left = 297.0
+margin_left = 514.0
 margin_top = 16.0
-margin_right = 720.0
+margin_right = 937.0
 margin_bottom = 55.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -49,9 +109,9 @@ __meta__ = {
 }
 
 [node name="JumpValue" type="TextureProgress" parent="."]
-margin_left = 297.0
+margin_left = 514.0
 margin_top = 72.0
-margin_right = 720.0
+margin_right = 937.0
 margin_bottom = 111.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -85,9 +145,9 @@ __meta__ = {
 }
 
 [node name="SprintValue" type="TextureProgress" parent="."]
-margin_left = 297.0
+margin_left = 514.0
 margin_top = 128.0
-margin_right = 720.0
+margin_right = 937.0
 margin_bottom = 167.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -121,9 +181,9 @@ __meta__ = {
 }
 
 [node name="SquatValue" type="TextureProgress" parent="."]
-margin_left = 297.0
+margin_left = 514.0
 margin_top = 184.0
-margin_right = 720.0
+margin_right = 937.0
 margin_bottom = 223.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -157,9 +217,9 @@ __meta__ = {
 }
 
 [node name="PushupValue" type="TextureProgress" parent="."]
-margin_left = 297.0
+margin_left = 514.0
 margin_top = 240.0
-margin_right = 720.0
+margin_right = 937.0
 margin_bottom = 279.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -193,9 +253,9 @@ __meta__ = {
 }
 
 [node name="CrunchValue" type="TextureProgress" parent="."]
-margin_left = 297.0
+margin_left = 514.0
 margin_top = 296.0
-margin_right = 720.0
+margin_right = 937.0
 margin_bottom = 335.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -229,9 +289,9 @@ __meta__ = {
 }
 
 [node name="BurpeeValue" type="TextureProgress" parent="."]
-margin_left = 297.0
+margin_left = 514.0
 margin_top = 352.0
-margin_right = 720.0
+margin_right = 937.0
 margin_bottom = 391.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -265,9 +325,9 @@ __meta__ = {
 }
 
 [node name="DifficultyValue" type="TextureProgress" parent="."]
-margin_left = 297.0
+margin_left = 514.0
 margin_top = 408.0
-margin_right = 720.0
+margin_right = 937.0
 margin_bottom = 447.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -300,3 +360,33 @@ text = "0%"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="StatisticsText" type="RichTextLabel" parent="."]
+margin_left = 20.0
+margin_top = 21.0
+margin_right = 380.0
+margin_bottom = 467.0
+bbcode_enabled = true
+bbcode_text = "Results for player"
+text = "Results for player"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="Panel" parent="."]
+material = SubResource( 2 )
+margin_left = 243.0
+margin_top = 18.0
+margin_right = 384.0
+margin_bottom = 159.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="Label" parent="Score"]
+margin_right = 142.0
+margin_bottom = 133.0
+custom_fonts/font = ExtResource( 5 )
+text = "0"
+align = 1
+valign = 1

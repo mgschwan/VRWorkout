@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://cue_v_obj.gd" type="Script" id=1]
 [ext_resource path="res://models/Berzerker.material" type="Material" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Hold_Ring.tscn" type="PackedScene" id=7]
 [ext_resource path="res://models/super_white.material" type="Material" id=8]
 [ext_resource path="res://models/RainbowParticle.tres" type="ArrayMesh" id=9]
+[ext_resource path="res://materials/TrailMaterial.tres" type="Material" id=10]
 
 [sub_resource type="Animation" id=1]
 resource_name = "explode"
@@ -193,14 +194,17 @@ albedo_color = Color( 0.454902, 0.321569, 1, 1 )
 radius = 0.12
 height = 0.0897926
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="CubeMesh" id=12]
+material = ExtResource( 10 )
+
+[sub_resource type="SpatialMaterial" id=9]
 albedo_color = Color( 0.690196, 0, 0, 1 )
 
-[sub_resource type="CubeMesh" id=9]
-material = SubResource( 8 )
+[sub_resource type="CubeMesh" id=10]
+material = SubResource( 9 )
 size = Vector3( 0.02, 0.02, 0.02 )
 
-[sub_resource type="SphereMesh" id=10]
+[sub_resource type="SphereMesh" id=11]
 radius = 0.01
 height = 0.02
 radial_segments = 6
@@ -265,16 +269,20 @@ linear_accel = 3.0
 scale_amount = 0.02
 
 [node name="trail" type="CPUParticles" parent="."]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, -0.081 )
 cast_shadow = 0
 emitting = false
 amount = 16
-speed_scale = 2.0
-mesh = ExtResource( 9 )
+speed_scale = 4.0
+mesh = SubResource( 12 )
+flag_rotate_y = true
 direction = Vector3( 0, 0, -1 )
-spread = 35.0
+spread = 10.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 0.4
 initial_velocity_random = 0.1
+angular_velocity = 10.0
+angle = 45.0
 scale_amount = 0.02
 
 [node name="sprinkle_opponent" type="CPUParticles" parent="."]
@@ -283,7 +291,7 @@ emitting = false
 amount = 16
 one_shot = true
 speed_scale = 2.0
-mesh = SubResource( 9 )
+mesh = SubResource( 10 )
 direction = Vector3( 0, 0, 1 )
 spread = 90.0
 gravity = Vector3( 0, 0, -2 )
@@ -296,7 +304,7 @@ transform = Transform( 0.03, -8.08722e-16, 4.37114e-09, 0, 0.006, -2.78182e-10, 
 
 [node name="dot" type="MeshInstance" parent="."]
 visible = false
-mesh = SubResource( 10 )
+mesh = SubResource( 11 )
 material/0 = ExtResource( 8 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

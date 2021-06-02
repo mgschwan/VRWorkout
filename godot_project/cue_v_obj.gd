@@ -1,5 +1,10 @@
 extends StaticBody
 
+signal begin_hold(obj)
+signal end_hold(obj)
+signal hit(obj)
+
+
 var move_tween
 
 var ingame_id = 0
@@ -137,8 +142,9 @@ func end_hold(hand = "unknown"):
 		hold_ring_player.stop(false)
 
 
-func show_trail(value):
+func show_trail(value, velocity = 0.4):
 	$trail.emitting = value
+	$trail.initial_velocity = velocity
 
 func activate_path_cue(target):
 	coupled_node = target

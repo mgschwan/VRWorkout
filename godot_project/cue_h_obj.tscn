@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://models/Bezergreen.material" type="Material" id=1]
 [ext_resource path="res://models/hand_palm.obj" type="ArrayMesh" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Hold_Ring.tscn" type="PackedScene" id=8]
 [ext_resource path="res://models/super_white.material" type="Material" id=9]
 [ext_resource path="res://models/RainbowParticle.tres" type="ArrayMesh" id=10]
+[ext_resource path="res://materials/TrailMaterial.tres" type="Material" id=11]
 
 [sub_resource type="Animation" id=1]
 length = 0.8
@@ -177,14 +178,17 @@ rings = 3
 radius = 0.12
 height = 0.09
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="CubeMesh" id=13]
+material = ExtResource( 11 )
+
+[sub_resource type="SpatialMaterial" id=10]
 albedo_color = Color( 0.690196, 0, 0, 1 )
 
-[sub_resource type="CubeMesh" id=8]
-material = SubResource( 7 )
+[sub_resource type="CubeMesh" id=11]
+material = SubResource( 10 )
 size = Vector3( 0.02, 0.02, 0.02 )
 
-[sub_resource type="SphereMesh" id=9]
+[sub_resource type="SphereMesh" id=12]
 radius = 0.01
 height = 0.02
 radial_segments = 6
@@ -254,17 +258,22 @@ __meta__ = {
 }
 
 [node name="trail" type="CPUParticles" parent="."]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, -0.0813418 )
 cast_shadow = 0
 emitting = false
 amount = 16
-speed_scale = 2.0
+speed_scale = 4.0
+explosiveness = 0.1
 lifetime_randomness = 1.0
-mesh = ExtResource( 10 )
+mesh = SubResource( 13 )
+flag_rotate_y = true
 direction = Vector3( 0, 0, -1 )
-spread = 35.0
+spread = 10.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 0.4
 initial_velocity_random = 0.1
+angular_velocity = 10.0
+angle = 45.0
 scale_amount = 0.02
 __meta__ = {
 "_editor_description_": ""
@@ -276,7 +285,7 @@ emitting = false
 amount = 16
 one_shot = true
 speed_scale = 2.0
-mesh = SubResource( 8 )
+mesh = SubResource( 11 )
 direction = Vector3( 0, 0, 1 )
 spread = 90.0
 gravity = Vector3( 0, 0, -2 )
@@ -292,7 +301,7 @@ transform = Transform( 0.03, 0, 0, 0, 0.03, 1.88745e-09, 0, -8.4639e-09, 0.05, 0
 
 [node name="dot" type="MeshInstance" parent="."]
 visible = false
-mesh = SubResource( 9 )
+mesh = SubResource( 12 )
 material/0 = ExtResource( 9 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

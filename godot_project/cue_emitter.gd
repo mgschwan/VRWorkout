@@ -184,6 +184,11 @@ func set_move_tween(cue_node, start_pos, end_pos, actual_flytime, curved_directi
 	cue_node.translation.x = start_pos[0]
 	cue_node.translation.y = start_pos[1]
 	move_modifier.interpolate_property(cue_node,"translation:z",start_pos[2],end_pos[2],actual_flytime,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0)
+
+	if streak_length > 5 and cue_node.has_method("show_trail"):
+		var vel = clamp(float(streak_length - 5) / 20.0, 0, 0.5)
+		print ("Streak velocity = %f"%vel)
+		cue_node.show_trail(true, vel) #
 	
 	if curved_direction != 0:
 		if cue_node.has_method("show_trail"):

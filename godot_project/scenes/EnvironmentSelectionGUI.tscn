@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
 [ext_resource path="res://assets/skybox/front.jpg" type="Texture" id=2]
@@ -6,15 +6,26 @@
 [ext_resource path="res://assets/skybox3/top.jpg" type="Texture" id=4]
 [ext_resource path="res://scripts/EnvironmentSelectionGUI.gd" type="Script" id=5]
 
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.380392, 0.298039, 0.831373, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
 [node name="Node2D" type="Node2D"]
-position = Vector2( 0, 17 )
 script = ExtResource( 5 )
 
 [node name="Button1" type="TextureButton" parent="."]
 margin_left = 30.0
-margin_top = 33.0
+margin_top = 57.0
 margin_right = 198.0
-margin_bottom = 201.0
+margin_bottom = 225.0
 theme = ExtResource( 1 )
 texture_normal = ExtResource( 2 )
 expand = true
@@ -36,9 +47,9 @@ __meta__ = {
 
 [node name="Button2" type="TextureButton" parent="."]
 margin_left = 284.0
-margin_top = 32.0
+margin_top = 56.0
 margin_right = 452.0
-margin_bottom = 200.0
+margin_bottom = 224.0
 theme = ExtResource( 1 )
 texture_normal = ExtResource( 3 )
 expand = true
@@ -59,9 +70,9 @@ __meta__ = {
 
 [node name="Button3" type="TextureButton" parent="."]
 margin_left = 536.0
-margin_top = 32.0
+margin_top = 56.0
 margin_right = 704.0
-margin_bottom = 200.0
+margin_bottom = 224.0
 theme = ExtResource( 1 )
 texture_normal = ExtResource( 4 )
 expand = true
@@ -82,12 +93,23 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="."]
 margin_left = 30.0
-margin_top = -15.0
+margin_top = 9.0
 margin_right = 704.0
-margin_bottom = 20.0
+margin_bottom = 44.0
 theme = ExtResource( 1 )
 text = "Select your environment"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 763.0
+margin_bottom = 251.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

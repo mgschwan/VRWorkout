@@ -1,0 +1,68 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
+[ext_resource path="res://scripts/PlayerInfo.gd" type="Script" id=2]
+[ext_resource path="res://fonts/Droid_Sans_Outline.tres" type="DynamicFont" id=3]
+[ext_resource path="res://fonts/PanelHeader_PassioOne.tres" type="DynamicFont" id=4]
+
+[sub_resource type="PlaneMesh" id=3]
+size = Vector2( 0.8, 0.2 )
+
+[sub_resource type="ViewportTexture" id=2]
+flags = 4
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="SpatialMaterial" id=4]
+resource_local_to_scene = true
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = SubResource( 2 )
+
+[node name="PlayerInfo" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 256, 64 )
+transparent_bg = true
+handle_input_locally = false
+msaa = 6
+render_target_v_flip = true
+
+[node name="Name" type="Label" parent="Viewport"]
+margin_right = 256.0
+margin_bottom = 32.0
+theme = ExtResource( 1 )
+custom_fonts/font = ExtResource( 3 )
+text = "Player"
+align = 1
+
+[node name="Points" type="Label" parent="Viewport"]
+margin_top = 32.0
+margin_right = 256.0
+margin_bottom = 46.0
+theme = ExtResource( 1 )
+custom_fonts/font = ExtResource( 3 )
+text = "0"
+align = 1
+
+[node name="Rank" type="Label" parent="Viewport"]
+margin_left = 200.0
+margin_top = 22.0
+margin_right = 256.0
+margin_bottom = 78.0
+theme = ExtResource( 1 )
+custom_fonts/font = ExtResource( 4 )
+align = 1
+
+[node name="Info" type="Spatial" parent="."]
+transform = Transform( -1, 1.50996e-07, -6.60024e-15, 0, -4.37114e-08, -1, -1.50996e-07, -1, 4.37114e-08, 0, 0, 0 )
+
+[node name="Side1" type="MeshInstance" parent="Info"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
+
+[node name="Side2" type="MeshInstance" parent="Info"]
+transform = Transform( -1, 8.74228e-08, 0, 3.82137e-15, 4.37114e-08, -1, -8.74228e-08, -1, -4.37114e-08, 0, 0, 0 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )

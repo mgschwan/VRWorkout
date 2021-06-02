@@ -60,7 +60,7 @@ albedo_texture = SubResource( 8 )
 script = ExtResource( 1 )
 
 [node name="DifficultyButtons" parent="." instance=ExtResource( 5 )]
-transform = Transform( 0.259808, -0.15, 6.55671e-09, 0, -1.31134e-08, -0.3, 0.15, 0.259808, -1.13566e-08, 4.01036, -0.129954, 0.16975 )
+transform = Transform( -1.91928e-07, 0.3, -1.31134e-08, 0, -1.31134e-08, -0.3, -0.3, -1.91928e-07, 8.38941e-15, -1.70549, -0.129954, 0.923523 )
 
 [node name="Viewport" type="Viewport" parent="."]
 size = Vector2( 512, 546 )
@@ -89,7 +89,7 @@ mouse_filter = 2
 custom_styles/panel = SubResource( 1 )
 
 [node name="StaticBody" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 2.6508, -0.441766, 0 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 2.43, -0.441766, 0 )
 script = ExtResource( 7 )
 
 [node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
@@ -110,7 +110,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1.067 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1.066 )
 
 [node name="SongSelector" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.0941151, -0.514, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.126682, -0.514, 0 )
 script = ExtResource( 7 )
 
 [node name="Viewport" type="Viewport" parent="SongSelector"]

@@ -73,5 +73,38 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label2" type="Label" parent="."]
+margin_left = 666.296
+margin_top = 105.377
+margin_right = 955.296
+margin_bottom = 137.377
+theme = ExtResource( 1 )
+text = "IP Addresses"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IPList" type="ItemList" parent="."]
+margin_left = 666.296
+margin_top = 138.377
+margin_right = 963.296
+margin_bottom = 509.377
+theme = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartCalibration" type="Button" parent="."]
+margin_left = 287.81
+margin_top = 122.514
+margin_right = 496.81
+margin_bottom = 176.514
+theme = ExtResource( 1 )
+text = "Start calibration"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="pressed" from="BeastMode/BeastModeButton" to="." method="_on_BeastModeButton_pressed"]
 [connection signal="pressed" from="Weights/WeightsButton" to="." method="_on_WeightsButton_pressed"]
+[connection signal="pressed" from="StartCalibration" to="." method="_on_StartCalibration_pressed"]

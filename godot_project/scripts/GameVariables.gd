@@ -70,6 +70,23 @@ var energy_level_max = 4.5
 var exercise_duration_avg = 20.0
 
 
+var stats = {
+	"total_points": 0,
+	"last_points": 0,
+	"total_played": 0,
+	"last_played": 0,
+	"last_vrw_score": 0
+}
+	
+
+#var stats_total_points = 0
+#var stats_last_points = 0
+#var total_played = 0
+#var last_played = 0
+#var vrw_score = 0
+
+
+
 
 var tracker_config_database = Dictionary()
 
@@ -509,11 +526,11 @@ var exercise_model = {
 								SquatState.DOUBLE_SWING  : { SquatState.HEAD: 40},
 								SquatState.CROSS_CUT  : { SquatState.HEAD: 30},
 						},
-		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 15, StandState.WINDMILL_TOE: 15,  StandState.PARCOUR: 5, StandState.HOLD_CUE: 15},
-						StandState.DOUBLE_SWING : { StandState.REGULAR: 20, StandState.WINDMILL_TOE: 15,  StandState.PARCOUR: 5, StandState.HOLD_CUE: 15},
-						StandState.WINDMILL_TOE : { StandState.REGULAR: 27, StandState.DOUBLE_SWING: 27,  StandState.PARCOUR: 5},
-						StandState.PARCOUR : { StandState.DOUBLE_SWING: 30, StandState.WINDMILL_TOE: 30, StandState.REGULAR: 40},
-						StandState.HOLD_CUE : { StandState.DOUBLE_SWING: 25, StandState.REGULAR: 25},
+		"stand_state_model" : { StandState.REGULAR : { StandState.DOUBLE_SWING: 5, StandState.WINDMILL_TOE: 15,  StandState.PARCOUR: 5, StandState.HOLD_CUE: 15},
+						StandState.DOUBLE_SWING : { StandState.REGULAR: 30, StandState.WINDMILL_TOE: 15,  StandState.PARCOUR: 5, StandState.HOLD_CUE: 15},
+						StandState.WINDMILL_TOE : { StandState.REGULAR: 27, StandState.DOUBLE_SWING: 5,  StandState.PARCOUR: 5},
+						StandState.PARCOUR : { StandState.DOUBLE_SWING: 10, StandState.WINDMILL_TOE: 30, StandState.REGULAR: 40},
+						StandState.HOLD_CUE : { StandState.DOUBLE_SWING: 5, StandState.REGULAR: 45},
 		},
 		"crunch_state_model" : { CrunchState.HEAD : { CrunchState.HAND: 70, CrunchState.MEDIUM_HOLD: 10},
 						CrunchState.HAND : { CrunchState.HEAD: 70, CrunchState.MEDIUM_HOLD: 10},

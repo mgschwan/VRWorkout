@@ -50,6 +50,12 @@ func _toggle_symbols(show_symbols):
 		_container_letters.visible = true;
 		_container_symbols.visible = false;
 
+func set_text(value):
+	$LineEdit.text = value
+
+func get_text():
+	return $LineEdit.text
+
 func _create_input_event(b, pressed):
 	var scancode = 0;
 	var key = b.text;
@@ -59,11 +65,13 @@ func _create_input_event(b, pressed):
 		_toggle_symbols(b.pressed);
 		return;
 	elif (b == _cancel_button):
-		if (!pressed): emit_signal("cancel_pressed");
+		if (pressed): 
+			print ("Cancel")
+			emit_signal("cancel_pressed");
 		return;
 	elif (b == _shift_button):
 		if (pressed): 
-			_toggle_case(!b.pressed); # button event is created before it is actually toggled
+			_toggle_case(b.pressed);
 		scancode = KEY_SHIFT;
 	elif (b == _backspace_button):
 		scancode = KEY_BACKSPACE;
@@ -72,7 +80,9 @@ func _create_input_event(b, pressed):
 
 	elif (b == _enter_button):
 		scancode = KEY_ENTER;
-		if (!pressed): emit_signal("enter_pressed");
+		if (pressed): 
+			print ("Enter pressed")
+			emit_signal("enter_pressed");
 		if (!allow_newline): return; # no key event for enter in this case
 	elif (b == _space_button):
 		scancode = KEY_SPACE;

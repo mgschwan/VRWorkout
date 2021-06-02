@@ -1,0 +1,13 @@
+shader_type spatial;
+
+render_mode unshaded, blend_mix;
+
+void fragment() {
+        vec4 world_vertex = CAMERA_MATRIX * vec4(VERTEX, 1.0);
+        vec3 mod_vertex = mod(vec3(world_vertex.x,world_vertex.y,world_vertex.z)*2.0, 0.5);
+    	ALBEDO = vec3(mod_vertex.y+0.5,mod_vertex.y+0.5,0.0);
+        ALPHA_SCISSOR = 0.025;
+
+        ALPHA = abs((mod_vertex.x-0.25)*(mod_vertex.y-0.25));
+
+}

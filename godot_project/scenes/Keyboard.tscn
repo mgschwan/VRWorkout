@@ -9,11 +9,11 @@
 size = Vector2( 1.688, 1 )
 
 [sub_resource type="ViewportTexture" id=2]
+flags = 4
 viewport_path = NodePath("Viewport")
 
 [sub_resource type="SpatialMaterial" id=3]
 resource_local_to_scene = true
-flags_transparent = true
 flags_unshaded = true
 params_cull_mode = 2
 albedo_texture = SubResource( 2 )
@@ -57,5 +57,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.844, 0, 0.5 )
 [node name="tr_marker" type="Spatial" parent="StaticBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.844, 0, -0.5 )
 
+[connection signal="cancel_pressed" from="Viewport/CanvasLayer/VirtualKeyboard" to="." method="_on_VirtualKeyboard_cancel_pressed"]
+[connection signal="enter_pressed" from="Viewport/CanvasLayer/VirtualKeyboard" to="." method="_on_VirtualKeyboard_enter_pressed"]
 [connection signal="interface_release" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_release"]
 [connection signal="interface_touch" from="StaticBody" to="Viewport" method="_on_ConnectPadInput_interface_touch"]

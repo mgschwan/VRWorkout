@@ -1,10 +1,23 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://themes/vrworkout_theme.theme" type="Theme" id=1]
 [ext_resource path="res://scripts/MainGamemodeSelector.gd" type="Script" id=2]
 [ext_resource path="res://scripts/ScrollButton.gd" type="Script" id=3]
 [ext_resource path="res://assets/arrow_up_scroll_32.png" type="Texture" id=4]
 [ext_resource path="res://assets/arrow_down_scroll_32.png" type="Texture" id=5]
+[ext_resource path="res://scenes/SettingsGUIPanel.tscn" type="PackedScene" id=6]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.380392, 0.298039, 0.831373, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="main" type="Control"]
 anchor_right = 1.0
@@ -13,6 +26,7 @@ margin_bottom = -88.0
 theme = ExtResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
+"_edit_horizontal_guides_": [ 56.7285, 507.018 ],
 "_edit_use_anchors_": false
 }
 
@@ -46,9 +60,9 @@ __meta__ = {
 }
 
 [node name="Header" type="RichTextLabel" parent="TabContainer/Exercise sets"]
-margin_left = 471.0
-margin_top = 368.0
-margin_right = 1001.0
+margin_left = 5.0
+margin_top = 404.0
+margin_right = 1015.0
 margin_bottom = 455.0
 bbcode_enabled = true
 bbcode_text = "Exercise sets are a selection of exercises in no particular order. The game decides for you which exercise comes next"
@@ -62,11 +76,22 @@ anchor_left = 0.005
 anchor_top = 0.005
 anchor_right = 0.443
 anchor_bottom = 0.995
+margin_left = -0.0699997
+margin_top = 16.66
+margin_right = -168.202
+margin_bottom = -89.66
 theme = ExtResource( 1 )
 items = [ "Leg day", null, false, "Ground work", null, false, "Developers choice", null, false, "Strength workout", null, false, "Default", null, false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="SettingsGUI" parent="TabContainer/Exercise sets" instance=ExtResource( 6 )]
+margin_left = 237.309
+margin_top = 11.2246
+margin_right = 237.309
+margin_bottom = 11.2246
+rect_scale = Vector2( 0.8, 0.8 )
 
 [node name="Workouts" type="Tabs" parent="TabContainer"]
 visible = false
@@ -259,6 +284,17 @@ text = "Onboarding under construction
 Please use the tutorial
 to your right
 for now"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+margin_left = 5.0
+margin_top = 38.0
+margin_right = 1019.0
+margin_bottom = 508.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -842,10 +842,13 @@ func handle_parcour_cues(current_time, target_time, cue_emitter_state):
 var stand_state
 var stand_state_model
 var stand_state_model_changed = false
+var stand_state_prevent_change_until = 0
+
 func handle_stand_cues(current_time,target_time,cue_emitter_state):
 	var last_stand_state = stand_state
 	switch_floor_sign(current_time,"feet")
-	stand_state = state_transition(stand_state, stand_state_model)
+	if current_time > stand_state_prevent_change_until:
+		stand_state = state_transition(stand_state, stand_state_model)
 
 	if last_stand_state != stand_state:
 		stand_state_model_changed = true
@@ -856,6 +859,8 @@ func handle_stand_cues(current_time,target_time,cue_emitter_state):
 		
 	if stand_state == StandState.DOUBLE_SWING:
 		handle_double_swing_cues(current_time, target_time, "ph*0.8", cue_emitter_state, stand_state_model_changed)
+		if stand_state_model_changed:
+			stand_state_prevent_change_until = current_time + 5.0 + current_difficulty * 2.0
 	elif stand_state == StandState.WINDMILL_TOE:
 		handle_windmill_touch_cues(current_time, target_time, cue_emitter_state, stand_state_model_changed)
 	elif stand_state == StandState.PARCOUR:
@@ -874,7 +879,7 @@ func handle_hold_cues(current_time, target_time, y_hold_hand, cue_emitter_state,
 		create_and_attach_cue(current_time,"right_hold", "ph*0.33", y_hold_hand, target_time, -hand_cue_offset, 0,"onehanded")
 	else:
 		create_and_attach_cue(current_time,"left_hold", "-ph*0.33", y_hold_hand, target_time, -hand_cue_offset, 0,"onehanded")
-	temporary_cue_space_extension += 0.5 - current_difficulty/10.0
+	temporary_cue_space_extension += 0.8 - current_difficulty/10.0
 
 
 func get_double_swing_y(y_hand_base, high):

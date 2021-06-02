@@ -35,13 +35,6 @@ var in_hand_mode = false #auto detect hand_mode, can't revert back automatically
 
 var tracking_data = []
 
-var total_points = 0
-var last_points = 0
-var total_played = 0
-var last_played = 0
-var vrw_score = 0
-
-
 var ovr_init_config = null;
 var _vrapi_bone_orientations = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
@@ -631,11 +624,9 @@ func _on_level_finished_actual(valid_end):
 	GameVariables.game_result["max_hits"] =  tmp_points["max_hits"]
 	GameVariables.game_result["time"] =  tmp_points["time"]
 		
-	last_points = GameVariables.game_result["points"]
-	total_points += GameVariables.game_result["points"]
-	last_played = GameVariables.game_result["time"]
-	total_played += GameVariables.game_result["time"]
-	vrw_score = GameVariables.game_result["vrw_score"]
+	GameVariables.stats["total_points"] = GameVariables.stats.get("total_points",0.0) + GameVariables.game_result["points"]
+	GameVariables.stats["total_played"] = GameVariables.stats.get("total_played", 0.0) + GameVariables.game_result["time"]
+
 	
 	print ("Preparing satistics upload")
 	game_statistics["api_version"] = GameVariables.api_version
@@ -670,15 +661,9 @@ func _on_level_finished_actual(valid_end):
 	for a in achievement_list:
 		achievements[a["achievement_identifier"]] = {}
 	gu.store_persistent_config(GameVariables.achievement_file_location, achievements)
-	
 		
 	start_levelselect()	
 	
-	var last_played_str = gu.seconds_to_timestring(last_played)
-	var total_played_str = gu.seconds_to_timestring(total_played)
-	
-	levelselect.set_stat_text("Results for %s\n\nLast round\nScore: %.2f (%d/%d)\nPoints: %d"%[GameVariables.player_name, vrw_score,GameVariables.game_result["hits"],GameVariables.game_result["max_hits"],last_points]+" Duration: %s"%last_played_str+"\n\nTotal\nPoints: %d"%total_points+" Duration: %s"%total_played_str, vrw_score) 
-
 	yield(get_tree().create_timer(1), "timeout")
 	
 	if not GameVariables.vr_mode:
@@ -877,6 +862,9 @@ func _on_Area_level_selected(filename, diff, num):
 		level.first_beat = levelselect.get_last_beat()
 		level.connect("level_finished",self,"_on_level_finished")
 		level.connect("level_finished_manually",self,"_on_level_finished_manually")
+		level.connect("update_user_points",$MultiplayerRoom,"_on_update_user_points")
+		
+		
 		levelselect.queue_free()
 		level.name = "Level"
 		add_child(level,true)	
@@ -980,9 +968,8 @@ func change_environment(value):
 	GameVariables.vr_camera.blackout_screen(false)
 	
 
-
-
-
+func attach_keyboard(control):
+	$ARVROrigin/Keyboard.attach_keyboard(control)
 
 #dispatch the game message to the correct node
 func _on_MultiplayerRoom_game_message(userid, data):

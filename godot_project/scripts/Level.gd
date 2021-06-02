@@ -5,6 +5,8 @@ signal level_finished_manually
 
 
 signal set_exercise(exercise)
+signal update_user_points(userid, points, rank)
+
 var gu = GameUtilities.new()
 
 var exercise_builder = preload("res://scripts/ExerciseBuilder.gd").new()
@@ -303,7 +305,7 @@ func _ready():
 	
 	#Setup the ghost if available
 	if len(GameVariables.input_level_statistics_data):
-		add_remote_user_messages("Ghost", GameVariables.input_level_statistics_data)
+		add_remote_user_messages("Ghost", GameVariables.input_level_statistics_data, 1)
 	GameVariables.input_level_statistics_data = Dictionary()
 
 	if not (GameVariables.multiplayer_api and GameVariables.multiplayer_api.is_multiplayer()):
@@ -356,7 +358,7 @@ func _on_multiplayer_game_message(sender, message):
 	elif message_type == "remote_statistics_data":
 		if not GameVariables.multiplayer_api.is_self_user(sender):
 			var statistics = message.get("statistics",[])
-			add_remote_user_messages("Opponent%d"%sender, statistics)
+			add_remote_user_messages(GameVariables.multiplayer_api.get_player_name(sender), statistics, sender)
 
 func update_groove_iteration():
 	if beat_index > 0:
@@ -949,11 +951,20 @@ enum TournamentState {
 	PLAYER_BEHIND = 2
 	}
 	
+class PointSorter:	
+	static func point_compare(a, b):
+		return a[1] > b[1]
+	
 var player_tournament_state = 0
 var remote_user_scores = Dictionary()
 var remote_user_messages = Dictionary()
+var remote_user_names = Dictionary()
 func consume_remote_user_messages():
+	var tmp_score = Array()
+	tmp_score.append([-1, cue_emitter.points])
+	
 	for k in remote_user_messages:
+		var username = remote_user_names[k]
 		while len(remote_user_messages[k]) > 0 and remote_user_messages[k][0]["tt"] < cue_emitter.current_playback_time:
 			var el = remote_user_messages[k].pop_front()
 			var hit = el["h"]
@@ -964,21 +975,39 @@ func consume_remote_user_messages():
 					hit = 0.0
 			
 			if not remote_user_scores.has(k):
-				remote_user_scores[k] = {"name": k, "score": 0.0, "points": 0.0}
+				remote_user_scores[k] = {"name": username, "score": 0.0, "points": 0.0}
 
 			remote_user_scores[k]["score"] = remote_user_scores[k].get("score",0.0) + hit
 			remote_user_scores[k]["points"] = remote_user_scores[k].get("points",0.0) + float(el["p"])
-				
-			print ("Remote score (%s): %s/%f"%[k, str(el["p"]), hit])
+			#print ("Remote score (%s): %s/%f"%[username, str(el["p"]), hit])
+
+		if remote_user_scores.has(k):
+			tmp_score.append([k, remote_user_scores[k]["points"]])
+		else:
+			tmp_score.append([k, 0])
+	
+	
+	tmp_score.sort_custom(PointSorter, "point_compare")
+	print ("Sorted ranks: %s"%str(tmp_score))
+	var player_rank_index = Dictionary()
+	for sc_idx in len(tmp_score):
+		player_rank_index[tmp_score[sc_idx][0]] = sc_idx
+
 
 	for k in remote_user_scores:
-		$TrophyList.set_score(k, remote_user_scores[k].get("name", "Unknown Player"),remote_user_scores[k].get("score",0.0), remote_user_scores[k].get("points", 0.0) )
+		var username = remote_user_names[k]
+		var rank = player_rank_index[k]
+		emit_signal("update_user_points", k, remote_user_scores[k].get("points", 0.0), rank+1)
+		$TrophyList.set_score(username, remote_user_scores[k].get("name", "Unknown Player"),remote_user_scores[k].get("score",0.0), remote_user_scores[k].get("points", 0.0) )
 	
 	
-	if remote_user_scores.has("Ghost"):
-		var points = remote_user_scores["Ghost"].get("points",0)
+	if len(remote_user_scores) > 0:
+		var points = 0
+		for k in remote_user_scores:
+			if remote_user_scores[k].get("points",0) > points:
+				points = remote_user_scores[k].get("points",0)
 		if player_tournament_state != TournamentState.PLAYER_AHEAD and cue_emitter.points > points + 1000:
-			get_node("VoiceInstructor").say("pulling_ahead")
+			get_node("VoiceInstructor").say("pulled_ahead")
 			player_tournament_state = TournamentState.PLAYER_AHEAD
 		elif player_tournament_state != TournamentState.PLAYER_BEHIND and cue_emitter.points < points - 1000:
 			get_node("VoiceInstructor").say("falling_behind")
@@ -1004,14 +1033,15 @@ func send_statistics_elements(elements):
 	if GameVariables.multiplayer_api and GameVariables.multiplayer_api.is_multiplayer():
 		GameVariables.multiplayer_api.send_game_message({"type":"remote_statistics_data","statistics":elements})
 	
-func add_remote_user_messages(user, messages):
-	if not remote_user_messages.has(user):
-		remote_user_messages[user] = Array()
+func add_remote_user_messages(user, messages, user_id):
+	remote_user_names[user_id] = user
+	if not remote_user_messages.has(user_id):
+		remote_user_messages[user_id] = Array()
 	var klist = messages.keys()
 	klist.sort()
 	
 	for m in klist:
-		remote_user_messages[user].append(messages[m])
+		remote_user_messages[user_id].append(messages[m])
 		
 	
 	

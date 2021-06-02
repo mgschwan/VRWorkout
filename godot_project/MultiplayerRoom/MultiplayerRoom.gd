@@ -144,8 +144,8 @@ func process_move_message(data_object):
 	#print ("Move message: %s"%str(data))
 	var user = user_list.get(id,null)
 	if user and id != self_id:
-		if not "spatial_offset_pos" in user:
-			process_user_join(id)
+		if GameVariables.multiplayer_api.is_multiplayer_host() and not "spatial_offset_pos" in user:
+			process_user_join(id, null)
 		if not "nodes" in user:
 			user["nodes"] = {}
 		if parent_node < 0 or parent_node in user["nodes"]:
@@ -194,11 +194,21 @@ func process_room_join_message(data_object):
 
 #The host assigns positions to newly joining users
 var user_positions = 1
-func process_user_join(user_id):
+func process_user_join(user_id, name):
+	if not (user_id in user_list):
+		user_list[user_id] = {"name":name, "nodes": {}}
+	if name != null:
+		user_list[user_id]["name"] = name
+		
+	print ("Users")
+	for u in user_list:
+		print ("User: #%d  Name: %s"%[u, user_list[u].get("name","no name yet")])
+	
 	if is_multiplayer_host():
 		var user = user_list.get(user_id,null)
 		if user == null or not "spatial_offset_pos" in user:
-			user = Dictionary()
+			if user == null:
+				user = Dictionary()
 			var angle = 0
 			var pos = 0
 			var dir = 0		
@@ -236,10 +246,11 @@ func decode_data(data):
 	var parse_result = JSON.parse(data)
 	if parse_result.error == OK:
 		var data_object = parse_result.result
+		#print ("Data received: %s"%(data_object.get("type","unknown")))
 		match data_object.get("type","unknown"):
 			"join":
 				print ("User %s joined"%data_object.get("name",""))
-				process_user_join(data_object.get("id",0))
+				process_user_join(data_object.get("id",0), data_object.get("player_name","Opponent"))
 			"user_list":
 				var ulist = data_object.get("users",[])
 				print ("Current user list: %s"%str(ulist))
@@ -267,9 +278,9 @@ func decode_data(data):
 
 func _join_room():
 	if room:
-		send_message("join_room", {"room":room})
+		send_message("join_room", {"room":room, "player_name": GameVariables.player_name})
 	else:
-		send_message("create_room", Dictionary())
+		send_message("create_room", {"player_name": GameVariables.player_name})
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -316,6 +327,14 @@ func remove_all_users():
 		remove_user(u)
 	user_list = Dictionary()
 
+func get_player_name(id):
+	var user = user_list.get(id,Dictionary())
+	var name = user.get("name", "Player#%d"%id)
+	print ("Get player name: %d  %s / %s"%[id, name, str(user_list)])
+	return name
+
+func get_scores():
+	return $PlayerAreaOffset/PlayerArea.player_scores
 
 func teardown_connection():
 	if is_active:
@@ -334,6 +353,9 @@ func _on_connection_closed(was_clean):
 	teardown_connection()
 	print ("Connection ended")
 	
+func _on_update_user_points(userid, points, rank):
+	$PlayerAreaOffset/PlayerArea._on_update_user_points(userid, points, rank)
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
