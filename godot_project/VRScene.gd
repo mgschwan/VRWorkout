@@ -930,26 +930,12 @@ func _on_Splashscreen_finished():
 	else:
 		_on_Onboarding_selected()
 
-
-
 var onboarding_scene
 func _on_Onboarding_selected():
-	GameVariables.vr_camera.blackout_screen(true)
-	yield(get_tree().create_timer(0.1),"timeout")
-	onboarding_scene = load("res://scenes/OnboardingStage.tscn").instance()
-	if levelselect != null:
-		levelselect.queue_free()
-	add_child(onboarding_scene)
-	onboarding_scene.connect("onboarding_finished", self, "_on_Onboarding_finished")
-	#GameVariables.vr_camera.blackout_screen(false)
+	pass
 
 func _on_Onboarding_finished():
-	GameVariables.vr_camera.blackout_screen(true)
-	yield(get_tree().create_timer(0.1),"timeout")
-
-	ProjectSettings.set("game/onboarding_complete", true)
-	onboarding_scene.queue_free()
-	start_levelselect()
+	pass
 
 func change_environment(value):
 	print ("CHANGE ENV\n\n\n\n\n%s"%value)

@@ -178,17 +178,17 @@ rings = 3
 radius = 0.12
 height = 0.09
 
-[sub_resource type="CubeMesh" id=13]
+[sub_resource type="CubeMesh" id=7]
 material = ExtResource( 11 )
 
-[sub_resource type="SpatialMaterial" id=10]
+[sub_resource type="SpatialMaterial" id=8]
 albedo_color = Color( 0.690196, 0, 0, 1 )
 
-[sub_resource type="CubeMesh" id=11]
-material = SubResource( 10 )
+[sub_resource type="CubeMesh" id=9]
+material = SubResource( 8 )
 size = Vector3( 0.02, 0.02, 0.02 )
 
-[sub_resource type="SphereMesh" id=12]
+[sub_resource type="SphereMesh" id=10]
 radius = 0.01
 height = 0.02
 radial_segments = 6
@@ -265,7 +265,7 @@ amount = 16
 speed_scale = 4.0
 explosiveness = 0.1
 lifetime_randomness = 1.0
-mesh = SubResource( 13 )
+mesh = SubResource( 7 )
 flag_rotate_y = true
 direction = Vector3( 0, 0, -1 )
 spread = 10.0
@@ -285,7 +285,7 @@ emitting = false
 amount = 16
 one_shot = true
 speed_scale = 2.0
-mesh = SubResource( 11 )
+mesh = SubResource( 9 )
 direction = Vector3( 0, 0, 1 )
 spread = 90.0
 gravity = Vector3( 0, 0, -2 )
@@ -301,7 +301,7 @@ transform = Transform( 0.03, 0, 0, 0, 0.03, 1.88745e-09, 0, -8.4639e-09, 0.05, 0
 
 [node name="dot" type="MeshInstance" parent="."]
 visible = false
-mesh = SubResource( 12 )
+mesh = SubResource( 10 )
 material/0 = ExtResource( 9 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

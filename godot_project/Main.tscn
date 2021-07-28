@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://VRScene.gd" type="Script" id=1]
 [ext_resource path="res://ARVRCamera.gd" type="Script" id=2]
@@ -24,7 +24,6 @@
 [ext_resource path="res://scenes/NetworkARVRController.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scenes/SimplePhone.tscn" type="PackedScene" id=23]
 [ext_resource path="res://scenes/Keyboard.tscn" type="PackedScene" id=24]
-[ext_resource path="res://scripts/3rdparty/FBAvatar/scenes/FBAvatarRoot.tscn" type="PackedScene" id=25]
 
 [sub_resource type="SphereShape" id=1]
 radius = 0.12
@@ -223,9 +222,6 @@ pause_mode = 2
 
 [node name="WebView" parent="." instance=ExtResource( 21 )]
 script = null
-
-[node name="FBAvatarRoot" parent="." instance=ExtResource( 25 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.22236, -2.98871 )
 
 [connection signal="body_entered" from="ARVROrigin/ARVRCamera/AreaHead" to="ARVROrigin/ARVRCamera/AreaHead" method="_on_AreaHead_body_entered"]
 [connection signal="timeout" from="ARVROrigin/ARVRCamera/HUDHideTimer" to="ARVROrigin/ARVRCamera" method="_on_HUDHideTimer_timeout"]
