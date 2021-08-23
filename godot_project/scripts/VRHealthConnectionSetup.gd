@@ -3,8 +3,12 @@ extends Spatial
 var api
 
 func _ready():
+	api = false
 	api = get_tree().current_scene.get_node("HeartRateReceiver").vrhealthAPI
-	api.connect("connect_app_initialized", self, "connect_vrhealth_complete")
+	
+	if api != null:
+		api.connect("connect_app_initialized", self, "connect_vrhealth_complete")
+	
 	if api and api.isSetup():
 		get_node("VRHealthPanel").print_info("ONLY AVAILBE IN BETA!\nVRHealth connection already setup\n\nPush all buttons to reconnect")
 	else:

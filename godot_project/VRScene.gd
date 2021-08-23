@@ -373,6 +373,8 @@ func initialize():
 				arvr_oculus_interface = ARVRServer.find_interface("Oculus");
 			"OpenVR":
 					arvr_open_vr_interface = ARVRServer.find_interface("OpenVR");
+			"OpenXR":
+					arvr_open_vr_interface = ARVRServer.find_interface("OpenXR");
 			"WebXR":
 					arvr_webxr_interface = ARVRServer.find_interface("WebXR");
 
@@ -923,12 +925,10 @@ func _on_Splashscreen_finished():
 	if not GameVariables.vr_mode:
 		_on_Tracker_added("right", ARVRServer.TRACKER_CONTROLLER, 1)
 		_on_Tracker_added("left", ARVRServer.TRACKER_CONTROLLER, 2)
-
-	if ProjectSettings.has_setting("game/onboarding_complete") and ProjectSettings.get("game/onboarding_complete"):
-		start_levelselect()	
-		add_child(levelselect)
-	else:
-		_on_Onboarding_selected()
+		
+	GameVariables.vr_camera.blackout_screen(false)
+	start_levelselect()
+	add_child(levelselect)
 
 var onboarding_scene
 func _on_Onboarding_selected():
