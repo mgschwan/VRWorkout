@@ -1,7 +1,7 @@
 # VRWorkout
 Virtual reality fitness workout game for Oculus Quest
 
-[![Oculus Quest Download](https://github.com/mgschwan/VRWorkout/raw/master/web_assets/download_button_oculusquest.png)](https://github.com/mgschwan/VRWorkout/releases/latest/download/VRWorkout.apk)
+[![Oculus Quest Download](https://github.com/mgschwan/VRWorkout/raw/master/web_assets/download_button_oculusquest.png)](https://www.oculus.com/experiences/quest/3434050740056916)
 
 [![Windows Download](https://github.com/mgschwan/VRWorkout/raw/master/web_assets/download_button_windows.png)](https://github.com/mgschwan/VRWorkout/releases/latest/download/VRWorkout_win.zip)
 
@@ -35,7 +35,7 @@ The game switches between those four positions to avoid a monotone workout.
 
 ## Install
 
-* Either directly through [Sidequest](https://sidequestvr.com/#/app/413) 
+* Either directly through [AppLab](https://www.oculus.com/experiences/quest/3434050740056916) , [Sidequest](https://sidequestvr.com/#/app/413) 
 * or by downloading the latest APK file from the [Releases](https://github.com/mgschwan/VRWorkout/releases) section and installing it via ADB to your device
 
 This game is best played with hand tracking!
